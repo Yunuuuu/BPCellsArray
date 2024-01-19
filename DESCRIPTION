@@ -1,0 +1,38 @@
+Package: BPCellsArray
+Title: Using BPCellsArray as a DelayedArray Backend
+Version: 0.0.0.9000
+Authors@R: 
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Implements a DelayedArray backend for reading and
+    writing arrays in the BPCells storage layout. The resulting 
+    BPCells*Arrays are compatible with all Bioconductor
+    pipelines that can accept DelayedArray instances.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports: 
+    BiocSingular,
+    BPCells (>= 0.1.0),
+    cli,
+    DelayedArray,
+    Matrix,
+    methods,
+    rlang (>= 1.1.0),
+    S4Arrays
+Remotes: 
+    Yunuuuu/BPCells
+Suggests: 
+    roxygen2,
+    RSpectra
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.0
+Collate: 
+    'utils.R'
+    'Class-ConvertMatrixType.R'
+    'Class-MatrixDir.R'
+    'Class-MatrixSubset.R'
+    'import-standalone-assert.R'
+    'import-standalone-cli.R'
+    'import-standalone-obj-type.R'
+    'runSVD.R'
+    'utils-check.R'
