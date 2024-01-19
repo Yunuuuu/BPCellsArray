@@ -44,9 +44,7 @@ methods::setClass("BPCellsDirArray",
 #' @rdname BPCellsDir
 methods::setMethod(
     "DelayedArray", "BPCellsDirSeed",
-    function(seed) {
-        new_DelayedArray(seed, Class = "BPCellsDirArray")
-    }
+    function(seed) new_DelayedArray(seed, Class = "BPCellsDirArray")
 )
 
 #' @param ... Additional parameters passed into `BPCellsDirSeed`.
@@ -185,7 +183,7 @@ methods::setMethod(
 methods::setMethod(
     "[", "BPCellsDirSeed",
     function(x, i, j, ..., drop = FALSE) {
-        BPCellsMatrixSubsetSeed(x[i, j])
+        BPCellsMatrixSubsetSeed(methods::callNextMethod())
     }
 )
 
