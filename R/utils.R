@@ -1,16 +1,12 @@
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
-bpcells_helper_classes <- c("ConvertMatrixType", "MatrixSubset")
-
-extract_object <- function(x) {
-    if (methods::is(x, "ConvertMatrixType") || methods::is(x, "MatrixSubset")) {
-        x@matrix
-    } else {
-        x
-    }
-}
-
 extract_bpcells_array <- function(x, index) {
+    if (length(index) > 2L) {
+        cli::cli_abort(c(
+            "{.arg index} must be a list with length <= 2",
+            i = "BPCells only support matrix operations"
+        ))
+    }
     i <- index[[1L]]
     j <- index[[2L]]
     if (is.null(i) && is.null(j)) {
@@ -25,10 +21,61 @@ extract_bpcells_array <- function(x, index) {
     methods::as(out, "dgCMatrix")
 }
 
-bpcells_to_r_type <- function(x) {
-    switch(x@type,
-        uint32_t = "integer",
-        float = "double",
-        double = "double"
+coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    tryCatch(
+        methods::as(x, "dgCMatrix"),
+        error = function(cnd) {
+            cli::cli_abort(
+                "{.arg {arg}} must be a matrix-like object which can be coerced into {.cls dgCMatrix}",
+                call = call
+            )
+        }
     )
+}
+
+mock_matrix <- function(ngenes, ncells) {
+    cell.means <- 2^runif(ngenes, 2, 10)
+    cell.disp <- 100 / cell.means + 0.5
+    cell.data <- matrix(rnbinom(ngenes * ncells,
+        mu = cell.means,
+        size = 1 / cell.disp
+    ), ncol = ncells)
+    rownames(cell.data) <- sprintf("Gene_%s", formatC(seq_len(ngenes),
+        width = 4, flag = 0
+    ))
+    colnames(cell.data) <- sprintf("Cell_%s", formatC(seq_len(ncells),
+        width = 3, flag = 0
+    ))
+    cell.data
+}
+
+show_bpcells <- function(object, baseClass, class) {
+    cat(sprintf(
+        "%d x %d %s object with class %s\n",
+        nrow(object), ncol(object), baseClass, class
+    ))
+
+    cat("\n")
+    cat(sprintf(
+        "Row names: %s\n",
+        BPCells:::pretty_print_vector(rownames(object), empty = "unknown names")
+    ))
+    cat(sprintf(
+        "Col names: %s\n",
+        BPCells:::pretty_print_vector(colnames(object), empty = "unknown names")
+    ))
+
+    cat("\n")
+    cat(sprintf("Data type: %s\n", BPCells:::matrix_type(object)))
+    cat(sprintf(
+        "Storage order: %s major\n",
+        ifelse(object@transpose, "row", "column")
+    ))
+
+    cat("\n")
+    description <- BPCells:::short_description(object)
+    if (length(description) > 0) cat("Queued Operations:\n")
+    for (i in seq_along(description)) {
+        cat(sprintf("%d. %s\n", i, description[i]))
+    }
 }

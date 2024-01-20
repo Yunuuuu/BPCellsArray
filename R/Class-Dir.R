@@ -7,7 +7,7 @@
 #' @importClassesFrom BPCells MatrixDir
 #' @name BPCellsDir
 #' @seealso [writeBPCellsDirArray]
-methods::setClass("BPCellsDirSeed", contains = "MatrixDir")
+methods::setClass("BPCellsDirSeed", contains = c("BPCellsSeed", "MatrixDir"))
 
 #' @param x For `BPCellsDirSeed` and `BPCellsDirArray`, a path of the
 #' `MatrixDir` data, or a `MatrixDir` object. For other function, a
@@ -55,10 +55,10 @@ BPCellsDirArray <- function(x, ...) {
 }
 
 #' @export
-#' @importClassesFrom DelayedArray DelayedMatrix
 #' @rdname BPCellsDir
+#' @include Class-BPCellsMatrix.R
 methods::setClass("BPCellsDirMatrix",
-    contains = "DelayedMatrix",
+    contains = c("BPCellsMatrix"),
     slots = c(seed = "BPCellsDirSeed")
 )
 
@@ -103,20 +103,25 @@ methods::setGeneric(
     BPCellsDirArray(obj)
 }
 
+#' @export
 #' @rdname writeBPCellsDirArray
 methods::setMethod("writeBPCellsDirArray", "ANY", function(x, ...) {
-    .writeBPCellsDirArray(x = methods::as(x, "dgCMatrix"), ...)
+    .writeBPCellsDirArray(x = coerce_dgCMatrix(x), ...)
 })
 
+#' @export
 #' @rdname writeBPCellsDirArray
-#' @importClassesFrom Matrix dgCMatrix
-methods::setMethod("writeBPCellsDirArray", "dgCMatrix", .writeBPCellsDirArray)
-
-#' @rdname writeBPCellsDirArray
-#' @importClassesFrom BPCells IterableMatrix
 methods::setMethod(
     "writeBPCellsDirArray", "IterableMatrix", .writeBPCellsDirArray
 )
+
+#' @export
+#' @rdname writeBPCellsDirArray
+methods::setMethod("writeBPCellsDirArray", "BPCellsSeed", .writeBPCellsDirArray)
+
+#' @export
+#' @rdname writeBPCellsDirArray
+methods::setMethod("writeBPCellsDirArray", "dgCMatrix", .writeBPCellsDirArray)
 
 .as_BPCellsDirArray <- function(from) writeBPCellsDirArray(from)
 
@@ -124,74 +129,21 @@ methods::setMethod(
 methods::setAs("ANY", "BPCellsDirArray", .as_BPCellsDirArray)
 
 #' @export
-methods::setAs("DelayedArray", "BPCellsDirArray", .as_BPCellsDirArray)
-
-#' @export
-methods::setAs("DelayedMatrix", "BPCellsDirMatrix", .as_BPCellsDirArray)
-
-#' @param object A `BPCellsDirSeed` object.
-#' @export
-#' @importMethodsFrom methods show
-#' @rdname BPCellsDir
-methods::setMethod("show", "BPCellsDirSeed", function(object) {
-    cat(sprintf("%i x %i BPCellsDirSeed object\n", nrow(object), ncol(object)))
-})
+methods::setAs("ANY", "BPCellsDirMatrix", .as_BPCellsDirArray)
 
 #' @export
 #' @importMethodsFrom DelayedArray path
 #' @rdname BPCellsDir
 methods::setMethod("path", "BPCellsDirSeed", function(object) object@dir)
 
-#' @export
-#' @importMethodsFrom DelayedArray type
-#' @include utils.R
-#' @rdname BPCellsDir
-methods::setMethod("type", "BPCellsDirSeed", bpcells_to_r_type)
-
-#' @export
-#' @importMethodsFrom DelayedArray is_sparse
-#' @rdname BPCellsDir
-methods::setMethod("is_sparse", "BPCellsDirSeed", function(x) TRUE)
-
-#' @inheritParams S4Arrays::extract_array
-#' @export
-#' @importMethodsFrom DelayedArray extract_array
-#' @rdname BPCellsDir
-methods::setMethod(
-    "extract_array", "BPCellsDirSeed",
-    function(x, index) {
-        out <- as.matrix(extract_bpcells_array(x, index))
-        storage.mode(out) <- type(x)
-        out
-    }
-)
-
-#' @export
-#' @importMethodsFrom DelayedArray extract_sparse_array
-#' @rdname BPCellsDir
-methods::setMethod(
-    "extract_sparse_array", "BPCellsDirSeed",
-    function(x, index) {
-        methods::as(extract_bpcells_array(x, index), "SparseArraySeed")
-    }
-)
-
 #' @param i,j Row and Column index.
 #' @param drop Not used, always be `FALSE`.
+#' @importMethodsFrom BPCells [
 #' @export
 #' @rdname BPCellsDir
 methods::setMethod(
     "[", "BPCellsDirSeed",
     function(x, i, j, ..., drop = FALSE) {
-        BPCellsMatrixSubsetSeed(methods::callNextMethod())
-    }
-)
-
-#' @export
-#' @rdname BPCellsDir
-methods::setMethod(
-    "[", "BPCellsDirArray",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsMatrixSubsetArray(x@seed[i, j])
+        BPCellsSeed(methods::callNextMethod())
     }
 )

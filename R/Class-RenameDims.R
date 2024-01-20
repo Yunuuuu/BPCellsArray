@@ -1,0 +1,86 @@
+#' Delayed BPCells RenameDims
+#'
+#' The `BPCellsRenameDimsArray` class provides a
+#' [DelayedArray][DelayedArray::DelayedArray] backend for `RenameDims`
+#' object in BPCells.
+#'
+#' Usually, you shouldn't use this class directly, instead, you should use
+#' [dimnames<-] to create a [BPCellsRenameDims][BPCellsRenameDims-Class] object.
+#'
+#' @importClassesFrom BPCells RenameDims
+#' @export
+#' @name BPCellsRenameDims
+methods::setClass("BPCellsRenameDimsSeed",
+    contains = c("BPCellsSeed", "RenameDims"),
+    slots = list(matrix = "BPCellsSeed")
+)
+
+#' @param x A `RenameDims` object.
+#' @export
+#' @rdname BPCellsRenameDims
+BPCellsRenameDimsSeed <- function(x) {
+    assert_s4_class(x, "RenameDims")
+    x@matrix <- BPCellsSeed(x@matrix)
+    methods::as(x, "BPCellsRenameDimsSeed")
+}
+
+#' @importClassesFrom DelayedArray DelayedArray
+#' @export
+#' @rdname BPCellsRenameDims
+methods::setClass("BPCellsRenameDimsArray",
+    contains = "DelayedArray",
+    slots = c(seed = "BPCellsRenameDimsSeed")
+)
+
+#' @param seed A `BPCellsRenameDimsSeed` object.
+#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray new_DelayedArray
+#' @rdname BPCellsRenameDims
+methods::setMethod(
+    "DelayedArray", "BPCellsRenameDimsSeed",
+    function(seed) new_DelayedArray(seed, Class = "BPCellsRenameDimsArray")
+)
+
+#' @export
+#' @rdname BPCellsRenameDims
+BPCellsRenameDimsArray <- function(x) {
+    DelayedArray(BPCellsRenameDimsSeed(x))
+}
+
+#' @export
+#' @rdname BPCellsRenameDims
+methods::setClass("BPCellsRenameDimsMatrix",
+    contains = "BPCellsMatrix",
+    slots = c(seed = "BPCellsRenameDimsSeed")
+)
+
+#' @export
+#' @importMethodsFrom DelayedArray matrixClass
+#' @rdname BPCellsRenameDims
+methods::setMethod("matrixClass", "BPCellsRenameDimsArray", function(x) {
+    "BPCellsRenameDimsMatrix"
+})
+
+###################################################################
+###########################  Methods  #############################
+###################################################################
+
+#' @param object A `BPCellsRenameDimsSeed` object.
+#' @export
+#' @importMethodsFrom DelayedArray path
+#' @rdname BPCellsRenameDims
+methods::setMethod("path", "BPCellsRenameDimsSeed", function(object) {
+    path(object@matrix)
+})
+
+#' @param i,j Row and Column index.
+#' @param drop Not used, always be `FALSE`.
+#' @importMethodsFrom BPCells [
+#' @export
+#' @rdname BPCellsRenameDims
+methods::setMethod(
+    "[", "BPCellsRenameDimsSeed",
+    function(x, i, j, ..., drop = FALSE) {
+        BPCellsSeed(methods::callNextMethod())
+    }
+)
