@@ -10,6 +10,7 @@
 \alias{BPCellsSubsetMatrix-class}
 \alias{matrixClass,BPCellsSubsetArray-method}
 \alias{path,BPCellsSubsetSeed-method}
+\alias{[,BPCellsSubsetSeed,ANY,ANY,ANY-method}
 \title{Delayed BPCells MatrixSubset}
 \usage{
 BPCellsSubsetSeed(x)
@@ -21,6 +22,8 @@ BPCellsSubsetArray(x)
 \S4method{matrixClass}{BPCellsSubsetArray}(x)
 
 \S4method{path}{BPCellsSubsetSeed}(object)
+
+\S4method{[}{BPCellsSubsetSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
 \item{x}{A \code{MatrixSubset} or \code{BPCellsSubsetSeed} object.}
@@ -28,6 +31,12 @@ BPCellsSubsetArray(x)
 \item{seed}{A \code{BPCellsSubsetSeed} object.}
 
 \item{object}{A \code{BPCellsSubsetSeed} object.}
+
+\item{i, j}{Row and Column index.}
+
+\item{...}{Ignored currently.}
+
+\item{drop}{Ignored, always be \code{FALSE}.}
 }
 \description{
 The \code{BPCellsSubsetArray} class provides a

@@ -323,8 +323,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod",
-    c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
+    "crossprod", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -332,8 +331,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod",
-    c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
+    "crossprod", c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -341,8 +339,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod",
-    c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
+    "crossprod", c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -350,8 +347,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod",
-    c(x = "BPCellsSeed", y = "ANY"), function(x, y) {
+    "crossprod", c(x = "BPCellsSeed", y = "ANY"), function(x, y) {
         t(x) %*% coerce_dgCMatrix(y)
     }
 )
@@ -369,8 +365,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod",
-    c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
+    "crossprod", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -378,8 +373,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod",
-    c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
+    "crossprod", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -387,8 +381,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod",
-    c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
+    "crossprod", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -396,8 +389,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod",
-    c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
+    "crossprod", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
     }
 )

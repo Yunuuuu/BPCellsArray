@@ -74,14 +74,15 @@ methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
 
 #####################################################
 # it's not necessary to re-dispatch the "[" method for `BPCellsSubsetSeed` class
-# since the internal will use `[` method of `@matrix`
-# #' @inheritParams BPCellsMatrix
-# #' @importMethodsFrom BPCells [
-# #' @export
-# #' @rdname BPCellsSubset
-# methods::setMethod(
-#     "[", "BPCellsSubsetSeed",
-#     function(x, i, j, ..., drop = FALSE) {
-#         BPCellsSeed(methods::callNextMethod())
-#     }
-# )
+# since the `MatrixSubset` method will use `[` method of `@matrix`. Here, we
+# just re-dispatch it to keep consistent. 
+#' @inheritParams BPCellsMatrix
+#' @importMethodsFrom BPCells [
+#' @export
+#' @rdname BPCellsSubset
+methods::setMethod(
+    "[", "BPCellsSubsetSeed",
+    function(x, i, j, ..., drop = FALSE) {
+        BPCellsSeed(methods::callNextMethod())
+    }
+)

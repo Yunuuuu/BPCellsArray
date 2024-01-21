@@ -45,5 +45,5 @@ object in BPCells.
 }
 \details{
 Usually, you shouldn't use this class directly, instead, you should use
-\link{dimnames<-} to create a \link[=BPCellsRenameDims-Class]{BPCellsRenameDims} object.
+\link{dimnames<-} to create a \code{BPCellsRenameDimsSeed} object.
 }

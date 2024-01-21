@@ -5,7 +5,7 @@
 #' object in BPCells.
 #'
 #' Usually, you shouldn't use this class directly, instead, you should use
-#' [dimnames<-] to create a [BPCellsRenameDims][BPCellsRenameDims-Class] object.
+#' [dimnames<-] to create a `BPCellsRenameDimsSeed` object.
 #'
 #' @importClassesFrom BPCells RenameDims
 #' @export
