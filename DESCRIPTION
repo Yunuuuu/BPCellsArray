@@ -39,6 +39,7 @@ Collate:
     'Class-Dir.R'
     'Class-Mask.R'
     'Class-Multiply.R'
+    'Class-RankTransform.R'
     'Class-RenameDims.R'
     'Class-Subset.R'
     'Class-dgCMatrix.R'

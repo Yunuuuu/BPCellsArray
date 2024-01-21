@@ -71,6 +71,13 @@ methods::setMethod("BPCellsSeed", "RenameDims", function(x, ...) {
 
 #' @export
 #' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "MatrixRankTransform", function(x, ...) {
+    rlang::check_dots_empty()
+    BPCellsRankTransformSeed(x = x)
+})
+
+#' @export
+#' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixMask", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsMaskSeed(x = x)
@@ -217,10 +224,14 @@ methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         if (x@transpose != y@transpose) {
             if (x@transpose) {
-                cli::cli_inform("transpose storage order for {.arg x}")
+                cli::cli_warn(
+                    "{.arg x} is transposed but {.arg y} not, transposing the storage order for {.arg x}" # nolint
+                )
                 x <- BPCells::transpose_storage_order(x)
             } else {
-                cli::cli_inform("transpose storage order for {.arg y}")
+                cli::cli_warn(
+                    "{.arg y} is transposed but {.arg x} not, transposing the storage order for {.arg y}" # nolint
+                )
                 y <- BPCells::transpose_storage_order(y)
             }
         }
