@@ -44,3 +44,43 @@ testthat::test_that("`convert_type` for `BPCellsMultiplyMatrix` object works as 
     testthat::expect_s4_class(integer_obj, "BPCellsRenameDimsMatrix")
     testthat::expect_identical(type(integer_obj), "integer")
 })
+
+testthat::test_that("`t()` for `BPCellsMultiply` object works as expected", {
+    seed <- BPCellsMultiplySeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsMultiplySeed")
+    testthat::expect_s4_class(t(seed), "BPCellsMultiplySeed")
+    obj <- BPCellsMultiplyArray(obj)
+    testthat::expect_s4_class(t(obj), "BPCellsMultiplyMatrix")
+})
+
+testthat::test_that("`dimnames<-` for `BPCellsMultiply` object works as expected", {
+    seed <- BPCellsMultiplySeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsMultiplySeed")
+    dimnames(seed) <- list(
+        paste0("G", seq_len(nrow(seed))),
+        paste0("C", seq_len(ncol(seed)))
+    )
+    testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    obj <- BPCellsMultiplyArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsMultiplyMatrix")
+    dimnames(obj) <- list(
+        paste0("G", seq_len(nrow(obj))),
+        paste0("C", seq_len(ncol(obj)))
+    )
+    testthat::expect_s4_class(obj, "BPCellsRenameDimsMatrix")
+})
+
+testthat::test_that("`%*%` for `BPCellsMultiply` object works as expected", {
+    seed <- BPCellsMultiplySeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsMultiplySeed")
+    testthat::expect_s4_class(seed %*% t(seed), "BPCellsMultiplySeed")
+    testthat::expect_true(is.matrix(seed %*% as.matrix(t(seed))))
+    testthat::expect_true(is.matrix(seed %*% seq_len(ncol(seed))))
+    testthat::expect_true(is.matrix(seq_len(nrow(seed)) %*% seed))
+    obj <- BPCellsMultiplyArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsMultiplyMatrix")
+    testthat::expect_s4_class(obj %*% t(obj), "BPCellsMultiplyMatrix")
+    testthat::expect_true(is.matrix(obj %*% as.matrix(t(obj))))
+    testthat::expect_true(is.matrix(obj %*% seq_len(ncol(obj))))
+    testthat::expect_true(is.matrix(seq_len(nrow(obj)) %*% obj))
+})

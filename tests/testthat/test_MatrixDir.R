@@ -57,3 +57,43 @@ testthat::test_that("`convert_type` for `BPCellsDirMatrix` object works as expec
     testthat::expect_s4_class(integer_obj, "BPCellsConvertMatrix")
     testthat::expect_identical(type(integer_obj), "integer")
 })
+
+testthat::test_that("`t()` for `BPCellsDir` object works as expected", {
+    seed <- BPCellsDirSeed(path)
+    testthat::expect_s4_class(seed, "BPCellsDirSeed")
+    testthat::expect_s4_class(t(seed), "BPCellsDirSeed")
+    obj <- BPCellsDirArray(path)
+    testthat::expect_s4_class(t(obj), "BPCellsDirMatrix")
+})
+
+testthat::test_that("`dimnames<-` for `BPCellsDir` object works as expected", {
+    seed <- BPCellsDirSeed(path)
+    testthat::expect_s4_class(seed, "BPCellsDirSeed")
+    dimnames(seed) <- list(
+        paste0("G", seq_len(nrow(seed))),
+        paste0("C", seq_len(ncol(seed)))
+    )
+    testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    obj <- BPCellsDirArray(path)
+    testthat::expect_s4_class(obj, "BPCellsDirMatrix")
+    dimnames(obj) <- list(
+        paste0("G", seq_len(nrow(obj))),
+        paste0("C", seq_len(ncol(obj)))
+    )
+    testthat::expect_s4_class(obj, "BPCellsRenameDimsMatrix")
+})
+
+testthat::test_that("`%*%` for `BPCellsDir` object works as expected", {
+    seed <- BPCellsDirSeed(path)
+    testthat::expect_s4_class(seed, "BPCellsDirSeed")
+    testthat::expect_s4_class(seed %*% t(seed), "BPCellsMultiplySeed")
+    testthat::expect_true(is.matrix(seed %*% as.matrix(t(seed))))
+    testthat::expect_true(is.matrix(seed %*% seq_len(ncol(seed))))
+    testthat::expect_true(is.matrix(seq_len(nrow(seed)) %*% seed))
+    obj <- BPCellsDirArray(path)
+    testthat::expect_s4_class(obj, "BPCellsDirMatrix")
+    testthat::expect_s4_class(obj %*% t(obj), "BPCellsMultiplyMatrix")
+    testthat::expect_true(is.matrix(obj %*% as.matrix(t(obj))))
+    testthat::expect_true(is.matrix(obj %*% seq_len(ncol(obj))))
+    testthat::expect_true(is.matrix(seq_len(nrow(obj)) %*% obj))
+})

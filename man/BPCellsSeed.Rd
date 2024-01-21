@@ -16,7 +16,8 @@
 \alias{is_sparse,BPCellsSeed-method}
 \alias{extract_array,BPCellsSeed-method}
 \alias{extract_sparse_array,BPCellsSeed-method}
-\alias{dimnames<-,BPCellsSeed,ListOrNULL-method}
+\alias{dimnames<-,BPCellsSeed,list-method}
+\alias{dimnames<-,BPCellsSeed,NULL-method}
 \alias{t,BPCellsSeed-method}
 \alias{[<-,BPCellsSeed,ANY,ANY,ANY-method}
 \alias{\%*\%,BPCellsSeed,BPCellsSeed-method}
@@ -67,7 +68,9 @@ BPCellsSeed(x, ...)
 
 \S4method{extract_sparse_array}{BPCellsSeed}(x, index)
 
-\S4method{dimnames}{BPCellsSeed,ListOrNULL}(x) <- value
+\S4method{dimnames}{BPCellsSeed,list}(x) <- value
+
+\S4method{dimnames}{BPCellsSeed,NULL}(x) <- value
 
 \S4method{t}{BPCellsSeed}(x)
 

@@ -45,3 +45,44 @@ testthat::test_that("`convert_type` for `BPCellsConvertMatrix` object works as e
     testthat::expect_s4_class(integer_obj, "BPCellsConvertMatrix")
     testthat::expect_identical(type(integer_obj), "integer")
 })
+
+testthat::test_that("`t()` for `BPCellsConvert` object works as expected", {
+    seed <- BPCellsConvertSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsConvertSeed")
+    testthat::expect_s4_class(t(seed), "BPCellsConvertSeed")
+    obj <- BPCellsConvertArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsConvertMatrix")
+    testthat::expect_s4_class(t(obj), "BPCellsConvertMatrix")
+})
+
+testthat::test_that("`dimnames<-` for `BPCellsConvert` object works as expected", {
+    seed <- BPCellsConvertSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsConvertSeed")
+    dimnames(seed) <- list(
+        paste0("G", seq_len(nrow(seed))),
+        paste0("C", seq_len(ncol(seed)))
+    )
+    testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    obj <- BPCellsConvertArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsConvertMatrix")
+    dimnames(obj) <- list(
+        paste0("G", seq_len(nrow(obj))),
+        paste0("C", seq_len(ncol(obj)))
+    )
+    testthat::expect_s4_class(obj, "BPCellsRenameDimsMatrix")
+})
+
+testthat::test_that("`%*%` for `BPCellsConvert` object works as expected", {
+    seed <- BPCellsConvertSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsConvertSeed")
+    testthat::expect_s4_class(seed %*% t(seed), "BPCellsMultiplySeed")
+    testthat::expect_true(is.matrix(seed %*% as.matrix(t(seed))))
+    testthat::expect_true(is.matrix(seed %*% seq_len(ncol(seed))))
+    testthat::expect_true(is.matrix(seq_len(nrow(seed)) %*% seed))
+    obj <- BPCellsConvertArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsConvertMatrix")
+    testthat::expect_s4_class(obj %*% t(obj), "BPCellsMultiplyMatrix")
+    testthat::expect_true(is.matrix(obj %*% as.matrix(t(obj))))
+    testthat::expect_true(is.matrix(obj %*% seq_len(ncol(obj))))
+    testthat::expect_true(is.matrix(seq_len(nrow(obj)) %*% obj))
+})

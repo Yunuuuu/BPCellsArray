@@ -144,7 +144,6 @@ methods::setMethod(
 
 ###################################################################
 # All delayed operations should be wrapped into a `BPCellsSeed` object
-methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 # In BPCells, `dimnames<-` was only defined for `IterableMatrix`.
 # `dimnames<-` return another `IterableMatrix` object.
 # we wrap it into a `BPCellsSeed` object.
@@ -159,7 +158,16 @@ methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 #' @rdname BPCellsSeed
 methods::setMethod(
     "dimnames<-",
-    signature(x = "BPCellsSeed", value = "ListOrNULL"), function(x, value) {
+    c(x = "BPCellsSeed", value = "list"), function(x, value) {
+        BPCellsSeed(methods::callNextMethod())
+    }
+)
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "dimnames<-",
+    c(x = "BPCellsSeed", value = "NULL"), function(x, value) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -191,17 +199,22 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%", signature(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
+    "%*%", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         if (x@transpose != y@transpose) {
             if (x@transpose) {
                 cli::cli_inform("transpose storage order for {.arg x}")
-                x <- BPCells::transpose_storage_order(matrix = x)
+                x <- BPCells::transpose_storage_order(x)
             } else {
                 cli::cli_inform("transpose storage order for {.arg y}")
-                y <- BPCells::transpose_storage_order(matrix = y)
+                y <- BPCells::transpose_storage_order(y)
             }
         }
-        BPCellsSeed(methods::callNextMethod(x, y))
+        fn <- methods::getMethod(
+            "%*%",
+            c("IterableMatrix", "IterableMatrix"),
+            where = "BPCells"
+        )
+        BPCellsSeed(fn(x, y))
     }
 )
 
@@ -209,23 +222,31 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%", signature(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
-        BPCellsSeed(methods::callNextMethod())
+    "%*%", c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
+        fn <- methods::getMethod(
+            "%*%", c("IterableMatrix", "dgCMatrix"),
+            where = "BPCells"
+        )
+        BPCellsSeed(fn(x, y))
     }
 )
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%", signature(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
-        BPCellsSeed(methods::callNextMethod())
+    "%*%", c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
+        fn <- methods::getMethod(
+            "%*%", c("dgCMatrix", "IterableMatrix"),
+            where = "BPCells"
+        )
+        BPCellsSeed(fn(x, y))
     }
 )
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%", signature(x = "BPCellsSeed", y = "ANY"), function(x, y) {
+    "%*%", c(x = "BPCellsSeed", y = "ANY"), function(x, y) {
         x %*% coerce_dgCMatrix(y)
     }
 )
@@ -233,7 +254,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%", signature(x = "ANY", y = "BPCellsSeed"), function(x, y) {
+    "%*%", c(x = "ANY", y = "BPCellsSeed"), function(x, y) {
         coerce_dgCMatrix(x) %*% y
     }
 )
@@ -243,36 +264,52 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%",
-    signature(x = "BPCellsSeed", y = "matrix"), function(x, y) {
-        x %*% y
+    "%*%", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
+        fn <- methods::getMethod(
+            "%*%", c("IterableMatrix", "matrix"),
+            where = "BPCells"
+        )
+        storage.mode(y) <- "double"
+        fn(x, y)
     }
 )
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%",
-    signature(x = "matrix", y = "BPCellsSeed"), function(x, y) {
-        x %*% y
+    "%*%", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
+        fn <- methods::getMethod(
+            "%*%", c("matrix", "IterableMatrix"),
+            where = "BPCells"
+        )
+        storage.mode(x) <- "double"
+        fn(x, y)
     }
 )
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%",
-    signature(x = "BPCellsSeed", y = "numeric"), function(x, y) {
-        x %*% y
+    "%*%", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
+        fn <- methods::getMethod(
+            "%*%", c("IterableMatrix", "numeric"),
+            where = "BPCells"
+        )
+        storage.mode(y) <- "double"
+        fn(x, y)
     }
 )
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "%*%",
-    signature(x = "numeric", y = "BPCellsSeed"), function(x, y) {
-        x %*% y
+    "%*%", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
+        fn <- methods::getMethod(
+            "%*%", c("numeric", "IterableMatrix"),
+            where = "BPCells"
+        )
+        storage.mode(x) <- "double"
+        fn(x, y)
     }
 )
 
@@ -287,7 +324,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
+    c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -296,7 +333,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
+    c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -305,7 +342,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
+    c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -314,7 +351,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "BPCellsSeed", y = "ANY"), function(x, y) {
+    c(x = "BPCellsSeed", y = "ANY"), function(x, y) {
         t(x) %*% coerce_dgCMatrix(y)
     }
 )
@@ -322,18 +359,18 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod", signature(x = "ANY", y = "BPCellsSeed"), function(x, y) {
+    "crossprod", c(x = "ANY", y = "BPCellsSeed"), function(x, y) {
         t(coerce_dgCMatrix(x)) %*% y
     }
 )
 
-#################### Matrix multiplication ########################
+#################### Matrix Crossproduct ########################
 # following methods return a dense matrix
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "BPCellsSeed", y = "matrix"), function(x, y) {
+    c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -342,7 +379,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "matrix", y = "BPCellsSeed"), function(x, y) {
+    c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -351,7 +388,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "BPCellsSeed", y = "numeric"), function(x, y) {
+    c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -360,7 +397,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "numeric", y = "BPCellsSeed"), function(x, y) {
+    c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
     }
 )

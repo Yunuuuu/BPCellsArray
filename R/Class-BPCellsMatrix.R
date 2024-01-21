@@ -63,6 +63,8 @@ methods::setMethod(
     }
 )
 
+methods::setClassUnion("ListOrNULL", c("list", "NULL"))
+
 # for `dim`, `dimnames`, `extract_array` and `is_sparse` just use the methods
 # from DelayedArray
 #' @return
@@ -73,7 +75,7 @@ methods::setMethod(
 #' @rdname BPCellsMatrix
 methods::setMethod(
     "dimnames<-",
-    signature(x = "BPCellsMatrix", value = "ListOrNULL"), function(x, value) {
+    c(x = "BPCellsMatrix", value = "ListOrNULL"), function(x, value) {
         seed <- x@seed
         dimnames(seed) <- value
         DelayedArray(seed)
@@ -85,7 +87,7 @@ methods::setMethod(
 #' @return * `rowSums()`: vector of row sums
 #' @export
 #' @rdname BPCellsMatrix
-methods::setMethod("rowSums", signature(x = "BPCellsMatrix"), function(x) {
+methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
     rowSums(x@seed)
 })
 
@@ -93,7 +95,7 @@ methods::setMethod("rowSums", signature(x = "BPCellsMatrix"), function(x) {
 #' @return * `colSums()`: vector of col sums
 #' @export
 #' @rdname BPCellsMatrix
-methods::setMethod("colSums", signature(x = "BPCellsMatrix"), function(x) {
+methods::setMethod("colSums", c(x = "BPCellsMatrix"), function(x) {
     colSums(x@seed)
 })
 
@@ -101,7 +103,7 @@ methods::setMethod("colSums", signature(x = "BPCellsMatrix"), function(x) {
 #' @return * `rowMeans()`: vector of row means
 #' @export
 #' @rdname BPCellsMatrix
-methods::setMethod("rowMeans", signature(x = "BPCellsMatrix"), function(x) {
+methods::setMethod("rowMeans", c(x = "BPCellsMatrix"), function(x) {
     rowMeans(x@seed)
 })
 
@@ -109,7 +111,7 @@ methods::setMethod("rowMeans", signature(x = "BPCellsMatrix"), function(x) {
 #' @return * `colMeans()`: vector of col means
 #' @export
 #' @rdname BPCellsMatrix
-methods::setMethod("colMeans", signature(x = "BPCellsMatrix"), function(x) {
+methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
     colMeans(x@seed)
 })
 
@@ -124,7 +126,7 @@ methods::setMethod("colMeans", signature(x = "BPCellsMatrix"), function(x) {
 #' @rdname BPCellsMatrix
 methods::setMethod(
     "%*%",
-    signature(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
+    c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
         DelayedArray(x@seed %*% y@seed)
     }
 )
@@ -132,7 +134,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%", signature(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
         DelayedArray(x@seed %*% y)
     }
 )
@@ -140,7 +142,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%", signature(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
+    "%*%", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
         DelayedArray(x %*% y@seed)
     }
 )
@@ -148,7 +150,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%", signature(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
         DelayedArray(x@seed %*% methods::as(y, "dgCMatrix"))
     }
 )
@@ -156,7 +158,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%", signature(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
+    "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
         DelayedArray(methods::as(x, "dgCMatrix") %*% y@seed)
     }
 )
@@ -166,8 +168,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%",
-    signature(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
         x@seed %*% y
     }
 )
@@ -175,8 +176,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%",
-    signature(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
+    "%*%", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
         x %*% y@seed
     }
 )
@@ -184,8 +184,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%",
-    signature(x = "BPCellsMatrix", y = "numeric"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "numeric"), function(x, y) {
         x@seed %*% y
     }
 )
@@ -193,8 +192,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%",
-    signature(x = "numeric", y = "BPCellsMatrix"), function(x, y) {
+    "%*%", c(x = "numeric", y = "BPCellsMatrix"), function(x, y) {
         x %*% y@seed
     }
 )
@@ -208,8 +206,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "crossprod",
-    signature(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
+    "crossprod", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -217,8 +214,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "crossprod",
-    signature(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
+    "crossprod", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -226,8 +222,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "crossprod",
-    signature(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
+    "crossprod", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -235,8 +230,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "crossprod",
-    signature(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
+    "crossprod", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
         t(x) %*% methods::as(y, "dgCMatrix")
     }
 )
@@ -244,7 +238,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "crossprod", signature(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
+    "crossprod", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
         t(methods::as(x, "dgCMatrix")) %*% y
     }
 )
@@ -252,8 +246,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "crossprod",
-    signature(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
+    "crossprod", c(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -261,8 +254,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "crossprod",
-    signature(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
+    "crossprod", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
         t(x) %*% y
     }
 )
@@ -274,7 +266,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "rbind2", signature(x = "BPCellsMatrix", y = "BPCellsMatrix"),
+    "rbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
     function(x, y, ..., threads = 0L) {
         threads <- as.integer(max(0L, threads, na.rm = TRUE))
         out <- methods::rbind2(x@seed, y@seed, ...)
@@ -285,7 +277,7 @@ methods::setMethod(
 
 #' @export
 methods::setMethod(
-    "rbind2", signature(x = "ANY", y = "BPCellsMatrix"),
+    "rbind2", c(x = "ANY", y = "BPCellsMatrix"),
     function(x, y, ...) {
         cli::cli_abort(c(
             "Cannot combine {.cls {obj_type_friendly(x)}} object with a {.cls {obj_type_friendly(y)}}",
@@ -296,7 +288,7 @@ methods::setMethod(
 
 #' @export
 methods::setMethod(
-    "rbind2", signature(x = "BPCellsMatrix", y = "ANY"),
+    "rbind2", c(x = "BPCellsMatrix", y = "ANY"),
     function(x, y, ...) {
         cli::cli_abort(c(
             "Cannot combine {.cls {obj_type_friendly(x)}} object with a {.cls {obj_type_friendly(y)}}",
@@ -333,7 +325,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "cbind2", signature(x = "BPCellsMatrix", y = "BPCellsMatrix"),
+    "cbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
     function(x, y, ..., threads = 0L) {
         threads <- as.integer(max(0L, threads, na.rm = TRUE))
         out <- methods::cbind2(x@seed, y@seed, ...)
@@ -344,7 +336,7 @@ methods::setMethod(
 
 #' @export
 methods::setMethod(
-    "cbind2", signature(x = "ANY", y = "BPCellsMatrix"),
+    "cbind2", c(x = "ANY", y = "BPCellsMatrix"),
     function(x, y, ...) {
         cli::cli_abort(c(
             "Cannot combine {.cls {obj_type_friendly(x)}} object with a {.cls {obj_type_friendly(y)}}",
@@ -355,7 +347,7 @@ methods::setMethod(
 
 #' @export
 methods::setMethod(
-    "cbind2", signature(x = "BPCellsMatrix", y = "ANY"),
+    "cbind2", c(x = "BPCellsMatrix", y = "ANY"),
     function(x, y, ...) {
         cli::cli_abort(c(
             "Cannot combine {.cls {obj_type_friendly(x)}} object with a {.cls {obj_type_friendly(y)}}",
