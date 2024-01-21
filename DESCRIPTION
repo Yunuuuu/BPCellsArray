@@ -44,6 +44,7 @@ Collate:
     'import-standalone-cli.R'
     'import-standalone-obj-type.R'
     'runSVD.R'
+    'transpose_storage.R'
     'utils-check.R'
 Config/testthat/edition: 3
 VignetteBuilder: knitr
