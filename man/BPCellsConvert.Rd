@@ -3,40 +3,27 @@
 \docType{class}
 \name{BPCellsConvert}
 \alias{BPCellsConvert}
-\alias{BPCellsConvertSeed}
 \alias{BPCellsConvertArray-class}
 \alias{DelayedArray,BPCellsConvertSeed-method}
 \alias{BPCellsConvertArray}
 \alias{BPCellsConvertMatrix-class}
 \alias{matrixClass,BPCellsConvertArray-method}
-\alias{path,BPCellsConvertSeed-method}
-\alias{[,BPCellsConvertSeed,ANY,ANY,ANY-method}
 \title{Delayed BPCells ConvertMatrixType}
 \usage{
-BPCellsConvertSeed(x)
-
 \S4method{DelayedArray}{BPCellsConvertSeed}(seed)
 
 BPCellsConvertArray(x)
 
 \S4method{matrixClass}{BPCellsConvertArray}(x)
-
-\S4method{path}{BPCellsConvertSeed}(object)
-
-\S4method{[}{BPCellsConvertSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
-\item{x}{A \code{ConvertMatrixType} object.}
-
 \item{seed}{A \code{BPCellsConvertSeed} object.}
 
-\item{object}{A \code{BPCellsConvertSeed} object.}
-
-\item{i, j}{Row and Column index.}
-
-\item{...}{Ignored, Not used curretly.}
-
-\item{drop}{Ignored, always be \code{FALSE}.}
+\item{x}{For Specific functions:
+\itemize{
+\item \code{BPCellsConvertArray}: A \code{ConvertMatrixType} object.
+\item \code{matrixClass}: A \code{BPCellsConvertArray} object.
+}}
 }
 \description{
 The \code{BPCellsConvertArray} class provides a
@@ -46,4 +33,7 @@ object in BPCells.
 \note{
 Usually, you shouldn't use this class directly, instead, you should use
 \link{convert_type} to create a \code{BPCellsConvert} object.
+}
+\seealso{
+\link{BPCellsSeed}
 }

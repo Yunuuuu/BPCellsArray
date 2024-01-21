@@ -7,8 +7,13 @@
 #' @note Usually, you shouldn't use this class directly, instead, you should use
 #' `[` (extract methods) of other BPCellsArray objects.
 #'
-#' @export
+#' @param x For Specific functions:
+#' - `BPCellsMatrixSubsetArray`: A `MatrixSubset` object.
+#' - `matrixClass`: A `BPCellsMatrixSubsetArray` object.
+#' @seealso [BPCellsSeed]
 #' @name BPCellsSubset
+NULL
+
 methods::setClass("BPCellsSubsetSeed",
     contains = c("BPCellsSeed", get_class("MatrixSubset")),
     slots = list(matrix = "BPCellsSeed")
@@ -24,8 +29,8 @@ BPCellsSubsetSeed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
-#' @export
 #' @rdname BPCellsSubset
+#' @noRd
 methods::setClass("BPCellsSubsetArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsSubsetSeed")
@@ -67,8 +72,8 @@ methods::setMethod("matrixClass", "BPCellsSubsetArray", function(x) {
 
 #' @param object A `BPCellsSubsetSeed` object.
 #' @importMethodsFrom DelayedArray path
-#' @export
 #' @rdname BPCellsSubset
+#' @noRd
 methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
     path(object@matrix)
 })
@@ -78,10 +83,10 @@ methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
 # since the `MatrixSubset` method will use `[` method of `@matrix`. Here, we
 # just re-dispatch it to keep consistent.
 #' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix
+#' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @export
 #' @rdname BPCellsSubset
+#' @noRd
 methods::setMethod(
     "[", "BPCellsSubsetSeed",
     function(x, i, j, ..., drop = FALSE) {

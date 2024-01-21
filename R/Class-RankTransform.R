@@ -7,16 +7,21 @@
 #' @note Usually, you shouldn't use this class directly, instead, you should use
 #' [rank_transform] function to create a `BPCellsRankTransformMatrix`.
 #'
-#' @export
-#' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
+#' @param x For Specific functions:
+#' - `BPCellsMatrixRankTransformArray`: A `MatrixRankTransform` object.
+#' - `matrixClass`: A `BPCellsMatrixRankTransformArray` object.
+#' @seealso
+#' - [BPCellsSeed]
+#' - [convert_matrix_type][BPCells::convert_matrix_type]
 #' @name BPCellsRankTransform
+NULL
 methods::setClass("BPCellsRankTransformSeed",
     contains = c("BPCellsSeed", get_class("MatrixRankTransform"))
 )
 
 #' @param x A `MatrixRankTransform` object.
-#' @export
 #' @rdname BPCellsRankTransform
+#' @noRd
 BPCellsRankTransformSeed <- function(x) {
     assert_s4_class(x, "MatrixRankTransform")
     x@matrix <- BPCellsSeed(x@matrix)
@@ -68,17 +73,17 @@ methods::setMethod("matrixClass", "BPCellsRankTransformArray", function(x) {
 
 #' @param object A `BPCellsRankTransformSeed` object.
 #' @importMethodsFrom DelayedArray path
-#' @export
 #' @rdname BPCellsRankTransform
+#' @noRd
 methods::setMethod("path", "BPCellsRankTransformSeed", function(object) {
     path(object@matrix)
 })
 
 #' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix
+#' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @export
 #' @rdname BPCellsRankTransform
+#' @noRd
 methods::setMethod(
     "[", "BPCellsRankTransformSeed",
     function(x, i, j, ..., drop = FALSE) {

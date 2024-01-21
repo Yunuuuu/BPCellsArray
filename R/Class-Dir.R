@@ -4,8 +4,15 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `MatrixDir` object in
 #' BPCells.
 #'
+#' @param x For Specific functions:
+#' - `BPCellsDirArray`: A `MatrixDir` object.
+#' - `matrixClass`: A `BPCellsDirArray` object.
 #' @name BPCellsDir
-#' @seealso [writeBPCellsDirArray]
+#' @seealso
+#' - [BPCellsSeed]
+#' - [writeBPCellsDirArray]
+NULL
+
 methods::setClass("BPCellsDirSeed",
     contains = c("BPCellsSeed", get_class("MatrixDir"))
 )
@@ -14,9 +21,8 @@ methods::setClass("BPCellsDirSeed",
 #' functions:
 #' - `BPCellsDirSeed` and `BPCellsDirArray`: A string for the path of the
 #'   BPCells matrix dir.
-#' @inheritParams BPCells::open_matrix_dir
-#' @export
 #' @rdname BPCellsDir
+#' @noRd
 BPCellsDirSeed <- function(x, buffer_size = 8192L) {
     if (rlang::is_string(x)) {
         matrix_dir <- BPCells::open_matrix_dir(
@@ -51,9 +57,7 @@ methods::setMethod(
     function(seed) new_DelayedArray(seed, Class = "BPCellsDirArray")
 )
 
-#' @param ...
-#' - `BPCellsDirArray`: Additional parameters passed into `BPCellsDirSeed`.
-#' - `[`: Not used currently.
+#' @inheritDotParams BPCells::open_matrix_dir buffer_size
 #' @export
 #' @rdname BPCellsDir
 BPCellsDirArray <- function(x, ...) {
@@ -81,21 +85,20 @@ methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
 ###################################################################
 
 #' @importMethodsFrom DelayedArray path
-#' @export
 #' @rdname BPCellsDir
+#' @noRd
 methods::setMethod("path", "BPCellsDirSeed", function(object) object@dir)
 
-#' @inheritParams BPCellsMatrix
+#' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @export
 #' @rdname BPCellsDir
+#' @noRd
 methods::setMethod(
     "[", "BPCellsDirSeed",
     function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
-
 
 #' Write a sparce matrices into a BPCells Directory of files format
 #'

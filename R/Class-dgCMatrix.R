@@ -1,9 +1,15 @@
-#' Wrap Class of Iterable_dgCMatrix_wrapper
+#' Wrap Class of `Iterable_dgCMatrix_wrapper`
 #'
 #' @note Usually, you shouldn't use this class directly.
 #'
-#' @keywords internal
+#' @param x For Specific functions:
+#' - `BPCellsdgCmatrixArray`: A `Iterable_dgCMatrix_wrapper` object.
+#' - `matrixClass`: A `BPCellsdgCmatrixArray` object.
+#' @seealso [BPCellsSeed]
+#' @name BPCellsdgCMatrix
 #' @noRd
+NULL
+
 methods::setClass("BPCellsdgCMatrixSeed",
     contains = c("BPCellsSeed", get_class("Iterable_dgCMatrix_wrapper"))
 )
@@ -50,14 +56,16 @@ methods::setMethod("matrixClass", "BPCellsdgCMatrixArray", function(x) {
 
 #' @param object A `BPCellsdgCMatrixSeed` object.
 #' @importMethodsFrom DelayedArray path
+#' @rdname BPCellsdgCMatrix
 #' @noRd
 methods::setMethod("path", "BPCellsdgCMatrixSeed", function(object) {
     NULL
 })
 
 #' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix
+#' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
+#' @rdname BPCellsdgCMatrix
 #' @noRd
 methods::setMethod(
     "[", "BPCellsdgCMatrixSeed",

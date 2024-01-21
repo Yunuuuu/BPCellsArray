@@ -3,40 +3,27 @@
 \docType{class}
 \name{BPCellsMask}
 \alias{BPCellsMask}
-\alias{BPCellsMaskSeed}
 \alias{BPCellsMaskArray-class}
 \alias{DelayedArray,BPCellsMaskSeed-method}
 \alias{BPCellsMaskArray}
 \alias{BPCellsMaskMatrix-class}
 \alias{matrixClass,BPCellsMaskArray-method}
-\alias{path,BPCellsMaskSeed-method}
-\alias{[,BPCellsMaskSeed,ANY,ANY,ANY-method}
 \title{Delayed BPCells MatrixMask}
 \usage{
-BPCellsMaskSeed(x)
-
 \S4method{DelayedArray}{BPCellsMaskSeed}(seed)
 
 BPCellsMaskArray(x)
 
 \S4method{matrixClass}{BPCellsMaskArray}(x)
-
-\S4method{path}{BPCellsMaskSeed}(object)
-
-\S4method{[}{BPCellsMaskSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
-\item{x}{A \code{MatrixMask} object.}
-
 \item{seed}{A \code{BPCellsMaskSeed} object.}
 
-\item{object}{A \code{BPCellsMaskSeed} object.}
-
-\item{i, j}{Row and Column index.}
-
-\item{...}{Ignored, Not used curretly.}
-
-\item{drop}{Ignored, always be \code{FALSE}.}
+\item{x}{For Specific functions:
+\itemize{
+\item \code{BPCellsMatrixMaskArray}: A \code{MatrixMask} object.
+\item \code{matrixClass}: A \code{BPCellsMatrixMaskArray} object.
+}}
 }
 \description{
 The \code{BPCellsMaskArray} class provides a
@@ -46,4 +33,7 @@ object in BPCells.
 \note{
 Usually, you shouldn't use this class directly, instead, you should use
 \link{mask_matrix} of other BPCellsMatrix objects to create a \code{BPCellsMaskMatrix}.
+}
+\seealso{
+\link{BPCellsSeed}
 }

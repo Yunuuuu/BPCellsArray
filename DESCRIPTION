@@ -31,6 +31,7 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.0
 Collate: 
+    'BPCellsSeed.R'
     'utils.R'
     'Class-BPCellsSeed.R'
     'Class-BPCellsMatrix.R'
@@ -42,7 +43,20 @@ Collate:
     'Class-RankTransform.R'
     'Class-RenameDims.R'
     'Class-Subset.R'
+    'Class-Transformed.R'
     'Class-dgCMatrix.R'
+    'Transform-Binarize.R'
+    'Transform-Round.R'
+    'Transform-expm1.R'
+    'Transform-expm1_slow.R'
+    'Transform-log1p.R'
+    'Transform-log1p_slow.R'
+    'Transform-min_by_col.R'
+    'Transform-min_by_row.R'
+    'Transform-min_scalar.R'
+    'Transform-pow.R'
+    'Transform-pow_slow.R'
+    'Transform-square.R'
     'import-standalone-assert.R'
     'import-standalone-cli.R'
     'import-standalone-obj-type.R'

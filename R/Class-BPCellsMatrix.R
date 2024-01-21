@@ -4,7 +4,10 @@
 #' [DelayedMatrix][DelayedArray::DelayedMatrix] object. The purpose for
 #' `BPCellsMatrix` object is to provide the common methods for all Delayed
 #' BPCells matrix.
-#'
+
+#' @param ...
+#'  - `rbind` and `arbind`: A list of `BPCellsMatrix` objects.
+#'  - `rbind2` and `[`: Not used currently.
 #' @importClassesFrom DelayedArray DelayedMatrix
 #' @export
 #' @name BPCellsMatrix
@@ -13,18 +16,6 @@ methods::setClass("BPCellsMatrix",
     contains = "DelayedMatrix",
     slots = list(seed = "BPCellsSeed")
 )
-
-#' @param ...
-#'  - `BPCellsMatrix`: additional arguments passed to [BPCellsSeed].
-#'  - `rbind` and `arbind`: A list of `BPCellsMatrix` objects.
-#'  - `rbind2` and `[`: Not used currently.
-#' @return
-#'  - `BPCellsMatrix`: A `BPCellsMatrix` object.
-#' @export
-#' @rdname BPCellsMatrix
-BPCellsMatrix <- function(x = x, ...) {
-    DelayedArray(BPCellsSeed(x = x, ...))
-}
 
 #' @param object A `BPCellsMatrix` object.
 #' @importMethodsFrom methods show
@@ -60,7 +51,7 @@ methods::setMethod(
     }
 )
 
-#' @inheritParams BPCellsSeed
+#' @inheritParams BPCellsSeed-Class
 #' @return
 #' - `[<-`: A [BPCellsMatrix] object.
 #' @export

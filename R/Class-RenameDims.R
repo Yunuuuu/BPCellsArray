@@ -8,16 +8,20 @@
 #' Usually, you shouldn't use this class directly, instead, you should use
 #' [dimnames<-] to create a `BPCellsRenameDimsSeed` object.
 #'
-#' @export
+#' @param x For Specific functions:
+#' - `BPCellsRenameDimsArray`: A `RenameDims` object.
+#' - `matrixClass`: A `BPCellsRenameDimsArray` object.
+#' @seealso [BPCellsSeed]
 #' @name BPCellsRenameDims
+NULL
 methods::setClass("BPCellsRenameDimsSeed",
     contains = c("BPCellsSeed", get_class("RenameDims")),
     slots = list(matrix = "BPCellsSeed")
 )
 
 #' @param x A `RenameDims` object.
-#' @export
 #' @rdname BPCellsRenameDims
+#' @noRd
 BPCellsRenameDimsSeed <- function(x) {
     assert_s4_class(x, "RenameDims")
     x@matrix <- BPCellsSeed(x@matrix)
@@ -68,17 +72,17 @@ methods::setMethod("matrixClass", "BPCellsRenameDimsArray", function(x) {
 
 #' @param object A `BPCellsRenameDimsSeed` object.
 #' @importMethodsFrom DelayedArray path
-#' @export
 #' @rdname BPCellsRenameDims
+#' @noRd
 methods::setMethod("path", "BPCellsRenameDimsSeed", function(object) {
     path(object@matrix)
 })
 
 #' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix
+#' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @export
 #' @rdname BPCellsRenameDims
+#' @noRd
 methods::setMethod(
     "[", "BPCellsRenameDimsSeed",
     function(x, i, j, ..., drop = FALSE) {

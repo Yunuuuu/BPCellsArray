@@ -83,3 +83,27 @@ show_bpcells <- function(object, baseClass, class) {
         cat(sprintf("%d. %s\n", i, description[i]))
     }
 }
+
+imap <- function(.x, .f, ...) {
+    .mapply(.f, list(.x, names(.x) %||% seq_along(.x)), list(...))
+}
+
+BPCElls_Transform_classes <- c(
+    TransformLog1p = "log1p",
+    TransformLog1pSlow = "log1p_slow",
+    TransformExpm1 = "expm1",
+    TransformExpm1Slow = "expm1_slow",
+    TransformSquare = NULL,
+    TransformPow = "^",
+    TransformPowSlow = "pow_slow",
+    TransformMin = "min_scalar",
+    TransformMinByRow = "min_by_row",
+    TransformMinByCol = "min_by_col",
+    TransformBinarize = "binarize",
+    TransformRound = "round",
+    SCTransformPearson = NULL,
+    SCTransformPearsonTranspose = NULL,
+    SCTransformPearsonSlow = NULL,
+    SCTransformPearsonTransposeSlow = "sctransform_pearson",
+    TransformScaleShift = NULL
+)

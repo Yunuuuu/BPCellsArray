@@ -3,51 +3,34 @@
 \docType{class}
 \name{BPCellsDir}
 \alias{BPCellsDir}
-\alias{BPCellsDirSeed}
 \alias{BPCellsDirArray-class}
 \alias{DelayedArray,BPCellsDirSeed-method}
 \alias{BPCellsDirArray}
 \alias{BPCellsDirMatrix-class}
 \alias{matrixClass,BPCellsDirArray-method}
-\alias{path,BPCellsDirSeed-method}
-\alias{[,BPCellsDirSeed,ANY,ANY,ANY-method}
 \title{Delayed MatrixDir arrays}
 \usage{
-BPCellsDirSeed(x, buffer_size = 8192L)
-
 \S4method{DelayedArray}{BPCellsDirSeed}(seed)
 
 BPCellsDirArray(x, ...)
 
 \S4method{matrixClass}{BPCellsDirArray}(x)
-
-\S4method{path}{BPCellsDirSeed}(object)
-
-\S4method{[}{BPCellsDirSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
-\item{x}{A \code{BPCellsDirSeed} or \code{BPCellsDirArray} object. For following
-functions:
-\itemize{
-\item \code{BPCellsDirSeed} and \code{BPCellsDirArray}: A string for the path of the
-BPCells matrix dir.
-}}
-
-\item{buffer_size}{For performance tuning only. The number of items to be buffered
-in memory before calling writes to disk.}
-
 \item{seed}{A \code{BPCellsDirSeed} object.}
 
-\item{...}{\itemize{
-\item \code{BPCellsDirArray}: Additional parameters passed into \code{BPCellsDirSeed}.
-\item \code{[}: Not used currently.
+\item{x}{For Specific functions:
+\itemize{
+\item \code{BPCellsDirArray}: A \code{MatrixDir} object.
+\item \code{matrixClass}: A \code{BPCellsDirArray} object.
 }}
 
-\item{object}{A \code{BPCellsMatrix} object.}
-
-\item{i, j}{Row and Column index.}
-
-\item{drop}{Ignored, always be \code{FALSE}.}
+\item{...}{
+  Arguments passed on to \code{\link[BPCells:matrix_io]{BPCells::open_matrix_dir}}
+  \describe{
+    \item{\code{buffer_size}}{For performance tuning only. The number of items to be buffered
+in memory before calling writes to disk.}
+  }}
 }
 \description{
 The \code{BPCellsDirArray} class provides a
@@ -55,5 +38,8 @@ The \code{BPCellsDirArray} class provides a
 BPCells.
 }
 \seealso{
-\link{writeBPCellsDirArray}
+\itemize{
+\item \link{BPCellsSeed}
+\item \link{writeBPCellsDirArray}
+}
 }

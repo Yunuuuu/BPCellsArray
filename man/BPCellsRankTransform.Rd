@@ -3,40 +3,27 @@
 \docType{class}
 \name{BPCellsRankTransform}
 \alias{BPCellsRankTransform}
-\alias{BPCellsRankTransformSeed}
 \alias{BPCellsRankTransformArray-class}
 \alias{DelayedArray,BPCellsRankTransformSeed-method}
 \alias{BPCellsRankTransformArray}
 \alias{BPCellsRankTransformMatrix-class}
 \alias{matrixClass,BPCellsRankTransformArray-method}
-\alias{path,BPCellsRankTransformSeed-method}
-\alias{[,BPCellsRankTransformSeed,ANY,ANY,ANY-method}
 \title{Delayed BPCells MatrixRankTransform}
 \usage{
-BPCellsRankTransformSeed(x)
-
 \S4method{DelayedArray}{BPCellsRankTransformSeed}(seed)
 
 BPCellsRankTransformArray(x)
 
 \S4method{matrixClass}{BPCellsRankTransformArray}(x)
-
-\S4method{path}{BPCellsRankTransformSeed}(object)
-
-\S4method{[}{BPCellsRankTransformSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
-\item{x}{A \code{MatrixRankTransform} object.}
-
 \item{seed}{A \code{BPCellsRankTransformSeed} object.}
 
-\item{object}{A \code{BPCellsRankTransformSeed} object.}
-
-\item{i, j}{Row and Column index.}
-
-\item{...}{Ignored, Not used curretly.}
-
-\item{drop}{Ignored, always be \code{FALSE}.}
+\item{x}{For Specific functions:
+\itemize{
+\item \code{BPCellsMatrixRankTransformArray}: A \code{MatrixRankTransform} object.
+\item \code{matrixClass}: A \code{BPCellsMatrixRankTransformArray} object.
+}}
 }
 \description{
 The \code{BPCellsRankTransformArray} class provides a
@@ -48,5 +35,8 @@ Usually, you shouldn't use this class directly, instead, you should use
 \link{rank_transform} function to create a \code{BPCellsRankTransformMatrix}.
 }
 \seealso{
-\link[BPCells:convert_matrix_type]{convert_matrix_type}
+\itemize{
+\item \link{BPCellsSeed}
+\item \link[BPCells:convert_matrix_type]{convert_matrix_type}
+}
 }

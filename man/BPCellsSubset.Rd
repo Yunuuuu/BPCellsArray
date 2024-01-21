@@ -4,13 +4,10 @@
 \name{BPCellsSubset}
 \alias{BPCellsSubset}
 \alias{BPCellsSubsetSeed}
-\alias{BPCellsSubsetArray-class}
 \alias{DelayedArray,BPCellsSubsetSeed-method}
 \alias{BPCellsSubsetArray}
 \alias{BPCellsSubsetMatrix-class}
 \alias{matrixClass,BPCellsSubsetArray-method}
-\alias{path,BPCellsSubsetSeed-method}
-\alias{[,BPCellsSubsetSeed,ANY,ANY,ANY-method}
 \title{Delayed BPCells MatrixSubset}
 \usage{
 BPCellsSubsetSeed(x)
@@ -20,23 +17,11 @@ BPCellsSubsetSeed(x)
 BPCellsSubsetArray(x)
 
 \S4method{matrixClass}{BPCellsSubsetArray}(x)
-
-\S4method{path}{BPCellsSubsetSeed}(object)
-
-\S4method{[}{BPCellsSubsetSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
 \item{x}{A \code{MatrixSubset} or \code{BPCellsSubsetSeed} object.}
 
 \item{seed}{A \code{BPCellsSubsetSeed} object.}
-
-\item{object}{A \code{BPCellsSubsetSeed} object.}
-
-\item{i, j}{Row and Column index.}
-
-\item{...}{Ignored, Not used curretly.}
-
-\item{drop}{Ignored, always be \code{FALSE}.}
 }
 \description{
 The \code{BPCellsSubsetArray} class provides a
@@ -46,4 +31,7 @@ in BPCells.
 \note{
 Usually, you shouldn't use this class directly, instead, you should use
 \code{[} (extract methods) of other BPCellsArray objects.
+}
+\seealso{
+\link{BPCellsSeed}
 }

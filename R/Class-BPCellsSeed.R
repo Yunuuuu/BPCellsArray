@@ -13,100 +13,13 @@
 #'   into a [dgCMatrix][Matrix::dgCMatrix-class].
 #' @param ... Additional arguments passed to specific methods.
 #' @export
-#' @name BPCellsSeed
+#' @name BPCellsSeed-Class
 methods::setClass("BPCellsSeed", contains = get_class("IterableMatrix"))
-
-#' @return
-#'  - `BPCellsSeed`: A [BPCellsSeed] object.
-#' @export
-#' @rdname BPCellsSeed
-methods::setGeneric("BPCellsSeed", function(x, ...) {
-    standardGeneric("BPCellsSeed")
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "BPCellsSeed", function(x, ...) {
-    rlang::check_dots_empty()
-    x
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod(
-    "BPCellsSeed", "Iterable_dgCMatrix_wrapper",
-    function(x, ...) {
-        rlang::check_dots_empty()
-        BPCellsdgCMatrixSeed(x = x)
-    }
-)
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixSubset", function(x, ...) {
-    rlang::check_dots_empty()
-    BPCellsSubsetSeed(x = x)
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x, ...) {
-    rlang::check_dots_empty()
-    BPCellsConvertSeed(x = x)
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x, ...) {
-    rlang::check_dots_empty()
-    BPCellsMultiplySeed(x = x)
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "RenameDims", function(x, ...) {
-    rlang::check_dots_empty()
-    BPCellsRenameDimsSeed(x = x)
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixRankTransform", function(x, ...) {
-    rlang::check_dots_empty()
-    BPCellsRankTransformSeed(x = x)
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixMask", function(x, ...) {
-    rlang::check_dots_empty()
-    BPCellsMaskSeed(x = x)
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "ColBindMatrices", function(x, ...) {
-    rlang::check_dots_empty()
-    BPCellsColBindMatrixSeed(x = x)
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "RowBindMatrices", function(x, ...) {
-    rlang::check_dots_empty()
-    BPCellsRowBindMatrixSeed(x = x)
-})
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixDir", function(x, ...) {
-    BPCellsDirSeed(x = x, ...)
-})
 
 #' @param object A `BPCellsSeed` object.
 #' @importMethodsFrom methods show
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod("show", "BPCellsSeed", function(object) {
     show_bpcells(object, "BPCellsSeed", class(object))
 })
@@ -117,7 +30,7 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
 #'   number.
 #' @importMethodsFrom DelayedArray type
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 #' @include utils.R
 methods::setMethod("type", "BPCellsSeed", function(x) {
     switch(BPCells:::matrix_type(x),
@@ -131,7 +44,7 @@ methods::setMethod("type", "BPCellsSeed", function(x) {
 #' - `is_sparse`: Always return `TRUE` for `BPCellsSeed` object.
 #' @importMethodsFrom DelayedArray is_sparse
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
 
 #' @inheritParams S4Arrays::extract_array
@@ -139,7 +52,7 @@ methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
 #' - `extract_array`: A dense matrix.
 #' @importMethodsFrom DelayedArray extract_array
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "extract_array", "BPCellsSeed",
     function(x, index) {
@@ -154,14 +67,13 @@ methods::setMethod(
 #'   object.
 #' @importMethodsFrom DelayedArray extract_sparse_array
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "extract_sparse_array", "BPCellsSeed",
     function(x, index) {
         methods::as(extract_bpcells_array(x, index), "SparseArraySeed")
     }
 )
-
 
 
 ###################################################################
@@ -172,12 +84,14 @@ methods::setMethod(
 #' @param value
 #'  - `dimnames<-`: A list of dimnames or `NULL`.
 #'  - `[<-`: A matrix which can be coerced into
-#' [dgCMatrix][Matrix::dgCMatrix-class].
+#'     [dgCMatrix][Matrix::dgCMatrix-class].
+#'  - `pmin_scalar`: Single positive numeric value.
+#' @param values A positive atomic numeric.
 #' @return
 #' - `dimnames<-`: A [BPCellsSeed] object, usually a `BPCellsRenameDimsSeed`
 #'   object.
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "dimnames<-",
     c(x = "BPCellsSeed", value = "list"), function(x, value) {
@@ -186,7 +100,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "dimnames<-",
     c(x = "BPCellsSeed", value = "NULL"), function(x, value) {
@@ -197,7 +111,7 @@ methods::setMethod(
 # t will not change the underlying class
 #' @importMethodsFrom DelayedArray t
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
 
 # In BPCells, `[<-` was only defined for `IterableMatrix`
@@ -206,7 +120,7 @@ methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
 #' - `[<-`: A [BPCellsSeed] object.
 #' @importMethodsFrom BPCells [<-
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "[<-", "BPCellsSeed", function(x, i, j, ..., value) {
         BPCellsSeed(methods::callNextMethod())
@@ -219,7 +133,7 @@ methods::setMethod(
 #' - `x %*% y`: matrix multiplication, a [BPCellsSeed] object or a dense
 #'   matrix (matrix and numeric methods).
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         if (x@transpose != y@transpose) {
@@ -246,7 +160,7 @@ methods::setMethod(
 
 #' @importClassesFrom Matrix dgCMatrix
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
         fn <- methods::getMethod(
@@ -258,7 +172,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
         fn <- methods::getMethod(
@@ -270,7 +184,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "ANY"), function(x, y) {
         x %*% coerce_dgCMatrix(y)
@@ -278,7 +192,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "ANY", y = "BPCellsSeed"), function(x, y) {
         coerce_dgCMatrix(x) %*% y
@@ -288,7 +202,7 @@ methods::setMethod(
 #################### Matrix multiplication ########################
 # following methods return a dense matrix
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
         fn <- methods::getMethod(
@@ -301,7 +215,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
         fn <- methods::getMethod(
@@ -314,7 +228,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
         fn <- methods::getMethod(
@@ -327,7 +241,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "%*%", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
         fn <- methods::getMethod(
@@ -347,7 +261,7 @@ methods::setMethod(
 #' - `crossprod(x, y)`: Matrix Crossproduct, a [BPCellsSeed] object or a dense
 #'   matrix (matrix and numeric methods).
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
@@ -355,7 +269,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
         t(x) %*% y
@@ -363,7 +277,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
@@ -371,7 +285,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "ANY"), function(x, y) {
         t(x) %*% coerce_dgCMatrix(y)
@@ -379,7 +293,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "ANY", y = "BPCellsSeed"), function(x, y) {
         t(coerce_dgCMatrix(x)) %*% y
@@ -389,7 +303,7 @@ methods::setMethod(
 #################### Matrix Crossproduct ########################
 # following methods return a dense matrix
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
         t(x) %*% y
@@ -397,7 +311,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
@@ -405,7 +319,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
         t(x) %*% y
@@ -413,7 +327,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "crossprod", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
@@ -425,7 +339,7 @@ methods::setMethod(
 #' details.
 #' @importMethodsFrom methods rbind2
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "rbind2", c(x = "BPCellsSeed", y = "BPCellsSeed"),
     function(x, y, ..., threads = 0L) {
@@ -464,7 +378,7 @@ methods::setMethod(
 #' @param deparse.level Ignored, used by generic methods.
 #' @importMethodsFrom DelayedArray rbind
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "rbind", "BPCellsSeed",
     function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
@@ -476,7 +390,7 @@ methods::setMethod(
 
 #' @importMethodsFrom DelayedArray arbind
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "arbind", "BPCellsSeed",
     function(..., threads = 0L, use.first.dimnames = TRUE) {
@@ -492,7 +406,7 @@ methods::setMethod(
 #' @inheritParams S4Vectors::bindROWS
 #' @importMethodsFrom DelayedArray bindROWS
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "bindROWS", "BPCellsSeed",
     function(x, objects = list(), use.names = TRUE,
@@ -506,7 +420,7 @@ methods::setMethod(
 #################### cbind ########################
 #' @importMethodsFrom methods cbind2
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "cbind2", c(x = "BPCellsSeed", y = "BPCellsSeed"),
     function(x, y, ..., threads = 0L) {
@@ -543,7 +457,7 @@ methods::setMethod(
 
 #' @importMethodsFrom DelayedArray cbind
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "cbind", "BPCellsSeed",
     function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
@@ -555,7 +469,7 @@ methods::setMethod(
 
 #' @importMethodsFrom DelayedArray acbind
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod("acbind", "BPCellsSeed", function(..., threads = 0L, use.first.dimnames = TRUE) {
     merge_BPCellsSeeds(
         list = pack_BPCellsSeeds(...),
@@ -565,7 +479,7 @@ methods::setMethod("acbind", "BPCellsSeed", function(..., threads = 0L, use.firs
 
 #' @importMethodsFrom S4Vectors bindCOLS
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname BPCellsSeed-Class
 methods::setMethod(
     "bindCOLS", "BPCellsSeed",
     function(x, objects = list(), use.names = TRUE,

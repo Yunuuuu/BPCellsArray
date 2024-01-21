@@ -3,40 +3,27 @@
 \docType{class}
 \name{BPCellsMultiply}
 \alias{BPCellsMultiply}
-\alias{BPCellsMultiplySeed}
 \alias{BPCellsMultiplyArray-class}
 \alias{DelayedArray,BPCellsMultiplySeed-method}
 \alias{BPCellsMultiplyArray}
 \alias{BPCellsMultiplyMatrix-class}
 \alias{matrixClass,BPCellsMultiplyArray-method}
-\alias{path,BPCellsMultiplySeed-method}
-\alias{[,BPCellsMultiplySeed,ANY,ANY,ANY-method}
 \title{Delayed BPCells MatrixMultiply}
 \usage{
-BPCellsMultiplySeed(x)
-
 \S4method{DelayedArray}{BPCellsMultiplySeed}(seed)
 
 BPCellsMultiplyArray(x)
 
 \S4method{matrixClass}{BPCellsMultiplyArray}(x)
-
-\S4method{path}{BPCellsMultiplySeed}(object)
-
-\S4method{[}{BPCellsMultiplySeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
-\item{x}{A \code{MatrixMultiply} object.}
-
 \item{seed}{A \code{BPCellsMultiplySeed} object.}
 
-\item{object}{A BPCellsMultiplySeed object.}
-
-\item{i, j}{Row and Column index.}
-
-\item{...}{Ignored, Not used curretly.}
-
-\item{drop}{Ignored, always be \code{FALSE}.}
+\item{x}{For Specific functions:
+\itemize{
+\item \code{BPCellsMatrixMultiplyArray}: A \code{MatrixMultiply} object.
+\item \code{matrixClass}: A \code{BPCellsMatrixMultiplyArray} object.
+}}
 }
 \description{
 The \code{BPCellsMultiplyArray} class provides a
@@ -46,4 +33,7 @@ object in BPCells.
 \note{
 Usually, you shouldn't use this class directly, instead, you should use \code{\%*\%}
 or \code{crossprod} methods of other \link{BPCellsMatrix} objects.
+}
+\seealso{
+\link{BPCellsSeed}
 }

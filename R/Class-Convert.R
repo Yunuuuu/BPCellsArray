@@ -7,17 +7,21 @@
 #' @note
 #' Usually, you shouldn't use this class directly, instead, you should use
 #' [convert_type] to create a `BPCellsConvert` object.
-#'
-#' @export
+#' @param x For Specific functions:
+#' - `BPCellsConvertArray`: A `ConvertMatrixType` object.
+#' - `matrixClass`: A `BPCellsConvertArray` object.
+#' @seealso [BPCellsSeed]
 #' @name BPCellsConvert
+NULL
+
 methods::setClass("BPCellsConvertSeed",
     contains = c("BPCellsSeed", get_class("ConvertMatrixType")),
     slots = list(matrix = "BPCellsSeed")
 )
 
 #' @param x A `ConvertMatrixType` object.
-#' @export
 #' @rdname BPCellsConvert
+#' @noRd
 BPCellsConvertSeed <- function(x) {
     assert_s4_class(x, "ConvertMatrixType")
     x@matrix <- BPCellsSeed(x@matrix)
@@ -68,17 +72,17 @@ methods::setMethod("matrixClass", "BPCellsConvertArray", function(x) {
 
 #' @param object A `BPCellsConvertSeed` object.
 #' @importMethodsFrom DelayedArray path
-#' @export
 #' @rdname BPCellsConvert
+#' @noRd
 methods::setMethod("path", "BPCellsConvertSeed", function(object) {
     path(object@matrix)
 })
 
 #' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix
+#' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @export
 #' @rdname BPCellsConvert
+#' @noRd
 methods::setMethod(
     "[", "BPCellsConvertSeed",
     function(x, i, j, ..., drop = FALSE) {

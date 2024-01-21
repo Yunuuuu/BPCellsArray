@@ -8,16 +8,20 @@
 #' Usually, you shouldn't use this class directly, instead, you should use `%*%`
 #' or `crossprod` methods of other [BPCellsMatrix] objects.
 #'
-#' @export
+#' @param x For Specific functions:
+#' - `BPCellsMatrixMultiplyArray`: A `MatrixMultiply` object.
+#' - `matrixClass`: A `BPCellsMatrixMultiplyArray` object.
+#' @seealso [BPCellsSeed]
 #' @name BPCellsMultiply
+NULL
 methods::setClass("BPCellsMultiplySeed",
     contains = c("BPCellsSeed", get_class("MatrixMultiply")),
     slots = list(left = "BPCellsSeed", right = "BPCellsSeed")
 )
 
 #' @param x A `MatrixMultiply` object.
-#' @export
 #' @rdname BPCellsMultiply
+#' @noRd
 BPCellsMultiplySeed <- function(x) {
     assert_s4_class(x, "MatrixMultiply")
     x@left <- BPCellsSeed(x@left)
@@ -69,8 +73,8 @@ methods::setMethod("matrixClass", "BPCellsMultiplyArray", function(x) {
 
 #' @param object A BPCellsMultiplySeed object.
 #' @importMethodsFrom DelayedArray path
-#' @export
 #' @rdname BPCellsMultiply
+#' @noRd
 methods::setMethod("path", "BPCellsMultiplySeed", function(object) {
     c(path(object@left), path(object@right))
 })
@@ -79,10 +83,10 @@ methods::setMethod("path", "BPCellsMultiplySeed", function(object) {
 # class since the `MatrixMultiply` method will use `[` method of `@left` and
 # `@right`. Here, we just re-dispatch it to keep consistent.
 #' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix
+#' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @export
 #' @rdname BPCellsMultiply
+#' @noRd
 methods::setMethod(
     "[", "BPCellsMultiplySeed",
     function(x, i, j, ..., drop = FALSE) {

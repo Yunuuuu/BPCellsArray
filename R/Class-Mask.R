@@ -7,15 +7,20 @@
 #' @note Usually, you shouldn't use this class directly, instead, you should use
 #' [mask_matrix] of other BPCellsMatrix objects to create a `BPCellsMaskMatrix`.
 #'
-#' @export
+#' @param x For Specific functions:
+#' - `BPCellsMatrixMaskArray`: A `MatrixMask` object.
+#' - `matrixClass`: A `BPCellsMatrixMaskArray` object.
+#' @seealso [BPCellsSeed]
 #' @name BPCellsMask
+NULL
+
 methods::setClass("BPCellsMaskSeed",
     contains = c("BPCellsSeed", get_class("MatrixMask"))
 )
 
 #' @param x A `MatrixMask` object.
-#' @export
 #' @rdname BPCellsMask
+#' @noRd
 BPCellsMaskSeed <- function(x) {
     assert_s4_class(x, "MatrixMask")
     x@matrix <- BPCellsSeed(x@matrix)
@@ -68,17 +73,17 @@ methods::setMethod("matrixClass", "BPCellsMaskArray", function(x) {
 
 #' @param object A `BPCellsMaskSeed` object.
 #' @importMethodsFrom DelayedArray path
-#' @export
 #' @rdname BPCellsMask
+#' @noRd
 methods::setMethod("path", "BPCellsMaskSeed", function(object) {
     c(path(object@matrix), path(object@mask))
 })
 
 #' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix
+#' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @export
 #' @rdname BPCellsMask
+#' @noRd
 methods::setMethod(
     "[", "BPCellsMaskSeed",
     function(x, i, j, ..., drop = FALSE) {

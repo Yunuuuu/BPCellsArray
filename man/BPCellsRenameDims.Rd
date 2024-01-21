@@ -3,40 +3,27 @@
 \docType{class}
 \name{BPCellsRenameDims}
 \alias{BPCellsRenameDims}
-\alias{BPCellsRenameDimsSeed}
 \alias{BPCellsRenameDimsArray-class}
 \alias{DelayedArray,BPCellsRenameDimsSeed-method}
 \alias{BPCellsRenameDimsArray}
 \alias{BPCellsRenameDimsMatrix-class}
 \alias{matrixClass,BPCellsRenameDimsArray-method}
-\alias{path,BPCellsRenameDimsSeed-method}
-\alias{[,BPCellsRenameDimsSeed,ANY,ANY,ANY-method}
 \title{Delayed BPCells RenameDims}
 \usage{
-BPCellsRenameDimsSeed(x)
-
 \S4method{DelayedArray}{BPCellsRenameDimsSeed}(seed)
 
 BPCellsRenameDimsArray(x)
 
 \S4method{matrixClass}{BPCellsRenameDimsArray}(x)
-
-\S4method{path}{BPCellsRenameDimsSeed}(object)
-
-\S4method{[}{BPCellsRenameDimsSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
-\item{x}{A \code{RenameDims} object.}
-
 \item{seed}{A \code{BPCellsRenameDimsSeed} object.}
 
-\item{object}{A \code{BPCellsRenameDimsSeed} object.}
-
-\item{i, j}{Row and Column index.}
-
-\item{...}{Ignored, Not used curretly.}
-
-\item{drop}{Ignored, always be \code{FALSE}.}
+\item{x}{For Specific functions:
+\itemize{
+\item \code{BPCellsRenameDimsArray}: A \code{RenameDims} object.
+\item \code{matrixClass}: A \code{BPCellsRenameDimsArray} object.
+}}
 }
 \description{
 The \code{BPCellsRenameDimsArray} class provides a
@@ -46,4 +33,7 @@ object in BPCells.
 \note{
 Usually, you shouldn't use this class directly, instead, you should use
 \link{dimnames<-} to create a \code{BPCellsRenameDimsSeed} object.
+}
+\seealso{
+\link{BPCellsSeed}
 }
