@@ -32,7 +32,7 @@ methods::setClass("BPCellsTransformRoundArray",
 #' @param seed A `BPCellsTransformRoundSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "DelayedArray", "BPCellsTransformRoundSeed",
     function(seed) {
@@ -52,7 +52,7 @@ methods::setClass("BPCellsTransformRound",
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod("matrixClass", "BPCellsTransformRoundArray", function(x) {
     "BPCellsTransformRound"
 })

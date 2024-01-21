@@ -32,7 +32,7 @@ methods::setClass("BPCellsTransformMinByRowArray",
 #' @param seed A `BPCellsTransformMinByRowSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "DelayedArray", "BPCellsTransformMinByRowSeed",
     function(seed) {
@@ -52,7 +52,7 @@ methods::setClass("BPCellsTransformMinByRow",
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod("matrixClass", "BPCellsTransformMinByRowArray", function(x) {
     "BPCellsTransformMinByRow"
 })

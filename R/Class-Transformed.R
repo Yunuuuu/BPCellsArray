@@ -81,8 +81,7 @@ methods::setMethod("path", "BPCellsTransformedSeed", function(object) {
 #' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsTransformed
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsTransformedSeed",
     function(x, i, j, ..., drop = FALSE) {

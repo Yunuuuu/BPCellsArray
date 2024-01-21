@@ -91,8 +91,7 @@ methods::setMethod("path", "BPCellsDirSeed", function(object) object@dir)
 
 #' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsDir
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsDirSeed",
     function(x, i, j, ..., drop = FALSE) {

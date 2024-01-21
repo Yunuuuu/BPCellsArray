@@ -82,8 +82,7 @@ methods::setMethod("path", "BPCellsRankTransformSeed", function(object) {
 #' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsRankTransform
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsRankTransformSeed",
     function(x, i, j, ..., drop = FALSE) {
@@ -145,6 +144,7 @@ methods::setMethod(
 )
 
 #' @export
+#' @rdname internal-methods
 methods::setMethod("rank_transform", "ANY", function(object, axis) {
     cli::cli_abort(
         "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"

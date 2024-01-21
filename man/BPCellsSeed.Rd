@@ -8,19 +8,6 @@
 \alias{BPCellsSeed,ConvertMatrixType-method}
 \alias{BPCellsSeed,MatrixMultiply-method}
 \alias{BPCellsSeed,RenameDims-method}
-\alias{BPCellsSeed,TransformedMatrix-method}
-\alias{BPCellsSeed,TransformLog1p-method}
-\alias{BPCellsSeed,TransformLog1pSlow-method}
-\alias{BPCellsSeed,TransformExpm1-method}
-\alias{BPCellsSeed,TransformExpm1Slow-method}
-\alias{BPCellsSeed,TransformSquare-method}
-\alias{BPCellsSeed,TransformPow-method}
-\alias{BPCellsSeed,TransformPowSlow-method}
-\alias{BPCellsSeed,TransformMin-method}
-\alias{BPCellsSeed,TransformMinByRow-method}
-\alias{BPCellsSeed,TransformMinByCol-method}
-\alias{BPCellsSeed,TransformBinarize-method}
-\alias{BPCellsSeed,TransformRound-method}
 \alias{BPCellsSeed,MatrixRankTransform-method}
 \alias{BPCellsSeed,MatrixMask-method}
 \alias{BPCellsSeed,ColBindMatrices-method}
@@ -41,32 +28,6 @@ BPCellsSeed(x, ...)
 \S4method{BPCellsSeed}{MatrixMultiply}(x, ...)
 
 \S4method{BPCellsSeed}{RenameDims}(x, ...)
-
-\S4method{BPCellsSeed}{TransformedMatrix}(x, ...)
-
-\S4method{BPCellsSeed}{TransformLog1p}(x, ...)
-
-\S4method{BPCellsSeed}{TransformLog1pSlow}(x, ...)
-
-\S4method{BPCellsSeed}{TransformExpm1}(x, ...)
-
-\S4method{BPCellsSeed}{TransformExpm1Slow}(x, ...)
-
-\S4method{BPCellsSeed}{TransformSquare}(x, ...)
-
-\S4method{BPCellsSeed}{TransformPow}(x, ...)
-
-\S4method{BPCellsSeed}{TransformPowSlow}(x, ...)
-
-\S4method{BPCellsSeed}{TransformMin}(x, ...)
-
-\S4method{BPCellsSeed}{TransformMinByRow}(x, ...)
-
-\S4method{BPCellsSeed}{TransformMinByCol}(x, ...)
-
-\S4method{BPCellsSeed}{TransformBinarize}(x, ...)
-
-\S4method{BPCellsSeed}{TransformRound}(x, ...)
 
 \S4method{BPCellsSeed}{MatrixRankTransform}(x, ...)
 

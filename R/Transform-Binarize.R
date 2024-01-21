@@ -7,14 +7,21 @@
 #' @note Usually, you shouldn't use this class directly, instead, you should use
 #' `[` (extract methods) of other BPCellsArray objects.
 #'
+#' @param x For Specific functions:
+#' - `BPCellsTransformBinarizeArray`: A `TransformBinarize` object.
+#' - `matrixClass`: A `BPCellsTransformBinarizeArray` object.
+#' @seealso [BPCellsSeed]
 #' @name BPCellsTransformBinarize
 #' @noRd
+NULL
+
 methods::setClass("BPCellsTransformBinarizeSeed",
     contains = c("BPCellsTransformedSeed", get_class("TransformBinarize")),
     slots = list(matrix = "BPCellsSeed")
 )
 
 #' @param x A `TransformBinarize` or `BPCellsTransformBinarizeSeed` object.
+#' @rdname BPCellsTransformBinarize
 #' @noRd
 BPCellsTransformBinarizeSeed <- function(x) {
     assert_s4_class(x, "TransformBinarize")
@@ -23,6 +30,7 @@ BPCellsTransformBinarizeSeed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
+#' @rdname BPCellsTransformBinarize
 #' @noRd
 methods::setClass("BPCellsTransformBinarizeArray",
     contains = "DelayedArray",
@@ -32,7 +40,7 @@ methods::setClass("BPCellsTransformBinarizeArray",
 #' @param seed A `BPCellsTransformBinarizeSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "DelayedArray", "BPCellsTransformBinarizeSeed",
     function(seed) {
@@ -40,11 +48,13 @@ methods::setMethod(
     }
 )
 
+#' @rdname BPCellsTransformBinarize
 #' @noRd
 BPCellsTransformBinarizeArray <- function(x) {
     DelayedArray(BPCellsTransformBinarizeSeed(x))
 }
 
+#' @rdname BPCellsTransformBinarize
 #' @noRd
 methods::setClass("BPCellsTransformBinarize",
     contains = "BPCellsMatrix",
@@ -52,7 +62,7 @@ methods::setClass("BPCellsTransformBinarize",
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod("matrixClass", "BPCellsTransformBinarizeArray", function(x) {
     "BPCellsTransformBinarize"
 })

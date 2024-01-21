@@ -81,8 +81,7 @@ methods::setMethod("path", "BPCellsConvertSeed", function(object) {
 #' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsConvert
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsConvertSeed",
     function(x, i, j, ..., drop = FALSE) {
@@ -140,6 +139,7 @@ methods::setMethod("convert_type", "BPCellsMatrix", function(object, type) {
 })
 
 #' @export
+#' @rdname internal-methods
 methods::setMethod("convert_type", "ANY", function(object, type) {
     cli::cli_abort(
         "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"

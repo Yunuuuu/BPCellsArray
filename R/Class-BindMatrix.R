@@ -107,11 +107,8 @@ methods::setMethod("matrixClass", "BPCellsColBindMatrixArray", function(x) {
 
 #' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix-Class
-#' @return
-#' - `[`: Usually a `BPCellsSubsetSeed` object, but not always
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsBindMatrix-Class
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsColBindMatrixSeed",
     function(x, i, j, ..., drop = FALSE) {
@@ -207,8 +204,7 @@ methods::setMethod("matrixClass", "BPCellsRowBindMatrixArray", function(x) {
 ###################################################################
 
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsBindMatrix-Class
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsRowBindMatrixSeed",
     function(x, i, j, ..., drop = FALSE) {

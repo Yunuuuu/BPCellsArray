@@ -353,6 +353,7 @@ methods::setMethod(
 )
 
 #' @export
+#' @rdname internal-methods
 methods::setMethod(
     "rbind2", c(x = "ANY", y = "BPCellsSeed"),
     function(x, y, ...) {
@@ -364,6 +365,7 @@ methods::setMethod(
 )
 
 #' @export
+#' @rdname internal-methods
 methods::setMethod(
     "rbind2", c(x = "BPCellsSeed", y = "ANY"),
     function(x, y, ...) {
@@ -434,6 +436,7 @@ methods::setMethod(
 )
 
 #' @export
+#' @rdname internal-methods
 methods::setMethod(
     "cbind2", c(x = "ANY", y = "BPCellsSeed"),
     function(x, y, ...) {
@@ -445,6 +448,7 @@ methods::setMethod(
 )
 
 #' @export
+#' @rdname internal-methods
 methods::setMethod(
     "cbind2", c(x = "BPCellsSeed", y = "ANY"),
     function(x, y, ...) {

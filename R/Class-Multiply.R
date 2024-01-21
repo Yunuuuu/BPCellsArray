@@ -85,8 +85,7 @@ methods::setMethod("path", "BPCellsMultiplySeed", function(object) {
 #' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsMultiply
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsMultiplySeed",
     function(x, i, j, ..., drop = FALSE) {

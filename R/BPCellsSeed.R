@@ -10,6 +10,7 @@
 #' @export
 #' @name BPCellsSeed
 #' @aliases BPCellsMatrix
+#' @include Class-BPCellsSeed.R
 BPCellsMatrix <- function(x, ...) {
     DelayedArray(BPCellsSeed(x = x, ...))
 }
@@ -28,6 +29,7 @@ methods::setMethod("BPCellsSeed", "BPCellsSeed", function(x, ...) {
 })
 
 #' @export
+#' @rdname internal-methods
 methods::setMethod(
     "BPCellsSeed", "Iterable_dgCMatrix_wrapper",
     function(x, ...) {
@@ -65,91 +67,91 @@ methods::setMethod("BPCellsSeed", "RenameDims", function(x, ...) {
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformedMatrix", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformedSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformLog1p", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformLog1pSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformLog1pSlow", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformLog1pSlowSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformExpm1", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformExpm1Seed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformExpm1Slow", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformExpm1SlowSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformSquare", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformSquareSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformPow", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformPowSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformPowSlow", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformPowSlowSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformMin", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformMinSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformMinByRow", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformMinByRowSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformMinByCol", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformMinByColSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformBinarize", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformBinarizeSeed(x = x)
 })
 
 #' @export
-#' @rdname BPCellsSeed
+#' @rdname internal-methods
 methods::setMethod("BPCellsSeed", "TransformRound", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsTransformRoundSeed(x = x)

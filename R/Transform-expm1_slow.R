@@ -32,7 +32,7 @@ methods::setClass("BPCellsTransformExpm1SlowArray",
 #' @param seed A `BPCellsTransformExpm1SlowSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "DelayedArray", "BPCellsTransformExpm1SlowSeed",
     function(seed) {
@@ -52,7 +52,7 @@ methods::setClass("BPCellsTransformExpm1Slow",
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod("matrixClass", "BPCellsTransformExpm1SlowArray", function(x) {
     "BPCellsTransformExpm1Slow"
 })

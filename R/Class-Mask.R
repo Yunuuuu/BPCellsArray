@@ -82,8 +82,7 @@ methods::setMethod("path", "BPCellsMaskSeed", function(object) {
 #' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsMask
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsMaskSeed",
     function(x, i, j, ..., drop = FALSE) {
@@ -189,6 +188,7 @@ methods::setMethod(
 )
 
 #' @export
+#' @rdname internal-methods
 methods::setMethod(
     "mask_matrix", c(object = "ANY", mask = "ANY"),
     function(object, mask, invert = FALSE) {

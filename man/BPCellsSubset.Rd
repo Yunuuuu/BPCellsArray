@@ -3,15 +3,12 @@
 \docType{class}
 \name{BPCellsSubset}
 \alias{BPCellsSubset}
-\alias{BPCellsSubsetSeed}
 \alias{DelayedArray,BPCellsSubsetSeed-method}
 \alias{BPCellsSubsetArray}
 \alias{BPCellsSubsetMatrix-class}
 \alias{matrixClass,BPCellsSubsetArray-method}
 \title{Delayed BPCells MatrixSubset}
 \usage{
-BPCellsSubsetSeed(x)
-
 \S4method{DelayedArray}{BPCellsSubsetSeed}(seed)
 
 BPCellsSubsetArray(x)
@@ -19,9 +16,13 @@ BPCellsSubsetArray(x)
 \S4method{matrixClass}{BPCellsSubsetArray}(x)
 }
 \arguments{
-\item{x}{A \code{MatrixSubset} or \code{BPCellsSubsetSeed} object.}
-
 \item{seed}{A \code{BPCellsSubsetSeed} object.}
+
+\item{x}{For Specific functions:
+\itemize{
+\item \code{BPCellsMatrixSubsetArray}: A \code{MatrixSubset} object.
+\item \code{matrixClass}: A \code{BPCellsMatrixSubsetArray} object.
+}}
 }
 \description{
 The \code{BPCellsSubsetArray} class provides a

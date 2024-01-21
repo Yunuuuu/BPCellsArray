@@ -20,8 +20,8 @@ methods::setClass("BPCellsSubsetSeed",
 )
 
 #' @param x A `MatrixSubset` or `BPCellsSubsetSeed` object.
-#' @export
 #' @rdname BPCellsSubset
+#' @noRd
 BPCellsSubsetSeed <- function(x) {
     assert_s4_class(x, "MatrixSubset")
     x@matrix <- BPCellsSeed(x@matrix)
@@ -85,8 +85,7 @@ methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
 #' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix-Class
 #' @importMethodsFrom BPCells [
-#' @rdname BPCellsSubset
-#' @noRd
+#' @rdname internal-methods
 methods::setMethod(
     "[", "BPCellsSubsetSeed",
     function(x, i, j, ..., drop = FALSE) {
