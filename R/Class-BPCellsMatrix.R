@@ -14,6 +14,18 @@ methods::setClass("BPCellsMatrix",
     slots = list(seed = "BPCellsSeed")
 )
 
+#' @param ...
+#'  - `BPCellsMatrix`: additional arguments passed to [BPCellsSeed].
+#'  - `rbind` and `arbind`: A list of `BPCellsMatrix` objects.
+#'  - `rbind2` and `[`: Not used currently.
+#' @return
+#'  - `BPCellsMatrix`: A `BPCellsMatrix` object.
+#' @export
+#' @rdname BPCellsMatrix
+BPCellsMatrix <- function(x = x, ...) {
+    DelayedArray(BPCellsSeed(x = x, ...))
+}
+
 #' @param object A `BPCellsMatrix` object.
 #' @importMethodsFrom methods show
 #' @export
@@ -37,7 +49,6 @@ methods::setMethod("t", "BPCellsMatrix", function(x) {
 
 #' @param i,j Row and Column index.
 #' @param drop Ignored, always be `FALSE`.
-#' @param ... Ignored currently.
 #' @return
 #' - `[`: A [BPCellsMatrix] object.
 #' @export

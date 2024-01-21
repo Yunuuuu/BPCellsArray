@@ -38,6 +38,8 @@
 \alias{bindCOLS,BPCellsMatrix-method}
 \title{Base Class for Delayed BPCells matrix}
 \usage{
+BPCellsMatrix(x = x, ...)
+
 \S4method{show}{BPCellsMatrix}(object)
 
 \S4method{t}{BPCellsMatrix}(x)
@@ -117,17 +119,17 @@
 )
 }
 \arguments{
-\item{object}{A \code{BPCellsMatrix} object.}
-
 \item{x}{A \link{BPCellsMatrix} object. For following methods:
 \itemize{
 \item \code{\%*\%}, and \code{crossprod}: A \link{BPCellsMatrix} object or matrx-like object
 which can be coerced into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.
 }}
 
-\item{i, j}{Row and Column index.}
-
 \item{...}{Ignored currently.}
+
+\item{object}{A \code{BPCellsMatrix} object.}
+
+\item{i, j}{Row and Column index.}
 
 \item{drop}{Ignored, always be \code{FALSE}.}
 
@@ -159,6 +161,10 @@ into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 \item{check}{Ignored.}
 }
 \value{
+\itemize{
+\item \code{BPCellsMatrix}: A \code{BPCellsMatrix} object.
+}
+
 \itemize{
 \item \code{t}: A \link{BPCellsMatrix} object.
 }
