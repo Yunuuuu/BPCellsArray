@@ -1,15 +1,17 @@
 mat <- mock_matrix(2000, 200)
-path <- tempfile()
-obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
-obj <- BPCells::convert_matrix_type(obj, "uint32_t")
-obj <- obj %*% BPCells::transpose_storage_order(t(obj))
+mat2 <- mock_matrix(ncol(mat), 5000)
+path <- c(tempfile(), tempfile())
+obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path[1L])
+obj2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
+obj <- obj %*% obj2
 
 testthat::test_that("`BPCellsMultiplySeed()` works as expected", {
     seed <- BPCellsMultiplySeed(obj)
     testthat::expect_s4_class(seed, "BPCellsMultiplySeed")
     obj <- BPCellsMultiplyArray(seed)
     testthat::expect_s4_class(obj, "BPCellsMultiplyMatrix")
-    testthat::expect_identical(path(seed), path(obj))
+    testthat::expect_identical(path(seed), path)
+    testthat::expect_identical(path(obj), path)
 })
 
 testthat::test_that("subset `BPCellsMultiplySeed` object works as expected", {
@@ -31,7 +33,7 @@ testthat::test_that("`convert_type` for `BPCellsConvertSeed` object works as exp
     testthat::expect_identical(type(float_seed), "double")
     BPCells::convert_matrix_type(float_seed, type = "uint32_t")
     integer_seed <- convert_type(float_seed, "integer")
-    testthat::expect_s4_class(integer_seed, "BPCellsRenameDimsSeed")
+    testthat::expect_s4_class(integer_seed, "BPCellsConvertSeed")
     testthat::expect_identical(type(integer_seed), "integer")
 })
 
@@ -41,7 +43,7 @@ testthat::test_that("`convert_type` for `BPCellsMultiplyMatrix` object works as 
     testthat::expect_s4_class(float_obj, "BPCellsConvertMatrix")
     testthat::expect_identical(type(float_obj), "double")
     integer_obj <- convert_type(float_obj, "integer")
-    testthat::expect_s4_class(integer_obj, "BPCellsRenameDimsMatrix")
+    testthat::expect_s4_class(integer_obj, "BPCellsConvertMatrix")
     testthat::expect_identical(type(integer_obj), "integer")
 })
 
@@ -83,4 +85,46 @@ testthat::test_that("`%*%` for `BPCellsMultiply` object works as expected", {
     testthat::expect_true(is.matrix(obj %*% as.matrix(t(obj))))
     testthat::expect_true(is.matrix(obj %*% seq_len(ncol(obj))))
     testthat::expect_true(is.matrix(seq_len(nrow(obj)) %*% obj))
+})
+
+testthat::test_that("`rbind` for `BPCellsMultiply` object works as expected", {
+    seed <- BPCellsMultiplySeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsMultiplySeed")
+    testthat::expect_s4_class(rbind2(seed, seed), "BPCellsRowBindMatrixSeed")
+    testthat::expect_s4_class(rbind(seed, seed), "BPCellsRowBindMatrixSeed")
+    testthat::expect_s4_class(arbind(seed, seed), "BPCellsRowBindMatrixSeed")
+    testthat::expect_s4_class(
+        bindROWS(seed, list(seed)),
+        "BPCellsRowBindMatrixSeed"
+    )
+    obj <- BPCellsMultiplyArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsMultiplyMatrix")
+    testthat::expect_s4_class(rbind2(obj, obj), "BPCellsRowBindMatrixMatrix")
+    testthat::expect_s4_class(rbind(obj, obj), "BPCellsRowBindMatrixMatrix")
+    testthat::expect_s4_class(arbind(obj, obj), "BPCellsRowBindMatrixMatrix")
+    testthat::expect_s4_class(
+        bindROWS(obj, list(obj)),
+        "BPCellsRowBindMatrixMatrix"
+    )
+})
+
+testthat::test_that("`cbind` for `BPCellsMultiply` object works as expected", {
+    seed <- BPCellsMultiplySeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsMultiplySeed")
+    testthat::expect_s4_class(cbind2(seed, seed), "BPCellsColBindMatrixSeed")
+    testthat::expect_s4_class(cbind(seed, seed), "BPCellsColBindMatrixSeed")
+    testthat::expect_s4_class(acbind(seed, seed), "BPCellsColBindMatrixSeed")
+    testthat::expect_s4_class(
+        bindCOLS(seed, list(seed)),
+        "BPCellsColBindMatrixSeed"
+    )
+    obj <- BPCellsMultiplyArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsMultiplyMatrix")
+    testthat::expect_s4_class(cbind2(obj, obj), "BPCellsColBindMatrixMatrix")
+    testthat::expect_s4_class(cbind(obj, obj), "BPCellsColBindMatrixMatrix")
+    testthat::expect_s4_class(acbind(obj, obj), "BPCellsColBindMatrixMatrix")
+    testthat::expect_s4_class(
+        bindCOLS(obj, list(obj)),
+        "BPCellsColBindMatrixMatrix"
+    )
 })

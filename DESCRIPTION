@@ -18,7 +18,7 @@ Imports:
     Matrix,
     methods,
     rlang (>= 1.1.0),
-    S4Arrays
+    S4Vectors
 Remotes: 
     Yunuuuu/BPCells
 Suggests: 
@@ -26,6 +26,7 @@ Suggests:
     rmarkdown,
     roxygen2,
     RSpectra,
+    S4Arrays,
     testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.0

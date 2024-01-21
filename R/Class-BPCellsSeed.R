@@ -393,3 +393,183 @@ methods::setMethod(
         t(x) %*% y
     }
 )
+
+#################### rbind ########################
+#' @param threads Number of threads to use for execution. See [set_threads] for
+#' details.
+#' @importMethodsFrom methods rbind2
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "rbind2", c(x = "BPCellsSeed", y = "BPCellsSeed"),
+    function(x, y, ..., threads = 0L) {
+        fn <- methods::getMethod(
+            "rbind2", c("IterableMatrix", "IterableMatrix"),
+            where = "BPCells"
+        )
+        out <- fn(x, y, ...)
+        set_threads(BPCellsSeed(out), threads = threads)
+    }
+)
+
+#' @export
+methods::setMethod(
+    "rbind2", c(x = "ANY", y = "BPCellsSeed"),
+    function(x, y, ...) {
+        cli::cli_abort(c(
+            "Cannot combine {.cls {obj_type_friendly(x)}} object with a {.cls {obj_type_friendly(y)}}",
+            i = "{.arg x} must be a {.cls BPCellsSeed} object"
+        ))
+    }
+)
+
+#' @export
+methods::setMethod(
+    "rbind2", c(x = "BPCellsSeed", y = "ANY"),
+    function(x, y, ...) {
+        cli::cli_abort(c(
+            "Cannot combine {.cls {obj_type_friendly(x)}} object with a {.cls {obj_type_friendly(y)}}",
+            i = "{.arg y} must be a {.cls BPCellsSeed} object"
+        ))
+    }
+)
+
+#' @param use.first.dimnames Ignored, always be `TRUE` in BPCells.
+#' @param deparse.level Ignored, used by generic methods.
+#' @importMethodsFrom DelayedArray rbind
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "rbind", "BPCellsSeed",
+    function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
+        merge_BPCellsSeeds(
+            list = pack_BPCellsSeeds(...), .fn = rbind2, threads = threads
+        )
+    }
+)
+
+#' @importMethodsFrom DelayedArray arbind
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "arbind", "BPCellsSeed",
+    function(..., threads = 0L, use.first.dimnames = TRUE) {
+        merge_BPCellsSeeds(
+            list = pack_BPCellsSeeds(...), .fn = rbind2, threads = threads
+        )
+    }
+)
+
+#' @param use.names Ignored, always be `TRUE`.
+#' @param ignore.mcols Ignored.
+#' @param check Ignored.
+#' @inheritParams S4Vectors::bindROWS
+#' @importMethodsFrom DelayedArray bindROWS
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "bindROWS", "BPCellsSeed",
+    function(x, objects = list(), use.names = TRUE,
+             ignore.mcols = TRUE, check = TRUE) {
+        assert_(objects, is.list, "a list")
+        check_BPCellsSeeds(objects, "objects")
+        merge_BPCellsSeeds(list = c(list(x), objects), .fn = rbind2)
+    }
+)
+
+#################### cbind ########################
+#' @importMethodsFrom methods cbind2
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "cbind2", c(x = "BPCellsSeed", y = "BPCellsSeed"),
+    function(x, y, ..., threads = 0L) {
+        fn <- methods::getMethod(
+            "cbind2", c("IterableMatrix", "IterableMatrix"),
+            where = "BPCells"
+        )
+        out <- fn(x, y, ...)
+        set_threads(BPCellsSeed(out), threads = threads)
+    }
+)
+
+#' @export
+methods::setMethod(
+    "cbind2", c(x = "ANY", y = "BPCellsSeed"),
+    function(x, y, ...) {
+        cli::cli_abort(c(
+            "Cannot combine {.cls {obj_type_friendly(x)}} object with a {.cls {obj_type_friendly(y)}}",
+            i = "{.arg x} must be a {.cls BPCellsSeed} object"
+        ))
+    }
+)
+
+#' @export
+methods::setMethod(
+    "cbind2", c(x = "BPCellsSeed", y = "ANY"),
+    function(x, y, ...) {
+        cli::cli_abort(c(
+            "Cannot combine {.cls {obj_type_friendly(x)}} object with a {.cls {obj_type_friendly(y)}}",
+            i = "{.arg y} must be a {.cls BPCellsSeed} object"
+        ))
+    }
+)
+
+#' @importMethodsFrom DelayedArray cbind
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "cbind", "BPCellsSeed",
+    function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
+        merge_BPCellsSeeds(
+            list = pack_BPCellsSeeds(...), .fn = cbind2, threads = threads
+        )
+    }
+)
+
+#' @importMethodsFrom DelayedArray acbind
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("acbind", "BPCellsSeed", function(..., threads = 0L, use.first.dimnames = TRUE) {
+    merge_BPCellsSeeds(
+        list = pack_BPCellsSeeds(...),
+        .fn = cbind2, threads = threads
+    )
+})
+
+#' @importMethodsFrom S4Vectors bindCOLS
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "bindCOLS", "BPCellsSeed",
+    function(x, objects = list(), use.names = TRUE,
+             ignore.mcols = TRUE, check = TRUE) {
+        assert_(objects, is.list, "a list")
+        check_BPCellsSeeds(objects, "objects")
+        merge_BPCellsSeeds(list = c(list(x), objects), .fn = cbind2)
+    }
+)
+
+merge_BPCellsSeeds <- function(list, .fn, ...) {
+    Reduce(function(x, y) .fn(x = x, y = y, ...), list)
+}
+
+pack_BPCellsSeeds <- function(...) {
+    objects <- list(...)
+    check_BPCellsSeeds(objects, "...")
+    objects
+}
+
+check_BPCellsSeeds <- function(lst, arg) {
+    BPCellsSeeds <- vapply(lst, methods::is, logical(1L),
+        class2 = "BPCellsSeed"
+    )
+    if (!all(BPCellsSeeds)) {
+        cli::cli_abort(
+            c(
+                "all input must be a {.cls BPCellsSeed} object",
+                i = "Please check the input {.arg {arg}} in {.val {which(!BPCellsSeeds)}}"
+            )
+        )
+    }
+}

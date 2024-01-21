@@ -103,8 +103,8 @@ methods::setGeneric(
 #' real number), or `double` (`64bit_numeric`) (64-bit real number). R cannot
 #' differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
 #' 64-bit real number and "numeric" to indicate 32-bit real number.
-#' @return A [BPCellsConverSeed][BPCellsConverSeed] object or
-#' [BPCellsConvertMatrix][BPCellsConvertMatrix] object.
+#' @return A [BPCellsConverSeed][BPCellsConvert] object or
+#' [BPCellsConvertMatrix][BPCellsConvert] object.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
 #' @importFrom DelayedArray DelayedArray
 #' @export

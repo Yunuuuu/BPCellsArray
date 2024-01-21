@@ -86,3 +86,45 @@ testthat::test_that("`%*%` for `BPCellsRenameDims` object works as expected", {
     testthat::expect_true(is.matrix(obj %*% seq_len(ncol(obj))))
     testthat::expect_true(is.matrix(seq_len(nrow(obj)) %*% obj))
 })
+
+testthat::test_that("`rbind` for `BPCellsRenameDims` object works as expected", {
+    seed <- BPCellsRenameDimsSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    testthat::expect_s4_class(rbind2(seed, seed), "BPCellsRowBindMatrixSeed")
+    testthat::expect_s4_class(rbind(seed, seed), "BPCellsRowBindMatrixSeed")
+    testthat::expect_s4_class(arbind(seed, seed), "BPCellsRowBindMatrixSeed")
+    testthat::expect_s4_class(
+        bindROWS(seed, list(seed)),
+        "BPCellsRowBindMatrixSeed"
+    )
+    obj <- BPCellsRenameDimsArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsRenameDimsMatrix")
+    testthat::expect_s4_class(rbind2(obj, obj), "BPCellsRowBindMatrixMatrix")
+    testthat::expect_s4_class(rbind(obj, obj), "BPCellsRowBindMatrixMatrix")
+    testthat::expect_s4_class(arbind(obj, obj), "BPCellsRowBindMatrixMatrix")
+    testthat::expect_s4_class(
+        bindROWS(obj, list(obj)),
+        "BPCellsRowBindMatrixMatrix"
+    )
+})
+
+testthat::test_that("`cbind` for `BPCellsRenameDims` object works as expected", {
+    seed <- BPCellsRenameDimsSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    testthat::expect_s4_class(cbind2(seed, seed), "BPCellsColBindMatrixSeed")
+    testthat::expect_s4_class(cbind(seed, seed), "BPCellsColBindMatrixSeed")
+    testthat::expect_s4_class(acbind(seed, seed), "BPCellsColBindMatrixSeed")
+    testthat::expect_s4_class(
+        bindCOLS(seed, list(seed)),
+        "BPCellsColBindMatrixSeed"
+    )
+    obj <- BPCellsRenameDimsArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsRenameDimsMatrix")
+    testthat::expect_s4_class(cbind2(obj, obj), "BPCellsColBindMatrixMatrix")
+    testthat::expect_s4_class(cbind(obj, obj), "BPCellsColBindMatrixMatrix")
+    testthat::expect_s4_class(acbind(obj, obj), "BPCellsColBindMatrixMatrix")
+    testthat::expect_s4_class(
+        bindCOLS(obj, list(obj)),
+        "BPCellsColBindMatrixMatrix"
+    )
+})

@@ -29,11 +29,13 @@
 \alias{crossprod,BPCellsMatrix,matrix-method}
 \alias{crossprod,matrix,BPCellsMatrix-method}
 \alias{rbind2,BPCellsMatrix,BPCellsMatrix-method}
-\alias{arbind,BPCellsMatrix-method}
 \alias{rbind,BPCellsMatrix-method}
+\alias{arbind,BPCellsMatrix-method}
+\alias{bindROWS,BPCellsMatrix-method}
 \alias{cbind2,BPCellsMatrix,BPCellsMatrix-method}
-\alias{acbind,BPCellsMatrix-method}
 \alias{cbind,BPCellsMatrix-method}
+\alias{acbind,BPCellsMatrix-method}
+\alias{bindCOLS,BPCellsMatrix-method}
 \title{Base Class for Delayed BPCells matrix}
 \usage{
 \S4method{show}{BPCellsMatrix}(object)
@@ -88,15 +90,31 @@
 
 \S4method{rbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, ..., threads = 0L)
 
-\S4method{arbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE)
-
 \S4method{rbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+
+\S4method{arbind}{BPCellsMatrix}(..., threads = 0L)
+
+\S4method{bindROWS}{BPCellsMatrix}(
+  x,
+  objects = list(),
+  use.names = TRUE,
+  ignore.mcols = TRUE,
+  check = TRUE
+)
 
 \S4method{cbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, ..., threads = 0L)
 
+\S4method{cbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+
 \S4method{acbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE)
 
-\S4method{cbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+\S4method{bindCOLS}{BPCellsMatrix}(
+  x,
+  objects = list(),
+  use.names = TRUE,
+  ignore.mcols = TRUE,
+  check = TRUE
+)
 }
 \arguments{
 \item{object}{A \code{BPCellsMatrix} object.}
@@ -128,6 +146,17 @@ into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 \item{use.first.dimnames}{Ignored, always be \code{TRUE} in BPCells.}
 
 \item{deparse.level}{Ignored, used by generic methods.}
+
+\item{objects}{
+    A list of S4 objects to bind to \code{x}. They should typically (but not
+    necessarily) have the same class as \code{x}.
+  }
+
+\item{use.names}{Ignored, always be \code{TRUE}.}
+
+\item{ignore.mcols}{Ignored.}
+
+\item{check}{Ignored.}
 }
 \value{
 \itemize{
@@ -143,8 +172,7 @@ into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 }
 
 \itemize{
-\item \verb{dimnames<-}: A \link{BPCellsMatrix} object, usually a \code{BPCellsRenameDimsMatrix}
-object.
+\item \verb{dimnames<-}: A \link[=BPCellsRenameDims]{BPCellsRenameDimsMatrix} object.
 }
 
 \itemize{
@@ -164,14 +192,20 @@ object.
 }
 
 \itemize{
-\item \code{x \%*\% y}: Matrix multiplication, a \link{BPCellsSeed} object or a dense
+\item \code{x \%*\% y}: Matrix multiplication, a \link{BPCellsMatrix} object or a dense
 matrix (matrix and numeric methods).
 }
 
 \itemize{
-\item \code{crossprod(x, y)}: Matrix Crossproduct, a \link{BPCellsSeed} object or a dense
+\item \code{crossprod(x, y)}: Matrix Crossproduct, a \link{BPCellsMatrix} object or a dense
 matrix (matrix and numeric methods).
-object
+}
+
+\itemize{
+\item \code{cbind2}, \code{acbind}, \code{cbind}, \code{bindCOLS}: A
+\link[=BPCellsBindMatrix]{BPCellsCOLSBindMatrixMatrix} object.
+\item \code{rbind2}, \code{arbind}, \code{rbind}, \code{bindROWS}: A
+\link[=BPCellsBindMatrix]{BPCellsRowBindMatrixMatrix} object.
 }
 }
 \description{

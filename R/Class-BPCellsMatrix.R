@@ -68,8 +68,7 @@ methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 # for `dim`, `dimnames`, `extract_array` and `is_sparse` just use the methods
 # from DelayedArray
 #' @return
-#' - `dimnames<-`: A [BPCellsMatrix] object, usually a `BPCellsRenameDimsMatrix`
-#'   object.
+#' - `dimnames<-`: A [BPCellsRenameDimsMatrix][BPCellsRenameDims] object.
 #' @importMethodsFrom DelayedArray dimnames<-
 #' @export
 #' @rdname BPCellsMatrix
@@ -119,14 +118,13 @@ methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
 #' @param y A [BPCellsMatrix] object or matrx-like object which can be coerced
 #'   into a [dgCMatrix][Matrix::dgCMatrix-class].
 #' @return
-#' - `x %*% y`: Matrix multiplication, a [BPCellsSeed] object or a dense
+#' - `x %*% y`: Matrix multiplication, a [BPCellsMatrix] object or a dense
 #'   matrix (matrix and numeric methods).
 #' @importMethodsFrom DelayedArray %*%
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
-    "%*%",
-    c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
         DelayedArray(x@seed %*% y@seed)
     }
 )
@@ -200,9 +198,8 @@ methods::setMethod(
 #################### Matrix Crossproduct ########################
 #' @importMethodsFrom DelayedArray crossprod
 #' @return
-#' - `crossprod(x, y)`: Matrix Crossproduct, a [BPCellsSeed] object or a dense
+#' - `crossprod(x, y)`: Matrix Crossproduct, a [BPCellsMatrix] object or a dense
 #'   matrix (matrix and numeric methods).
-#'   object
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
@@ -262,16 +259,18 @@ methods::setMethod(
 #################### rbind ########################
 #' @param threads Set number of threads to use for sparse-dense multiply and
 #' [matrix_stats][BPCells::matrix_stats].
+#' @return
+#' - `cbind2`, `acbind`, `cbind`, `bindCOLS`: A
+#'   [BPCellsCOLSBindMatrixMatrix][BPCellsBindMatrix] object.
+#' - `rbind2`, `arbind`, `rbind`, `bindROWS`: A
+#'   [BPCellsRowBindMatrixMatrix][BPCellsBindMatrix] object.
 #' @importMethodsFrom methods rbind2
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
     "rbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
     function(x, y, ..., threads = 0L) {
-        threads <- as.integer(max(0L, threads, na.rm = TRUE))
-        out <- methods::rbind2(x@seed, y@seed, ...)
-        out@threads <- threads
-        BPCellsRowBindMatrixArray(out)
+        DelayedArray(rbind2(x = x@seed, y = y@seed, ..., threads = threads))
     }
 )
 
@@ -297,17 +296,6 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom S4Arrays arbind
-#' @export
-#' @rdname BPCellsMatrix
-methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L, use.first.dimnames = TRUE) {
-    threads <- as.integer(max(0L, threads, na.rm = TRUE))
-    lst <- pack_BPCellsMatrices(...)
-    out <- Reduce(function(x, y) rbind2(x, y), lst)
-    out@threads <- threads
-    BPCellsRowBindMatrixArray(out)
-})
-
 #' @param use.first.dimnames Ignored, always be `TRUE` in BPCells.
 #' @param deparse.level Ignored, used by generic methods.
 #' @importMethodsFrom DelayedArray rbind
@@ -316,9 +304,37 @@ methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L, use.fi
 methods::setMethod(
     "rbind", "BPCellsMatrix",
     function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
-        arbind(..., threads = threads)
+        merge_BPCellsMatrices(
+            list = pack_BPCellsMatrices(...), .fn = rbind2, threads = threads
+        )
     }
 )
+
+#' @importMethodsFrom DelayedArray arbind
+#' @export
+#' @rdname BPCellsMatrix
+methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L) {
+    merge_BPCellsMatrices(
+        list = pack_BPCellsMatrices(...), .fn = rbind2, threads = threads
+    )
+})
+
+#' @param use.names Ignored, always be `TRUE`.
+#' @param ignore.mcols Ignored.
+#' @param check Ignored.
+#' @importMethodsFrom DelayedArray bindROWS
+#' @export
+#' @rdname BPCellsMatrix
+methods::setMethod(
+    "bindROWS", "BPCellsMatrix",
+    function(x, objects = list(), use.names = TRUE,
+             ignore.mcols = TRUE, check = TRUE) {
+        assert_(objects, is.list, "a list")
+        check_BPCellsMatrices(objects, "objects")
+        merge_BPCellsMatrices(list = c(list(x), objects), .fn = rbind2)
+    }
+)
+
 
 #################### cbind ########################
 #' @importMethodsFrom methods cbind2
@@ -327,10 +343,7 @@ methods::setMethod(
 methods::setMethod(
     "cbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
     function(x, y, ..., threads = 0L) {
-        threads <- as.integer(max(0L, threads, na.rm = TRUE))
-        out <- methods::cbind2(x@seed, y@seed, ...)
-        out@threads <- threads
-        BPCellsColBindMatrixArray(out)
+        DelayedArray(cbind2(x = x@seed, y = y@seed, ..., threads = threads))
     }
 )
 
@@ -356,38 +369,60 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom S4Arrays acbind
-#' @export
-#' @rdname BPCellsMatrix
-methods::setMethod("acbind", "BPCellsMatrix", function(..., threads = 0L, use.first.dimnames = TRUE) {
-    threads <- as.integer(max(0L, threads, na.rm = TRUE))
-    lst <- pack_BPCellsMatrices(...)
-    out <- Reduce(function(x, y) cbind2(x, y), lst)
-    out@threads <- threads
-    BPCellsRowBindMatrixArray(out)
-})
-
 #' @importMethodsFrom DelayedArray cbind
 #' @export
 #' @rdname BPCellsMatrix
 methods::setMethod(
     "cbind", "BPCellsMatrix",
     function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
-        acbind(..., deparse.level = 1L, use.first.dimnames = TRUE)
+        merge_BPCellsMatrices(
+            list = pack_BPCellsMatrices(...), .fn = cbind2, threads = threads
+        )
     }
 )
 
+#' @importMethodsFrom DelayedArray acbind
+#' @export
+#' @rdname BPCellsMatrix
+methods::setMethod("acbind", "BPCellsMatrix", function(..., threads = 0L, use.first.dimnames = TRUE) {
+    merge_BPCellsMatrices(
+        list = pack_BPCellsMatrices(...), .fn = cbind2, threads = threads
+    )
+})
+
+#' @importMethodsFrom S4Vectors bindCOLS
+#' @export
+#' @rdname BPCellsMatrix
+methods::setMethod(
+    "bindCOLS", "BPCellsMatrix",
+    function(x, objects = list(), use.names = TRUE,
+             ignore.mcols = TRUE, check = TRUE) {
+        assert_(objects, is.list, "a list")
+        check_BPCellsMatrices(objects, "objects")
+        merge_BPCellsMatrices(list = c(list(x), objects), .fn = cbind2)
+    }
+)
+
+merge_BPCellsMatrices <- function(list, .fn, ...) {
+    Reduce(function(x, y) .fn(x = x, y = y, ...), list)
+}
+
 pack_BPCellsMatrices <- function(...) {
     objects <- list(...)
-    BPCellsMatrices <- vapply(objects, methods::is,
-        logical(1L),
-        class = "BPCellsMatrix"
+    check_BPCellsMatrices(objects, "...")
+    objects
+}
+
+check_BPCellsMatrices <- function(lst, arg) {
+    BPCellsMatrices <- vapply(lst, methods::is, logical(1L),
+        class2 = "BPCellsMatrix"
     )
     if (!all(BPCellsMatrices)) {
-        cli::cli_abort(c(
-            "all input must be a {.cls BPCellsMatrix} object",
-            i = "Please check the input in {.val {which(!BPCellsMatrices)}}"
-        ))
+        cli::cli_abort(
+            c(
+                "all input must be a {.cls BPCellsMatrix} object",
+                i = "Please check the input {.arg {arg}} in {.val {which(!BPCellsMatrices)}}"
+            )
+        )
     }
-    lapply(objects, methods::slot, name = "seed")
 }

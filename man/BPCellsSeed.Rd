@@ -38,6 +38,14 @@
 \alias{crossprod,matrix,BPCellsSeed-method}
 \alias{crossprod,BPCellsSeed,numeric-method}
 \alias{crossprod,numeric,BPCellsSeed-method}
+\alias{rbind2,BPCellsSeed,BPCellsSeed-method}
+\alias{rbind,BPCellsSeed-method}
+\alias{arbind,BPCellsSeed-method}
+\alias{bindROWS,BPCellsSeed-method}
+\alias{cbind2,BPCellsSeed,BPCellsSeed-method}
+\alias{cbind,BPCellsSeed-method}
+\alias{acbind,BPCellsSeed-method}
+\alias{bindCOLS,BPCellsSeed-method}
 \title{Low-level Base Class for Delayed BPCells matrix}
 \usage{
 BPCellsSeed(x, ...)
@@ -111,6 +119,34 @@ BPCellsSeed(x, ...)
 \S4method{crossprod}{BPCellsSeed,numeric}(x, y)
 
 \S4method{crossprod}{numeric,BPCellsSeed}(x, y)
+
+\S4method{rbind2}{BPCellsSeed,BPCellsSeed}(x, y, ..., threads = 0L)
+
+\S4method{rbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+
+\S4method{arbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE)
+
+\S4method{bindROWS}{BPCellsSeed}(
+  x,
+  objects = list(),
+  use.names = TRUE,
+  ignore.mcols = TRUE,
+  check = TRUE
+)
+
+\S4method{cbind2}{BPCellsSeed,BPCellsSeed}(x, y, ..., threads = 0L)
+
+\S4method{cbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+
+\S4method{acbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE)
+
+\S4method{bindCOLS}{BPCellsSeed}(
+  x,
+  objects = list(),
+  use.names = TRUE,
+  ignore.mcols = TRUE,
+  check = TRUE
+)
 }
 \arguments{
 \item{x}{A \link{BPCellsSeed} object. For some functions:
@@ -149,6 +185,24 @@ can be coerced into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.
 
 \item{y}{A \link{BPCellsSeed} object or matrx-like object which can be coerced
 into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
+
+\item{threads}{Number of threads to use for execution. See \link{set_threads} for
+details.}
+
+\item{use.first.dimnames}{Ignored, always be \code{TRUE} in BPCells.}
+
+\item{deparse.level}{Ignored, used by generic methods.}
+
+\item{objects}{
+    A list of S4 objects to bind to \code{x}. They should typically (but not
+    necessarily) have the same class as \code{x}.
+  }
+
+\item{use.names}{Ignored, always be \code{TRUE}.}
+
+\item{ignore.mcols}{Ignored.}
+
+\item{check}{Ignored.}
 }
 \value{
 \itemize{
