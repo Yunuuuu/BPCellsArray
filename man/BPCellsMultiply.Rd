@@ -43,7 +43,7 @@ The \code{BPCellsMultiplyArray} class provides a
 \link[DelayedArray:DelayedArray-class]{DelayedArray} backend for \code{MatrixMultiply}
 object in BPCells.
 }
-\details{
+\note{
 Usually, you shouldn't use this class directly, instead, you should use \code{\%*\%}
-or \code{crossprod} methods of other BPCellsMatrix objects.
+or \code{crossprod} methods of other \link{BPCellsMatrix} objects.
 }

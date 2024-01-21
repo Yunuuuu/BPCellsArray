@@ -4,8 +4,9 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `MatrixMultiply`
 #' object in BPCells.
 #'
+#' @note
 #' Usually, you shouldn't use this class directly, instead, you should use `%*%`
-#' or `crossprod` methods of other BPCellsMatrix objects.
+#' or `crossprod` methods of other [BPCellsMatrix] objects.
 #'
 #' @importClassesFrom BPCells MatrixMultiply
 #' @export

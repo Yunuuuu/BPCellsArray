@@ -4,6 +4,7 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `RenameDims`
 #' object in BPCells.
 #'
+#' @note
 #' Usually, you shouldn't use this class directly, instead, you should use
 #' [dimnames<-] to create a `BPCellsRenameDimsSeed` object.
 #'

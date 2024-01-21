@@ -41,6 +41,9 @@ BPCellsSubsetArray(x)
 \description{
 The \code{BPCellsSubsetArray} class provides a
 \link[DelayedArray:DelayedArray-class]{DelayedArray} backend for \code{MatrixSubset} object
-in BPCells. Usually, you shouldn't use this class directly, instead, you
-should use \code{[} (extract methods) of other BPCellsArray objects.
+in BPCells.
+}
+\note{
+Usually, you shouldn't use this class directly, instead, you should use
+\code{[} (extract methods) of other BPCellsArray objects.
 }

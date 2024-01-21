@@ -2,8 +2,10 @@
 #'
 #' The `BPCellsSubsetArray` class provides a
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `MatrixSubset` object
-#' in BPCells. Usually, you shouldn't use this class directly, instead, you
-#' should use `[` (extract methods) of other BPCellsArray objects.
+#' in BPCells.
+#'
+#' @note Usually, you shouldn't use this class directly, instead, you should use
+#' `[` (extract methods) of other BPCellsArray objects.
 #'
 #' @importClassesFrom BPCells MatrixSubset
 #' @export
@@ -75,7 +77,7 @@ methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
 #####################################################
 # it's not necessary to re-dispatch the "[" method for `BPCellsSubsetSeed` class
 # since the `MatrixSubset` method will use `[` method of `@matrix`. Here, we
-# just re-dispatch it to keep consistent. 
+# just re-dispatch it to keep consistent.
 #' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @export

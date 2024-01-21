@@ -43,7 +43,7 @@ The \code{BPCellsRenameDimsArray} class provides a
 \link[DelayedArray:DelayedArray-class]{DelayedArray} backend for \code{RenameDims}
 object in BPCells.
 }
-\details{
+\note{
 Usually, you shouldn't use this class directly, instead, you should use
 \link{dimnames<-} to create a \code{BPCellsRenameDimsSeed} object.
 }
