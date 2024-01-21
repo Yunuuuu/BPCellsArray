@@ -8,11 +8,10 @@
 #' Usually, you shouldn't use this class directly, instead, you should use `%*%`
 #' or `crossprod` methods of other [BPCellsMatrix] objects.
 #'
-#' @importClassesFrom BPCells MatrixMultiply
 #' @export
 #' @name BPCellsMultiply
 methods::setClass("BPCellsMultiplySeed",
-    contains = c("BPCellsSeed", "MatrixMultiply"),
+    contains = c("BPCellsSeed", get_class("MatrixMultiply")),
     slots = list(left = "BPCellsSeed", right = "BPCellsSeed")
 )
 

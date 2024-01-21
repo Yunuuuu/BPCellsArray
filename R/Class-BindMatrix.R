@@ -24,11 +24,10 @@
 #'   `RowBindMatrices` object.
 #' - `[` and `path`: A `BPCellsColBindMatrixSeed` or `BPCellsRowBindMatrixSeed`
 #'   object.
-#' @importClassesFrom BPCells ColBindMatrices
 #' @export
 #' @name BPCellsBindMatrix
 methods::setClass("BPCellsColBindMatrixSeed",
-    contains = c("BPCellsSeed", "ColBindMatrices")
+    contains = c("BPCellsSeed", get_class("ColBindMatrices"))
 )
 
 methods::setValidity("BPCellsColBindMatrixSeed", function(object) {
@@ -136,11 +135,10 @@ methods::setMethod("path", "BPCellsColBindMatrixSeed", function(object) {
 ############################################################
 ############################################################
 ############################################################
-#' @importClassesFrom BPCells RowBindMatrices
 #' @export
 #' @rdname BPCellsBindMatrix
 methods::setClass("BPCellsRowBindMatrixSeed",
-    contains = c("BPCellsSeed", "RowBindMatrices")
+    contains = c("BPCellsSeed", get_class("RowBindMatrices"))
 )
 
 methods::setValidity("BPCellsRowBindMatrixSeed", function(object) {

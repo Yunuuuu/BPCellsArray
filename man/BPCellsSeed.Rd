@@ -4,10 +4,12 @@
 \name{BPCellsSeed}
 \alias{BPCellsSeed}
 \alias{BPCellsSeed,BPCellsSeed-method}
+\alias{BPCellsSeed,Iterable_dgCMatrix_wrapper-method}
 \alias{BPCellsSeed,MatrixSubset-method}
 \alias{BPCellsSeed,ConvertMatrixType-method}
 \alias{BPCellsSeed,MatrixMultiply-method}
 \alias{BPCellsSeed,RenameDims-method}
+\alias{BPCellsSeed,MatrixMask-method}
 \alias{BPCellsSeed,ColBindMatrices-method}
 \alias{BPCellsSeed,RowBindMatrices-method}
 \alias{BPCellsSeed,MatrixDir-method}
@@ -52,6 +54,8 @@ BPCellsSeed(x, ...)
 
 \S4method{BPCellsSeed}{BPCellsSeed}(x, ...)
 
+\S4method{BPCellsSeed}{Iterable_dgCMatrix_wrapper}(x, ...)
+
 \S4method{BPCellsSeed}{MatrixSubset}(x, ...)
 
 \S4method{BPCellsSeed}{ConvertMatrixType}(x, ...)
@@ -59,6 +63,8 @@ BPCellsSeed(x, ...)
 \S4method{BPCellsSeed}{MatrixMultiply}(x, ...)
 
 \S4method{BPCellsSeed}{RenameDims}(x, ...)
+
+\S4method{BPCellsSeed}{MatrixMask}(x, ...)
 
 \S4method{BPCellsSeed}{ColBindMatrices}(x, ...)
 

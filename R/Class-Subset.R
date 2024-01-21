@@ -7,11 +7,10 @@
 #' @note Usually, you shouldn't use this class directly, instead, you should use
 #' `[` (extract methods) of other BPCellsArray objects.
 #'
-#' @importClassesFrom BPCells MatrixSubset
 #' @export
 #' @name BPCellsSubset
 methods::setClass("BPCellsSubsetSeed",
-    contains = c("BPCellsSeed", "MatrixSubset"),
+    contains = c("BPCellsSeed", get_class("MatrixSubset")),
     slots = list(matrix = "BPCellsSeed")
 )
 

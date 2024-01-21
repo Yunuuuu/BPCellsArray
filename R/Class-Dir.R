@@ -4,10 +4,11 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `MatrixDir` object in
 #' BPCells.
 #'
-#' @importClassesFrom BPCells MatrixDir
 #' @name BPCellsDir
 #' @seealso [writeBPCellsDirArray]
-methods::setClass("BPCellsDirSeed", contains = c("BPCellsSeed", "MatrixDir"))
+methods::setClass("BPCellsDirSeed",
+    contains = c("BPCellsSeed", get_class("MatrixDir"))
+)
 
 #' @param x A `BPCellsDirSeed` or `BPCellsDirArray` object. For following
 #' functions:

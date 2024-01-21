@@ -8,11 +8,10 @@
 #' Usually, you shouldn't use this class directly, instead, you should use
 #' [convert_type] to create a `BPCellsConvert` object.
 #'
-#' @importClassesFrom BPCells ConvertMatrixType
 #' @export
 #' @name BPCellsConvert
 methods::setClass("BPCellsConvertSeed",
-    contains = c("BPCellsSeed", "ConvertMatrixType"),
+    contains = c("BPCellsSeed", get_class("ConvertMatrixType")),
     slots = list(matrix = "BPCellsSeed")
 )
 

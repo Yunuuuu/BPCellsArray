@@ -4,19 +4,22 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `MatrixMask`
 #' object in BPCells.
 #'
-#' Usually, you shouldn't use this class directly, instead, you should use `%*%`
-#' or `crossprod` methods of other BPCellsMatrix objects.
+#' @note Usually, you shouldn't use this class directly, instead, you should use
+#' [mask_matrix] of other BPCellsMatrix objects to create a `BPCellsMaskMatrix`.
 #'
-#' @importClassesFrom BPCells MatrixMask
 #' @export
 #' @name BPCellsMask
-methods::setClass("BPCellsMaskSeed", contains = c("MatrixMask", "BPCellsSeed"))
+methods::setClass("BPCellsMaskSeed",
+    contains = c("BPCellsSeed", get_class("MatrixMask"))
+)
 
 #' @param x A `MatrixMask` object.
 #' @export
 #' @rdname BPCellsMask
 BPCellsMaskSeed <- function(x) {
     assert_s4_class(x, "MatrixMask")
+    x@matrix <- BPCellsSeed(x@matrix)
+    x@mask <- BPCellsSeed(x@mask)
     methods::as(x, "BPCellsMaskSeed")
 }
 
@@ -31,6 +34,7 @@ methods::setClass("BPCellsMaskArray",
 #' @param seed A `BPCellsMaskSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
+#' @export
 #' @rdname BPCellsMask
 methods::setMethod(
     "DelayedArray", "BPCellsMaskSeed",
@@ -43,16 +47,16 @@ BPCellsMaskArray <- function(x) {
     DelayedArray(BPCellsMaskSeed(x))
 }
 
-#' @export
 #' @importClassesFrom DelayedArray DelayedMatrix
+#' @export
 #' @rdname BPCellsMask
 methods::setClass("BPCellsMaskMatrix",
-    contains = "DelayedMatrix",
+    contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsMaskSeed")
 )
 
-#' @export
 #' @importMethodsFrom DelayedArray matrixClass
+#' @export
 #' @rdname BPCellsMask
 methods::setMethod("matrixClass", "BPCellsMaskArray", function(x) {
     "BPCellsMaskMatrix"
@@ -62,29 +66,31 @@ methods::setMethod("matrixClass", "BPCellsMaskArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 
-#' @param i,j Row and Column index.
-#' @param drop Not used, always be `FALSE`.
+#' @param object A `BPCellsMaskSeed` object.
+#' @importMethodsFrom DelayedArray path
+#' @export
+#' @rdname BPCellsMask
+methods::setMethod("path", "BPCellsMaskSeed", function(object) {
+    c(path(object@matrix), path(object@mask))
+})
+
+#' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @export
 #' @rdname BPCellsMask
 methods::setMethod(
     "[", "BPCellsMaskSeed",
     function(x, i, j, ..., drop = FALSE) {
-        BPCellsSubsetSeed(methods::callNextMethod())
+        BPCellsSeed(methods::callNextMethod())
     }
 )
 
-#' @export
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsMask
-methods::setMethod("path", "BPCellsMaskSeed", function(object) {
-    c(path(object@matrix), path(object@mask))
-})
-
 #####################   BPCellsMaskMatrix   #######################
-#' Convert the type of a BPCells matrix
+#' Mask matrix entries to zero
 #'
-#' @param object A `BPCellsSeed` object.
+#' Set matrix entries to zero given a mask matrix of the same dimensions.
+#' Normally, non-zero values in the mask will set the matrix entry to zero. If
+#' inverted, zero values in the mask matrix will set the matrix entry to zero.
 #' @param ... Additional parameters passed into specific methods.
 #' @export
 #' @name mask_matrix
@@ -94,26 +100,38 @@ methods::setGeneric(
 )
 
 #' @param object A [BPCellsSeed] or [BPCellsMatrix] object.
-#' @param mask Mask matrix (A [BPCellsSeed] or [BPCellsMatrix] object).
-#' @return A [BPCellsMaskMatrix][BPCellsMaskMatrix] object.
+#' @param mask Mask matrix, A [BPCellsSeed] or [BPCellsMatrix] object.
+#' Additionally, a matrix-like object which can be coerced into
+#' [dgCMatrix][Matrix::dgCMatrix-class].
+#' @param invert A bool, indicates whether revert the mask.
+#' @return A [BPCellsMaskSeed][BPCellsMask] or [BPCellsMatrix][BPCellsMask]
+#' object.
 #' @seealso [mask_matrix][BPCells::mask_matrix]
 #' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname mask_matrix
 methods::setMethod(
-    "mask_matrix",
-    c(object = "BPCellsSeed", mask = "BPCellsSeedOrdgCMatrix"),
+    "mask_matrix", c(object = "BPCellsSeed", mask = "BPCellsSeed"),
     function(object, mask, invert = FALSE) {
-        seed <- BPCells::mask_matrix(object, mask = mask, invert = invert)
-        BPCellsMaskSeed(seed)
+        seed <- BPCells:::mask_matrix(object, mask = mask, invert = invert)
+        BPCellsSeed(seed)
     }
 )
 
 #' @export
 #' @rdname mask_matrix
 methods::setMethod(
-    "mask_matrix",
-    c(object = "BPCellsSeed", mask = "BPCellsMatrix"),
+    "mask_matrix", c(object = "BPCellsSeed", mask = "dgCMatrix"),
+    function(object, mask, invert = FALSE) {
+        seed <- BPCells:::mask_matrix(object, mask = mask, invert = invert)
+        BPCellsSeed(seed)
+    }
+)
+
+#' @export
+#' @rdname mask_matrix
+methods::setMethod(
+    "mask_matrix", c(object = "BPCellsSeed", mask = "BPCellsMatrix"),
     function(object, mask, invert = FALSE) {
         mask_matrix(object, mask = mask@seed, invert = invert)
     }
@@ -122,42 +140,54 @@ methods::setMethod(
 #' @export
 #' @rdname mask_matrix
 methods::setMethod(
-    "mask_matrix",
-    c(object = "BPCellsMatrix", mask = "BPCellsSeedOrdgCMatrix"),
+    "mask_matrix", c(object = "BPCellsSeed", mask = "ANY"),
     function(object, mask, invert = FALSE) {
-        BPCellsMaskArray(mask_matrix(object@seed, mask = mask, invert = invert))
+        mask_matrix(object, mask = coerce_dgCMatrix(mask), invert = invert)
     }
 )
 
 #' @export
 #' @rdname mask_matrix
 methods::setMethod(
-    "mask_matrix",
-    c(object = "BPCellsMatrix", mask = "BPCellsMatrix"),
+    "mask_matrix", c(object = "BPCellsMatrix", mask = "BPCellsSeed"),
     function(object, mask, invert = FALSE) {
-        seed <- mask_matrix(object@seed, mask = mask@seed, invert = invert)
-        BPCellsMaskArray(seed)
+        DelayedArray(mask_matrix(object@seed, mask = mask, invert = invert))
+    }
+)
+
+#' @export
+#' @rdname mask_matrix
+methods::setMethod(
+    "mask_matrix", c(object = "BPCellsMatrix", mask = "dgCMatrix"),
+    function(object, mask, invert = FALSE) {
+        DelayedArray(mask_matrix(object@seed, mask = mask, invert = invert))
+    }
+)
+
+#' @export
+#' @rdname mask_matrix
+methods::setMethod(
+    "mask_matrix", c(object = "BPCellsMatrix", mask = "BPCellsMatrix"),
+    function(object, mask, invert = FALSE) {
+        mask_matrix(object, mask = mask@seed, invert = invert)
+    }
+)
+
+#' @export
+#' @rdname mask_matrix
+methods::setMethod(
+    "mask_matrix", c(object = "BPCellsMatrix", mask = "ANY"),
+    function(object, mask, invert = FALSE) {
+        mask_matrix(object, mask = coerce_dgCMatrix(mask), invert = invert)
     }
 )
 
 #' @export
 methods::setMethod(
-    "mask_matrix",
-    c(object = "BPCellsMatrix", mask = "ANY"),
+    "mask_matrix", c(object = "ANY", mask = "ANY"),
     function(object, mask, invert = FALSE) {
         cli::cli_abort(
-            "{.arg mask} must be a {.cls BPCellsSeed} object, {.cls BPCellsMatrix} object or a {.cls dgCMatrix} object"
-        )
-    }
-)
-
-#' @export
-methods::setMethod(
-    "mask_matrix",
-    c(object = "BPCellsSeed", mask = "ANY"),
-    function(object, mask, invert = FALSE) {
-        cli::cli_abort(
-            "{.arg mask} must be a {.cls BPCellsSeed} object, {.cls BPCellsMatrix} object or a {.cls dgCMatrix} object"
+            "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"
         )
     }
 )

@@ -1,5 +1,9 @@
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
+get_class <- function(name) {
+    asNamespace("BPCells")[[paste0(".__C__", name)]]
+}
+
 extract_bpcells_array <- function(x, index) {
     if (length(index) > 2L) {
         cli::cli_abort(c(

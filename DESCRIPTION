@@ -20,7 +20,7 @@ Imports:
     rlang (>= 1.1.0),
     S4Vectors
 Remotes: 
-    Yunuuuu/BPCells
+    bnprks/BPCells
 Suggests: 
     knitr,
     rmarkdown,
@@ -41,6 +41,7 @@ Collate:
     'Class-Multiply.R'
     'Class-RenameDims.R'
     'Class-Subset.R'
+    'Class-dgCMatrix.R'
     'import-standalone-assert.R'
     'import-standalone-cli.R'
     'import-standalone-obj-type.R'

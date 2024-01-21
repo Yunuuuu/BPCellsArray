@@ -8,11 +8,10 @@
 #' Usually, you shouldn't use this class directly, instead, you should use
 #' [dimnames<-] to create a `BPCellsRenameDimsSeed` object.
 #'
-#' @importClassesFrom BPCells RenameDims
 #' @export
 #' @name BPCellsRenameDims
 methods::setClass("BPCellsRenameDimsSeed",
-    contains = c("BPCellsSeed", "RenameDims"),
+    contains = c("BPCellsSeed", get_class("RenameDims")),
     slots = list(matrix = "BPCellsSeed")
 )
 

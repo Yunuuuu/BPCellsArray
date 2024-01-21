@@ -12,10 +12,9 @@
 #' @param y A [BPCellsSeed] object or matrx-like object which can be coerced
 #'   into a [dgCMatrix][Matrix::dgCMatrix-class].
 #' @param ... Additional arguments passed to specific methods.
-#' @importClassesFrom BPCells IterableMatrix
 #' @export
 #' @name BPCellsSeed
-methods::setClass("BPCellsSeed", contains = "IterableMatrix")
+methods::setClass("BPCellsSeed", contains = get_class("IterableMatrix"))
 
 #' @return
 #'  - `BPCellsSeed`: A [BPCellsSeed] object.
@@ -31,6 +30,16 @@ methods::setMethod("BPCellsSeed", "BPCellsSeed", function(x, ...) {
     rlang::check_dots_empty()
     x
 })
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "BPCellsSeed", "Iterable_dgCMatrix_wrapper",
+    function(x, ...) {
+        rlang::check_dots_empty()
+        BPCellsdgCMatrixSeed(x = x)
+    }
+)
 
 #' @export
 #' @rdname BPCellsSeed
@@ -53,12 +62,18 @@ methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x, ...) {
     BPCellsMultiplySeed(x = x)
 })
 
-
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "RenameDims", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsRenameDimsSeed(x = x)
+})
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "MatrixMask", function(x, ...) {
+    rlang::check_dots_empty()
+    BPCellsMaskSeed(x = x)
 })
 
 #' @export
