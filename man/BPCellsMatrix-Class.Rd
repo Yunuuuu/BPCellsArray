@@ -5,8 +5,8 @@
 %   R/Transform-min_by_row.R, R/Transform-min_scalar.R, R/Transform-pow.R,
 %   R/Transform-pow_slow.R
 \docType{class}
-\name{BPCellsMatrix}
-\alias{BPCellsMatrix}
+\name{BPCellsMatrix-Class}
+\alias{BPCellsMatrix-Class}
 \alias{show,BPCellsMatrix-method}
 \alias{t,BPCellsMatrix-method}
 \alias{[,BPCellsMatrix,ANY,ANY,ANY-method}
@@ -198,6 +198,8 @@ into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 \item{ignore.mcols}{Ignored.}
 
 \item{check}{Ignored.}
+
+\item{digits}{Integer indicating the number of decimal places}
 
 \item{values}{A positive atomic numeric.}
 }

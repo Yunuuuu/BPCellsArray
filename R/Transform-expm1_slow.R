@@ -71,7 +71,7 @@ methods::setMethod("expm1_slow", "BPCellsSeed", function(x) {
 })
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("expm1_slow", "BPCellsMatrix", function(x) {
     DelayedArray(expm1_slow(x@seed))
 })

@@ -4,13 +4,12 @@
 #' [DelayedMatrix][DelayedArray::DelayedMatrix] object. The purpose for
 #' `BPCellsMatrix` object is to provide the common methods for all Delayed
 #' BPCells matrix.
-
 #' @param ...
 #'  - `rbind` and `arbind`: A list of `BPCellsMatrix` objects.
 #'  - `rbind2` and `[`: Not used currently.
 #' @importClassesFrom DelayedArray DelayedMatrix
 #' @export
-#' @name BPCellsMatrix
+#' @name BPCellsMatrix-Class
 #' @include Class-BPCellsSeed.R
 methods::setClass("BPCellsMatrix",
     contains = "DelayedMatrix",
@@ -20,7 +19,7 @@ methods::setClass("BPCellsMatrix",
 #' @param object A `BPCellsMatrix` object.
 #' @importMethodsFrom methods show
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("show", "BPCellsMatrix", function(object) {
     show_bpcells(object@seed, "DelayedMatrix", class(object))
 })
@@ -33,7 +32,7 @@ methods::setMethod("show", "BPCellsMatrix", function(object) {
 #' - `t`: A [BPCellsMatrix] object.
 #' @importMethodsFrom DelayedArray t
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("t", "BPCellsMatrix", function(x) {
     DelayedArray(t(x@seed))
 })
@@ -43,7 +42,7 @@ methods::setMethod("t", "BPCellsMatrix", function(x) {
 #' @return
 #' - `[`: A [BPCellsMatrix] object.
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "[", "BPCellsMatrix",
     function(x, i, j, ..., drop = FALSE) {
@@ -55,7 +54,7 @@ methods::setMethod(
 #' @return
 #' - `[<-`: A [BPCellsMatrix] object.
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "[<-", "BPCellsMatrix",
     function(x, i, j, ..., value) {
@@ -73,7 +72,7 @@ methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 #' - `dimnames<-`: A [BPCellsRenameDimsMatrix][BPCellsRenameDims] object.
 #' @importMethodsFrom DelayedArray dimnames<-
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "dimnames<-",
     c(x = "BPCellsMatrix", value = "ListOrNULL"), function(x, value) {
@@ -87,7 +86,7 @@ methods::setMethod(
 #' @importMethodsFrom DelayedArray rowSums
 #' @return * `rowSums()`: vector of row sums
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
     rowSums(x@seed)
 })
@@ -95,7 +94,7 @@ methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
 #' @importMethodsFrom DelayedArray colSums
 #' @return * `colSums()`: vector of col sums
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("colSums", c(x = "BPCellsMatrix"), function(x) {
     colSums(x@seed)
 })
@@ -103,7 +102,7 @@ methods::setMethod("colSums", c(x = "BPCellsMatrix"), function(x) {
 #' @importMethodsFrom DelayedArray rowMeans
 #' @return * `rowMeans()`: vector of row means
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("rowMeans", c(x = "BPCellsMatrix"), function(x) {
     rowMeans(x@seed)
 })
@@ -111,7 +110,7 @@ methods::setMethod("rowMeans", c(x = "BPCellsMatrix"), function(x) {
 #' @importMethodsFrom DelayedArray colMeans
 #' @return * `colMeans()`: vector of col means
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
     colMeans(x@seed)
 })
@@ -124,7 +123,7 @@ methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
 #'   matrix (matrix and numeric methods).
 #' @importMethodsFrom DelayedArray %*%
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
         DelayedArray(x@seed %*% y@seed)
@@ -132,7 +131,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
         DelayedArray(x@seed %*% y)
@@ -140,7 +139,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
         DelayedArray(x %*% y@seed)
@@ -148,7 +147,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
         DelayedArray(x@seed %*% methods::as(y, "dgCMatrix"))
@@ -156,7 +155,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
         DelayedArray(methods::as(x, "dgCMatrix") %*% y@seed)
@@ -166,7 +165,7 @@ methods::setMethod(
 #################### Matrix multiplication ########################
 # following methods return dense matrix
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
         x@seed %*% y
@@ -174,7 +173,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
         x %*% y@seed
@@ -182,7 +181,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "numeric"), function(x, y) {
         x@seed %*% y
@@ -190,7 +189,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "%*%", c(x = "numeric", y = "BPCellsMatrix"), function(x, y) {
         x %*% y@seed
@@ -203,7 +202,7 @@ methods::setMethod(
 #' - `crossprod(x, y)`: Matrix Crossproduct, a [BPCellsMatrix] object or a dense
 #'   matrix (matrix and numeric methods).
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
         t(x) %*% y
@@ -211,7 +210,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
         t(x) %*% y
@@ -219,7 +218,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "crossprod", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
         t(x) %*% y
@@ -227,7 +226,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
         t(x) %*% methods::as(y, "dgCMatrix")
@@ -235,7 +234,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "crossprod", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
         t(methods::as(x, "dgCMatrix")) %*% y
@@ -243,7 +242,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "crossprod", c(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
         t(x) %*% y
@@ -251,7 +250,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "crossprod", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
         t(x) %*% y
@@ -268,7 +267,7 @@ methods::setMethod(
 #'   [BPCellsRowBindMatrixMatrix][BPCellsBindMatrix] object.
 #' @importMethodsFrom methods rbind2
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "rbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
     function(x, y, ..., threads = 0L) {
@@ -304,7 +303,7 @@ methods::setMethod(
 #' @param deparse.level Ignored, used by generic methods.
 #' @importMethodsFrom DelayedArray rbind
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "rbind", "BPCellsMatrix",
     function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
@@ -316,7 +315,7 @@ methods::setMethod(
 
 #' @importMethodsFrom DelayedArray arbind
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L) {
     merge_BPCellsMatrices(
         list = pack_BPCellsMatrices(...), .fn = rbind2, threads = threads
@@ -328,7 +327,7 @@ methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L) {
 #' @param check Ignored.
 #' @importMethodsFrom DelayedArray bindROWS
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "bindROWS", "BPCellsMatrix",
     function(x, objects = list(), use.names = TRUE,
@@ -343,7 +342,7 @@ methods::setMethod(
 #################### cbind ########################
 #' @importMethodsFrom methods cbind2
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "cbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
     function(x, y, ..., threads = 0L) {
@@ -377,7 +376,7 @@ methods::setMethod(
 
 #' @importMethodsFrom DelayedArray cbind
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "cbind", "BPCellsMatrix",
     function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
@@ -389,7 +388,7 @@ methods::setMethod(
 
 #' @importMethodsFrom DelayedArray acbind
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("acbind", "BPCellsMatrix", function(..., threads = 0L, use.first.dimnames = TRUE) {
     merge_BPCellsMatrices(
         list = pack_BPCellsMatrices(...), .fn = cbind2, threads = threads
@@ -398,7 +397,7 @@ methods::setMethod("acbind", "BPCellsMatrix", function(..., threads = 0L, use.fi
 
 #' @importMethodsFrom S4Vectors bindCOLS
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "bindCOLS", "BPCellsMatrix",
     function(x, objects = list(), use.names = TRUE,

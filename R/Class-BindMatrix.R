@@ -23,7 +23,7 @@
 #' - `matrixClass`: A `BPCellsColBindMatrixArray` or `BPCellsRowBindMatrixArray`
 #'   object.
 #' @seealso [BPCellsSeed]
-#' @name BPCellsBindMatrix-Class
+#' @name BPCellsBindMatrix
 NULL
 
 methods::setClass("BPCellsColBindMatrixSeed",
@@ -47,7 +47,7 @@ methods::setValidity("BPCellsColBindMatrixSeed", function(object) {
 #' @return
 #' - `BPCellsColBindMatrixSeed`: A `BPCellsColBindMatrixSeed` object.
 #' - `BPCellsRowBindMatrixSeed`: A `BPCellsRowBindMatrixSeed` object.
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 #' @noRd
 BPCellsColBindMatrixSeed <- function(x) {
     assert_s4_class(x, "ColBindMatrices")
@@ -57,7 +57,7 @@ BPCellsColBindMatrixSeed <- function(x) {
 
 #' @importClassesFrom DelayedArray DelayedArray
 #' @export
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 methods::setClass("BPCellsColBindMatrixArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsColBindMatrixSeed")
@@ -71,7 +71,7 @@ methods::setClass("BPCellsColBindMatrixArray",
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 methods::setMethod(
     "DelayedArray", "BPCellsColBindMatrixSeed",
     function(seed) new_DelayedArray(seed, Class = "BPCellsColBindMatrixArray")
@@ -81,13 +81,13 @@ methods::setMethod(
 #' - `BPCellsColBindMatrixArray`: A `BPCellsColBindMatrixMatrix` object.
 #' - `BPCellsColBindMatrixArray`: A `BPCellsRowBindMatrixMatrix` object.
 #' @export
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 BPCellsColBindMatrixArray <- function(x) {
     DelayedArray(BPCellsColBindMatrixSeed(x))
 }
 
 #' @export
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 methods::setClass("BPCellsColBindMatrixMatrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsColBindMatrixSeed")
@@ -95,7 +95,7 @@ methods::setClass("BPCellsColBindMatrixMatrix",
 
 #' @export
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 methods::setMethod("matrixClass", "BPCellsColBindMatrixArray", function(x) {
     "BPCellsColBindMatrixMatrix"
 })
@@ -121,7 +121,7 @@ methods::setMethod(
 #' @return
 #' - `path`: A character file paths.
 #' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 #' @noRd
 methods::setMethod("path", "BPCellsColBindMatrixSeed", function(object) {
     unlist(lapply(object@matrix_list, path),
@@ -134,7 +134,7 @@ methods::setMethod("path", "BPCellsColBindMatrixSeed", function(object) {
 ############################################################
 ############################################################
 ############################################################
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 #' @noRd
 methods::setClass("BPCellsRowBindMatrixSeed",
     contains = c("BPCellsSeed", get_class("RowBindMatrices"))
@@ -154,7 +154,7 @@ methods::setValidity("BPCellsRowBindMatrixSeed", function(object) {
     return(TRUE)
 })
 
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 #' @noRd
 BPCellsRowBindMatrixSeed <- function(x) {
     assert_s4_class(x, "RowBindMatrices")
@@ -164,7 +164,7 @@ BPCellsRowBindMatrixSeed <- function(x) {
 
 #' @importClassesFrom DelayedArray DelayedArray
 #' @export
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 methods::setClass("BPCellsRowBindMatrixArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsRowBindMatrixSeed")
@@ -173,20 +173,20 @@ methods::setClass("BPCellsRowBindMatrixArray",
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 methods::setMethod(
     "DelayedArray", "BPCellsRowBindMatrixSeed",
     function(seed) new_DelayedArray(seed, Class = "BPCellsRowBindMatrixArray")
 )
 
 #' @export
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 BPCellsRowBindMatrixArray <- function(x) {
     DelayedArray(BPCellsRowBindMatrixSeed(x))
 }
 
 #' @export
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 methods::setClass("BPCellsRowBindMatrixMatrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsRowBindMatrixSeed")
@@ -194,7 +194,7 @@ methods::setClass("BPCellsRowBindMatrixMatrix",
 
 #' @export
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 methods::setMethod("matrixClass", "BPCellsRowBindMatrixArray", function(x) {
     "BPCellsRowBindMatrixMatrix"
 })
@@ -213,7 +213,7 @@ methods::setMethod(
 )
 
 #' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsBindMatrix-Class
+#' @rdname BPCellsBindMatrix
 #' @noRd
 methods::setMethod("path", "BPCellsRowBindMatrixSeed", function(object) {
     unlist(lapply(object@matrix_list, path),

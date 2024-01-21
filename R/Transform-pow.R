@@ -68,7 +68,7 @@ methods::setMethod("^", "BPCellsSeed", function(e1, e2) {
 })
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("^", "BPCellsMatrix", function(e1, e2) {
     e1 <- e1@seed
     DelayedArray(e1^e2)

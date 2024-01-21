@@ -52,8 +52,8 @@ in memory before calling writes to disk.}
 }
 \value{
 \itemize{
-\item \code{BPCellsSeed}: A \link{BPCellsSeed} object.
-\item \code{BPCellsMatrix}: A \link{BPCellsMatrix} object.
+\item \code{BPCellsSeed}: A \link{BPCellsSeed-Class} object.
+\item \code{BPCellsMatrix}: A \link{BPCellsMatrix-Class} object.
 }
 }
 \description{

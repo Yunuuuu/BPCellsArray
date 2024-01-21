@@ -69,7 +69,7 @@ methods::setMethod("log1p_slow", "BPCellsSeed", function(x) {
 })
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("log1p_slow", "BPCellsMatrix", function(x) {
     DelayedArray(log1p_slow(x@seed))
 })

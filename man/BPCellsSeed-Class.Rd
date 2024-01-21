@@ -216,6 +216,8 @@ details.}
 
 \item{check}{Ignored.}
 
+\item{digits}{Integer indicating the number of decimal places}
+
 \item{values}{A positive atomic numeric.}
 }
 \value{

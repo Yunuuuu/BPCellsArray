@@ -73,7 +73,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "pmin_scalar", "BPCellsMatrix", function(object, value) {
         DelayedArray(pmin_scalar(mat = object, val = value))

@@ -88,7 +88,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("binarize", "BPCellsMatrix", function(object, ...) {
     DelayedArray(binarize(object = object@seed, ...))
 })

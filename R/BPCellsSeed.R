@@ -5,12 +5,13 @@
 #'  - `BPCellsSeed`: Additional arguments passed to specific methods.
 #'  - `BPCellsMatrix`: Additional arguments passed to `BPCellsSeed`.
 #' @return
-#'  - `BPCellsSeed`: A [BPCellsSeed] object.
-#'  - `BPCellsMatrix`: A [BPCellsMatrix] object.
-#' @export
+#'  - `BPCellsSeed`: A [BPCellsSeed-Class] object.
+#'  - `BPCellsMatrix`: A [BPCellsMatrix-Class] object.
 #' @name BPCellsSeed
-#' @aliases BPCellsMatrix
-#' @include Class-BPCellsSeed.R
+NULL
+
+#' @export
+#' @rdname BPCellsSeed
 BPCellsMatrix <- function(x, ...) {
     DelayedArray(BPCellsSeed(x = x, ...))
 }

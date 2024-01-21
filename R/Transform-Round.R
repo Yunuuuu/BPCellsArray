@@ -60,6 +60,8 @@ methods::setMethod("matrixClass", "BPCellsTransformRoundArray", function(x) {
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
+
+#' @param digits Integer indicating the number of decimal places 
 #' @export
 #' @rdname BPCellsSeed-Class
 methods::setMethod(
@@ -68,8 +70,9 @@ methods::setMethod(
     }
 )
 
+#' @inheritParams BPCellsSeed-Class
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod(
     "round", "BPCellsMatrix", function(x, digits = 0) {
         DelayedArray(round(x = x, digits = digits))

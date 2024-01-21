@@ -71,7 +71,7 @@ methods::setMethod("pow_slow", "BPCellsSeed", function(e1, e2) {
 })
 
 #' @export
-#' @rdname BPCellsMatrix
+#' @rdname BPCellsMatrix-Class
 methods::setMethod("^", c("BPCellsMatrix", "numeric"), function(e1, e2) {
     DelayedArray(pow_slow(e1@seed, e2))
 })
