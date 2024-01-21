@@ -104,6 +104,7 @@ methods::setMethod("matrixClass", "BPCellsColBindMatrixArray", function(x) {
 ###################################################################
 
 
+#' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix
 #' @return
 #' - `[`: Usually a `BPCellsSubsetSeed` object, but not always

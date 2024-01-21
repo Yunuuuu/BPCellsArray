@@ -78,6 +78,7 @@ methods::setMethod("path", "BPCellsMultiplySeed", function(object) {
 # it's not necessary to re-dispatch the "[" method for `BPCellsMultiplySeed`
 # class since the `MatrixMultiply` method will use `[` method of `@left` and
 # `@right`. Here, we just re-dispatch it to keep consistent.
+#' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @export

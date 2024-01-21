@@ -125,7 +125,11 @@ BPCellsMatrix(x = x, ...)
 which can be coerced into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.
 }}
 
-\item{...}{Ignored currently.}
+\item{...}{\itemize{
+\item \code{BPCellsMatrix}: additional arguments passed to \link{BPCellsSeed}.
+\item \code{rbind} and \code{arbind}: A list of \code{BPCellsMatrix} objects.
+\item \code{rbind2} and \code{[}: Not used currently.
+}}
 
 \item{object}{A \code{BPCellsMatrix} object.}
 

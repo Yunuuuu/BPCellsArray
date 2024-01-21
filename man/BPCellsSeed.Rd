@@ -9,6 +9,7 @@
 \alias{BPCellsSeed,ConvertMatrixType-method}
 \alias{BPCellsSeed,MatrixMultiply-method}
 \alias{BPCellsSeed,RenameDims-method}
+\alias{BPCellsSeed,MatrixRankTransform-method}
 \alias{BPCellsSeed,MatrixMask-method}
 \alias{BPCellsSeed,ColBindMatrices-method}
 \alias{BPCellsSeed,RowBindMatrices-method}
@@ -63,6 +64,8 @@ BPCellsSeed(x, ...)
 \S4method{BPCellsSeed}{MatrixMultiply}(x, ...)
 
 \S4method{BPCellsSeed}{RenameDims}(x, ...)
+
+\S4method{BPCellsSeed}{MatrixRankTransform}(x, ...)
 
 \S4method{BPCellsSeed}{MatrixMask}(x, ...)
 

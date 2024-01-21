@@ -62,7 +62,7 @@ object.}
 
 \item{i, j}{Row and Column index.}
 
-\item{...}{Ignored currently.}
+\item{...}{Ignored, Not used curretly.}
 
 \item{drop}{Ignored, always be \code{FALSE}.}
 

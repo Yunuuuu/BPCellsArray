@@ -55,6 +55,7 @@ methods::setMethod("path", "BPCellsdgCMatrixSeed", function(object) {
     NULL
 })
 
+#' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @noRd

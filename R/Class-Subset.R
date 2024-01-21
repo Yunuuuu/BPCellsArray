@@ -77,6 +77,7 @@ methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
 # it's not necessary to re-dispatch the "[" method for `BPCellsSubsetSeed` class
 # since the `MatrixSubset` method will use `[` method of `@matrix`. Here, we
 # just re-dispatch it to keep consistent.
+#' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @export

@@ -74,6 +74,7 @@ methods::setMethod("path", "BPCellsMaskSeed", function(object) {
     c(path(object@matrix), path(object@mask))
 })
 
+#' @param ... Ignored, Not used curretly.
 #' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @export
