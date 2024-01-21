@@ -10,6 +10,7 @@
 \alias{BPCellsMultiplyMatrix-class}
 \alias{matrixClass,BPCellsMultiplyArray-method}
 \alias{path,BPCellsMultiplySeed-method}
+\alias{[,BPCellsDirSeed,ANY,ANY,ANY-method}
 \title{Delayed BPCells MatrixMultiply}
 \usage{
 BPCellsMultiplySeed(x)
@@ -21,11 +22,21 @@ BPCellsMultiplyArray(x)
 \S4method{matrixClass}{BPCellsMultiplyArray}(x)
 
 \S4method{path}{BPCellsMultiplySeed}(object)
+
+\S4method{[}{BPCellsDirSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
 \item{x}{A \code{MatrixMultiply} object.}
 
 \item{seed}{A \code{BPCellsMultiplySeed} object.}
+
+\item{object}{A BPCellsMultiplySeed object.}
+
+\item{i, j}{Row and Column index.}
+
+\item{...}{Ignored currently.}
+
+\item{drop}{Ignored, always be \code{FALSE}.}
 }
 \description{
 The \code{BPCellsMultiplyArray} class provides a

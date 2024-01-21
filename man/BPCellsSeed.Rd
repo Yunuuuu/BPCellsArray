@@ -16,26 +16,27 @@
 \alias{is_sparse,BPCellsSeed-method}
 \alias{extract_array,BPCellsSeed-method}
 \alias{extract_sparse_array,BPCellsSeed-method}
+\alias{dimnames<-,BPCellsSeed,ListOrNULL-method}
 \alias{t,BPCellsSeed-method}
 \alias{[<-,BPCellsSeed,ANY,ANY,ANY-method}
-\alias{matrix_multi}
-\alias{matrix_multi,BPCellsSeed,BPCellsSeed-method}
-\alias{matrix_multi,BPCellsSeed,dgCMatrix-method}
-\alias{matrix_multi,dgCMatrix,BPCellsSeed-method}
-\alias{matrix_multi,BPCellsSeed,ANY-method}
-\alias{matrix_multi,ANY,BPCellsSeed-method}
 \alias{\%*\%,BPCellsSeed,BPCellsSeed-method}
 \alias{\%*\%,BPCellsSeed,dgCMatrix-method}
 \alias{\%*\%,dgCMatrix,BPCellsSeed-method}
 \alias{\%*\%,BPCellsSeed,ANY-method}
 \alias{\%*\%,ANY,BPCellsSeed-method}
+\alias{\%*\%,BPCellsSeed,matrix-method}
+\alias{\%*\%,matrix,BPCellsSeed-method}
+\alias{\%*\%,BPCellsSeed,numeric-method}
+\alias{\%*\%,numeric,BPCellsSeed-method}
 \alias{crossprod,BPCellsSeed,BPCellsSeed-method}
 \alias{crossprod,BPCellsSeed,dgCMatrix-method}
 \alias{crossprod,dgCMatrix,BPCellsSeed-method}
-\alias{crossprod,BPCellsSeed,matrix-method}
-\alias{crossprod,matrix,BPCellsSeed-method}
 \alias{crossprod,BPCellsSeed,ANY-method}
 \alias{crossprod,ANY,BPCellsSeed-method}
+\alias{crossprod,BPCellsSeed,matrix-method}
+\alias{crossprod,matrix,BPCellsSeed-method}
+\alias{crossprod,BPCellsSeed,numeric-method}
+\alias{crossprod,numeric,BPCellsSeed-method}
 \title{Low-level Base Class for Delayed BPCells matrix}
 \usage{
 BPCellsSeed(x, ...)
@@ -66,21 +67,11 @@ BPCellsSeed(x, ...)
 
 \S4method{extract_sparse_array}{BPCellsSeed}(x, index)
 
+\S4method{dimnames}{BPCellsSeed,ListOrNULL}(x) <- value
+
 \S4method{t}{BPCellsSeed}(x)
 
 \S4method{[}{BPCellsSeed,ANY,ANY,ANY}(x, i, j, ...) <- value
-
-matrix_multi(x, y, ...)
-
-\S4method{matrix_multi}{BPCellsSeed,BPCellsSeed}(x, y, ...)
-
-\S4method{matrix_multi}{BPCellsSeed,dgCMatrix}(x, y)
-
-\S4method{matrix_multi}{dgCMatrix,BPCellsSeed}(x, y)
-
-\S4method{matrix_multi}{BPCellsSeed,ANY}(x, y)
-
-\S4method{matrix_multi}{ANY,BPCellsSeed}(x, y)
 
 \S4method{\%*\%}{BPCellsSeed,BPCellsSeed}(x, y)
 
@@ -92,35 +83,42 @@ matrix_multi(x, y, ...)
 
 \S4method{\%*\%}{ANY,BPCellsSeed}(x, y)
 
+\S4method{\%*\%}{BPCellsSeed,matrix}(x, y)
+
+\S4method{\%*\%}{matrix,BPCellsSeed}(x, y)
+
+\S4method{\%*\%}{BPCellsSeed,numeric}(x, y)
+
+\S4method{\%*\%}{numeric,BPCellsSeed}(x, y)
+
 \S4method{crossprod}{BPCellsSeed,BPCellsSeed}(x, y)
 
 \S4method{crossprod}{BPCellsSeed,dgCMatrix}(x, y)
 
 \S4method{crossprod}{dgCMatrix,BPCellsSeed}(x, y)
 
+\S4method{crossprod}{BPCellsSeed,ANY}(x, y)
+
+\S4method{crossprod}{ANY,BPCellsSeed}(x, y)
+
 \S4method{crossprod}{BPCellsSeed,matrix}(x, y)
 
 \S4method{crossprod}{matrix,BPCellsSeed}(x, y)
 
-\S4method{crossprod}{BPCellsSeed,ANY}(x, y)
+\S4method{crossprod}{BPCellsSeed,numeric}(x, y)
 
-\S4method{crossprod}{ANY,BPCellsSeed}(x, y)
+\S4method{crossprod}{numeric,BPCellsSeed}(x, y)
 }
 \arguments{
 \item{x}{A \link{BPCellsSeed} object. For some functions:
 \itemize{
-\item \code{BPCellsSeed}: a \link{BPCellsSeed} object, or other BPCells matrix object.
-\item \code{matrix_multi}, \code{\%*\%}, and \code{crossprod}: A \link{BPCellsSeed} object or
-matrx-like object which can be coerced into a
-\link[Matrix:dgCMatrix-class]{dgCMatrix}.
+\item \code{BPCellsSeed}: A \link{BPCellsSeed} object, or other BPCells \code{IterableMatrix}
+object.
+\item \code{\%*\%}, and \code{crossprod}: A \link{BPCellsSeed} object or matrx-like object which
+can be coerced into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.
 }}
 
-\item{...}{Additional arguments passed to specific methods.
-For some functions:
-\itemize{
-\item \code{matrix_multi}: other arguments passed to
-\link[BPCells:transpose_storage_order]{transpose_storage_order}.
-}}
+\item{...}{Additional arguments passed to specific methods.}
 
 \item{object}{A \code{BPCellsSeed} object.}
 
@@ -138,6 +136,12 @@ For some functions:
     Individual subscripts are allowed to contain duplicated indices.
   }
 
+\item{value}{\itemize{
+\item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
+\item \verb{[<-}: A matrix which can be coerced into
+\link[Matrix:dgCMatrix-class]{dgCMatrix}.
+}}
+
 \item{i, j}{Row and Column index.}
 
 \item{y}{A \link{BPCellsSeed} object or matrx-like object which can be coerced
@@ -145,15 +149,45 @@ into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 }
 \value{
 \itemize{
-\item \code{matrix_multi}: matrix multiplication, a \link{BPCellsSeed} object
+\item \code{BPCellsSeed}: A \link{BPCellsSeed} object.
 }
 
 \itemize{
-\item \code{x \%*\% y}: matrix multiplication, a \link{BPCellsSeed} object
+\item \code{type}: A string. For all BPCells matrix type of \code{float} and \code{double},
+always return \code{double} since R cannot differentiate 32-bit and 64-bit real
+number.
 }
 
 \itemize{
-\item \code{crossprod(x, y)}: Matrix Crossproduct, a \link{BPCellsSeed} object
+\item \code{is_sparse}: Always return \code{TRUE} for \code{BPCellsSeed} object.
+}
+
+\itemize{
+\item \code{extract_array}: A dense matrix.
+}
+
+\itemize{
+\item \code{extract_sparse_array}: A \link[DelayedArray:SparseArraySeed-class]{SparseArraySeed}
+object.
+}
+
+\itemize{
+\item \verb{dimnames<-}: A \link{BPCellsSeed} object, usually a \code{BPCellsRenameDimsSeed}
+object.
+}
+
+\itemize{
+\item \verb{[<-}: A \link{BPCellsSeed} object.
+}
+
+\itemize{
+\item \code{x \%*\% y}: matrix multiplication, a \link{BPCellsSeed} object or a dense
+matrix (matrix and numeric methods).
+}
+
+\itemize{
+\item \code{crossprod(x, y)}: Matrix Crossproduct, a \link{BPCellsSeed} object or a dense
+matrix (matrix and numeric methods).
 }
 }
 \description{

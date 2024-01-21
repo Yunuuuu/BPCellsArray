@@ -5,20 +5,173 @@
 \alias{BPCellsMatrix}
 \alias{show,BPCellsMatrix-method}
 \alias{t,BPCellsMatrix-method}
+\alias{[,BPCellsMatrix,ANY,ANY,ANY-method}
+\alias{[<-,BPCellsMatrix,ANY,ANY,ANY-method}
+\alias{dimnames<-,BPCellsMatrix,ListOrNULL-method}
+\alias{rowSums,BPCellsMatrix-method}
+\alias{colSums,BPCellsMatrix-method}
+\alias{rowMeans,BPCellsMatrix-method}
+\alias{colMeans,BPCellsMatrix-method}
+\alias{\%*\%,BPCellsMatrix,BPCellsMatrix-method}
+\alias{\%*\%,BPCellsMatrix,dgCMatrix-method}
+\alias{\%*\%,dgCMatrix,BPCellsMatrix-method}
+\alias{\%*\%,BPCellsMatrix,ANY-method}
+\alias{\%*\%,ANY,BPCellsMatrix-method}
+\alias{\%*\%,BPCellsMatrix,matrix-method}
+\alias{\%*\%,matrix,BPCellsMatrix-method}
+\alias{\%*\%,BPCellsMatrix,numeric-method}
+\alias{\%*\%,numeric,BPCellsMatrix-method}
+\alias{crossprod,BPCellsMatrix,BPCellsMatrix-method}
+\alias{crossprod,BPCellsMatrix,dgCMatrix-method}
+\alias{crossprod,dgCMatrix,BPCellsMatrix-method}
+\alias{crossprod,BPCellsMatrix,ANY-method}
+\alias{crossprod,ANY,BPCellsMatrix-method}
+\alias{crossprod,BPCellsMatrix,matrix-method}
+\alias{crossprod,matrix,BPCellsMatrix-method}
+\alias{rbind2,BPCellsMatrix,BPCellsMatrix-method}
+\alias{arbind,BPCellsMatrix-method}
+\alias{rbind,BPCellsMatrix-method}
+\alias{cbind2,BPCellsMatrix,BPCellsMatrix-method}
+\alias{acbind,BPCellsMatrix-method}
+\alias{cbind,BPCellsMatrix-method}
 \title{Base Class for Delayed BPCells matrix}
 \usage{
 \S4method{show}{BPCellsMatrix}(object)
 
 \S4method{t}{BPCellsMatrix}(x)
 
+\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+
+\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ...) <- value
+
+\S4method{dimnames}{BPCellsMatrix,ListOrNULL}(x) <- value
+
+\S4method{rowSums}{BPCellsMatrix}(x)
+
+\S4method{colSums}{BPCellsMatrix}(x)
+
+\S4method{rowMeans}{BPCellsMatrix}(x)
+
+\S4method{colMeans}{BPCellsMatrix}(x)
+
 \S4method{\%*\%}{BPCellsMatrix,BPCellsMatrix}(x, y)
+
+\S4method{\%*\%}{BPCellsMatrix,dgCMatrix}(x, y)
+
+\S4method{\%*\%}{dgCMatrix,BPCellsMatrix}(x, y)
+
+\S4method{\%*\%}{BPCellsMatrix,ANY}(x, y)
+
+\S4method{\%*\%}{ANY,BPCellsMatrix}(x, y)
+
+\S4method{\%*\%}{BPCellsMatrix,matrix}(x, y)
+
+\S4method{\%*\%}{matrix,BPCellsMatrix}(x, y)
+
+\S4method{\%*\%}{BPCellsMatrix,numeric}(x, y)
+
+\S4method{\%*\%}{numeric,BPCellsMatrix}(x, y)
+
+\S4method{crossprod}{BPCellsMatrix,BPCellsMatrix}(x, y)
+
+\S4method{crossprod}{BPCellsMatrix,dgCMatrix}(x, y)
+
+\S4method{crossprod}{dgCMatrix,BPCellsMatrix}(x, y)
+
+\S4method{crossprod}{BPCellsMatrix,ANY}(x, y)
+
+\S4method{crossprod}{ANY,BPCellsMatrix}(x, y)
+
+\S4method{crossprod}{BPCellsMatrix,matrix}(x, y)
+
+\S4method{crossprod}{matrix,BPCellsMatrix}(x, y)
+
+\S4method{rbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, ..., threads = 0L)
+
+\S4method{arbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE)
+
+\S4method{rbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+
+\S4method{cbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, ..., threads = 0L)
+
+\S4method{acbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE)
+
+\S4method{cbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
 }
 \arguments{
 \item{object}{A \code{BPCellsMatrix} object.}
+
+\item{x}{A \link{BPCellsMatrix} object. For following methods:
+\itemize{
+\item \code{\%*\%}, and \code{crossprod}: A \link{BPCellsMatrix} object or matrx-like object
+which can be coerced into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.
+}}
+
+\item{i, j}{Row and Column index.}
+
+\item{...}{Ignored currently.}
+
+\item{drop}{Ignored, always be \code{FALSE}.}
+
+\item{value}{\itemize{
+\item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
+\item \verb{[<-}: A matrix which can be coerced into
+\link[Matrix:dgCMatrix-class]{dgCMatrix}.
+}}
+
+\item{y}{A \link{BPCellsMatrix} object or matrx-like object which can be coerced
+into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
+
+\item{threads}{Set number of threads to use for sparse-dense multiply and
+\link[BPCells:matrix_stats]{matrix_stats}.}
+
+\item{use.first.dimnames}{Ignored, always be \code{TRUE} in BPCells.}
+
+\item{deparse.level}{Ignored, used by generic methods.}
 }
 \value{
 \itemize{
-\item \code{x \%*\% y}: Matrix products, a \link{BPCellsMatrixMultiplyMatrix} object
+\item \code{t}: A \link{BPCellsMatrix} object.
+}
+
+\itemize{
+\item \code{[}: A \link{BPCellsMatrix} object.
+}
+
+\itemize{
+\item \verb{[<-}: A \link{BPCellsMatrix} object.
+}
+
+\itemize{
+\item \verb{dimnames<-}: A \link{BPCellsMatrix} object, usually a \code{BPCellsRenameDimsMatrix}
+object.
+}
+
+\itemize{
+\item \code{rowSums()}: vector of row sums
+}
+
+\itemize{
+\item \code{colSums()}: vector of col sums
+}
+
+\itemize{
+\item \code{rowMeans()}: vector of row means
+}
+
+\itemize{
+\item \code{colMeans()}: vector of col means
+}
+
+\itemize{
+\item \code{x \%*\% y}: Matrix multiplication, a \link{BPCellsSeed} object or a dense
+matrix (matrix and numeric methods).
+}
+
+\itemize{
+\item \code{crossprod(x, y)}: Matrix Crossproduct, a \link{BPCellsSeed} object or a dense
+matrix (matrix and numeric methods).
+object
 }
 }
 \description{

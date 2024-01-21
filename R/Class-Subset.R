@@ -33,6 +33,7 @@ methods::setClass("BPCellsSubsetArray",
 #' @param seed A `BPCellsSubsetSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
+#' @export
 #' @rdname BPCellsSubset
 methods::setMethod(
     "DelayedArray", "BPCellsSubsetSeed",
@@ -52,8 +53,8 @@ methods::setClass("BPCellsSubsetMatrix",
     slots = c(seed = "BPCellsSubsetSeed")
 )
 
-#' @export
 #' @importMethodsFrom DelayedArray matrixClass
+#' @export
 #' @rdname BPCellsSubset
 methods::setMethod("matrixClass", "BPCellsSubsetArray", function(x) {
     "BPCellsSubsetMatrix"
@@ -63,9 +64,24 @@ methods::setMethod("matrixClass", "BPCellsSubsetArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 
-#' @export
+#' @param object A `BPCellsSubsetSeed` object.
 #' @importMethodsFrom DelayedArray path
+#' @export
 #' @rdname BPCellsSubset
 methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
     path(object@matrix)
 })
+
+#####################################################
+# it's not necessary to re-dispatch the "[" method for `BPCellsSubsetSeed` class
+# since the internal will use `[` method of `@matrix`
+# #' @inheritParams BPCellsMatrix
+# #' @importMethodsFrom BPCells [
+# #' @export
+# #' @rdname BPCellsSubset
+# methods::setMethod(
+#     "[", "BPCellsSubsetSeed",
+#     function(x, i, j, ..., drop = FALSE) {
+#         BPCellsSeed(methods::callNextMethod())
+#     }
+# )

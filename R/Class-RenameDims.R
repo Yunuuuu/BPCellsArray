@@ -35,6 +35,7 @@ methods::setClass("BPCellsRenameDimsArray",
 #' @param seed A `BPCellsRenameDimsSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
+#' @export
 #' @rdname BPCellsRenameDims
 methods::setMethod(
     "DelayedArray", "BPCellsRenameDimsSeed",
@@ -54,8 +55,8 @@ methods::setClass("BPCellsRenameDimsMatrix",
     slots = c(seed = "BPCellsRenameDimsSeed")
 )
 
-#' @export
 #' @importMethodsFrom DelayedArray matrixClass
+#' @export
 #' @rdname BPCellsRenameDims
 methods::setMethod("matrixClass", "BPCellsRenameDimsArray", function(x) {
     "BPCellsRenameDimsMatrix"
@@ -66,15 +67,14 @@ methods::setMethod("matrixClass", "BPCellsRenameDimsArray", function(x) {
 ###################################################################
 
 #' @param object A `BPCellsRenameDimsSeed` object.
-#' @export
 #' @importMethodsFrom DelayedArray path
+#' @export
 #' @rdname BPCellsRenameDims
 methods::setMethod("path", "BPCellsRenameDimsSeed", function(object) {
     path(object@matrix)
 })
 
-#' @param i,j Row and Column index.
-#' @param drop Not used, always be `FALSE`.
+#' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @export
 #' @rdname BPCellsRenameDims

@@ -34,9 +34,9 @@ coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller
 }
 
 mock_matrix <- function(ngenes, ncells) {
-    cell.means <- 2^runif(ngenes, 2, 10)
+    cell.means <- 2^stats::runif(ngenes, 2, 10)
     cell.disp <- 100 / cell.means + 0.5
-    cell.data <- matrix(rnbinom(ngenes * ncells,
+    cell.data <- matrix(stats::rnbinom(ngenes * ncells,
         mu = cell.means,
         size = 1 / cell.disp
     ), ncol = ncells)

@@ -34,15 +34,16 @@ BPCellsConvertArray(x)
 
 \item{i, j}{Row and Column index.}
 
-\item{drop}{Not used, always be \code{FALSE}.}
+\item{...}{Ignored currently.}
+
+\item{drop}{Ignored, always be \code{FALSE}.}
 }
 \description{
 The \code{BPCellsConvertArray} class provides a
 \link[DelayedArray:DelayedArray-class]{DelayedArray} backend for \code{ConvertMatrixType}
 object in BPCells.
 }
-\details{
+\note{
 Usually, you shouldn't use this class directly, instead, you should use
-\link{convert_type} to create a \link[=BPCellsConvert-Class]{BPCellsConvert}
-object.
+\link{convert_type} to create a \code{BPCellsConvert} object.
 }

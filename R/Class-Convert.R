@@ -4,9 +4,9 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `ConvertMatrixType`
 #' object in BPCells.
 #'
+#' @note
 #' Usually, you shouldn't use this class directly, instead, you should use
-#' [convert_type] to create a [BPCellsConvert][BPCellsConvert-Class]
-#' object.
+#' [convert_type] to create a `BPCellsConvert` object.
 #'
 #' @importClassesFrom BPCells ConvertMatrixType
 #' @export
@@ -36,6 +36,7 @@ methods::setClass("BPCellsConvertArray",
 #' @param seed A `BPCellsConvertSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
+#' @export
 #' @rdname BPCellsConvert
 methods::setMethod(
     "DelayedArray", "BPCellsConvertSeed",
@@ -55,8 +56,8 @@ methods::setClass("BPCellsConvertMatrix",
     slots = c(seed = "BPCellsConvertSeed")
 )
 
-#' @export
 #' @importMethodsFrom DelayedArray matrixClass
+#' @export
 #' @rdname BPCellsConvert
 methods::setMethod("matrixClass", "BPCellsConvertArray", function(x) {
     "BPCellsConvertMatrix"
@@ -67,15 +68,14 @@ methods::setMethod("matrixClass", "BPCellsConvertArray", function(x) {
 ###################################################################
 
 #' @param object A `BPCellsConvertSeed` object.
-#' @export
 #' @importMethodsFrom DelayedArray path
+#' @export
 #' @rdname BPCellsConvert
 methods::setMethod("path", "BPCellsConvertSeed", function(object) {
     path(object@matrix)
 })
 
-#' @param i,j Row and Column index.
-#' @param drop Not used, always be `FALSE`.
+#' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @export
 #' @rdname BPCellsConvert
@@ -87,9 +87,9 @@ methods::setMethod(
 )
 
 #####################   BPCellsConvertMatrix   #######################
-#' Convert the type of a BPCells matrix
+#' Convert the type of a BPCells IterableMatrix matrix
 #'
-#' @param object A `BPCellsSeed` object.
+#' @param object A `BPCellsSeed` or `BPCellsMatrix` object.
 #' @param ... Additional parameters passed into specific methods.
 #' @export
 #' @name convert_type
@@ -103,7 +103,8 @@ methods::setGeneric(
 #' real number), or `double` (`64bit_numeric`) (64-bit real number). R cannot
 #' differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
 #' 64-bit real number and "numeric" to indicate 32-bit real number.
-#' @return A [BPCellsConvertMatrix][BPCellsConvertMatrix] object.
+#' @return A [BPCellsConverSeed][BPCellsConverSeed] object or
+#' [BPCellsConvertMatrix][BPCellsConvertMatrix] object.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
 #' @importFrom DelayedArray DelayedArray
 #' @export
@@ -128,13 +129,13 @@ methods::setMethod("convert_type", "BPCellsSeed", function(object, type) {
     BPCellsSeed(obj)
 })
 
+#' @export
+#' @rdname convert_type
 methods::setMethod("convert_type", "BPCellsMatrix", function(object, type) {
     DelayedArray(convert_type(object@seed, type = type))
 })
 
 #' @export
-#' @importClassesFrom Matrix dgCMatrix
-#' @rdname convert_type
 methods::setMethod("convert_type", "ANY", function(object, type) {
     cli::cli_abort(
         "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"

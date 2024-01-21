@@ -9,9 +9,10 @@
 #' @seealso [writeBPCellsDirArray]
 methods::setClass("BPCellsDirSeed", contains = c("BPCellsSeed", "MatrixDir"))
 
-#' @param x For `BPCellsDirSeed` and `BPCellsDirArray`, a path of the
-#' `MatrixDir` data, or a `MatrixDir` object. For other function, a
-#' `BPCellsDirSeed` or `BPCellsDirArray` object.
+#' @param x A `BPCellsDirSeed` or `BPCellsDirArray` object. For following
+#' functions:
+#' - `BPCellsDirSeed` and `BPCellsDirArray`: A string for the path of the
+#'   BPCells matrix dir.
 #' @inheritParams BPCells::open_matrix_dir
 #' @export
 #' @rdname BPCellsDir
@@ -31,6 +32,7 @@ BPCellsDirSeed <- function(x, buffer_size = 8192L) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
+#' @export
 #' @rdname BPCellsDir
 methods::setClass("BPCellsDirArray",
     contains = "DelayedArray",
@@ -41,13 +43,16 @@ methods::setClass("BPCellsDirArray",
 #' @param seed A `BPCellsDirSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
+#' @export
 #' @rdname BPCellsDir
 methods::setMethod(
     "DelayedArray", "BPCellsDirSeed",
     function(seed) new_DelayedArray(seed, Class = "BPCellsDirArray")
 )
 
-#' @param ... Additional parameters passed into `BPCellsDirSeed`.
+#' @param ...
+#' - `BPCellsDirArray`: Additional parameters passed into `BPCellsDirSeed`.
+#' - `[`: Not used currently.
 #' @export
 #' @rdname BPCellsDir
 BPCellsDirArray <- function(x, ...) {
@@ -62,8 +67,8 @@ methods::setClass("BPCellsDirMatrix",
     slots = c(seed = "BPCellsDirSeed")
 )
 
-#' @export
 #' @importMethodsFrom DelayedArray matrixClass
+#' @export
 #' @rdname BPCellsDir
 methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
     "BPCellsDirMatrix"
@@ -73,6 +78,22 @@ methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
+
+#' @importMethodsFrom DelayedArray path
+#' @export
+#' @rdname BPCellsDir
+methods::setMethod("path", "BPCellsDirSeed", function(object) object@dir)
+
+#' @inheritParams BPCellsMatrix
+#' @importMethodsFrom BPCells [
+#' @export
+#' @rdname BPCellsDir
+methods::setMethod(
+    "[", "BPCellsDirSeed",
+    function(x, i, j, ..., drop = FALSE) {
+        BPCellsSeed(methods::callNextMethod())
+    }
+)
 
 
 #' Write a sparce matrices into a BPCells Directory of files format
@@ -130,20 +151,3 @@ methods::setAs("ANY", "BPCellsDirArray", .as_BPCellsDirArray)
 
 #' @export
 methods::setAs("ANY", "BPCellsDirMatrix", .as_BPCellsDirArray)
-
-#' @export
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsDir
-methods::setMethod("path", "BPCellsDirSeed", function(object) object@dir)
-
-#' @param i,j Row and Column index.
-#' @param drop Not used, always be `FALSE`.
-#' @importMethodsFrom BPCells [
-#' @export
-#' @rdname BPCellsDir
-methods::setMethod(
-    "[", "BPCellsDirSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)

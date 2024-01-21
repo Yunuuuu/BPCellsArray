@@ -36,6 +36,7 @@ methods::setClass("BPCellsMultiplyArray",
 #' @param seed A `BPCellsMultiplySeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
+#' @export
 #' @rdname BPCellsMultiply
 methods::setMethod(
     "DelayedArray", "BPCellsMultiplySeed",
@@ -66,18 +67,18 @@ methods::setMethod("matrixClass", "BPCellsMultiplyArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 
-#' @export
+#' @param object A BPCellsMultiplySeed object.
 #' @importMethodsFrom DelayedArray path
+#' @export
 #' @rdname BPCellsMultiply
 methods::setMethod("path", "BPCellsMultiplySeed", function(object) {
     c(path(object@left), path(object@right))
 })
 
-#' @param i,j Row and Column index.
-#' @param drop Not used, always be `FALSE`.
+#' @inheritParams BPCellsMatrix
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsDir
+#' @rdname BPCellsMultiply
 methods::setMethod(
     "[", "BPCellsDirSeed",
     function(x, i, j, ..., drop = FALSE) {

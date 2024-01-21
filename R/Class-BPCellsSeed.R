@@ -5,21 +5,20 @@
 #' common methods for all low-level BPCells seed objects.
 #'
 #' @param x A [BPCellsSeed] object. For some functions:
-#'  - `BPCellsSeed`: a [BPCellsSeed] object, or other BPCells matrix object.
-#'  - `matrix_multi`, `%*%`, and `crossprod`: A [BPCellsSeed] object or
-#'     matrx-like object which can be coerced into a
-#'     [dgCMatrix][Matrix::dgCMatrix-class].
+#'  - `BPCellsSeed`: A [BPCellsSeed] object, or other BPCells `IterableMatrix`
+#'    object.
+#'  - `%*%`, and `crossprod`: A [BPCellsSeed] object or matrx-like object which
+#'     can be coerced into a [dgCMatrix][Matrix::dgCMatrix-class].
 #' @param y A [BPCellsSeed] object or matrx-like object which can be coerced
 #'   into a [dgCMatrix][Matrix::dgCMatrix-class].
 #' @param ... Additional arguments passed to specific methods.
-#'      For some functions:
-#'  - `matrix_multi`: other arguments passed to
-#'    [transpose_storage_order][BPCells::transpose_storage_order].
 #' @importClassesFrom BPCells IterableMatrix
 #' @export
 #' @name BPCellsSeed
 methods::setClass("BPCellsSeed", contains = "IterableMatrix")
 
+#' @return
+#'  - `BPCellsSeed`: A [BPCellsSeed] object.
 #' @export
 #' @rdname BPCellsSeed
 methods::setGeneric("BPCellsSeed", function(x, ...) {
@@ -47,12 +46,15 @@ methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x, ...) {
     BPCellsConvertSeed(x = x)
 })
 
+#' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsMultiplySeed(x = x)
 })
 
+
+#' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "RenameDims", function(x, ...) {
     rlang::check_dots_empty()
@@ -87,6 +89,10 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
     show_bpcells(object, "BPCellsSeed", class(object))
 })
 
+#' @return
+#' - `type`: A string. For all BPCells matrix type of `float` and `double`,
+#'   always return `double` since R cannot differentiate 32-bit and 64-bit real
+#'   number.
 #' @importMethodsFrom DelayedArray type
 #' @export
 #' @rdname BPCellsSeed
@@ -99,12 +105,16 @@ methods::setMethod("type", "BPCellsSeed", function(x) {
     )
 })
 
+#' @return
+#' - `is_sparse`: Always return `TRUE` for `BPCellsSeed` object.
 #' @importMethodsFrom DelayedArray is_sparse
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
 
 #' @inheritParams S4Arrays::extract_array
+#' @return
+#' - `extract_array`: A dense matrix.
 #' @importMethodsFrom DelayedArray extract_array
 #' @export
 #' @rdname BPCellsSeed
@@ -117,6 +127,9 @@ methods::setMethod(
     }
 )
 
+#' @return
+#' - `extract_sparse_array`: A [SparseArraySeed][DelayedArray::SparseArraySeed]
+#'   object.
 #' @importMethodsFrom DelayedArray extract_sparse_array
 #' @export
 #' @rdname BPCellsSeed
@@ -127,8 +140,23 @@ methods::setMethod(
     }
 )
 
+
+
+###################################################################
+# All delayed operations should be wrapped into a `BPCellsSeed` object
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))
-# In BPCells, `dimnames<-` was only defined for IterableMatrix
+# In BPCells, `dimnames<-` was only defined for `IterableMatrix`.
+# `dimnames<-` return another `IterableMatrix` object.
+# we wrap it into a `BPCellsSeed` object.
+#' @param value
+#'  - `dimnames<-`: A list of dimnames or `NULL`.
+#'  - `[<-`: A matrix which can be coerced into
+#' [dgCMatrix][Matrix::dgCMatrix-class].
+#' @return
+#' - `dimnames<-`: A [BPCellsSeed] object, usually a `BPCellsRenameDimsSeed`
+#'   object.
+#' @export
+#' @rdname BPCellsSeed
 methods::setMethod(
     "dimnames<-",
     signature(x = "BPCellsSeed", value = "ListOrNULL"), function(x, value) {
@@ -142,8 +170,10 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
 
-# In BPCells, `[<-` was only defined for IterableMatrix
+# In BPCells, `[<-` was only defined for `IterableMatrix`
 #' @param i,j Row and Column index.
+#' @return
+#' - `[<-`: A [BPCellsSeed] object.
 #' @importMethodsFrom BPCells [<-
 #' @export
 #' @rdname BPCellsSeed
@@ -153,80 +183,29 @@ methods::setMethod(
     }
 )
 
-#################### Matrix multiplication ########################
-#' @export
-#' @rdname BPCellsSeed
-methods::setGeneric("matrix_multi", function(x, y, ...) {
-    standardGeneric("matrix_multi")
-})
-
-
+###################### Matrix multiplication ########################
+#' @importMethodsFrom DelayedArray %*%
 #' @return
-#' - `matrix_multi`: matrix multiplication, a [BPCellsSeed] object
+#' - `x %*% y`: matrix multiplication, a [BPCellsSeed] object or a dense
+#'   matrix (matrix and numeric methods).
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "matrix_multi",
-    signature(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y, ...) {
+    "%*%", signature(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         if (x@transpose != y@transpose) {
             if (x@transpose) {
                 cli::cli_inform("transpose storage order for {.arg x}")
-                x <- BPCells::transpose_storage_order(matrix = x, ...)
+                x <- BPCells::transpose_storage_order(matrix = x)
             } else {
                 cli::cli_inform("transpose storage order for {.arg y}")
-                y <- BPCells::transpose_storage_order(matrix = y, ...)
+                y <- BPCells::transpose_storage_order(matrix = y)
             }
         }
         BPCellsSeed(methods::callNextMethod(x, y))
     }
 )
 
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod(
-    "matrix_multi", signature(x = "BPCellsSeed", y = "dgCMatrix"),
-    function(x, y) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod(
-    "matrix_multi", signature(x = "dgCMatrix", y = "BPCellsSeed"),
-    function(x, y) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod(
-    "matrix_multi", signature(x = "BPCellsSeed", y = "ANY"), function(x, y) {
-        x %*% coerce_dgCMatrix(y)
-    }
-)
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod(
-    "matrix_multi", signature(x = "ANY", y = "BPCellsSeed"), function(x, y) {
-        coerce_dgCMatrix(x) %*% y
-    }
-)
-
-###################### Matrix multiplication ########################
-#' @importMethodsFrom DelayedArray %*%
-#' @return
-#' - `x %*% y`: matrix multiplication, a [BPCellsSeed] object
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod(
-    "%*%", signature(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
-        matrix_multi(x, y)
-    }
-)
-
+#' @importClassesFrom Matrix dgCMatrix
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
@@ -259,10 +238,51 @@ methods::setMethod(
     }
 )
 
+#################### Matrix multiplication ########################
+# following methods return a dense matrix
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "%*%",
+    signature(x = "BPCellsSeed", y = "matrix"), function(x, y) {
+        x %*% y
+    }
+)
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "%*%",
+    signature(x = "matrix", y = "BPCellsSeed"), function(x, y) {
+        x %*% y
+    }
+)
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "%*%",
+    signature(x = "BPCellsSeed", y = "numeric"), function(x, y) {
+        x %*% y
+    }
+)
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "%*%",
+    signature(x = "numeric", y = "BPCellsSeed"), function(x, y) {
+        x %*% y
+    }
+)
+
+
+
 #################### Matrix Crossproduct ########################
 #' @importMethodsFrom DelayedArray crossprod
 #' @return
-#' - `crossprod(x, y)`: Matrix Crossproduct, a [BPCellsSeed] object
+#' - `crossprod(x, y)`: Matrix Crossproduct, a [BPCellsSeed] object or a dense
+#'   matrix (matrix and numeric methods).
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
@@ -294,6 +314,25 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
+    signature(x = "BPCellsSeed", y = "ANY"), function(x, y) {
+        t(x) %*% coerce_dgCMatrix(y)
+    }
+)
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "crossprod", signature(x = "ANY", y = "BPCellsSeed"), function(x, y) {
+        t(coerce_dgCMatrix(x)) %*% y
+    }
+)
+
+#################### Matrix multiplication ########################
+# following methods return a dense matrix
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "crossprod",
     signature(x = "BPCellsSeed", y = "matrix"), function(x, y) {
         t(x) %*% y
     }
@@ -312,15 +351,16 @@ methods::setMethod(
 #' @rdname BPCellsSeed
 methods::setMethod(
     "crossprod",
-    signature(x = "BPCellsSeed", y = "ANY"), function(x, y) {
-        t(x) %*% coerce_dgCMatrix(y)
+    signature(x = "BPCellsSeed", y = "numeric"), function(x, y) {
+        t(x) %*% y
     }
 )
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod(
-    "crossprod", signature(x = "ANY", y = "BPCellsSeed"), function(x, y) {
-        t(coerce_dgCMatrix(x)) %*% y
+    "crossprod",
+    signature(x = "numeric", y = "BPCellsSeed"), function(x, y) {
+        t(x) %*% y
     }
 )

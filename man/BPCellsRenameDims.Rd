@@ -34,7 +34,9 @@ BPCellsRenameDimsArray(x)
 
 \item{i, j}{Row and Column index.}
 
-\item{drop}{Not used, always be \code{FALSE}.}
+\item{...}{Ignored currently.}
+
+\item{drop}{Ignored, always be \code{FALSE}.}
 }
 \description{
 The \code{BPCellsRenameDimsArray} class provides a

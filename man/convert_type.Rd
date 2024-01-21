@@ -3,17 +3,17 @@
 \name{convert_type}
 \alias{convert_type}
 \alias{convert_type,BPCellsSeed-method}
-\alias{convert_type,ANY-method}
-\title{Convert the type of a BPCells matrix}
+\alias{convert_type,BPCellsMatrix-method}
+\title{Convert the type of a BPCells IterableMatrix matrix}
 \usage{
 convert_type(object, ...)
 
 \S4method{convert_type}{BPCellsSeed}(object, type)
 
-\S4method{convert_type}{ANY}(object, type)
+\S4method{convert_type}{BPCellsMatrix}(object, type)
 }
 \arguments{
-\item{object}{A \code{BPCellsSeed} object.}
+\item{object}{A \code{BPCellsSeed} or \code{BPCellsMatrix} object.}
 
 \item{...}{Additional parameters passed into specific methods.}
 
@@ -24,10 +24,11 @@ differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
 64-bit real number and "numeric" to indicate 32-bit real number.}
 }
 \value{
-A \link{BPCellsConvertMatrix} object.
+A \link{BPCellsConverSeed} object or
+\link{BPCellsConvertMatrix} object.
 }
 \description{
-Convert the type of a BPCells matrix
+Convert the type of a BPCells IterableMatrix matrix
 }
 \seealso{
 \link[BPCells:convert_matrix_type]{convert_matrix_type}

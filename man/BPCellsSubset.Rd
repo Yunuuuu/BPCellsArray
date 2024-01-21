@@ -26,6 +26,8 @@ BPCellsSubsetArray(x)
 \item{x}{A \code{MatrixSubset} or \code{BPCellsSubsetSeed} object.}
 
 \item{seed}{A \code{BPCellsSubsetSeed} object.}
+
+\item{object}{A \code{BPCellsSubsetSeed} object.}
 }
 \description{
 The \code{BPCellsSubsetArray} class provides a
