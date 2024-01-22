@@ -50,10 +50,35 @@ methods::setMethod("t", "BPCellsMatrix", function(x) {
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
-    "[", "BPCellsMatrix",
+    "[", c("BPCellsMatrix", "ANY", "ANY"),
     function(x, i, j, ..., drop = FALSE) {
         DelayedArray(x@seed[i, j, ...])
     }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[", c("BPCellsMatrix", "missing", "ANY"),
+    function(x, i, j, ..., drop = FALSE) {
+        DelayedArray(x@seed[, j, ...])
+    }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[", c("BPCellsMatrix", "ANY", "missing"),
+    function(x, i, j, ..., drop = FALSE) {
+        DelayedArray(x@seed[i, , ...])
+    }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[", c("BPCellsMatrix", "missing", "missing"),
+    function(x, i, j, ..., drop = FALSE) x
 )
 
 #' @return

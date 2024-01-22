@@ -14,15 +14,20 @@ testthat::test_that("`BPCellsMultiplySeed()` works as expected", {
     testthat::expect_identical(path(obj), path)
 })
 
+
 testthat::test_that("subset `BPCellsMultiplySeed` object works as expected", {
     seed <- BPCellsMultiplySeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsMultiplySeed")
+    testthat::expect_s4_class(seed[1:10, ], "BPCellsMultiplySeed")
+    testthat::expect_s4_class(seed[, 1:10], "BPCellsMultiplySeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsMultiplySeed")
 })
 
 testthat::test_that("subset `BPCellsMultiplyMatrix` object works as expected", {
     obj <- BPCellsMultiplyArray(obj)
     testthat::expect_s4_class(obj, "BPCellsMultiplyMatrix")
+    testthat::expect_identical(path(obj), path)
+    testthat::expect_s4_class(obj[1:10, ], "BPCellsMultiplyMatrix")
+    testthat::expect_s4_class(obj[, 1:10], "BPCellsMultiplyMatrix")
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMultiplyMatrix")
 })
 

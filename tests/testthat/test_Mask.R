@@ -22,6 +22,8 @@ testthat::test_that("`BPCellsMaskSeed()` works as expected", {
 
 testthat::test_that("subset `BPCellsMaskSeed` object works as expected", {
     seed <- BPCellsMaskSeed(obj)
+    testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
+    testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
 })
 
@@ -29,6 +31,8 @@ testthat::test_that("subset `BPCellsMaskMatrix` object works as expected", {
     obj <- BPCellsMaskArray(obj)
     testthat::expect_s4_class(obj, "BPCellsMaskMatrix")
     testthat::expect_identical(path(obj), path)
+    testthat::expect_s4_class(obj[1:10, ], "BPCellsSubsetMatrix")
+    testthat::expect_s4_class(obj[, 1:10], "BPCellsSubsetMatrix")
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsSubsetMatrix")
 })
 

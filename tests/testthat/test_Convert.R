@@ -14,8 +14,8 @@ testthat::test_that("`BPCellsConvertSeed()` works as expected", {
 
 testthat::test_that("subset `BPCellsConvertSeed` object works as expected", {
     seed <- BPCellsConvertSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsConvertSeed")
-    testthat::expect_identical(path(seed), path)
+    testthat::expect_s4_class(seed[1:10, ], "BPCellsConvertSeed")
+    testthat::expect_s4_class(seed[, 1:10], "BPCellsConvertSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsConvertSeed")
 })
 
@@ -23,6 +23,8 @@ testthat::test_that("subset `BPCellsConvertMatrix` object works as expected", {
     obj <- BPCellsConvertArray(obj)
     testthat::expect_s4_class(obj, "BPCellsConvertMatrix")
     testthat::expect_identical(path(obj), path)
+    testthat::expect_s4_class(obj[1:10, ], "BPCellsConvertMatrix")
+    testthat::expect_s4_class(obj[, 1:10], "BPCellsConvertMatrix")
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsConvertMatrix")
 })
 

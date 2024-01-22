@@ -14,22 +14,22 @@ testthat::test_that("`BPCellsRowBindMatrixSeed()` works as expected", {
     testthat::expect_identical(path(obj), path)
 })
 
-testthat::test_that(
-    "subset `BPCellsRowBindMatrixSeed` object works as expected",
-    {
-        seed <- BPCellsRowBindMatrixSeed(obj)
-        testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
-        testthat::expect_identical(path(seed), path)
-        testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
-    }
-)
+testthat::test_that("subset `BPCellsRowBindMatrixSeed` object works as expected", {
+    seed <- BPCellsRowBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
+    testthat::expect_s4_class(seed[, 1:10], "BPCellsRowBindMatrixSeed")
+    testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
+})
 
 testthat::test_that("subset `BPCellsRowBindMatrixMatrix` object works as expected", {
     obj <- BPCellsRowBindMatrixArray(obj)
     testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
     testthat::expect_identical(path(obj), path)
+    testthat::expect_s4_class(obj[1:10, ], "BPCellsSubsetMatrix")
+    testthat::expect_s4_class(obj[, 1:10], "BPCellsRowBindMatrixMatrix")
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsSubsetMatrix")
 })
+
 
 testthat::test_that("`convert_type` for `BPCellsRowBindMatrixSeed` object works as expected", {
     seed <- BPCellsRowBindMatrixSeed(obj)

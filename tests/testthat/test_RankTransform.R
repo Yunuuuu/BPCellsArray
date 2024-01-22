@@ -14,6 +14,8 @@ testthat::test_that("`BPCellsRankTransformSeed()` works as expected", {
 
 testthat::test_that("subset `BPCellsRankTransformSeed` object works as expected", {
     seed <- BPCellsRankTransformSeed(obj)
+    testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
+    testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
 })
 
@@ -21,8 +23,11 @@ testthat::test_that("subset `BPCellsRankTransformMatrix` object works as expecte
     obj <- BPCellsRankTransformArray(obj)
     testthat::expect_s4_class(obj, "BPCellsRankTransformMatrix")
     testthat::expect_identical(path(obj), path)
+    testthat::expect_s4_class(obj[1:10, ], "BPCellsSubsetMatrix")
+    testthat::expect_s4_class(obj[, 1:10], "BPCellsSubsetMatrix")
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsSubsetMatrix")
 })
+
 
 testthat::test_that("`convert_type` for `BPCellsRankTransformSeed` object works as expected", {
     seed <- BPCellsRankTransformSeed(obj)

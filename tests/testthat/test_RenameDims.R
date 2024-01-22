@@ -14,15 +14,20 @@ testthat::test_that("`BPCellsRenameDimsSeed()` works as expected", {
     testthat::expect_identical(path(seed), path(obj))
 })
 
+
 testthat::test_that("subset `BPCellsRenameDimsSeed` object works as expected", {
     seed <- BPCellsRenameDimsSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    testthat::expect_s4_class(seed[1:10, ], "BPCellsRenameDimsSeed")
+    testthat::expect_s4_class(seed[, 1:10], "BPCellsRenameDimsSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsRenameDimsSeed")
 })
 
 testthat::test_that("subset `BPCellsRenameDimsMatrix` object works as expected", {
     obj <- BPCellsRenameDimsArray(obj)
     testthat::expect_s4_class(obj, "BPCellsRenameDimsMatrix")
+    testthat::expect_identical(path(obj), path)
+    testthat::expect_s4_class(obj[1:10, ], "BPCellsRenameDimsMatrix")
+    testthat::expect_s4_class(obj[, 1:10], "BPCellsRenameDimsMatrix")
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsRenameDimsMatrix")
 })
 
