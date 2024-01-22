@@ -13,7 +13,8 @@ convert_type(object, ...)
 \S4method{convert_type}{BPCellsMatrix}(object, type)
 }
 \arguments{
-\item{object}{A \code{BPCellsSeed} or \code{BPCellsMatrix} object.}
+\item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
 \item{...}{Additional parameters passed into specific methods.}
 
@@ -24,8 +25,7 @@ differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
 64-bit real number and "numeric" to indicate 32-bit real number.}
 }
 \value{
-A \link[=BPCellsConvert]{BPCellsConverSeed} object or
-\link[=BPCellsConvert]{BPCellsConvertMatrix} object.
+A \link[=BPCellsConvert]{BPCellsConvertMatrix} object.
 }
 \description{
 Convert the type of a BPCells IterableMatrix matrix

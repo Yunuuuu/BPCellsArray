@@ -65,30 +65,3 @@ methods::setClass("BPCellsSubsetMatrix",
 methods::setMethod("matrixClass", "BPCellsSubsetArray", function(x) {
     "BPCellsSubsetMatrix"
 })
-
-###################################################################
-###########################  Methods  #############################
-###################################################################
-
-#' @param object A `BPCellsSubsetSeed` object.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsSubset
-#' @noRd
-methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
-    path(object@matrix)
-})
-
-#####################################################
-# it's not necessary to re-dispatch the "[" method for `BPCellsSubsetSeed` class
-# since the `MatrixSubset` method will use `[` method of `@matrix`. Here, we
-# just re-dispatch it to keep consistent.
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsSubsetSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)

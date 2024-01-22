@@ -4,11 +4,18 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `TransformLog1pSlow`
 #' object in BPCells.
 #'
-#' @note Usually, you shouldn't use this class directly, instead, you should use
-#' `[` (extract methods) of other BPCellsArray objects.
+#' @param x For Specific functions:
+#' - `BPCellsTransformLog1pSlowArray`: A `TransformLog1pSlow` object.
+#' - `matrixClass`: A `BPCellsTransformLog1pSlowArray` object.
 #'
-#' @noRd
+#' @note Usually, you shouldn't use this class directly, instead, you should use
+#' [log1p_slow][BPCellsMatrix-class] to create `BPCellsTransformLog1pSlowMatrix`
+#' object.
+#' @return A `BPCellsTransformLog1pSlowMatrix` object.
+#'
 #' @name BPCellsTransformLog1pSlow
+NULL
+
 methods::setClass("BPCellsTransformLog1pSlowSeed",
     contains = c("BPCellsTransformedSeed", get_class("TransformLog1pSlow")),
     slots = list(matrix = "BPCellsSeed")
@@ -23,7 +30,8 @@ BPCellsTransformLog1pSlowSeed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
-#' @noRd
+#' @export 
+#' @rdname BPCellsTransformLog1pSlow
 methods::setClass("BPCellsTransformLog1pSlowArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsTransformLog1pSlowSeed")
@@ -32,44 +40,50 @@ methods::setClass("BPCellsTransformLog1pSlowArray",
 #' @param seed A `BPCellsTransformLog1pSlowSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @rdname internal-methods
+#' @export 
+#' @rdname BPCellsTransformLog1pSlow
 methods::setMethod(
     "DelayedArray", "BPCellsTransformLog1pSlowSeed",
     function(seed) new_DelayedArray(seed, Class = "BPCellsTransformLog1pSlowArray")
 )
 
-#' @noRd
+#' @export 
+#' @rdname BPCellsTransformLog1pSlow
 BPCellsTransformLog1pSlowArray <- function(x) {
     DelayedArray(BPCellsTransformLog1pSlowSeed(x))
 }
 
-#' @noRd
-methods::setClass("BPCellsTransformLog1pSlow",
+#' @export 
+#' @rdname BPCellsTransformLog1pSlow
+methods::setClass("BPCellsTransformLog1pSlowMatrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsTransformLog1pSlowSeed")
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname internal-methods
+#' @export 
+#' @rdname BPCellsTransformLog1pSlow
 methods::setMethod("matrixClass", "BPCellsTransformLog1pSlowArray", function(x) {
-    "BPCellsTransformLog1pSlow"
+    "BPCellsTransformLog1pSlowMatrix"
 })
 
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
+#' @export
+#' @rdname seed-methods
 methods::setGeneric("log1p_slow", function(x) {
     makeStandardGeneric("log1p_slow")
 })
 
 #' @export
-#' @rdname BPCellsSeed-Class
+#' @rdname seed-methods
 methods::setMethod("log1p_slow", "BPCellsSeed", function(x) {
     BPCellsSeed(BPCells::log1p_slow(x))
 })
 
 #' @export
-#' @rdname BPCellsMatrix-Class
+#' @rdname BPCellsMatrix-class
 methods::setMethod("log1p_slow", "BPCellsMatrix", function(x) {
     DelayedArray(log1p_slow(x@seed))
 })

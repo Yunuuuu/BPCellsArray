@@ -4,11 +4,18 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `TransformExpm1`
 #' object in BPCells.
 #'
+#' @param x For Specific functions:
+#' - `BPCellsTransformExpm1Array`: A `TransformExpm1` object.
+#' - `matrixClass`: A `BPCellsTransformExpm1Array` object.
+#'
 #' @note Usually, you shouldn't use this class directly, instead, you should use
-#' `[` (extract methods) of other BPCellsArray objects.
+#' [expm1][BPCellsMatrix-class] to create `BPCellsTransformExpm1Matrix`
+#' object.
+#' @return A `BPCellsTransformExpm1Matrix` object.
 #'
 #' @name BPCellsTransformExpm1
-#' @noRd
+NULL
+
 methods::setClass("BPCellsTransformExpm1Seed",
     contains = c("BPCellsTransformedSeed", get_class("TransformExpm1")),
     slots = list(matrix = "BPCellsSeed")
@@ -23,7 +30,8 @@ BPCellsTransformExpm1Seed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
-#' @noRd
+#' @export
+#' @rdname BPCellsTransformExpm1
 methods::setClass("BPCellsTransformExpm1Array",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsTransformExpm1Seed")
@@ -32,40 +40,45 @@ methods::setClass("BPCellsTransformExpm1Array",
 #' @param seed A `BPCellsTransformExpm1Seed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformExpm1
 methods::setMethod(
     "DelayedArray", "BPCellsTransformExpm1Seed",
     function(seed) new_DelayedArray(seed, Class = "BPCellsTransformExpm1Array")
 )
 
-#' @noRd
+#' @export
+#' @rdname BPCellsTransformExpm1
 BPCellsTransformExpm1Array <- function(x) {
     DelayedArray(BPCellsTransformExpm1Seed(x))
 }
 
-#' @noRd
-methods::setClass("BPCellsTransformExpm1",
+#' @export
+#' @rdname BPCellsTransformExpm1
+methods::setClass("BPCellsTransformExpm1Matrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsTransformExpm1Seed")
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformExpm1
 methods::setMethod("matrixClass", "BPCellsTransformExpm1Array", function(x) {
-    "BPCellsTransformExpm1"
+    "BPCellsTransformExpm1Matrix"
 })
 
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
 #' @export
-#' @rdname BPCellsSeed-Class
+#' @rdname seed-methods
 methods::setMethod("expm1", "BPCellsSeed", function(x) {
     BPCellsSeed(methods::callNextMethod())
 })
 
+#' @return - `expm1` and `expm1_slow`: compute `exp(x)-1` of matrix.
 #' @export
-#' @rdname BPCellsMatrix-Class
+#' @rdname BPCellsMatrix-class
 methods::setMethod("expm1", "BPCellsMatrix", function(x) {
     DelayedArray(expm1(x@seed))
 })

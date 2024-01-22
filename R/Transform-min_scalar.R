@@ -4,11 +4,17 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `TransformMin`
 #' object in BPCells.
 #'
-#' @note Usually, you shouldn't use this class directly, instead, you should use
-#' `[` (extract methods) of other BPCellsArray objects.
+#' @param x For Specific functions:
+#' - `BPCellsTransformMinArray`: A `TransformMin` object.
+#' - `matrixClass`: A `BPCellsTransformMinArray` object.
 #'
-#' @noRd
+#' @note Usually, you shouldn't use this class directly, instead, you should use
+#' [pmin_scalar][BPCellsMatrix-class] to create `BPCellsTransformMinMatrix`
+#' object.
+#' @return A `BPCellsTransformMinMatrix` object.
 #' @name BPCellsTransformMin
+NULL
+
 methods::setClass("BPCellsTransformMinSeed",
     contains = c("BPCellsTransformedSeed", get_class("TransformMin")),
     slots = list(matrix = "BPCellsSeed")
@@ -23,7 +29,8 @@ BPCellsTransformMinSeed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
-#' @noRd
+#' @export
+#' @rdname BPCellsTransformMin
 methods::setClass("BPCellsTransformMinArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsTransformMinSeed")
@@ -32,7 +39,8 @@ methods::setClass("BPCellsTransformMinArray",
 #' @param seed A `BPCellsTransformMinSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformMin
 methods::setMethod(
     "DelayedArray", "BPCellsTransformMinSeed",
     function(seed) {
@@ -40,32 +48,37 @@ methods::setMethod(
     }
 )
 
-#' @noRd
+#' @export
+#' @rdname BPCellsTransformMin
 BPCellsTransformMinArray <- function(x) {
     DelayedArray(BPCellsTransformMinSeed(x))
 }
 
-#' @noRd
-methods::setClass("BPCellsTransformMin",
+#' @export
+#' @rdname BPCellsTransformMin
+methods::setClass("BPCellsTransformMinMatrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsTransformMinSeed")
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformMin
 methods::setMethod("matrixClass", "BPCellsTransformMinArray", function(x) {
-    "BPCellsTransformMin"
+    "BPCellsTransformMinMatrix"
 })
 
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
+#' @export
+#' @rdname seed-methods
 methods::setGeneric("pmin_scalar", function(object, value) {
     makeStandardGeneric("pmin_scalar")
 })
 
 #' @export
-#' @rdname BPCellsSeed-Class
+#' @rdname seed-methods
 methods::setMethod(
     "pmin_scalar", "BPCellsSeed", function(object, value) {
         BPCellsSeed(BPCells::min_scalar(mat = object, val = value))
@@ -73,9 +86,9 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCellsMatrix-Class
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "pmin_scalar", "BPCellsMatrix", function(object, value) {
-        DelayedArray(pmin_scalar(mat = object, val = value))
+        DelayedArray(pmin_scalar(object = object, value = value))
     }
 )

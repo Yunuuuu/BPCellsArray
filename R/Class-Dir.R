@@ -84,21 +84,6 @@ methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsDir
-#' @noRd
-methods::setMethod("path", "BPCellsDirSeed", function(object) object@dir)
-
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsDirSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
 #' Write a sparce matrices into a BPCells Directory of files format
 #'
 #' @param x Input matrix, any matrix can be coerced into

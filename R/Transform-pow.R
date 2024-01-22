@@ -4,11 +4,17 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `TransformPow`
 #' object in BPCells.
 #'
-#' @note Usually, you shouldn't use this class directly, instead, you should use
-#' `[` (extract methods) of other BPCellsArray objects.
+#' @param x For Specific functions:
+#' - `BPCellsTransformPowArray`: A `TransformPow` object.
+#' - `matrixClass`: A `BPCellsTransformPowArray` object.
 #'
-#' @noRd
+#' @note Usually, you shouldn't use this class directly, instead, you should use
+#' [^][BPCellsMatrix-class] to create `BPCellsTransformPowMatrix` object.
+#' @return A `BPCellsTransformPowMatrix` object.
+#' 
 #' @name BPCellsTransformPow
+NULL
+
 methods::setClass("BPCellsTransformPowSeed",
     contains = c("BPCellsTransformedSeed", get_class("TransformPow")),
     slots = list(matrix = "BPCellsSeed")
@@ -23,7 +29,8 @@ BPCellsTransformPowSeed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
-#' @noRd
+#' @export 
+#' @rdname BPCellsTransformPow
 methods::setClass("BPCellsTransformPowArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsTransformPowSeed")
@@ -32,7 +39,8 @@ methods::setClass("BPCellsTransformPowArray",
 #' @param seed A `BPCellsTransformPowSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @rdname internal-methods
+#' @export 
+#' @rdname BPCellsTransformPow
 methods::setMethod(
     "DelayedArray", "BPCellsTransformPowSeed",
     function(seed) {
@@ -40,21 +48,24 @@ methods::setMethod(
     }
 )
 
-#' @noRd
+#' @export 
+#' @rdname BPCellsTransformPow
 BPCellsTransformPowArray <- function(x) {
     DelayedArray(BPCellsTransformPowSeed(x))
 }
 
-#' @noRd
-methods::setClass("BPCellsTransformPow",
+#' @export 
+#' @rdname BPCellsTransformPow
+methods::setClass("BPCellsTransformPowMatrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsTransformPowSeed")
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname internal-methods
+#' @export 
+#' @rdname BPCellsTransformPow
 methods::setMethod("matrixClass", "BPCellsTransformPowArray", function(x) {
-    "BPCellsTransformPow"
+    "BPCellsTransformPowMatrix"
 })
 
 ###################################################################
@@ -62,13 +73,13 @@ methods::setMethod("matrixClass", "BPCellsTransformPowArray", function(x) {
 ###################################################################
 #' @importMethodsFrom BPCells ^
 #' @export
-#' @rdname BPCellsSeed-Class
+#' @rdname seed-methods
 methods::setMethod("^", "BPCellsSeed", function(e1, e2) {
     BPCellsSeed(methods::callNextMethod())
 })
 
 #' @export
-#' @rdname BPCellsMatrix-Class
+#' @rdname BPCellsMatrix-class
 methods::setMethod("^", "BPCellsMatrix", function(e1, e2) {
     e1 <- e1@seed
     DelayedArray(e1^e2)

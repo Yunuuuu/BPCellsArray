@@ -71,25 +71,6 @@ methods::setMethod("matrixClass", "BPCellsMaskArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 
-#' @param object A `BPCellsMaskSeed` object.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsMask
-#' @noRd
-methods::setMethod("path", "BPCellsMaskSeed", function(object) {
-    c(path(object@matrix), path(object@mask))
-})
-
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsMaskSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
 #####################   BPCellsMaskMatrix   #######################
 #' Mask matrix entries to zero
 #'
@@ -97,8 +78,11 @@ methods::setMethod(
 #' Normally, non-zero values in the mask will set the matrix entry to zero. If
 #' inverted, zero values in the mask matrix will set the matrix entry to zero.
 #' @param ... Additional parameters passed into specific methods.
-#' @export
 #' @name mask_matrix
+NULL
+
+#' @export
+#' @rdname mask_matrix
 methods::setGeneric(
     "mask_matrix",
     function(object, mask, ...) standardGeneric("mask_matrix")
@@ -187,6 +171,7 @@ methods::setMethod(
     }
 )
 
+#' @inheritParams mask_matrix
 #' @export
 #' @rdname internal-methods
 methods::setMethod(

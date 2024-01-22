@@ -93,8 +93,8 @@ methods::setClass("BPCellsColBindMatrixMatrix",
     slots = c(seed = "BPCellsColBindMatrixSeed")
 )
 
-#' @export
 #' @importMethodsFrom DelayedArray matrixClass
+#' @export
 #' @rdname BPCellsBindMatrix
 methods::setMethod("matrixClass", "BPCellsColBindMatrixArray", function(x) {
     "BPCellsColBindMatrixMatrix"
@@ -103,31 +103,6 @@ methods::setMethod("matrixClass", "BPCellsColBindMatrixArray", function(x) {
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
-
-
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsColBindMatrixSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
-#' @param object A `BPCellsColBindMatrixSeed` or `BPCellsRowBindMatrixSeed`
-#' object.
-#' @return
-#' - `path`: A character file paths.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsBindMatrix
-#' @noRd
-methods::setMethod("path", "BPCellsColBindMatrixSeed", function(object) {
-    unlist(lapply(object@matrix_list, path),
-        recursive = FALSE, use.names = FALSE
-    )
-})
 
 ############################################################
 ############################################################
@@ -202,24 +177,6 @@ methods::setMethod("matrixClass", "BPCellsRowBindMatrixArray", function(x) {
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
-
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsRowBindMatrixSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsBindMatrix
-#' @noRd
-methods::setMethod("path", "BPCellsRowBindMatrixSeed", function(object) {
-    unlist(lapply(object@matrix_list, path),
-        recursive = FALSE, use.names = FALSE
-    )
-})
 
 ##############################################################
 #' Set matrix op thread count

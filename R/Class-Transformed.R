@@ -65,26 +65,3 @@ methods::setClass("BPCellsTransformedMatrix",
 methods::setMethod("matrixClass", "BPCellsTransformedArray", function(x) {
     "BPCellsTransformedMatrix"
 })
-
-###################################################################
-###########################  Methods  #############################
-###################################################################
-
-#' @param object A `BPCellsTransformedSeed` object.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsTransformed
-#' @noRd
-methods::setMethod("path", "BPCellsTransformedSeed", function(object) {
-    path(object@matrix)
-})
-
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsTransformedSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)

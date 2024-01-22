@@ -66,29 +66,3 @@ methods::setClass("BPCellsMultiplyMatrix",
 methods::setMethod("matrixClass", "BPCellsMultiplyArray", function(x) {
     "BPCellsMultiplyMatrix"
 })
-
-###################################################################
-###########################  Methods  #############################
-###################################################################
-
-#' @param object A BPCellsMultiplySeed object.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsMultiply
-#' @noRd
-methods::setMethod("path", "BPCellsMultiplySeed", function(object) {
-    c(path(object@left), path(object@right))
-})
-
-# it's not necessary to re-dispatch the "[" method for `BPCellsMultiplySeed`
-# class since the `MatrixMultiply` method will use `[` method of `@left` and
-# `@right`. Here, we just re-dispatch it to keep consistent.
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsMultiplySeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)

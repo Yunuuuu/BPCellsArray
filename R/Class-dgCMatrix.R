@@ -49,26 +49,3 @@ methods::setClass("BPCellsdgCMatrixMatrix",
 methods::setMethod("matrixClass", "BPCellsdgCMatrixArray", function(x) {
     "BPCellsdgCMatrixMatrix"
 })
-
-###################################################################
-###########################  Methods  #############################
-###################################################################
-
-#' @param object A `BPCellsdgCMatrixSeed` object.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsdgCMatrix
-#' @noRd
-methods::setMethod("path", "BPCellsdgCMatrixSeed", function(object) {
-    NULL
-})
-
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsdgCMatrixSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)

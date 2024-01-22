@@ -7,7 +7,15 @@
 #' @note Usually, you shouldn't use this class directly, instead, you should use
 #' `[` (extract methods) of other BPCellsArray objects.
 #'
-#' @noRd
+#' @param x For Specific functions:
+#' - `BPCellsTransformSquareArray`: A `TransformSquare` object.
+#' - `matrixClass`: A `BPCellsTransformSquareArray` object.
+#'
+#' @note Usually, you shouldn't use this class directly, instead, you should use
+#' [round][BPCellsMatrix-class] to create `BPCellsTransformSquareMatrix` object.
+#'
+#' @return A `BPCellsTransformSquareMatrix` object.
+#'
 #' @name BPCellsTransformSquare
 methods::setClass("BPCellsTransformSquareSeed",
     contains = c("BPCellsTransformedSeed", get_class("TransformSquare")),
@@ -23,7 +31,8 @@ BPCellsTransformSquareSeed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
-#' @noRd
+#' @export
+#' @rdname BPCellsTransformSquare
 methods::setClass("BPCellsTransformSquareArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsTransformSquareSeed")
@@ -32,7 +41,8 @@ methods::setClass("BPCellsTransformSquareArray",
 #' @param seed A `BPCellsTransformSquareSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformSquare
 methods::setMethod(
     "DelayedArray", "BPCellsTransformSquareSeed",
     function(seed) {
@@ -40,19 +50,22 @@ methods::setMethod(
     }
 )
 
-#' @noRd
+#' @export
+#' @rdname BPCellsTransformSquare
 BPCellsTransformSquareArray <- function(x) {
     DelayedArray(BPCellsTransformSquareSeed(x))
 }
 
-#' @noRd
-methods::setClass("BPCellsTransformSquare",
+#' @export
+#' @rdname BPCellsTransformSquare
+methods::setClass("BPCellsTransformSquareMatrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsTransformSquareSeed")
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformSquare
 methods::setMethod("matrixClass", "BPCellsTransformSquareArray", function(x) {
-    "BPCellsTransformSquare"
+    "BPCellsTransformSquareMatrix"
 })

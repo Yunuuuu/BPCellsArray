@@ -69,22 +69,3 @@ methods::setMethod("matrixClass", "BPCellsRenameDimsArray", function(x) {
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
-
-#' @param object A `BPCellsRenameDimsSeed` object.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsRenameDims
-#' @noRd
-methods::setMethod("path", "BPCellsRenameDimsSeed", function(object) {
-    path(object@matrix)
-})
-
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsRenameDimsSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)

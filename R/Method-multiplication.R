@@ -1,0 +1,166 @@
+#' Matrix Multiplication
+#'
+#' Multiplies two matrices, if they are conformable. If one argument is a
+#' vector, it will be promoted to either a row or column matrix to make the two
+#' arguments conformable. If both are vectors of the same length, it will return
+#' the inner product (as a matrix).
+#'
+#' @param x,y A [BPCellsMatrix] object or matrx-like object which can be coerced
+#'   into a [dgCMatrix][Matrix::dgCMatrix-class].
+#' @return `x %*% y`: Matrix multiplication, a [BPCellsMatrix] object or a dense
+#'   matrix (matrix and numeric methods).
+#' @importMethodsFrom DelayedArray %*% DelayedArray
+#' @name BPCells-Multiplication
+NULL
+
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
+        DelayedArray(x@seed %*% y@seed)
+    }
+)
+
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
+        DelayedArray(x@seed %*% y)
+    }
+)
+
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
+        DelayedArray(x %*% y@seed)
+    }
+)
+
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
+        DelayedArray(x@seed %*% coerce_dgCMatrix(y))
+    }
+)
+
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
+        DelayedArray(coerce_dgCMatrix(x) %*% y@seed)
+    }
+)
+
+# following methods return dense matrix
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
+        x@seed %*% y
+    }
+)
+
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
+        x %*% y@seed
+    }
+)
+
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "BPCellsMatrix", y = "numeric"), function(x, y) {
+        x@seed %*% y
+    }
+)
+
+#' @export
+#' @rdname BPCells-Multiplication
+methods::setMethod(
+    "%*%", c(x = "numeric", y = "BPCellsMatrix"), function(x, y) {
+        x %*% y@seed
+    }
+)
+
+#################### BPCellsSeed methods ####################################
+# Following methods used by internal
+#' @importMethodsFrom DelayedArray %*%
+#' @export
+#' @rdname seed-methods
+methods::setMethod(
+    "%*%", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
+        if (x@transpose != y@transpose) {
+            if (x@transpose) {
+                cli::cli_warn(
+                    "{.arg x} is transposed but {.arg y} not, transposing the storage order for {.arg x}" # nolint
+                )
+                x <- BPCells::transpose_storage_order(x)
+            } else {
+                cli::cli_warn(
+                    "{.arg y} is transposed but {.arg x} not, transposing the storage order for {.arg y}" # nolint
+                )
+                y <- BPCells::transpose_storage_order(y)
+            }
+        }
+        BPCellsSeed(methods::callNextMethod())
+    }
+)
+
+#' @importClassesFrom Matrix dgCMatrix
+#' @export
+#' @rdname seed-methods
+methods::setMethod(
+    "%*%", c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
+        BPCellsSeed(methods::callNextMethod())
+    }
+)
+
+#' @export
+#' @rdname seed-methods
+methods::setMethod(
+    "%*%", c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
+        BPCellsSeed(methods::callNextMethod())
+    }
+)
+
+#################### Matrix multiplication ########################
+# following methods return a dense matrix
+#' @export
+#' @rdname seed-methods
+methods::setMethod(
+    "%*%", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
+        storage.mode(y) <- "double"
+        methods::callNextMethod()
+    }
+)
+
+#' @export
+#' @rdname seed-methods
+methods::setMethod(
+    "%*%", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
+        storage.mode(x) <- "double"
+        methods::callNextMethod()
+    }
+)
+
+#' @export
+#' @rdname seed-methods
+methods::setMethod(
+    "%*%", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
+        storage.mode(y) <- "double"
+        methods::callNextMethod()
+    }
+)
+
+#' @export
+#' @rdname seed-methods
+methods::setMethod(
+    "%*%", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
+        storage.mode(x) <- "double"
+        methods::callNextMethod()
+    }
+)

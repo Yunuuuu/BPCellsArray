@@ -3,6 +3,7 @@
 \docType{class}
 \name{SpectraParam}
 \alias{SpectraParam}
+\alias{SpectraParam-class}
 \alias{runSVD,SpectraParam-method}
 \title{BiocSingularParam classes}
 \usage{

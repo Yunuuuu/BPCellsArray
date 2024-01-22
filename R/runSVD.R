@@ -4,8 +4,11 @@
 #' package.
 #'
 #' @importClassesFrom BiocSingular BiocSingularParam
-#' @export
 #' @name SpectraParam
+NULL
+
+#' @export
+#' @rdname SpectraParam
 methods::setClass("SpectraParam",
     contains = "BiocSingularParam",
     slots = c(deferred = "logical", fold = "numeric")

@@ -5,14 +5,15 @@
 #' object in BPCells.
 #'
 #' @note Usually, you shouldn't use this class directly, instead, you should use
-#' `[` (extract methods) of other BPCellsArray objects.
+#' [binarize][BPCells-binarize] to create `BPCellsTransformBinarizeMatrix`
+#' object. 
 #'
 #' @param x For Specific functions:
 #' - `BPCellsTransformBinarizeArray`: A `TransformBinarize` object.
 #' - `matrixClass`: A `BPCellsTransformBinarizeArray` object.
+#' @return A `BPCellsTransformBinarizeMatrix` object.
 #' @seealso [BPCellsSeed]
 #' @name BPCellsTransformBinarize
-#' @noRd
 NULL
 
 methods::setClass("BPCellsTransformBinarizeSeed",
@@ -20,7 +21,6 @@ methods::setClass("BPCellsTransformBinarizeSeed",
     slots = list(matrix = "BPCellsSeed")
 )
 
-#' @param x A `TransformBinarize` or `BPCellsTransformBinarizeSeed` object.
 #' @rdname BPCellsTransformBinarize
 #' @noRd
 BPCellsTransformBinarizeSeed <- function(x) {
@@ -30,8 +30,8 @@ BPCellsTransformBinarizeSeed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
+#' @export
 #' @rdname BPCellsTransformBinarize
-#' @noRd
 methods::setClass("BPCellsTransformBinarizeArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsTransformBinarizeSeed")
@@ -40,7 +40,8 @@ methods::setClass("BPCellsTransformBinarizeArray",
 #' @param seed A `BPCellsTransformBinarizeSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformBinarize
 methods::setMethod(
     "DelayedArray", "BPCellsTransformBinarizeSeed",
     function(seed) {
@@ -48,47 +49,22 @@ methods::setMethod(
     }
 )
 
+#' @export
 #' @rdname BPCellsTransformBinarize
-#' @noRd
 BPCellsTransformBinarizeArray <- function(x) {
     DelayedArray(BPCellsTransformBinarizeSeed(x))
 }
 
+#' @export
 #' @rdname BPCellsTransformBinarize
-#' @noRd
-methods::setClass("BPCellsTransformBinarize",
+methods::setClass("BPCellsTransformBinarizeMatrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsTransformBinarizeSeed")
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformBinarize
 methods::setMethod("matrixClass", "BPCellsTransformBinarizeArray", function(x) {
-    "BPCellsTransformBinarize"
-})
-
-###################################################################
-###########################  Methods  #############################
-###################################################################
-methods::setGeneric("binarize", function(object, ...) {
-    makeStandardGeneric("binarize")
-})
-
-#' @export
-#' @rdname BPCellsSeed-Class
-methods::setMethod(
-    "binarize", "BPCellsSeed",
-    function(object, threshold = 0, strict_inequality = TRUE) {
-        obj <- BPCells::binarize(
-            mat = object, threshold = threshold,
-            strict_inequality = strict_inequality
-        )
-        BPCellsSeed(obj)
-    }
-)
-
-#' @export
-#' @rdname BPCellsMatrix-Class
-methods::setMethod("binarize", "BPCellsMatrix", function(object, ...) {
-    DelayedArray(binarize(object = object@seed, ...))
+    "BPCellsTransformBinarizeMatrix"
 })

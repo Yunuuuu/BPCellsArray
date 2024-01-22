@@ -71,25 +71,6 @@ methods::setMethod("matrixClass", "BPCellsRankTransformArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 
-#' @param object A `BPCellsRankTransformSeed` object.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsRankTransform
-#' @noRd
-methods::setMethod("path", "BPCellsRankTransformSeed", function(object) {
-    path(object@matrix)
-})
-
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsRankTransformSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
 #####################   BPCellsRankTransformMatrix   #######################
 #' Rank-transform a BPCells IterableMatrix matrix
 #'
@@ -143,6 +124,7 @@ methods::setMethod(
     }
 )
 
+#' @inheritParams rank_transform
 #' @export
 #' @rdname internal-methods
 methods::setMethod("rank_transform", "ANY", function(object, axis) {

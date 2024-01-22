@@ -70,32 +70,17 @@ methods::setMethod("matrixClass", "BPCellsConvertArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 
-#' @param object A `BPCellsConvertSeed` object.
-#' @importMethodsFrom DelayedArray path
-#' @rdname BPCellsConvert
-#' @noRd
-methods::setMethod("path", "BPCellsConvertSeed", function(object) {
-    path(object@matrix)
-})
-
-#' @param ... Ignored, Not used curretly.
-#' @inheritParams BPCellsMatrix-Class
-#' @importMethodsFrom BPCells [
-#' @rdname internal-methods
-methods::setMethod(
-    "[", "BPCellsConvertSeed",
-    function(x, i, j, ..., drop = FALSE) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
 #####################   BPCellsConvertMatrix   #######################
 #' Convert the type of a BPCells IterableMatrix matrix
 #'
-#' @param object A `BPCellsSeed` or `BPCellsMatrix` object.
+#' @param object A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object. 
 #' @param ... Additional parameters passed into specific methods.
-#' @export
 #' @name convert_type
+NULL
+
+#' @export
+#' @rdname convert_type
 methods::setGeneric(
     "convert_type",
     function(object, ...) standardGeneric("convert_type")
@@ -106,8 +91,7 @@ methods::setGeneric(
 #' real number), or `double` (`64bit_numeric`) (64-bit real number). R cannot
 #' differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
 #' 64-bit real number and "numeric" to indicate 32-bit real number.
-#' @return A [BPCellsConverSeed][BPCellsConvert] object or
-#' [BPCellsConvertMatrix][BPCellsConvert] object.
+#' @return A [BPCellsConvertMatrix][BPCellsConvert] object.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
 #' @importFrom DelayedArray DelayedArray
 #' @export
@@ -138,6 +122,7 @@ methods::setMethod("convert_type", "BPCellsMatrix", function(object, type) {
     DelayedArray(convert_type(object@seed, type = type))
 })
 
+#' @inheritParams convert_type
 #' @export
 #' @rdname internal-methods
 methods::setMethod("convert_type", "ANY", function(object, type) {

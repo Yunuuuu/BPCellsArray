@@ -4,11 +4,18 @@
 #' [DelayedArray][DelayedArray::DelayedArray] backend for `TransformRound`
 #' object in BPCells.
 #'
-#' @note Usually, you shouldn't use this class directly, instead, you should use
-#' `[` (extract methods) of other BPCellsArray objects.
+#' @param x For Specific functions:
+#' - `BPCellsTransformRoundArray`: A `TransformRound` object.
+#' - `matrixClass`: A `BPCellsTransformRoundArray` object.
 #'
-#' @noRd
+#' @note Usually, you shouldn't use this class directly, instead, you should use
+#' [round][BPCellsMatrix-class] to create `BPCellsTransformRoundMatrix` object.
+#'
+#' @return A `BPCellsTransformRoundMatrix` object.
+#'
 #' @name BPCellsTransformRound
+NULL
+
 methods::setClass("BPCellsTransformRoundSeed",
     contains = c("BPCellsTransformedSeed", get_class("TransformRound")),
     slots = list(matrix = "BPCellsSeed")
@@ -23,7 +30,8 @@ BPCellsTransformRoundSeed <- function(x) {
 }
 
 #' @importClassesFrom DelayedArray DelayedArray
-#' @noRd
+#' @export
+#' @rdname BPCellsTransformRound
 methods::setClass("BPCellsTransformRoundArray",
     contains = "DelayedArray",
     slots = c(seed = "BPCellsTransformRoundSeed")
@@ -32,7 +40,8 @@ methods::setClass("BPCellsTransformRoundArray",
 #' @param seed A `BPCellsTransformRoundSeed` object.
 #' @importMethodsFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformRound
 methods::setMethod(
     "DelayedArray", "BPCellsTransformRoundSeed",
     function(seed) {
@@ -40,39 +49,43 @@ methods::setMethod(
     }
 )
 
-#' @noRd
+#' @export
+#' @rdname BPCellsTransformRound
 BPCellsTransformRoundArray <- function(x) {
     DelayedArray(BPCellsTransformRoundSeed(x))
 }
 
-#' @noRd
-methods::setClass("BPCellsTransformRound",
+#' @export
+#' @rdname BPCellsTransformRound
+methods::setClass("BPCellsTransformRoundMatrix",
     contains = "BPCellsMatrix",
     slots = c(seed = "BPCellsTransformRoundSeed")
 )
 
 #' @importMethodsFrom DelayedArray matrixClass
-#' @rdname internal-methods
+#' @export
+#' @rdname BPCellsTransformRound
 methods::setMethod("matrixClass", "BPCellsTransformRoundArray", function(x) {
-    "BPCellsTransformRound"
+    "BPCellsTransformRoundMatrix"
 })
 
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
 
-#' @param digits Integer indicating the number of decimal places 
+#' @inheritParams BPCellsMatrix-class
 #' @export
-#' @rdname BPCellsSeed-Class
+#' @rdname seed-methods
 methods::setMethod(
     "round", "BPCellsSeed", function(x, digits = 0) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
 
-#' @inheritParams BPCellsSeed-Class
+#' @param digits Integer indicating the number of decimal places
+#' @return - `round`: Rounding of matrix Numbers.
 #' @export
-#' @rdname BPCellsMatrix-Class
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "round", "BPCellsMatrix", function(x, digits = 0) {
         DelayedArray(round(x = x, digits = digits))

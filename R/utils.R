@@ -88,14 +88,6 @@ imap <- function(.x, .f, ...) {
     .mapply(.f, list(.x, names(.x) %||% seq_along(.x)), list(...))
 }
 
-#' House of internal methods
-#'
-#' Following methods are used by package internal, for messages, or other
-#' internal operations
-#'
-#' @name internal-methods
-NULL
-
 BPCElls_Transform_classes <- c(
     TransformLog1p = "log1p",
     TransformLog1pSlow = "log1p_slow",

@@ -31,9 +31,9 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.0
 Collate: 
-    'BPCellsSeed.R'
     'utils.R'
     'Class-BPCellsSeed.R'
+    'BPCellsMatrix.R'
     'Class-BPCellsMatrix.R'
     'Class-BindMatrix.R'
     'Class-Convert.R'
@@ -45,6 +45,13 @@ Collate:
     'Class-Subset.R'
     'Class-Transformed.R'
     'Class-dgCMatrix.R'
+    'Method-binarize.R'
+    'Method-bind.R'
+    'Method-crossprod.R'
+    'Method-internal.R'
+    'Method-multiplication.R'
+    'Method-path.R'
+    'Method-subset.R'
     'Transform-Binarize.R'
     'Transform-Round.R'
     'Transform-expm1.R'
