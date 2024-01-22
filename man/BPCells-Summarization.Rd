@@ -10,6 +10,10 @@
 \alias{rowMeans}
 \alias{colMeans,BPCellsMatrix-method}
 \alias{colMeans}
+\alias{rowVars,BPCellsMatrix-method}
+\alias{rowVars}
+\alias{colVars,BPCellsMatrix-method}
+\alias{colVars}
 \title{BPCellsMatrix row/col summarization}
 \usage{
 \S4method{rowSums}{BPCellsMatrix}(x)
@@ -19,6 +23,10 @@
 \S4method{rowMeans}{BPCellsMatrix}(x)
 
 \S4method{colMeans}{BPCellsMatrix}(x)
+
+\S4method{rowVars}{BPCellsMatrix}(x)
+
+\S4method{colVars}{BPCellsMatrix}(x)
 }
 \arguments{
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
@@ -38,6 +46,14 @@
 
 \itemize{
 \item \code{colMeans()}: vector of col means
+}
+
+\itemize{
+\item \code{rowVars()}: vector of row vars
+}
+
+\itemize{
+\item \code{colVars()}: vector of col vars
 }
 }
 \description{

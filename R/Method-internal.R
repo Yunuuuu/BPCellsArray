@@ -9,6 +9,7 @@
 #'  - `rbind`, `arbind`, `cbind`, and `acbind`: A list of
 #'    [BPCellsSeed][BPCellsSeed-class] objects.
 #'  - `[` and `[<-`: Not used currently.
+#'  - `matrix_stats`: additional arguments to [BPCells::matrix_stats].
 #' @name seed-methods
 NULL
 

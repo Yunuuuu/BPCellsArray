@@ -51,6 +51,7 @@ Collate:
     'Method-bind.R'
     'Method-crossprod.R'
     'Method-internal.R'
+    'Method-matrix_stats.R'
     'Method-multiplication.R'
     'Method-path.R'
     'Method-subset.R'

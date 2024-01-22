@@ -92,7 +92,8 @@ methods::setMethod(
 #'
 #' @importMethodsFrom DelayedArray rowSums
 #' @param x A [BPCellsMatrix][BPCellsMatrix-class] object.
-#' @return - `rowSums()`: vector of row sums
+#' @return
+#' - `rowSums()`: vector of row sums
 #' @aliases rowSums
 #' @name BPCells-Summarization
 NULL
@@ -104,7 +105,8 @@ methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
 })
 
 #' @importMethodsFrom DelayedArray colSums
-#' @return - `colSums()`: vector of col sums
+#' @return
+#' - `colSums()`: vector of col sums
 #' @aliases colSums
 #' @export
 #' @rdname BPCells-Summarization
@@ -113,7 +115,8 @@ methods::setMethod("colSums", c(x = "BPCellsMatrix"), function(x) {
 })
 
 #' @importMethodsFrom DelayedArray rowMeans
-#' @return - `rowMeans()`: vector of row means
+#' @return
+#' - `rowMeans()`: vector of row means
 #' @aliases rowMeans
 #' @export
 #' @rdname BPCells-Summarization
@@ -122,10 +125,37 @@ methods::setMethod("rowMeans", c(x = "BPCellsMatrix"), function(x) {
 })
 
 #' @importMethodsFrom DelayedArray colMeans
-#' @return - `colMeans()`: vector of col means
+#' @return
+#' - `colMeans()`: vector of col means
 #' @aliases colMeans
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
     colMeans(x@seed)
+})
+
+#' @importMethodsFrom DelayedArray rowVars
+#' @return
+#' - `rowVars()`: vector of row vars
+#' @aliases rowVars
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
+    stats <- BPCells::matrix_stats(x@seed,
+        row_stats = "variance", col_stats = "none"
+    )
+    unname(stats$row_stats["variance", , drop = TRUE])
+})
+
+#' @importMethodsFrom DelayedArray colVars
+#' @return
+#' - `colVars()`: vector of col vars
+#' @aliases colVars
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
+    stats <- BPCells::matrix_stats(x@seed,
+        row_stats = "none", col_stats = "variance"
+    )
+    unname(stats$col_stats["variance", , drop = TRUE])
 })
