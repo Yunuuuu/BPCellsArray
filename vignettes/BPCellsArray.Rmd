@@ -60,9 +60,11 @@ Other non-lazied operations:
 
 ## Matrix Storage Format
 BPCells provide three format:
+
 1. Directory of files
 2. Hdf5 file
 3. R object
+
 Details see: <https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html>
 
 `BPCellsArray` only implement the Directory of files format, which is used

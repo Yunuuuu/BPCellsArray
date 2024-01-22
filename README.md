@@ -53,8 +53,13 @@ Other non-lazied operations:
 
 ## Matrix Storage Format
 
-BPCells provide three format: 1. Directory of files 2. Hdf5 file 3. R
-object Details see:
+BPCells provide three format:
+
+1.  Directory of files
+2.  Hdf5 file
+3.  R object
+
+Details see:
 <https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html>
 
 `BPCellsArray` only implement the Directory of files format, which is
@@ -178,7 +183,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmprzZAw0/BPCells269715df012a
+#> 1. Load compressed matrix from directory /tmp/Rtmpor6yGE/BPCells269f8d64de419d
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -198,7 +203,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmprzZAw0/BPCells269715df012a
+#> 1. Load compressed matrix from directory /tmp/Rtmpor6yGE/BPCells269f8d64de419d
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -263,7 +268,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmprzZAw0/BPCells269715df012a
+#> 1. Load compressed matrix from directory /tmp/Rtmpor6yGE/BPCells269f8d64de419d
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44
