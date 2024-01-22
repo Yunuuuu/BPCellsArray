@@ -144,7 +144,7 @@ methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
     stats <- BPCells::matrix_stats(x@seed,
         row_stats = "variance", col_stats = "none"
     )
-    unname(stats$row_stats["variance", , drop = TRUE])
+    stats$row_stats["variance", , drop = TRUE]
 })
 
 #' @importMethodsFrom DelayedArray colVars
@@ -157,5 +157,5 @@ methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
     stats <- BPCells::matrix_stats(x@seed,
         row_stats = "none", col_stats = "variance"
     )
-    unname(stats$col_stats["variance", , drop = TRUE])
+    stats$col_stats["variance", , drop = TRUE]
 })
