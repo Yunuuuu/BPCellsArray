@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# eheat
+# BPCells backend for DelayedArray objects
 
 <!-- badges: start -->
 
@@ -178,7 +178,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpJiXxC7/BPCells26938c5c1875ae
+#> 1. Load compressed matrix from directory /tmp/RtmprzZAw0/BPCells269715df012a
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -198,7 +198,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpJiXxC7/BPCells26938c5c1875ae
+#> 1. Load compressed matrix from directory /tmp/RtmprzZAw0/BPCells269715df012a
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -263,7 +263,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpJiXxC7/BPCells26938c5c1875ae
+#> 1. Load compressed matrix from directory /tmp/RtmprzZAw0/BPCells269715df012a
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44
