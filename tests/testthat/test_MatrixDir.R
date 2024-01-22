@@ -5,7 +5,7 @@ obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 testthat::test_that("`BPCellsDirSeed()` works as expected", {
     seed <- BPCellsDirSeed(path)
     testthat::expect_s4_class(seed, "BPCellsDirSeed")
-    seed <- BPCellsDirSeed(obj)
+    seed <- BPCellsDirSeed(path)
     testthat::expect_s4_class(seed, "BPCellsDirSeed")
     obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsDirMatrix")
@@ -84,14 +84,14 @@ testthat::test_that("`dimnames<-` for `BPCellsDir` object works as expected", {
 })
 
 testthat::test_that("`%*%` for `BPCellsDir` object works as expected", {
-    seed <- BPCellsDirSeed(obj)
+    seed <- BPCellsDirSeed(path)
     testthat::expect_s4_class(seed, "BPCellsDirSeed")
     testthat::expect_warning(temp <- seed %*% t(seed))
     testthat::expect_s4_class(temp, "BPCellsMultiplySeed")
     testthat::expect_true(is.matrix(seed %*% as.matrix(t(seed))))
     testthat::expect_true(is.matrix(seed %*% seq_len(ncol(seed))))
     testthat::expect_true(is.matrix(seq_len(nrow(seed)) %*% seed))
-    obj <- BPCellsDirArray(obj)
+    obj <- BPCellsDirArray(path)
     testthat::expect_s4_class(obj, "BPCellsDirMatrix")
     testthat::expect_warning(temp <- obj %*% t(obj))
     testthat::expect_s4_class(temp, "BPCellsMultiplyMatrix")
@@ -140,4 +140,180 @@ testthat::test_that("`cbind` for `BPCellsDir` object works as expected", {
         bindCOLS(obj, list(obj)),
         "BPCellsColBindMatrixMatrix"
     )
+})
+
+testthat::test_that("`+` for `BPCellsDirSeed` object works as expected", {
+    seed <- BPCellsDirSeed(path)
+    testthat::expect_s4_class(seed, "BPCellsDirSeed")
+    testthat::expect_s4_class(seed + 1, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(seed + 1 + 10, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seed + seq_len(nrow(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        t(seed) + seq_len(ncol(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(1 + seed, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seq_len(nrow(seed)) + seed,
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(seed)) + t(seed),
+        "BPCellsTransformScaleShiftSeed"
+    )
+})
+
+testthat::test_that("`+` for `BPCellsDirMatrix` object works as expected", {
+    obj <- BPCellsDirArray(path)
+    testthat::expect_s4_class(obj, "BPCellsDirMatrix")
+    testthat::expect_s4_class(obj + 1, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(obj + 1 + 10, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        obj + seq_len(nrow(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        t(obj) + seq_len(ncol(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(1 + obj, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        seq_len(nrow(obj)) + obj,
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(obj)) + t(obj),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+})
+
+testthat::test_that("`-` for `BPCellsDirSeed` object works as expected", {
+    seed <- BPCellsDirSeed(path)
+    testthat::expect_s4_class(seed, "BPCellsDirSeed")
+    testthat::expect_s4_class(seed - 1, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(seed - 1 - 10, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seed - seq_len(nrow(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        t(seed) - seq_len(ncol(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(1 - seed, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seq_len(nrow(seed)) - seed,
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(seed)) - t(seed),
+        "BPCellsTransformScaleShiftSeed"
+    )
+})
+
+testthat::test_that("`-` for `BPCellsDirMatrix` object works as expected", {
+    obj <- BPCellsDirArray(path)
+    testthat::expect_s4_class(obj, "BPCellsDirMatrix")
+    testthat::expect_s4_class(obj - 1, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(obj - 1 - 10, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        obj - seq_len(nrow(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        t(obj) - seq_len(ncol(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(1 - obj, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        seq_len(nrow(obj)) - obj,
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(obj)) - t(obj),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+})
+
+testthat::test_that("`*` for `BPCellsDirSeed` object works as expected", {
+    seed <- BPCellsDirSeed(path)
+    testthat::expect_s4_class(seed, "BPCellsDirSeed")
+    testthat::expect_s4_class(seed * 1, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(seed * 1 * 10, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seed * seq_len(nrow(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        t(seed) * seq_len(ncol(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(1 * seed, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seq_len(nrow(seed)) * seed,
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(seed)) * t(seed),
+        "BPCellsTransformScaleShiftSeed"
+    )
+})
+
+testthat::test_that("`*` for `BPCellsDirMatrix` object works as expected", {
+    obj <- BPCellsDirArray(path)
+    testthat::expect_s4_class(obj, "BPCellsDirMatrix")
+    testthat::expect_s4_class(obj * 1, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(obj * 1 * 10, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        obj * seq_len(nrow(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        t(obj) * seq_len(ncol(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(1 * obj, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        seq_len(nrow(obj)) * obj,
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(obj)) * t(obj),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+})
+
+testthat::test_that("`/` for `BPCellsDirSeed` object works as expected", {
+    seed <- BPCellsDirSeed(path)
+    testthat::expect_s4_class(seed, "BPCellsDirSeed")
+    testthat::expect_s4_class(seed / 1, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(seed / 1 / 10, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seed / seq_len(nrow(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        t(seed) / seq_len(ncol(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_error(1 / seed)
+})
+
+testthat::test_that("`/` for `BPCellsDirMatrix` object works as expected", {
+    obj <- BPCellsDirArray(path)
+    testthat::expect_s4_class(obj, "BPCellsDirMatrix")
+    testthat::expect_s4_class(obj / 1, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(obj / 1 / 10, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        obj / seq_len(nrow(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        t(obj) / seq_len(ncol(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_error(1 / obj)
 })

@@ -129,3 +129,179 @@ testthat::test_that("`cbind` for `BPCellsSubset` object works as expected", {
         "BPCellsColBindMatrixMatrix"
     )
 })
+
+testthat::test_that("`+` for `BPCellsSubsetSeed` object works as expected", {
+    seed <- BPCellsSubsetSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsSubsetSeed")
+    testthat::expect_s4_class(seed + 1, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(seed + 1 + 10, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seed + seq_len(nrow(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        t(seed) + seq_len(ncol(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(1 + seed, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seq_len(nrow(seed)) + seed,
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(seed)) + t(seed),
+        "BPCellsTransformScaleShiftSeed"
+    )
+})
+
+testthat::test_that("`+` for `BPCellsSubsetMatrix` object works as expected", {
+    obj <- BPCellsSubsetArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsSubsetMatrix")
+    testthat::expect_s4_class(obj + 1, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(obj + 1 + 10, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        obj + seq_len(nrow(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        t(obj) + seq_len(ncol(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(1 + obj, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        seq_len(nrow(obj)) + obj,
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(obj)) + t(obj),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+})
+
+testthat::test_that("`-` for `BPCellsSubsetSeed` object works as expected", {
+    seed <- BPCellsSubsetSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsSubsetSeed")
+    testthat::expect_s4_class(seed - 1, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(seed - 1 - 10, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seed - seq_len(nrow(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        t(seed) - seq_len(ncol(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(1 - seed, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seq_len(nrow(seed)) - seed,
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(seed)) - t(seed),
+        "BPCellsTransformScaleShiftSeed"
+    )
+})
+
+testthat::test_that("`-` for `BPCellsSubsetMatrix` object works as expected", {
+    obj <- BPCellsSubsetArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsSubsetMatrix")
+    testthat::expect_s4_class(obj - 1, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(obj - 1 - 10, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        obj - seq_len(nrow(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        t(obj) - seq_len(ncol(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(1 - obj, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        seq_len(nrow(obj)) - obj,
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(obj)) - t(obj),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+})
+
+testthat::test_that("`*` for `BPCellsSubsetSeed` object works as expected", {
+    seed <- BPCellsSubsetSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsSubsetSeed")
+    testthat::expect_s4_class(seed * 1, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(seed * 1 * 10, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seed * seq_len(nrow(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        t(seed) * seq_len(ncol(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(1 * seed, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seq_len(nrow(seed)) * seed,
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(seed)) * t(seed),
+        "BPCellsTransformScaleShiftSeed"
+    )
+})
+
+testthat::test_that("`*` for `BPCellsSubsetMatrix` object works as expected", {
+    obj <- BPCellsSubsetArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsSubsetMatrix")
+    testthat::expect_s4_class(obj * 1, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(obj * 1 * 10, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        obj * seq_len(nrow(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        t(obj) * seq_len(ncol(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(1 * obj, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        seq_len(nrow(obj)) * obj,
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        seq_len(ncol(obj)) * t(obj),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+})
+
+testthat::test_that("`/` for `BPCellsSubsetSeed` object works as expected", {
+    seed <- BPCellsSubsetSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsSubsetSeed")
+    testthat::expect_s4_class(seed / 1, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(seed / 1 / 10, "BPCellsTransformScaleShiftSeed")
+    testthat::expect_s4_class(
+        seed / seq_len(nrow(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_s4_class(
+        t(seed) / seq_len(ncol(seed)),
+        "BPCellsTransformScaleShiftSeed"
+    )
+    testthat::expect_error(1 / seed)
+})
+
+testthat::test_that("`/` for `BPCellsSubsetMatrix` object works as expected", {
+    obj <- BPCellsSubsetArray(obj)
+    testthat::expect_s4_class(obj, "BPCellsSubsetMatrix")
+    testthat::expect_s4_class(obj / 1, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(obj / 1 / 10, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(
+        obj / seq_len(nrow(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_s4_class(
+        t(obj) / seq_len(ncol(obj)),
+        "BPCellsTransformScaleShiftMatrix"
+    )
+    testthat::expect_error(1 / obj)
+})

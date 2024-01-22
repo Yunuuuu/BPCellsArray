@@ -45,6 +45,8 @@ Collate:
     'Class-Subset.R'
     'Class-Transformed.R'
     'Class-dgCMatrix.R'
+    'Transform-Arithmetic.R'
+    'Method-Arithmetic.R'
     'Method-binarize.R'
     'Method-bind.R'
     'Method-crossprod.R'

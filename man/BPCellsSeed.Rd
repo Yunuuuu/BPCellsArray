@@ -22,6 +22,7 @@
 \alias{BPCellsSeed,TransformMinByCol-method}
 \alias{BPCellsSeed,TransformBinarize-method}
 \alias{BPCellsSeed,TransformRound-method}
+\alias{BPCellsSeed,TransformScaleShift-method}
 \alias{BPCellsSeed,MatrixRankTransform-method}
 \alias{BPCellsSeed,MatrixMask-method}
 \alias{BPCellsSeed,ColBindMatrices-method}
@@ -70,6 +71,8 @@ BPCellsSeed(x, ...)
 \S4method{BPCellsSeed}{TransformBinarize}(x, ...)
 
 \S4method{BPCellsSeed}{TransformRound}(x, ...)
+
+\S4method{BPCellsSeed}{TransformScaleShift}(x, ...)
 
 \S4method{BPCellsSeed}{MatrixRankTransform}(x, ...)
 

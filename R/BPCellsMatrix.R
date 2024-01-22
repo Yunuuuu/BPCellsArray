@@ -162,6 +162,13 @@ methods::setMethod("BPCellsSeed", "TransformRound", function(x, ...) {
 
 #' @export
 #' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "TransformScaleShift", function(x, ...) {
+    rlang::check_dots_empty()
+    BPCellsTransformScaleShiftSeed(x = x)
+})
+
+#' @export
+#' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixRankTransform", function(x, ...) {
     rlang::check_dots_empty()
     BPCellsRankTransformSeed(x = x)
