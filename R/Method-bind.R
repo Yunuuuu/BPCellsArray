@@ -12,6 +12,7 @@
 #'   [BPCellsCOLSBindMatrixMatrix][BPCellsBindMatrix] object.
 #' - `rbind2`, `arbind`, `rbind`, `bindROWS`: A
 #'   [BPCellsRowBindMatrixMatrix][BPCellsBindMatrix] object.
+#' @aliases rbind2 cbind2 rbind cbind arbind acbind bindROWS bindCOLS
 #' @name BPCells-bind
 NULL
 

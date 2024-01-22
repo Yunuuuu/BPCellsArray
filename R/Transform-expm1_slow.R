@@ -72,7 +72,7 @@ methods::setMethod("matrixClass", "BPCellsTransformExpm1SlowArray", function(x) 
 ###########################  Methods  #############################
 ###################################################################
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsMatrix-class
 methods::setGeneric("expm1_slow", function(x) {
     makeStandardGeneric("expm1_slow")
 })

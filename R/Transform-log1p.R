@@ -75,7 +75,10 @@ methods::setMethod("log1p", "BPCellsSeed", function(x) {
     BPCellsSeed(methods::callNextMethod())
 })
 
+#' @return 
+#'  - `log1p` and `log1p_slow`: compute `log(1+x)` of matrix.
 #' @export
+#' @aliases log1p
 #' @rdname BPCellsMatrix-class
 methods::setMethod("log1p", "BPCellsMatrix", function(x) {
     DelayedArray(log1p(x@seed))

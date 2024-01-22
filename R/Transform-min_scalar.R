@@ -72,7 +72,7 @@ methods::setMethod("matrixClass", "BPCellsTransformMinArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsMatrix-class
 methods::setGeneric("pmin_scalar", function(object, value) {
     makeStandardGeneric("pmin_scalar")
 })
@@ -85,6 +85,8 @@ methods::setMethod(
     }
 )
 
+#' @return 
+#' - `pmin_scalar`: Take minumum with a global constant
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod(

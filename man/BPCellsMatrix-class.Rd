@@ -13,14 +13,24 @@
 \alias{[<-,BPCellsMatrix,ANY,ANY,ANY-method}
 \alias{dimnames<-,BPCellsMatrix,ListOrNULL-method}
 \alias{round,BPCellsMatrix-method}
+\alias{round}
 \alias{expm1,BPCellsMatrix-method}
+\alias{expm1}
+\alias{expm1_slow}
 \alias{expm1_slow,BPCellsMatrix-method}
 \alias{log1p,BPCellsMatrix-method}
+\alias{log1p}
+\alias{log1p_slow}
 \alias{log1p_slow,BPCellsMatrix-method}
+\alias{pmin_by_col}
 \alias{pmin_by_col,BPCellsMatrix-method}
+\alias{pmin_by_row}
 \alias{pmin_by_row,BPCellsMatrix-method}
+\alias{pmin_scalar}
 \alias{pmin_scalar,BPCellsMatrix-method}
 \alias{^,BPCellsMatrix,ANY-method}
+\alias{^}
+\alias{pow_slow}
 \alias{^,BPCellsMatrix,numeric-method}
 \title{Base Class for Delayed BPCells matrix}
 \usage{
@@ -38,19 +48,31 @@
 
 \S4method{expm1}{BPCellsMatrix}(x)
 
+expm1_slow(x)
+
 \S4method{expm1_slow}{BPCellsMatrix}(x)
 
 \S4method{log1p}{BPCellsMatrix}(x)
 
+log1p_slow(x)
+
 \S4method{log1p_slow}{BPCellsMatrix}(x)
+
+pmin_by_col(object, values)
 
 \S4method{pmin_by_col}{BPCellsMatrix}(object, values)
 
+pmin_by_row(object, values)
+
 \S4method{pmin_by_row}{BPCellsMatrix}(object, values)
+
+pmin_scalar(object, value)
 
 \S4method{pmin_scalar}{BPCellsMatrix}(object, value)
 
 \S4method{^}{BPCellsMatrix,ANY}(e1, e2)
+
+pow_slow(e1, e2)
 
 \S4method{^}{BPCellsMatrix,numeric}(e1, e2)
 }
@@ -99,6 +121,22 @@
 
 \itemize{
 \item \code{expm1} and \code{expm1_slow}: compute \code{exp(x)-1} of matrix.
+}
+
+\itemize{
+\item \code{log1p} and \code{log1p_slow}: compute \code{log(1+x)} of matrix.
+}
+
+\itemize{
+\item \code{pmin_by_col}: Take the minimum with a per-col constant
+}
+
+\itemize{
+\item \code{pmin_by_row}: Take the minimum with a per-row constant
+}
+
+\itemize{
+\item \code{pmin_scalar}: Take minumum with a global constant
 }
 }
 \description{

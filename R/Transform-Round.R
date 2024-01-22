@@ -85,6 +85,7 @@ methods::setMethod(
 #' @param digits Integer indicating the number of decimal places
 #' @return - `round`: Rounding of matrix Numbers.
 #' @export
+#' @aliases round
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
     "round", "BPCellsMatrix", function(x, digits = 0) {

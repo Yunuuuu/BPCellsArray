@@ -9,6 +9,8 @@
 \alias{rank_transform,ANY-method}
 \alias{DelayedArray,BPCellsdgCMatrixSeed-method}
 \alias{matrixClass,BPCellsdgCMatrixArray-method}
+\alias{/,numeric,BPCellsMatrix-method}
+\alias{/,numeric,BPCellsSeed-method}
 \alias{*,BPCellsTransformScaleShiftSeed,numeric-method}
 \alias{+,BPCellsTransformScaleShiftSeed,numeric-method}
 \alias{*,numeric,BPCellsTransformScaleShiftSeed-method}
@@ -42,6 +44,10 @@
 \S4method{DelayedArray}{BPCellsdgCMatrixSeed}(seed)
 
 \S4method{matrixClass}{BPCellsdgCMatrixArray}(x)
+
+\S4method{/}{numeric,BPCellsMatrix}(e1, e2)
+
+\S4method{/}{numeric,BPCellsSeed}(e1, e2)
 
 \S4method{*}{BPCellsTransformScaleShiftSeed,numeric}(e1, e2)
 

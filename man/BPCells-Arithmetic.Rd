@@ -2,6 +2,10 @@
 % Please edit documentation in R/Method-Arithmetic.R
 \name{BPCells-Arithmetic}
 \alias{BPCells-Arithmetic}
+\alias{+}
+\alias{-}
+\alias{*}
+\alias{/}
 \alias{*,BPCellsMatrix,numeric-method}
 \alias{*,numeric,BPCellsMatrix-method}
 \alias{+,BPCellsMatrix,numeric-method}

@@ -71,7 +71,7 @@ methods::setMethod("matrixClass", "BPCellsTransformLog1pSlowArray", function(x) 
 ###########################  Methods  #############################
 ###################################################################
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsMatrix-class
 methods::setGeneric("log1p_slow", function(x) {
     makeStandardGeneric("log1p_slow")
 })

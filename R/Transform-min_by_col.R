@@ -73,7 +73,7 @@ methods::setMethod("matrixClass", "BPCellsTransformMinByColArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsMatrix-class
 methods::setGeneric("pmin_by_col", function(object, values) {
     makeStandardGeneric("pmin_by_col")
 })
@@ -88,6 +88,8 @@ methods::setMethod(
 )
 
 #' @param values A positive atomic numeric.
+#' @return 
+#' - `pmin_by_col`: Take the minimum with a per-col constant
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod(

@@ -2,6 +2,14 @@
 % Please edit documentation in R/Method-bind.R
 \name{BPCells-bind}
 \alias{BPCells-bind}
+\alias{rbind2}
+\alias{cbind2}
+\alias{rbind}
+\alias{cbind}
+\alias{arbind}
+\alias{acbind}
+\alias{bindROWS}
+\alias{bindCOLS}
 \alias{rbind2,BPCellsMatrix,BPCellsMatrix-method}
 \alias{rbind,BPCellsMatrix-method}
 \alias{arbind,BPCellsMatrix-method}

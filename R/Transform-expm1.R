@@ -76,8 +76,10 @@ methods::setMethod("expm1", "BPCellsSeed", function(x) {
     BPCellsSeed(methods::callNextMethod())
 })
 
-#' @return - `expm1` and `expm1_slow`: compute `exp(x)-1` of matrix.
+#' @return 
+#'  - `expm1` and `expm1_slow`: compute `exp(x)-1` of matrix.
 #' @export
+#' @aliases expm1
 #' @rdname BPCellsMatrix-class
 methods::setMethod("expm1", "BPCellsMatrix", function(x) {
     DelayedArray(expm1(x@seed))

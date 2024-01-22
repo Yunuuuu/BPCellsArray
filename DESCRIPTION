@@ -1,5 +1,5 @@
 Package: BPCellsArray
-Title: Using BPCellsArray as a DelayedArray Backend
+Title: Using BPCells as a DelayedArray Backend
 Version: 0.0.0.9000
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),

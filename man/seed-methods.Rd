@@ -66,19 +66,13 @@
 \alias{[,BPCellsTransformedSeed,ANY,ANY,ANY-method}
 \alias{round,BPCellsSeed-method}
 \alias{expm1,BPCellsSeed-method}
-\alias{expm1_slow}
 \alias{expm1_slow,BPCellsSeed-method}
 \alias{log1p,BPCellsSeed-method}
-\alias{log1p_slow}
 \alias{log1p_slow,BPCellsSeed-method}
-\alias{pmin_by_col}
 \alias{pmin_by_col,BPCellsSeed-method}
-\alias{pmin_by_row}
 \alias{pmin_by_row,BPCellsSeed-method}
-\alias{pmin_scalar}
 \alias{pmin_scalar,BPCellsSeed-method}
 \alias{^,BPCellsSeed,ANY-method}
-\alias{pow_slow}
 \alias{pow_slow,BPCellsSeed-method}
 \title{House of BPCellsSeed methods}
 \usage{
@@ -210,31 +204,19 @@
 
 \S4method{expm1}{BPCellsSeed}(x)
 
-expm1_slow(x)
-
 \S4method{expm1_slow}{BPCellsSeed}(x)
 
 \S4method{log1p}{BPCellsSeed}(x)
 
-log1p_slow(x)
-
 \S4method{log1p_slow}{BPCellsSeed}(x)
-
-pmin_by_col(object, values)
 
 \S4method{pmin_by_col}{BPCellsSeed}(object, values)
 
-pmin_by_row(object, values)
-
 \S4method{pmin_by_row}{BPCellsSeed}(object, values)
-
-pmin_scalar(object, value)
 
 \S4method{pmin_scalar}{BPCellsSeed}(object, value)
 
 \S4method{^}{BPCellsSeed,ANY}(e1, e2)
-
-pow_slow(e1, e2)
 
 \S4method{pow_slow}{BPCellsSeed}(e1, e2)
 }

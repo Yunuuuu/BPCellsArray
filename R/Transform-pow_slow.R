@@ -72,7 +72,7 @@ methods::setMethod("matrixClass", "BPCellsTransformPowSlowArray", function(x) {
 ###########################  Methods  #############################
 ###################################################################
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsMatrix-class
 methods::setGeneric("pow_slow", function(e1, e2) {
     makeStandardGeneric("pow_slow")
 })

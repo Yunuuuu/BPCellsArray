@@ -79,6 +79,7 @@ methods::setMethod("^", "BPCellsSeed", function(e1, e2) {
 })
 
 #' @export
+#' @aliases ^
 #' @rdname BPCellsMatrix-class
 methods::setMethod("^", "BPCellsMatrix", function(e1, e2) {
     e1 <- e1@seed
