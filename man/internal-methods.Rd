@@ -100,6 +100,8 @@ to transpose the underlying storage order.}
 \item{x, y}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
+\item{e1, e2}{See detailed methods signature.}
+
 \item{...}{Additional parameters passed into specific methods.}
 }
 \description{

@@ -29,6 +29,7 @@ methods::setMethod(
     }
 )
 
+#' @inheritParams BPCells-binarize
 #' @export
 #' @rdname internal-methods
 methods::setMethod(

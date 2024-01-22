@@ -35,7 +35,7 @@ object in BPCells.
 }
 \note{
 Usually, you shouldn't use this class directly, instead, you should use
-\code{[} (extract methods) of other BPCellsArray objects.
+\verb{^2} of other BPCellsArray objects.
 
 Usually, you shouldn't use this class directly, instead, you should use
 \link[=BPCellsMatrix-class]{round} to create \code{BPCellsTransformSquareMatrix} object.

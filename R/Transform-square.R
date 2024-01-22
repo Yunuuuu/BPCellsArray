@@ -5,7 +5,7 @@
 #' object in BPCells.
 #'
 #' @note Usually, you shouldn't use this class directly, instead, you should use
-#' `[` (extract methods) of other BPCellsArray objects.
+#' `^2` of other BPCellsArray objects.
 #'
 #' @param x For Specific functions:
 #' - `BPCellsTransformSquareArray`: A `TransformSquare` object.
