@@ -3,30 +3,42 @@
 \name{BPCells-binarize}
 \alias{BPCells-binarize}
 \alias{binarize}
-\alias{binarize,BPCellsSeed-method}
 \alias{binarize,BPCellsMatrix-method}
+\alias{<,numeric,BPCellsMatrix-method}
+\alias{>,BPCellsMatrix,numeric-method}
+\alias{<=,numeric,BPCellsMatrix-method}
+\alias{>=,BPCellsMatrix,numeric-method}
 \title{Convert matrix elements to zeros and ones}
 \usage{
 binarize(object, ...)
 
-\S4method{binarize}{BPCellsSeed}(object, threshold = 0, strict_inequality = TRUE)
-
 \S4method{binarize}{BPCellsMatrix}(object, ...)
+
+\S4method{<}{numeric,BPCellsMatrix}(e1, e2)
+
+\S4method{>}{BPCellsMatrix,numeric}(e1, e2)
+
+\S4method{<=}{numeric,BPCellsMatrix}(e1, e2)
+
+\S4method{>=}{BPCellsMatrix,numeric}(e1, e2)
 }
 \arguments{
-\item{object}{A \link{BPCellsSeed} or \link{BPCellsMatrix} object.}
+\item{object}{A \link{BPCellsMatrix} object.}
 
-\item{...}{Additional parameters passed to \code{BPCellsSeed} method.}
-
-\item{threshold}{A numeric value that determines whether the elements
+\item{...}{
+  Arguments passed on to \code{\link[BPCells:binarize]{BPCells::binarize}}
+  \describe{
+    \item{\code{threshold}}{A numeric value that determines whether the elements
 of x are set to zero or one.}
-
-\item{strict_inequality}{A logical value determining whether the
+    \item{\code{strict_inequality}}{A logical value determining whether the
 comparison to the threshold is >= (strict_inequality=FALSE)
 or > (strict_inequality=TRUE).}
+  }}
+
+\item{e1, e2}{See detailed methods signature.}
 }
 \value{
-binarized IterableMatrix object
+A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Binarize compares the matrix element values to the

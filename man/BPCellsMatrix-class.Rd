@@ -74,7 +74,7 @@
 
 \item{values}{A positive atomic numeric.}
 
-\item{e1, e2}{See methods signatures.}
+\item{e1, e2}{See detailed methods signature.}
 }
 \value{
 \itemize{

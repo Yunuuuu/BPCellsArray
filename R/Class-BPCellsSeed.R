@@ -73,11 +73,15 @@ methods::setMethod(
 # In BPCells, `dimnames<-` was only defined for `IterableMatrix`.
 # `dimnames<-` return another `IterableMatrix` object.
 # we wrap it into a `BPCellsSeed` object.
+#' @param value
+#'  - `dimnames<-`: A list of dimnames or `NULL`.
+#'  - `[<-`: A matrix which can be coerced into
+#'     [dgCMatrix][Matrix::dgCMatrix-class].
 #' @return
 #' - `dimnames<-`: A [BPCellsSeed] object, usually a `BPCellsRenameDimsSeed`
 #'   object.
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames<-",
     c(x = "BPCellsSeed", value = "list"), function(x, value) {
@@ -86,7 +90,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames<-",
     c(x = "BPCellsSeed", value = "NULL"), function(x, value) {
@@ -95,9 +99,10 @@ methods::setMethod(
 )
 
 # t will not change the underlying class
+#' @return - `t`: A [BPCellsSeed] object.
 #' @importMethodsFrom DelayedArray t
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
 
 # In BPCells, `[<-` was only defined for `IterableMatrix`
@@ -106,7 +111,7 @@ methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
 #' - `[<-`: A [BPCellsSeed] object.
 #' @importMethodsFrom BPCells [<-
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "[<-", "BPCellsSeed", function(x, i, j, ..., value) {
         BPCellsSeed(methods::callNextMethod())

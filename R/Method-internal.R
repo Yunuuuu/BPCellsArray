@@ -7,7 +7,7 @@
 #' @param ...
 #'  - `rbind2` and `cbind2`: Not used currently.
 #'  - `rbind`, `arbind`, `cbind`, and `acbind`: A list of
-#'    [BPCellsMatrix][BPCellsMatrix-class] objects.
+#'    [BPCellsSeed][BPCellsSeed-class] objects.
 #'  - `[` and `[<-`: Not used currently.
 #' @name seed-methods
 NULL
@@ -18,7 +18,7 @@ NULL
 #' the method for `ANY` object.
 #'
 #' @param x,y A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object. 
+#' [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @param seed A [BPCellsSeed][BPCellsSeed-class] object.
 #' @name internal-methods
 NULL

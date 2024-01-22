@@ -74,7 +74,7 @@ methods::setMethod("matrixClass", "BPCellsConvertArray", function(x) {
 #' Convert the type of a BPCells IterableMatrix matrix
 #'
 #' @param object A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object. 
+#' [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @param ... Additional parameters passed into specific methods.
 #' @name convert_type
 NULL
@@ -91,7 +91,8 @@ methods::setGeneric(
 #' real number), or `double` (`64bit_numeric`) (64-bit real number). R cannot
 #' differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
 #' 64-bit real number and "numeric" to indicate 32-bit real number.
-#' @return A [BPCellsConvertMatrix][BPCellsConvert] object.
+#' @return A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
 #' @importFrom DelayedArray DelayedArray
 #' @export

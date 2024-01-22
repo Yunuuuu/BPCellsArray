@@ -77,14 +77,14 @@ methods::setGeneric("pow_slow", function(e1, e2) {
     makeStandardGeneric("pow_slow")
 })
 
-#' @inheritParams BPCellsMatrix-class
+#' @inheritParams BPCells-binarize
 #' @export
 #' @rdname seed-methods
 methods::setMethod("pow_slow", "BPCellsSeed", function(e1, e2) {
     BPCellsSeed(BPCells::pow_slow(x = e1, exponent = e2))
 })
 
-#' @param e1,e2 See methods signatures.
+#' @inheritParams BPCells-binarize
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("^", c("BPCellsMatrix", "numeric"), function(e1, e2) {

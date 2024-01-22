@@ -8,6 +8,10 @@
 \alias{is_sparse,BPCellsSeed-method}
 \alias{extract_array,BPCellsSeed-method}
 \alias{extract_sparse_array,BPCellsSeed-method}
+\alias{dimnames<-,BPCellsSeed,list-method}
+\alias{dimnames<-,BPCellsSeed,NULL-method}
+\alias{t,BPCellsSeed-method}
+\alias{[<-,BPCellsSeed,ANY,ANY,ANY-method}
 \title{Low-level Base Class for Delayed BPCells matrix}
 \usage{
 \S4method{show}{BPCellsSeed}(object)
@@ -19,6 +23,14 @@
 \S4method{extract_array}{BPCellsSeed}(x, index)
 
 \S4method{extract_sparse_array}{BPCellsSeed}(x, index)
+
+\S4method{dimnames}{BPCellsSeed,list}(x) <- value
+
+\S4method{dimnames}{BPCellsSeed,NULL}(x) <- value
+
+\S4method{t}{BPCellsSeed}(x)
+
+\S4method{[}{BPCellsSeed,ANY,ANY,ANY}(x, i, j, ...) <- value
 }
 \arguments{
 \item{x, object}{A \code{BPCellsSeed} object.}
@@ -36,6 +48,16 @@
 
     Individual subscripts are allowed to contain duplicated indices.
   }
+
+\item{value}{\itemize{
+\item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
+\item \verb{[<-}: A matrix which can be coerced into
+\link[Matrix:dgCMatrix-class]{dgCMatrix}.
+}}
+
+\item{i, j}{Row and Column index.}
+
+\item{...}{Not used currently.}
 }
 \value{
 \itemize{
@@ -55,6 +77,19 @@ number.
 \itemize{
 \item \code{extract_sparse_array}: A \link[DelayedArray:SparseArraySeed-class]{SparseArraySeed}
 object.
+}
+
+\itemize{
+\item \verb{dimnames<-}: A \link{BPCellsSeed} object, usually a \code{BPCellsRenameDimsSeed}
+object.
+}
+
+\itemize{
+\item \code{t}: A \link{BPCellsSeed} object.
+}
+
+\itemize{
+\item \verb{[<-}: A \link{BPCellsSeed} object.
 }
 }
 \description{

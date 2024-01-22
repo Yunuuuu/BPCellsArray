@@ -25,7 +25,8 @@ differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
 64-bit real number and "numeric" to indicate 32-bit real number.}
 }
 \value{
-A \link[=BPCellsConvert]{BPCellsConvertMatrix} object.
+A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Convert the type of a BPCells IterableMatrix matrix
