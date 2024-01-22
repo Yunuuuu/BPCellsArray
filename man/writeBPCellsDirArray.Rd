@@ -2,15 +2,14 @@
 % Please edit documentation in R/Class-Dir.R
 \name{writeBPCellsDirArray}
 \alias{writeBPCellsDirArray}
-\alias{writeBPCellsDirArray,ANY-method}
 \alias{writeBPCellsDirArray,IterableMatrix-method}
 \alias{writeBPCellsDirArray,BPCellsSeed-method}
+\alias{writeBPCellsDirArray,BPCellsMatrix-method}
 \alias{writeBPCellsDirArray,dgCMatrix-method}
+\alias{writeBPCellsDirArray,ANY-method}
 \title{Write a sparce matrices into a BPCells Directory of files format}
 \usage{
 writeBPCellsDirArray(x, ...)
-
-\S4method{writeBPCellsDirArray}{ANY}(x, ...)
 
 \S4method{writeBPCellsDirArray}{IterableMatrix}(
   x,
@@ -28,6 +27,8 @@ writeBPCellsDirArray(x, ...)
   overwrite = FALSE
 )
 
+\S4method{writeBPCellsDirArray}{BPCellsMatrix}(x, ...)
+
 \S4method{writeBPCellsDirArray}{dgCMatrix}(
   x,
   path = NULL,
@@ -35,12 +36,18 @@ writeBPCellsDirArray(x, ...)
   buffer_size = 8192L,
   overwrite = FALSE
 )
+
+\S4method{writeBPCellsDirArray}{ANY}(x, ...)
 }
 \arguments{
 \item{x}{Input matrix, any matrix can be coerced into
 \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
-\item{...}{Additional parameters passed to specific methods.}
+\item{...}{\itemize{
+\item For \code{BPCellsMatrix} method: additional parameters passed to \code{BPCellsSeed}
+methods.
+\item For \code{ANY} method: additional parameters passed to \code{dgCMatrix} methods.
+}}
 
 \item{path}{Directory to save the data into, if \code{NULL}, will use a temporary
 directory.}
@@ -54,7 +61,7 @@ in memory before calling writes to disk.}
 pass a temp path as a string to customize the temp dir location.}
 }
 \value{
-A \link{BPCellsDir} object.
+A \link[=BPCellsDir]{BPCellsDirMatrix} object.
 }
 \description{
 Write a sparce matrices into a BPCells Directory of files format

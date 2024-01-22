@@ -90,9 +90,12 @@ methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
 #' [dgCMatrix][Matrix::dgCMatrix-class] object.
 #' @param path Directory to save the data into, if `NULL`, will use a temporary
 #' directory.
-#' @param ... Additional parameters passed to specific methods.
+#' @param ...
+#' - For `BPCellsMatrix` method: additional parameters passed to `BPCellsSeed`
+#'   methods.
+#' - For `ANY` method: additional parameters passed to `dgCMatrix` methods.
 #' @inheritParams BPCells::write_matrix_dir
-#' @return A [BPCellsDir] object.
+#' @return A [BPCellsDirMatrix][BPCellsDir] object.
 #' @export
 #' @name writeBPCellsDirArray
 methods::setGeneric(
@@ -114,12 +117,6 @@ methods::setGeneric(
 
 #' @export
 #' @rdname writeBPCellsDirArray
-methods::setMethod("writeBPCellsDirArray", "ANY", function(x, ...) {
-    .writeBPCellsDirArray(x = coerce_dgCMatrix(x), ...)
-})
-
-#' @export
-#' @rdname writeBPCellsDirArray
 methods::setMethod(
     "writeBPCellsDirArray", "IterableMatrix", .writeBPCellsDirArray
 )
@@ -130,7 +127,19 @@ methods::setMethod("writeBPCellsDirArray", "BPCellsSeed", .writeBPCellsDirArray)
 
 #' @export
 #' @rdname writeBPCellsDirArray
+methods::setMethod("writeBPCellsDirArray", "BPCellsMatrix", function(x, ...) {
+    .writeBPCellsDirArray(x = x@seed, ...)
+})
+
+#' @export
+#' @rdname writeBPCellsDirArray
 methods::setMethod("writeBPCellsDirArray", "dgCMatrix", .writeBPCellsDirArray)
+
+#' @export
+#' @rdname writeBPCellsDirArray
+methods::setMethod("writeBPCellsDirArray", "ANY", function(x, ...) {
+    .writeBPCellsDirArray(x = coerce_dgCMatrix(x), ...)
+})
 
 .as_BPCellsDirArray <- function(from) writeBPCellsDirArray(from)
 
@@ -139,3 +148,13 @@ methods::setAs("ANY", "BPCellsDirArray", .as_BPCellsDirArray)
 
 #' @export
 methods::setAs("ANY", "BPCellsDirMatrix", .as_BPCellsDirArray)
+
+#' @export
+methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
+    methods::as(from@seed, "dgCMatrix")
+})
+
+#' @export
+methods::setAs("BPCellsMatrix", "matrix", function(from) {
+    as.matrix(from@seed)
+})
