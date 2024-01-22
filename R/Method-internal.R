@@ -20,6 +20,8 @@ NULL
 #'
 #' @param x,y A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @param value A matrix which can be coerced into
+#'     [dgCMatrix][Matrix::dgCMatrix-class].
 #' @param seed A [BPCellsSeed][BPCellsSeed-class] object.
 #' @name internal-methods
 NULL

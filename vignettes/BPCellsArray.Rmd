@@ -1,0 +1,183 @@
+---
+title: "BPCells backend for DelayedArray objects"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BPCellsArray}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+BPCells is a package for high performance single cell analysis on RNA-seq and
+ATAC-seq datasets. This package just bring BPCells into Bioconductor single-cell
+workflow. 
+
+All operations in `BPCells` are lazy, which means that no real work is performed
+on matrix or fragment objects until the result needs to be returned as an R
+object or written to disk. And most operations have been optimized by c++ or c.
+
+Here is a summarized delayed operations in BPCells:
+
+| Operations                               | BPCells                       | BPCellsArray                  |
+| ---------------------------------------- | ----------------------------- | ----------------------------- |
+| Combine by row                           | rbind2                        | rbind2,rbind,arbind,bindROWS  |
+| Combine by column                        | cbind2                        | cbind2,cbind,acbind,bindCOLS  |
+| transpose matrix                         | t                             | t                             |
+| subset                                   | `[`                           | `[`                           |
+| Rename                                   | `dimnames<-`                  | `dimnames<-`                  |
+| Multiplication                           | %*%                           | %*%                           |
+| Crossproduct                             |                               | crossprod                     |
+| Arithmetic                               | `+`,`-`,`*`,`/`               | `+`,`-`,`*`,`/`               |
+| Compare                                  | binarize (`<`,`>`,`<=`, `>=`) | binarize (`<`,`>`,`<=`, `>=`) |
+| Storage mode                             | convert_matrix_type           | convert_type                  |
+| Rank-transform                           | rank_transform                | rank_transform                |
+| Mask matrix entries to zero              | mask_matrix                   | mask_matrix                   |
+| Take minumum with a global constant      | min_scalar                    | pmin_scalar                   |
+| Take the minimum with a per-col constant | min_by_col                    | pmin_by_col                   |
+| Take the minimum with a per-row constant | min_by_row                    | pmin_by_row                   |
+| Round number                             | round                         | round                         |
+| `exp(x) - 1`                             | `expm1_slow`,`expm1`          | `expm1_slow`,`expm1`          |
+| log(1+x)                                 | `log1p`,`log1p_slow`          | `log1p`,`log1p_slow`          |
+| Power                                    | `pow_slow`,`^`                | `pow_slow`,`^`                |
+
+
+Other non-lazied operations:
+| Operations        | BPCells          | BPCellsArray             | Note             |
+| ----------------- | ---------------- | ------------------------ | ---------------- |
+| row/col summarize | matrix_stats     | matrix_stats             |                  |
+| row summarize     | rowSums,rowMeans | rowSums,rowMeans,rowVars |                  |
+| col summarize     | colSums,colMeans | colSums,colMeans,colVars |                  |
+| Multiplication    | %*%              | %*%                      | For some methods |
+| Crossproduct      |                  | crossprod                | For some methods |
+| svd               | svds             | SpectraParam             |                  |
+
+## Matrix Storage Format
+BPCells provide three format:
+1. Directory of files
+2. Hdf5 file
+3. R object
+Details see: <https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html>
+
+`BPCellsArray` only implement the Directory of files format, which is used
+across the package of `BPCells`.
+
+```{r setup}
+library(BPCellsArray)
+library(SingleCellExperiment)
+```
+
+Let's prepare some data for analysis
+```{r}
+set.seed(1L)
+path <- tempfile("BPCells")
+sce <- scuttle::mockSCE(2000L, 3000L)
+format(object.size(assay(sce, "counts")), "MB")
+```
+
+
+What we need to do is transform the counts matrix into a `BPCellsDirMatrix`
+object. 
+```{r}
+assay(sce, "counts") <- writeBPCellsDirArray(
+    assay(sce, "counts"),
+    path = path
+)
+format(object.size(assay(sce, "counts")), "MB")
+```
+
+The path store the data can be obtained by `path` function.
+```{r}
+identical(path(assay(sce, "counts")), path)
+```
+
+We can inspect the assay info by print it. Attention the class name. 
+```{r}
+assay(sce, "counts")
+```
+
+If you do delayed operations with this assay, the class may be changed, that's because all
+of BPCells operations are lazy, no real work is performed on the matrix until
+the result needs to be returned as an R object or written to disk. You can coerce it
+into a dense matrix or `dgCMatrix` to get a actual R object.
+```{r}
+assay(sce, "counts")[1:10, 1:10]
+as.matrix(assay(sce, "counts")[1:10, 1:10])
+as(assay(sce, "counts")[1:10, 1:10], "dgCMatrix")
+```
+
+Of cause, you can do the operations directly on the `SingleCellExperiment` object.
+```{r}
+identical(assay(sce[1:10, 1:10]), assay(sce, "counts")[1:10, 1:10])
+```
+
+Again, no real work is performed on the matrix until the result needs to be
+returned as an R object or written to disk. Attention the `Queued Operations`
+information. 
+```{r}
+sce <- scuttle::logNormCounts(sce)
+assay(sce, "logcounts")
+```
+
+Both `count` and `logcounts` share the same disk path.
+```{r}
+identical(path(assay(sce, "counts")), path(assay(sce, "logcounts")))
+```
+
+
+```{r}
+dec_sce <- scran::modelGeneVar(sce)
+hvgs <- scran::getTopHVGs(dec_sce, prop = 0.1)
+set.seed(1L)
+scater::runPCA(sce,
+    subset_row = scran::getTopHVGs(dec_sce, n = 2000L),
+    BSPARAM = BiocSingular::IrlbaParam()
+)
+```
+
+BPCells has implement a C++ Spectra solver for SVD calculation, `BPCellsArray`
+has wrap it into `SpectraParam`, the same format with other `BiocSingular`
+function. 
+```{r}
+set.seed(1L)
+sce <- scater::runPCA(sce,
+    subset_row = scran::getTopHVGs(dec_sce, n = 2000L),
+    BSPARAM = SpectraParam()
+)
+colLabels(sce) <- scran::clusterCells(
+    sce,
+    use.dimred = "PCA",
+    BLUSPARAM = bluster::SNNGraphParam(
+        k = 20L, type = "jaccard",
+        cluster.fun = "leiden",
+        cluster.args = list(
+            objective_function = "modularity",
+            resolution_parameter = 1,
+            n_iterations = -1L # undocumented characteristics
+        ),
+        BNPARAM = BiocNeighbors::AnnoyParam()
+    )
+)
+sce <- scater::runUMAP(
+    sce,
+    dimred = "PCA",
+    n_neighbors = 10L,
+    min_dist = 0.3,
+    metric = "cosine",
+    external_neighbors = TRUE,
+    BNPARAM = BiocNeighbors::AnnoyParam()
+)
+scater::plotReducedDim(
+    sce, "UMAP",
+    colour_by = "label",
+    point_shape = 16,
+    point.padding = 0,
+    force = 0
+)
+```
+

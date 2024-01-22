@@ -56,6 +56,7 @@ methods::setMethod(
     }
 )
 
+#' @inheritParams BPCellsMatrix-class
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
@@ -86,10 +87,43 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
-    "[<-", "BPCellsMatrix",
+    "[<-", c("BPCellsMatrix", "ANY", "ANY"),
     function(x, i, j, ..., value) {
         seed <- x@seed
         seed[i, j, ...] <- value
+        DelayedArray(seed)
+    }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[<-", c("BPCellsMatrix", "missing", "ANY"),
+    function(x, i, j, ..., value) {
+        seed <- x@seed
+        seed[, j, ...] <- value
+        DelayedArray(seed)
+    }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[<-", c("BPCellsMatrix", "ANY", "missing"),
+    function(x, i, j, ..., value) {
+        seed <- x@seed
+        seed[i, , ...] <- value
+        DelayedArray(seed)
+    }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[<-", c("BPCellsMatrix", "missing", "missing"),
+    function(x, i, j, ..., value) {
+        seed <- x@seed
+        seed[, , ...] <- value
         DelayedArray(seed)
     }
 )

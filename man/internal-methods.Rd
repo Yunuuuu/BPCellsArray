@@ -7,6 +7,9 @@
 \alias{[,BPCellsMatrix,missing,ANY,ANY-method}
 \alias{[,BPCellsMatrix,ANY,missing,ANY-method}
 \alias{[,BPCellsMatrix,missing,missing,ANY-method}
+\alias{[<-,BPCellsMatrix,missing,ANY,ANY-method}
+\alias{[<-,BPCellsMatrix,ANY,missing,ANY-method}
+\alias{[<-,BPCellsMatrix,missing,missing,ANY-method}
 \alias{convert_type,ANY-method}
 \alias{mask_matrix,ANY,ANY-method}
 \alias{rank_transform,ANY-method}
@@ -43,6 +46,12 @@
 \S4method{[}{BPCellsMatrix,ANY,missing,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsMatrix,missing,missing,ANY}(x, i, j, ..., drop = FALSE)
+
+\S4method{[}{BPCellsMatrix,missing,ANY,ANY}(x, i, j, ...) <- value
+
+\S4method{[}{BPCellsMatrix,ANY,missing,ANY}(x, i, j, ...) <- value
+
+\S4method{[}{BPCellsMatrix,missing,missing,ANY}(x, i, j, ...) <- value
 
 \S4method{convert_type}{ANY}(object, type)
 
@@ -104,7 +113,14 @@
 \item{x, y}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{...}{Additional parameters passed into specific methods.}
+\item{i, j}{Row and Column index.}
+
+\item{...}{Not used currently.}
+
+\item{drop}{Ignored, always be \code{FALSE}.}
+
+\item{value}{A matrix which can be coerced into
+\link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 
 \item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
