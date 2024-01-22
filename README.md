@@ -40,13 +40,16 @@ Here is a summarized delayed operations in BPCells:
 | log(1+x)                                 | `log1p`,`log1p_slow`          | `log1p`,`log1p_slow`          |
 | Power                                    | `pow_slow`,`^`                | `pow_slow`,`^`                |
 
-Other non-lazied operations: | Operations | BPCells | BPCellsArray |
-Note | | —————– | —————- | ———————— | —————- | | row/col summarize |
-matrix\_stats | matrix\_stats | | | row summarize | rowSums,rowMeans |
-rowSums,rowMeans,rowVars | | | col summarize | colSums,colMeans |
-colSums,colMeans,colVars | | | Multiplication | %*% | %*% | For some
-methods | | Crossproduct | | crossprod | For some methods | | svd | svds
-| SpectraParam | |
+Other non-lazied operations:
+
+| Operations        | BPCells          | BPCellsArray             | Note             |
+| ----------------- | ---------------- | ------------------------ | ---------------- |
+| row/col summarize | matrix\_stats    | matrix\_stats            |                  |
+| row summarize     | rowSums,rowMeans | rowSums,rowMeans,rowVars |                  |
+| col summarize     | colSums,colMeans | colSums,colMeans,colVars |                  |
+| Multiplication    | %\*%             | %\*%                     | For some methods |
+| Crossproduct      |                  | crossprod                | For some methods |
+| svd               | svds             | SpectraParam             |                  |
 
 ## Matrix Storage Format
 
@@ -175,7 +178,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpAq3VNF/BPCells26870138835a2e
+#> 1. Load compressed matrix from directory /tmp/RtmpJiXxC7/BPCells26938c5c1875ae
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -195,7 +198,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpAq3VNF/BPCells26870138835a2e
+#> 1. Load compressed matrix from directory /tmp/RtmpJiXxC7/BPCells26938c5c1875ae
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -260,7 +263,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpAq3VNF/BPCells26870138835a2e
+#> 1. Load compressed matrix from directory /tmp/RtmpJiXxC7/BPCells26938c5c1875ae
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44

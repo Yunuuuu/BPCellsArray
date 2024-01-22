@@ -48,6 +48,7 @@ Here is a summarized delayed operations in BPCells:
 
 
 Other non-lazied operations:
+
 | Operations        | BPCells          | BPCellsArray             | Note             |
 | ----------------- | ---------------- | ------------------------ | ---------------- |
 | row/col summarize | matrix_stats     | matrix_stats             |                  |
