@@ -37,7 +37,7 @@ methods::setClass("BPCellsSubsetArray",
 )
 
 #' @param seed A `BPCellsSubsetSeed` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
 #' @rdname BPCellsSubset
@@ -59,7 +59,7 @@ methods::setClass("BPCellsSubsetMatrix",
     slots = c(seed = "BPCellsSubsetSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @export
 #' @rdname BPCellsSubset
 methods::setMethod("matrixClass", "BPCellsSubsetArray", function(x) {

@@ -3,7 +3,7 @@
 #' Given matrices x and y as arguments, return a matrix cross-product.
 #'
 #' @inheritParams BPCells-Multiplication
-#' @importMethodsFrom DelayedArray crossprod
+#' @importFrom DelayedArray crossprod
 #' @return Matrix Crossproduct, a [BPCellsMatrix] object or a dense matrix
 #'   (matrix and numeric methods).
 #' @seealso [%*%]
@@ -68,7 +68,7 @@ methods::setMethod(
 )
 
 ####################    BPCellsSeed methods    #######################
-#' @importMethodsFrom DelayedArray crossprod
+#' @importFrom DelayedArray crossprod
 #' @export
 #' @rdname seed-methods
 methods::setMethod(

@@ -37,7 +37,7 @@ methods::setClass("BPCellsConvertArray",
 )
 
 #' @param seed A `BPCellsConvertSeed` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
 #' @rdname BPCellsConvert
@@ -59,7 +59,7 @@ methods::setClass("BPCellsConvertMatrix",
     slots = c(seed = "BPCellsConvertSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @export
 #' @rdname BPCellsConvert
 methods::setMethod("matrixClass", "BPCellsConvertArray", function(x) {

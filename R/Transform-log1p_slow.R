@@ -17,8 +17,7 @@
 NULL
 
 methods::setClass("BPCellsTransformLog1pSlowSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformLog1pSlow")),
-    slots = list(matrix = "BPCellsSeed")
+    contains = c("BPCellsTransformedSeed", get_class("TransformLog1pSlow"))
 )
 
 #' @param x A `TransformLog1pSlow` or `BPCellsTransformLog1pSlowSeed` object.
@@ -38,7 +37,7 @@ methods::setClass("BPCellsTransformLog1pSlowArray",
 )
 
 #' @param seed A `BPCellsTransformLog1pSlowSeed` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export 
 #' @rdname BPCellsTransformLog1pSlow
@@ -60,7 +59,7 @@ methods::setClass("BPCellsTransformLog1pSlowMatrix",
     slots = c(seed = "BPCellsTransformLog1pSlowSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @export 
 #' @rdname BPCellsTransformLog1pSlow
 methods::setMethod("matrixClass", "BPCellsTransformLog1pSlowArray", function(x) {

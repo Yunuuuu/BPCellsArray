@@ -27,7 +27,7 @@ methods::setClass("BPCellsMatrix",
 )
 
 #' @param x,object A `BPCellsMatrix` object.
-#' @importMethodsFrom methods show
+#' @importFrom methods show
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("show", "BPCellsMatrix", function(object) {
@@ -36,7 +36,7 @@ methods::setMethod("show", "BPCellsMatrix", function(object) {
 
 #' @return
 #' - `t`: A [BPCellsMatrix] object.
-#' @importMethodsFrom DelayedArray t
+#' @importMethodsFrom BPCells t
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("t", "BPCellsMatrix", function(x) {
@@ -132,9 +132,17 @@ methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 
 # for `dim`, `dimnames`, `extract_array` and `is_sparse` just use the methods
 # from DelayedArray
+#' For BPCellsMatrix object
+#' @importMethodsFrom DelayedArray dim
+#' @importMethodsFrom DelayedArray extract_array
+#' @importMethodsFrom DelayedArray is_sparse
+#' @importMethodsFrom DelayedArray OLD_extract_sparse_array
+#' @noRd 
+NULL
+
 #' @return
 #' - `dimnames<-`: A [BPCellsRenameDimsMatrix][BPCellsRenameDims] object.
-#' @importMethodsFrom DelayedArray dimnames<-
+#' @importMethodsFrom BPCells dimnames<-
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
@@ -149,7 +157,6 @@ methods::setMethod(
 #################### Matrix Statistics ########################
 #' BPCellsMatrix row/col summarization
 #'
-#' @importMethodsFrom DelayedArray rowSums
 #' @param x A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @return
 #' - `rowSums()`: vector of row sums
@@ -157,13 +164,14 @@ methods::setMethod(
 #' @name BPCells-Summarization
 NULL
 
+#' @importMethodsFrom BPCells rowSums
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
     rowSums(x@seed)
 })
 
-#' @importMethodsFrom DelayedArray colSums
+#' @importMethodsFrom BPCells colSums
 #' @return
 #' - `colSums()`: vector of col sums
 #' @aliases colSums
@@ -173,7 +181,7 @@ methods::setMethod("colSums", c(x = "BPCellsMatrix"), function(x) {
     colSums(x@seed)
 })
 
-#' @importMethodsFrom DelayedArray rowMeans
+#' @importMethodsFrom BPCells rowMeans
 #' @return
 #' - `rowMeans()`: vector of row means
 #' @aliases rowMeans
@@ -183,7 +191,7 @@ methods::setMethod("rowMeans", c(x = "BPCellsMatrix"), function(x) {
     rowMeans(x@seed)
 })
 
-#' @importMethodsFrom DelayedArray colMeans
+#' @importMethodsFrom BPCells colMeans
 #' @return
 #' - `colMeans()`: vector of col means
 #' @aliases colMeans
@@ -193,7 +201,7 @@ methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
     colMeans(x@seed)
 })
 
-#' @importMethodsFrom DelayedArray rowVars
+#' @importFrom DelayedArray rowVars
 #' @return
 #' - `rowVars()`: vector of row vars
 #' @aliases rowVars
@@ -206,7 +214,7 @@ methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
     stats$row_stats["variance", , drop = TRUE]
 })
 
-#' @importMethodsFrom DelayedArray colVars
+#' @importFrom DelayedArray colVars
 #' @return
 #' - `colVars()`: vector of col vars
 #' @aliases colVars

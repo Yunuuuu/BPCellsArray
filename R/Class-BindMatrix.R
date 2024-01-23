@@ -68,7 +68,7 @@ methods::setClass("BPCellsColBindMatrixArray",
 #' @return
 #' - `DelayedArray`: A `BPCellsColBindMatrixMatrix` or
 #'   `BPCellsRowBindMatrixMatrix` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
 #' @rdname BPCellsBindMatrix
@@ -93,7 +93,7 @@ methods::setClass("BPCellsColBindMatrixMatrix",
     slots = c(seed = "BPCellsColBindMatrixSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @export
 #' @rdname BPCellsBindMatrix
 methods::setMethod("matrixClass", "BPCellsColBindMatrixArray", function(x) {
@@ -145,7 +145,7 @@ methods::setClass("BPCellsRowBindMatrixArray",
     slots = c(seed = "BPCellsRowBindMatrixSeed")
 )
 
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
 #' @rdname BPCellsBindMatrix
@@ -168,7 +168,7 @@ methods::setClass("BPCellsRowBindMatrixMatrix",
 )
 
 #' @export
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @rdname BPCellsBindMatrix
 methods::setMethod("matrixClass", "BPCellsRowBindMatrixArray", function(x) {
     "BPCellsRowBindMatrixMatrix"

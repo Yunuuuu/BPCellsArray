@@ -16,7 +16,7 @@
 #' @name BPCells-bind
 NULL
 
-#' @importMethodsFrom methods rbind2
+#' @importFrom methods rbind2
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(
@@ -52,7 +52,7 @@ methods::setMethod(
 
 #' @param use.first.dimnames Ignored, always be `TRUE` in BPCells.
 #' @param deparse.level Ignored, used by generic methods.
-#' @importMethodsFrom DelayedArray rbind
+#' @importFrom DelayedArray rbind
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(
@@ -64,7 +64,7 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom DelayedArray arbind
+#' @importFrom DelayedArray arbind
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L) {
@@ -77,7 +77,7 @@ methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L) {
 #' @param ignore.mcols Ignored.
 #' @param check Ignored.
 #' @inheritParams S4Vectors::bindROWS
-#' @importMethodsFrom DelayedArray bindROWS
+#' @importFrom DelayedArray bindROWS
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(
@@ -92,7 +92,7 @@ methods::setMethod(
 
 
 #################### cbind ########################
-#' @importMethodsFrom methods cbind2
+#' @importFrom methods cbind2
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(
@@ -126,7 +126,7 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom DelayedArray cbind
+#' @importFrom DelayedArray cbind
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(
@@ -138,7 +138,7 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom DelayedArray acbind
+#' @importFrom DelayedArray acbind
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod("acbind", "BPCellsMatrix", function(..., threads = 0L, use.first.dimnames = TRUE) {
@@ -147,7 +147,7 @@ methods::setMethod("acbind", "BPCellsMatrix", function(..., threads = 0L, use.fi
     )
 })
 
-#' @importMethodsFrom S4Vectors bindCOLS
+#' @importFrom S4Vectors bindCOLS
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(
@@ -186,7 +186,7 @@ check_BPCellsMatrices <- function(lst, arg) {
 
 
 #################### BPCellsSeed-methods ########################
-#' @importMethodsFrom methods rbind2
+#' @importFrom methods rbind2
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
@@ -226,7 +226,7 @@ methods::setMethod(
 )
 
 #' @inheritParams BPCells-bind
-#' @importMethodsFrom DelayedArray rbind
+#' @importFrom DelayedArray rbind
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
@@ -238,7 +238,7 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom DelayedArray arbind
+#' @importFrom DelayedArray arbind
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
@@ -250,7 +250,7 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom DelayedArray bindROWS
+#' @importFrom DelayedArray bindROWS
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
@@ -264,7 +264,7 @@ methods::setMethod(
 )
 
 #################### cbind ########################
-#' @importMethodsFrom methods cbind2
+#' @importFrom methods cbind2
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
@@ -303,7 +303,7 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom DelayedArray cbind
+#' @importFrom DelayedArray cbind
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
@@ -315,7 +315,7 @@ methods::setMethod(
     }
 )
 
-#' @importMethodsFrom DelayedArray acbind
+#' @importFrom DelayedArray acbind
 #' @export
 #' @rdname seed-methods
 methods::setMethod("acbind", "BPCellsSeed", function(..., threads = 0L, use.first.dimnames = TRUE) {
@@ -325,7 +325,7 @@ methods::setMethod("acbind", "BPCellsSeed", function(..., threads = 0L, use.firs
     )
 })
 
-#' @importMethodsFrom S4Vectors bindCOLS
+#' @importFrom S4Vectors bindCOLS
 #' @export
 #' @rdname seed-methods
 methods::setMethod(

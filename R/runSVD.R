@@ -44,7 +44,7 @@ SpectraParam <- function() {
 #' @param ... Not used currently
 #' @seealso [RSpectra][RSpectra::svds] and [BPCells][BPCells::svds]
 #' @export
-#' @importMethodsFrom BiocSingular runSVD
+#' @importFrom BiocSingular runSVD
 #' @rdname SpectraParam
 methods::setMethod(
     "runSVD", "SpectraParam",

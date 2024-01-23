@@ -14,11 +14,12 @@ Imports:
     BiocSingular,
     BPCells (>= 0.1.0),
     cli,
-    DelayedArray,
+    DelayedArray (>= 0.28.0),
     Matrix,
     methods,
     rlang (>= 1.1.0),
-    S4Vectors
+    S4Vectors,
+    SparseArray
 Remotes: 
     bnprks/BPCells
 Suggests: 

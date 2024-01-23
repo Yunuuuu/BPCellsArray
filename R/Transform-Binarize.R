@@ -17,8 +17,7 @@
 NULL
 
 methods::setClass("BPCellsTransformBinarizeSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformBinarize")),
-    slots = list(matrix = "BPCellsSeed")
+    contains = c("BPCellsTransformedSeed", get_class("TransformBinarize"))
 )
 
 #' @rdname BPCellsTransformBinarize
@@ -38,7 +37,7 @@ methods::setClass("BPCellsTransformBinarizeArray",
 )
 
 #' @param seed A `BPCellsTransformBinarizeSeed` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
 #' @rdname BPCellsTransformBinarize
@@ -62,7 +61,7 @@ methods::setClass("BPCellsTransformBinarizeMatrix",
     slots = c(seed = "BPCellsTransformBinarizeSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @export
 #' @rdname BPCellsTransformBinarize
 methods::setMethod("matrixClass", "BPCellsTransformBinarizeArray", function(x) {

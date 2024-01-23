@@ -29,7 +29,7 @@ methods::setClass("BPCellsdgCMatrixArray",
 )
 
 #' @param seed A `BPCellsdgCMatrixSeed` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @rdname internal-methods
 methods::setMethod(
@@ -44,7 +44,7 @@ methods::setClass("BPCellsdgCMatrixMatrix",
     slots = c(seed = "BPCellsdgCMatrixSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @rdname internal-methods
 methods::setMethod("matrixClass", "BPCellsdgCMatrixArray", function(x) {
     "BPCellsdgCMatrixMatrix"

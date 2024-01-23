@@ -48,7 +48,7 @@ methods::setClass("BPCellsDirArray",
 )
 
 #' @param seed A `BPCellsDirSeed` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
 #' @rdname BPCellsDir
@@ -72,7 +72,7 @@ methods::setClass("BPCellsDirMatrix",
     slots = c(seed = "BPCellsDirSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @export
 #' @rdname BPCellsDir
 methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {

@@ -7,6 +7,7 @@
 \alias{type,BPCellsSeed-method}
 \alias{is_sparse,BPCellsSeed-method}
 \alias{extract_array,BPCellsSeed-method}
+\alias{OLD_extract_sparse_array,BPCellsSeed-method}
 \alias{extract_sparse_array,BPCellsSeed-method}
 \alias{dimnames<-,BPCellsSeed,list-method}
 \alias{dimnames<-,BPCellsSeed,NULL-method}
@@ -21,6 +22,8 @@
 \S4method{is_sparse}{BPCellsSeed}(x)
 
 \S4method{extract_array}{BPCellsSeed}(x, index)
+
+\S4method{OLD_extract_sparse_array}{BPCellsSeed}(x, index)
 
 \S4method{extract_sparse_array}{BPCellsSeed}(x, index)
 
@@ -75,8 +78,13 @@ number.
 }
 
 \itemize{
-\item \code{extract_sparse_array}: A \link[DelayedArray:SparseArraySeed-class]{SparseArraySeed}
-object.
+\item \code{OLD_extract_sparse_array}: A
+\link[DelayedArray:SparseArraySeed-class]{SparseArraySeed} object.
+}
+
+\itemize{
+\item \code{extract_sparse_array}: A
+\link[SparseArray:SVT_SparseArray-class]{SparseArray} object.
 }
 
 \itemize{

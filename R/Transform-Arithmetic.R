@@ -20,8 +20,7 @@
 NULL
 
 methods::setClass("BPCellsTransformScaleShiftSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformScaleShift")),
-    slots = list(matrix = "BPCellsSeed")
+    contains = c("BPCellsTransformedSeed", get_class("TransformScaleShift"))
 )
 
 #' @param x A `TransformScaleShift` or `BPCellsTransformScaleShiftSeed` object.
@@ -41,7 +40,7 @@ methods::setClass("BPCellsTransformScaleShiftArray",
 )
 
 #' @param seed A `BPCellsTransformScaleShiftSeed` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
 #' @rdname BPCellsTransformScaleShift
@@ -65,7 +64,7 @@ methods::setClass("BPCellsTransformScaleShiftMatrix",
     slots = c(seed = "BPCellsTransformScaleShiftSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @export
 #' @rdname BPCellsTransformScaleShift
 methods::setMethod(

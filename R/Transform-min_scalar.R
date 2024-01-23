@@ -16,8 +16,7 @@
 NULL
 
 methods::setClass("BPCellsTransformMinSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformMin")),
-    slots = list(matrix = "BPCellsSeed")
+    contains = c("BPCellsTransformedSeed", get_class("TransformMin"))
 )
 
 #' @param x A `TransformMin` or `BPCellsTransformMinSeed` object.
@@ -37,7 +36,7 @@ methods::setClass("BPCellsTransformMinArray",
 )
 
 #' @param seed A `BPCellsTransformMinSeed` object.
-#' @importMethodsFrom DelayedArray DelayedArray
+#' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
 #' @rdname BPCellsTransformMin
@@ -61,7 +60,7 @@ methods::setClass("BPCellsTransformMinMatrix",
     slots = c(seed = "BPCellsTransformMinSeed")
 )
 
-#' @importMethodsFrom DelayedArray matrixClass
+#' @importFrom DelayedArray matrixClass
 #' @export
 #' @rdname BPCellsTransformMin
 methods::setMethod("matrixClass", "BPCellsTransformMinArray", function(x) {

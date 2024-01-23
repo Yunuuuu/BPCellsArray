@@ -11,7 +11,7 @@
 #' @include utils.R
 methods::setClass("BPCellsSeed", contains = get_class("IterableMatrix"))
 
-#' @importMethodsFrom methods show
+#' @importFrom methods show
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod("show", "BPCellsSeed", function(object) {
@@ -22,7 +22,7 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
 #' - `type`: A string. For all BPCells matrix type of `float` and `double`,
 #'   always return `double` since R cannot differentiate 32-bit and 64-bit real
 #'   number.
-#' @importMethodsFrom DelayedArray type
+#' @importFrom DelayedArray type
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod("type", "BPCellsSeed", function(x) {
@@ -35,7 +35,7 @@ methods::setMethod("type", "BPCellsSeed", function(x) {
 
 #' @return
 #' - `is_sparse`: Always return `TRUE` for `BPCellsSeed` object.
-#' @importMethodsFrom DelayedArray is_sparse
+#' @importFrom DelayedArray is_sparse
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
@@ -43,7 +43,7 @@ methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
 #' @inheritParams S4Arrays::extract_array
 #' @return
 #' - `extract_array`: A dense matrix.
-#' @importMethodsFrom DelayedArray extract_array
+#' @importFrom DelayedArray extract_array
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
@@ -56,15 +56,28 @@ methods::setMethod(
 )
 
 #' @return
-#' - `extract_sparse_array`: A [SparseArraySeed][DelayedArray::SparseArraySeed]
-#'   object.
-#' @importMethodsFrom DelayedArray extract_sparse_array
+#' - `OLD_extract_sparse_array`: A
+#'   [SparseArraySeed][DelayedArray::SparseArraySeed-class] object.
+#' @importFrom DelayedArray OLD_extract_sparse_array
+#' @export
+#' @rdname BPCellsSeed-class
+methods::setMethod(
+    "OLD_extract_sparse_array", "BPCellsSeed",
+    function(x, index) {
+        methods::as(extract_bpcells_array(x, index), "SparseArraySeed")
+    }
+)
+
+#' @return
+#' - `extract_sparse_array`: A
+#'   [SparseArray][SparseArray::SVT_SparseArray-class] object.
+#' @importFrom SparseArray extract_sparse_array
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_sparse_array", "BPCellsSeed",
     function(x, index) {
-        methods::as(extract_bpcells_array(x, index), "SparseArraySeed")
+        methods::as(extract_bpcells_array(x, index), "SparseArray")
     }
 )
 
@@ -80,6 +93,7 @@ methods::setMethod(
 #' @return
 #' - `dimnames<-`: A [BPCellsSeed] object, usually a `BPCellsRenameDimsSeed`
 #'   object.
+#' @importMethodsFrom BPCells dimnames<-
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
@@ -89,6 +103,7 @@ methods::setMethod(
     }
 )
 
+#' @importMethodsFrom BPCells dimnames<-
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
@@ -99,8 +114,9 @@ methods::setMethod(
 )
 
 # t will not change the underlying class
-#' @return - `t`: A [BPCellsSeed] object.
-#' @importMethodsFrom DelayedArray t
+#' @return
+#'  - `t`: A [BPCellsSeed] object.
+#' @importMethodsFrom BPCells t
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())

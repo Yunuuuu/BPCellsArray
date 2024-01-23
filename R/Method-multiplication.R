@@ -9,7 +9,7 @@
 #'   into a [dgCMatrix][Matrix::dgCMatrix-class].
 #' @return `x %*% y`: Matrix multiplication, a [BPCellsMatrix] object or a dense
 #'   matrix (matrix and numeric methods).
-#' @importMethodsFrom DelayedArray %*% DelayedArray
+#' @importMethodsFrom BPCells %*%
 #' @name BPCells-Multiplication
 NULL
 
@@ -88,7 +88,7 @@ methods::setMethod(
 
 #################### BPCellsSeed methods ####################################
 # Following methods used by internal
-#' @importMethodsFrom DelayedArray %*%
+#' @importMethodsFrom BPCells %*%
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
