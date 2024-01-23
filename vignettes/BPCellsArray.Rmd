@@ -24,27 +24,27 @@ object or written to disk. And most operations have been optimized by c++ or c.
 
 Here is a summarized delayed operations in BPCells:
 
-| Operations                               | BPCells                       | BPCellsArray                  |
-| ---------------------------------------- | ----------------------------- | ----------------------------- |
-| Combine by row                           | rbind2                        | rbind2,rbind,arbind,bindROWS  |
-| Combine by column                        | cbind2                        | cbind2,cbind,acbind,bindCOLS  |
-| transpose matrix                         | t                             | t                             |
-| subset                                   | `[`                           | `[`                           |
-| Rename                                   | `dimnames<-`                  | `dimnames<-`                  |
-| Multiplication                           | %*%                           | %*%                           |
-| Crossproduct                             |                               | crossprod                     |
-| Arithmetic                               | `+`,`-`,`*`,`/`               | `+`,`-`,`*`,`/`               |
-| Compare                                  | binarize (`<`,`>`,`<=`, `>=`) | binarize (`<`,`>`,`<=`, `>=`) |
-| Storage mode                             | convert_matrix_type           | convert_type                  |
-| Rank-transform                           | rank_transform                | rank_transform                |
-| Mask matrix entries to zero              | mask_matrix                   | mask_matrix                   |
-| Take minumum with a global constant      | min_scalar                    | pmin_scalar                   |
-| Take the minimum with a per-col constant | min_by_col                    | pmin_by_col                   |
-| Take the minimum with a per-row constant | min_by_row                    | pmin_by_row                   |
-| Round number                             | round                         | round                         |
-| `exp(x) - 1`                             | `expm1_slow`,`expm1`          | `expm1_slow`,`expm1`          |
-| log(1+x)                                 | `log1p`,`log1p_slow`          | `log1p`,`log1p_slow`          |
-| Power                                    | `pow_slow`,`^`                | `pow_slow`,`^`                |
+| Operations                               | BPCells                      | BPCellsArray                 |
+| ---------------------------------------- | ---------------------------- | ---------------------------- |
+| Combine by row                           | rbind2                       | rbind2,rbind,arbind,bindROWS |
+| Combine by column                        | cbind2                       | cbind2,cbind,acbind,bindCOLS |
+| transpose matrix                         | t                            | t                            |
+| subset                                   | `[`                          | `[`                          |
+| Rename                                   | `dimnames<-`                 | `dimnames<-`                 |
+| Multiplication                           | `%*%`                        | `%*%`                        |
+| Crossproduct                             |                              | crossprod                    |
+| Arithmetic                               | `+`,`-`,`*`,`/`              | `+`,`-`,`*`,`/`              |
+| Relational Operators                     | Binary  (`<`,`>`,`<=`, `>=`) | Binary  (`<`,`>`,`<=`, `>=`) |
+| Storage mode                             | convert_matrix_type          | convert_type                 |
+| Rank-transform                           | rank_transform               | rank_transform               |
+| Mask matrix entries to zero              | mask_matrix                  | mask_matrix                  |
+| Take minumum with a global constant      | min_scalar                   | pmin_scalar                  |
+| Take the minimum with a per-col constant | min_by_col                   | pmin_by_col                  |
+| Take the minimum with a per-row constant | min_by_row                   | pmin_by_row                  |
+| Round number                             | round                        | round                        |
+| `exp(x) - 1`                             | `expm1_slow`,`expm1`         | `expm1_slow`,`expm1`         |
+| log(1+x)                                 | `log1p`,`log1p_slow`         | `log1p`,`log1p_slow`         |
+| Power                                    | `pow_slow`,`^`               | `pow_slow`,`^`               |
 
 
 Other non-lazied operations:
