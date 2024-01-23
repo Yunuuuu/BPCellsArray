@@ -43,8 +43,7 @@ BPCellsDirSeed <- function(x, buffer_size = 8192L) {
 #' @rdname BPCellsDir
 methods::setClass("BPCellsDirArray",
     contains = "DelayedArray",
-    slots = c(seed = "BPCellsDirSeed"),
-    prototype = list(seed = methods::new("BPCellsDirSeed"))
+    slots = c(seed = "BPCellsDirSeed")
 )
 
 #' @param seed A `BPCellsDirSeed` object.
