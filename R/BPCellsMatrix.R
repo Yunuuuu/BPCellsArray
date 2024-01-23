@@ -204,3 +204,23 @@ methods::setMethod(
         BPCellsDirSeed(x = x, buffer_size = buffer_size)
     }
 )
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "BPCellsSeed", "PackedMatrixMemBase",
+    function(x, ...) {
+        rlang::check_dots_empty()
+        BPCellsMemSeed(x = x)
+    }
+)
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod(
+    "BPCellsSeed", "UnpackedMatrixMemBase",
+    function(x, ...) {
+        rlang::check_dots_empty()
+        BPCellsMemSeed(x = x)
+    }
+)

@@ -27,7 +27,7 @@ methods::setMethod("path", "BPCellsConvertSeed", function(object) {
 #' @export
 #' @rdname seed-methods
 methods::setMethod("path", "BPCellsdgCMatrixSeed", function(object) {
-    NULL
+    character()
 })
 
 #' @importFrom DelayedArray path
@@ -75,4 +75,11 @@ methods::setMethod("path", "BPCellsSubsetSeed", function(object) {
 #' @rdname seed-methods
 methods::setMethod("path", "BPCellsTransformedSeed", function(object) {
     path(object@matrix)
+})
+
+#' @importFrom DelayedArray path
+#' @export
+#' @rdname seed-methods
+methods::setMethod("path", "BPCellsMemSeed", function(object) {
+    character()
 })

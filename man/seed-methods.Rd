@@ -54,6 +54,7 @@
 \alias{path,BPCellsRenameDimsSeed-method}
 \alias{path,BPCellsSubsetSeed-method}
 \alias{path,BPCellsTransformedSeed-method}
+\alias{path,BPCellsMemSeed-method}
 \alias{[,BPCellsColBindMatrixSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsRowBindMatrixSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsConvertSeed,ANY,ANY,ANY-method}
@@ -65,6 +66,7 @@
 \alias{[,BPCellsRenameDimsSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsSubsetSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsTransformedSeed,ANY,ANY,ANY-method}
+\alias{[,BPCellsMemSeed,ANY,ANY,ANY-method}
 \alias{round,BPCellsSeed-method}
 \alias{expm1,BPCellsSeed-method}
 \alias{expm1_slow,BPCellsSeed-method}
@@ -181,6 +183,8 @@
 
 \S4method{path}{BPCellsTransformedSeed}(object)
 
+\S4method{path}{BPCellsMemSeed}(object)
+
 \S4method{[}{BPCellsColBindMatrixSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsRowBindMatrixSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
@@ -202,6 +206,8 @@
 \S4method{[}{BPCellsSubsetSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsTransformedSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+
+\S4method{[}{BPCellsMemSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{round}{BPCellsSeed}(x, digits = 0)
 

@@ -28,6 +28,8 @@
 \alias{BPCellsSeed,ColBindMatrices-method}
 \alias{BPCellsSeed,RowBindMatrices-method}
 \alias{BPCellsSeed,MatrixDir-method}
+\alias{BPCellsSeed,PackedMatrixMemBase-method}
+\alias{BPCellsSeed,UnpackedMatrixMemBase-method}
 \title{Create a Low-level Base Class for Delayed BPCells matrix}
 \usage{
 BPCellsMatrix(x, ...)
@@ -83,6 +85,10 @@ BPCellsSeed(x, ...)
 \S4method{BPCellsSeed}{RowBindMatrices}(x, ...)
 
 \S4method{BPCellsSeed}{MatrixDir}(x, buffer_size = 8192L)
+
+\S4method{BPCellsSeed}{PackedMatrixMemBase}(x, ...)
+
+\S4method{BPCellsSeed}{UnpackedMatrixMemBase}(x, ...)
 }
 \arguments{
 \item{x}{A BPCells IterableMatrix object.}

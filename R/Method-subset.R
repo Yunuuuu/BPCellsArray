@@ -2,8 +2,7 @@
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsColBindMatrixSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsColBindMatrixSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -12,8 +11,7 @@ methods::setMethod(
 #' @export
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsRowBindMatrixSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsRowBindMatrixSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -21,8 +19,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsConvertSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsConvertSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -30,8 +27,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsdgCMatrixSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsdgCMatrixSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -39,8 +35,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsDirSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsDirSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -48,8 +43,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsMaskSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsMaskSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -60,8 +54,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsMultiplySeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsMultiplySeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -69,8 +62,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsRankTransformSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsRankTransformSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -78,8 +70,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsRenameDimsSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsRenameDimsSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -90,8 +81,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsSubsetSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsSubsetSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
@@ -99,8 +89,15 @@ methods::setMethod(
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(
-    "[", "BPCellsTransformedSeed",
-    function(x, i, j, ..., drop = FALSE) {
+    "[", "BPCellsTransformedSeed", function(x, i, j, ..., drop = FALSE) {
+        BPCellsSeed(methods::callNextMethod())
+    }
+)
+
+#' @importMethodsFrom BPCells [
+#' @rdname seed-methods
+methods::setMethod(
+    "[", "BPCellsMemSeed", function(x, i, j, ..., drop = FALSE) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
