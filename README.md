@@ -190,7 +190,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpXRO3Aw/BPCells28d83e57f97a1a
+#> 1. Load compressed matrix from directory /tmp/RtmpD9YpJM/BPCells2ba71b3903b935
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -201,7 +201,7 @@ object or written to disk. You can coerce it into a dense matrix or
 
 ``` r
 assay(sce, "counts")[1:10, 1:10]
-#> 10 x 10 DelayedMatrix object with class BPCellsSubsetMatrix
+#> 10 x 10 DelayedMatrix object with class BPCellsMatrix
 #> 
 #> Row names: Gene_0001, Gene_0002 ... Gene_0010
 #> Col names: Cell_001, Cell_002 ... Cell_010
@@ -210,7 +210,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpXRO3Aw/BPCells28d83e57f97a1a
+#> 1. Load compressed matrix from directory /tmp/RtmpD9YpJM/BPCells2ba71b3903b935
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -266,7 +266,7 @@ Operations` information.
 ``` r
 sce <- scuttle::logNormCounts(sce)
 assay(sce, "logcounts")
-#> 3000 x 2000 DelayedMatrix object with class BPCellsTransformScaleShiftMatrix
+#> 3000 x 2000 DelayedMatrix object with class BPCellsMatrix
 #> 
 #> Row names: Gene_0001, Gene_0002 ... Gene_3000
 #> Col names: Cell_001, Cell_002 ... Cell_2000
@@ -275,7 +275,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpXRO3Aw/BPCells28d83e57f97a1a
+#> 1. Load compressed matrix from directory /tmp/RtmpD9YpJM/BPCells2ba71b3903b935
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44
