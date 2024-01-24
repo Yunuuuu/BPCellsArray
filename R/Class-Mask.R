@@ -1,5 +1,5 @@
 methods::setClass("BPCellsMaskSeed",
-    contains = c("BPCellsSeed", get_class("MatrixMask"))
+    contains = c("BPCellsNaryOpsSeed", get_class("MatrixMask"))
 )
 
 #' @rdname BPCellsMask
@@ -9,7 +9,6 @@ BPCellsMaskSeed <- function(x) {
     x@mask <- BPCellsSeed(x@mask)
     methods::as(x, "BPCellsMaskSeed")
 }
-
 
 #' @export
 #' @rdname BPCellsSeed

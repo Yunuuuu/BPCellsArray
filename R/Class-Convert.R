@@ -1,5 +1,8 @@
 methods::setClass("BPCellsConvertSeed",
-    contains = c("BPCellsSeed", get_class("ConvertMatrixType")),
+    contains = c(
+        "BPCellsUnaryOpsSeed",
+        get_class("ConvertMatrixType")
+    ),
     slots = list(matrix = "BPCellsSeed")
 )
 

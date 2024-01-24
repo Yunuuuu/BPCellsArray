@@ -16,7 +16,10 @@
 NULL
 
 methods::setClass("BPCellsRankTransformSeed",
-    contains = c("BPCellsSeed", get_class("MatrixRankTransform"))
+    contains = c(
+        "BPCellsUnaryOpsSeed", 
+        get_class("MatrixRankTransform")
+    )
 )
 
 #' @param x A `MatrixRankTransform` object.

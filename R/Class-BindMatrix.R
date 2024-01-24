@@ -1,5 +1,5 @@
 methods::setClass("BPCellsBindMatrixSeed",
-    contains = c("BPCellsSeed", "VIRTUAL")
+    contains = c("BPCellsNaryOpsSeed", "VIRTUAL")
 )
 
 methods::setValidity("BPCellsBindMatrixSeed", function(object) {

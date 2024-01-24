@@ -57,7 +57,7 @@ Collate:
     'Method-internal.R'
     'Method-matrix_stats.R'
     'Method-multiplication.R'
-    'Method-path.R'
+    'Method-showtree.R'
     'Method-subset.R'
     'Method-summarization.R'
     'import-standalone-assert.R'

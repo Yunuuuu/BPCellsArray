@@ -1,7 +1,10 @@
-#' @include Class-BPCellsSeed.R Seed-Methods.R Matrix-Methods.R 
+#' @include Class-BPCellsSeed.R Seed-Methods.R Matrix-Methods.R
 #' @noRd
 methods::setClass("BPCellsTransformedSeed",
-    contains = c("BPCellsSeed", get_class("TransformedMatrix")),
+    contains = c(
+        "BPCellsUnaryOpsSeed",
+        get_class("TransformedMatrix")
+    ),
     slots = list(matrix = "BPCellsSeed")
 )
 
@@ -360,7 +363,7 @@ methods::setMethod(
 )
 
 #' @inheritParams seed-methods
-#' @return 
+#' @return
 #'  - `round`: Rounding of matrix Numbers.
 #' @export
 #' @aliases round
