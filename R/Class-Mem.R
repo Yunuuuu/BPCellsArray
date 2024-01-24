@@ -12,6 +12,7 @@
 #' @seealso
 #' - [BPCellsSeed]
 #' - [writeBPCellsMemArray]
+#' @noRd
 NULL
 
 methods::setClass("BPCellsMemSeed", contains = "BPCellsSeed")
@@ -25,9 +26,21 @@ methods::setClass("BPCellsUnpackedMemSeed",
 #' @param x A `PackedMatrixMemBase` or `UnpackedMatrixMemBase` object.
 #' @rdname BPCellsMem
 #' @noRd
-methods::setGeneric("BPCellsMemSeed", function(x, ...) {
+methods::setGeneric("BPCellsMemSeed", function(x) {
     class <- standardGeneric("BPCellsMemSeed")
     methods::as(x, Class = class)
+})
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "PackedMatrixMemBase", function(x) {
+    BPCellsMemSeed(x = x)
+})
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "UnpackedMatrixMemBase", function(x) {
+    BPCellsMemSeed(x = x)
 })
 
 ################### Packed class
@@ -96,37 +109,26 @@ methods::setMethod(
     function(x) "BPCellsunPackedMem_doubleSeed"
 )
 
-methods::setMethod("BPCellsMemSeed", "ANY", function(x) {
-    cli::cli_abort("{.arg x} must be a {.cls PackedMatrixMemBase} or {.cls UnpackedMatrixMemBase} object.")
-})
-
 ###################################################
 
 #' @importClassesFrom DelayedArray DelayedArray
 #' @export
-#' @rdname BPCellsMem
+#' @rdname BPCellsMatrix-class
 methods::setClass("BPCellsMemArray",
-    contains = "DelayedArray", slots = c(seed = "BPCellsMemSeed")
+    contains = "BPCellsArray", slots = c(seed = "BPCellsMemSeed")
 )
 
-#' @param seed A `BPCellsMemSeed` object.
 #' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
-#' @rdname BPCellsMem
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "DelayedArray", "BPCellsMemSeed",
     function(seed) new_DelayedArray(seed, Class = "BPCellsMemArray")
 )
 
 #' @export
-#' @rdname BPCellsMem
-BPCellsMemArray <- function(x) {
-    DelayedArray(BPCellsMemSeed(x))
-}
-
-#' @export
-#' @rdname BPCellsMem
+#' @rdname BPCellsMatrix-class
 #' @include Class-BPCellsMatrix.R
 methods::setClass("BPCellsMemMatrix",
     contains = c("BPCellsMatrix"),
@@ -135,7 +137,7 @@ methods::setClass("BPCellsMemMatrix",
 
 #' @importFrom DelayedArray matrixClass
 #' @export
-#' @rdname BPCellsMem
+#' @rdname BPCellsMatrix-class
 methods::setMethod("matrixClass", "BPCellsMemArray", function(x) {
     "BPCellsMemMatrix"
 })
@@ -153,7 +155,7 @@ methods::setMethod("matrixClass", "BPCellsMemArray", function(x) {
 #' - For `BPCellsMatrix` method: additional parameters passed to `BPCellsSeed`
 #'   methods.
 #' - For `ANY` method: additional parameters passed to `dgCMatrix` methods.
-#' @return A [BPCellsMemMatrix][BPCellsMem] object.
+#' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @export
 #' @name writeBPCellsMemArray
 methods::setGeneric(
@@ -163,7 +165,7 @@ methods::setGeneric(
 
 .writeBPCellsMemArray <- function(x, compress = TRUE) {
     obj <- BPCells::write_matrix_memory(mat = x, compress = compress)
-    BPCellsMemArray(obj)
+    DelayedArray(BPCellsMemSeed(obj))
 }
 
 #' @export

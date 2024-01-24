@@ -61,7 +61,7 @@ in memory before calling writes to disk.}
 pass a temp path as a string to customize the temp dir location.}
 }
 \value{
-A \link[=BPCellsDir]{BPCellsDirMatrix} object.
+A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Write a sparce matrices into a BPCells Directory of files format

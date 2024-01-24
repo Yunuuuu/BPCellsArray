@@ -13,6 +13,13 @@
 \alias{/,BPCellsMatrix,numeric-method}
 \alias{-,BPCellsMatrix,numeric-method}
 \alias{-,numeric,BPCellsMatrix-method}
+\alias{*,BPCellsSeed,numeric-method}
+\alias{*,numeric,BPCellsSeed-method}
+\alias{+,BPCellsSeed,numeric-method}
+\alias{+,numeric,BPCellsSeed-method}
+\alias{/,BPCellsSeed,numeric-method}
+\alias{-,BPCellsSeed,numeric-method}
+\alias{-,numeric,BPCellsSeed-method}
 \title{Arithmetic operators for BPCellsMatrix}
 \usage{
 \S4method{*}{BPCellsMatrix,numeric}(e1, e2)
@@ -28,9 +35,30 @@
 \S4method{-}{BPCellsMatrix,numeric}(e1, e2)
 
 \S4method{-}{numeric,BPCellsMatrix}(e1, e2)
+
+\S4method{*}{BPCellsSeed,numeric}(e1, e2)
+
+\S4method{*}{numeric,BPCellsSeed}(e1, e2)
+
+\S4method{+}{BPCellsSeed,numeric}(e1, e2)
+
+\S4method{+}{numeric,BPCellsSeed}(e1, e2)
+
+\S4method{/}{BPCellsSeed,numeric}(e1, e2)
+
+\S4method{-}{BPCellsSeed,numeric}(e1, e2)
+
+\S4method{-}{numeric,BPCellsSeed}(e1, e2)
 }
 \arguments{
-\item{e1, e2}{See detailed methods signature.}
+\item{e1, e2}{One of \code{e1} or \code{e2} must be \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another must be a
+number.}
+}
+\value{
+A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{e1} /
+\code{e2}.
 }
 \description{
 Arithmetic operators for BPCellsMatrix

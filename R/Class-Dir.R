@@ -1,71 +1,35 @@
-#' Delayed MatrixDir arrays
-#'
-#' The `BPCellsDirArray` class provides a
-#' [DelayedArray][DelayedArray::DelayedArray] backend for `MatrixDir` object in
-#' BPCells.
-#'
-#' @param x For Specific functions:
-#' - `BPCellsDirArray`: A `MatrixDir` object.
-#' - `matrixClass`: A `BPCellsDirArray` object.
-#' @name BPCellsDir
-#' @seealso
-#' - [BPCellsSeed]
-#' - [writeBPCellsDirArray]
-NULL
-
 methods::setClass("BPCellsDirSeed",
     contains = c("BPCellsSeed", get_class("MatrixDir"))
 )
 
-#' @param x A `BPCellsDirSeed` or `BPCellsDirArray` object. For following
-#' functions:
-#' - `BPCellsDirSeed` and `BPCellsDirArray`: A string for the path of the
-#'   BPCells matrix dir.
-#' @rdname BPCellsDir
-#' @noRd
-BPCellsDirSeed <- function(x, buffer_size = 8192L) {
-    if (rlang::is_string(x)) {
-        matrix_dir <- BPCells::open_matrix_dir(
-            dir = x, buffer_size = buffer_size
-        )
-    } else if (methods::is(x, "MatrixDir")) {
-        matrix_dir <- x
-    } else {
-        cli::cli_abort(
-            "{.arg x} must be a {.cls string} or {.cls MatrixDir} object"
-        )
-    }
-    methods::as(matrix_dir, "BPCellsDirSeed")
-}
+BPCellsDirSeed <- function(x) methods::as(x, "BPCellsDirSeed")
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "MatrixDir", function(x) {
+    BPCellsDirSeed(x = x)
+})
 
 #' @importClassesFrom DelayedArray DelayedArray
 #' @export
-#' @rdname BPCellsDir
+#' @rdname BPCellsSeed
+#' @include Class-BPCellsMatrix.R
 methods::setClass("BPCellsDirArray",
-    contains = "DelayedArray",
+    contains = "BPCellsArray",
     slots = c(seed = "BPCellsDirSeed")
 )
 
-#' @param seed A `BPCellsDirSeed` object.
 #' @importFrom DelayedArray DelayedArray
 #' @importFrom DelayedArray new_DelayedArray
 #' @export
-#' @rdname BPCellsDir
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "DelayedArray", "BPCellsDirSeed",
     function(seed) new_DelayedArray(seed, Class = "BPCellsDirArray")
 )
 
-#' @inheritDotParams BPCells::open_matrix_dir buffer_size
 #' @export
-#' @rdname BPCellsDir
-BPCellsDirArray <- function(x, ...) {
-    DelayedArray(BPCellsDirSeed(x, ...))
-}
-
-#' @export
-#' @rdname BPCellsDir
-#' @include Class-BPCellsMatrix.R
+#' @rdname BPCellsMatrix-class
 methods::setClass("BPCellsDirMatrix",
     contains = c("BPCellsMatrix"),
     slots = c(seed = "BPCellsDirSeed")
@@ -73,15 +37,20 @@ methods::setClass("BPCellsDirMatrix",
 
 #' @importFrom DelayedArray matrixClass
 #' @export
-#' @rdname BPCellsDir
+#' @rdname BPCellsMatrix-class
 methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
     "BPCellsDirMatrix"
 })
 
-
-###################################################################
-###########################  Methods  #############################
-###################################################################
+#' Read a BPCells Dir matrix from the path
+#' @param path A string for the path of the BPCells matrix dir.
+#' @inheritDotParams BPCells::open_matrix_dir -dir
+#' @export
+readDirMatrix <- function(path, ...) {
+    assert_string(path, empty_ok = FALSE)
+    obj <- BPCells::open_matrix_dir(dir = path, ...)
+    DelayedArray(BPCellsDirSeed(obj))
+}
 
 #' Write a sparce matrices into a BPCells Directory of files format
 #'
@@ -94,7 +63,7 @@ methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
 #'   methods.
 #' - For `ANY` method: additional parameters passed to `dgCMatrix` methods.
 #' @inheritParams BPCells::write_matrix_dir
-#' @return A [BPCellsDirMatrix][BPCellsDir] object.
+#' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @export
 #' @name writeBPCellsDirArray
 methods::setGeneric(
@@ -111,7 +80,7 @@ methods::setGeneric(
         mat = x, dir = path, compress = compress,
         buffer_size = buffer_size, overwrite = overwrite
     )
-    BPCellsDirArray(obj)
+    DelayedArray(BPCellsDirSeed(obj))
 }
 
 #' @export
@@ -157,3 +126,9 @@ methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
 methods::setAs("BPCellsMatrix", "matrix", function(from) {
     as.matrix(from@seed)
 })
+
+#' @export
+methods::setAs("ANY", "BPCellsArray", .as_BPCellsDirArray)
+
+#' @export
+methods::setAs("ANY", "BPCellsMatrix", .as_BPCellsDirArray)

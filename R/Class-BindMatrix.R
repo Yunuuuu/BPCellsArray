@@ -1,36 +1,8 @@
-#' Delayed BPCells ColBindMatrices and RowBindMatrices
-#'
-#' @description
-#' The `BPCellsRowBindMatrixArray` class provides a
-#' [DelayedArray][DelayedArray::DelayedArray] backend for `RowBindMatrices`
-#' object in BPCells.
-#'
-#' The `BPCellsColBindMatrixArray` class provides a
-#' [DelayedArray][DelayedArray::DelayedArray] backend for `ColBindMatrices`
-#' object in BPCells.
-#'
-#' @note
-#' Usually, you shouldn't use this class directly, instead, you should use
-#' [cbind2][methods::cbind2] ([cbind][DelayedArray::cbind],
-#' [acbind][S4Arrays::acbind], [bindCOLS][S4Vectors::bindCOLS]) or
-#' [rbind2][methods::rbind2] ([rbind][DelayedArray::rbind],
-#' [arbind][S4Arrays::arbind], [bindROWS][S4Vectors::bindROWS]) to create a
-#' `BPCellsColBindMatrixMatrix` or `BPCellsRowBindMatrixMatrix` object.
-#'
-#' @param x For Specific functions:
-#' - `BPCellsColBindMatrixArray` and `BPCellsRowBindMatrixArray`: A
-#'   `ColBindMatrices` or `RowBindMatrices` object.
-#' - `matrixClass`: A `BPCellsColBindMatrixArray` or `BPCellsRowBindMatrixArray`
-#'   object.
-#' @seealso [BPCellsSeed]
-#' @name BPCellsBindMatrix
-NULL
-
-methods::setClass("BPCellsColBindMatrixSeed",
-    contains = c("BPCellsSeed", get_class("ColBindMatrices"))
+methods::setClass("BPCellsBindMatrixSeed",
+    contains = c("BPCellsSeed", "VIRTUAL")
 )
 
-methods::setValidity("BPCellsColBindMatrixSeed", function(object) {
+methods::setValidity("BPCellsBindMatrixSeed", function(object) {
     BPCellsSeeds <- vapply(object@matrix_list,
         methods::is, logical(1L),
         class = "BPCellsSeed"
@@ -38,145 +10,51 @@ methods::setValidity("BPCellsColBindMatrixSeed", function(object) {
     if (!all(BPCellsSeeds)) {
         cli::cli_abort(c(
             "all `@matrix_list` must be a {.cls BPCellsSeed} object",
-            i = "Please check the `@matrix_list` in {.val {which(!BPCellsMatrices)}}"
+            i = "Please check the `@matrix_list` in: {.val {which(!BPCellsMatrices)}}"
         ))
     }
     return(TRUE)
 })
+
+methods::setClass("BPCellsColBindMatrixSeed",
+    contains = c("BPCellsBindMatrixSeed", get_class("ColBindMatrices"))
+)
+
+methods::setClass("BPCellsRowBindMatrixSeed",
+    contains = c("BPCellsBindMatrixSeed", get_class("RowBindMatrices"))
+)
 
 #' @return
 #' - `BPCellsColBindMatrixSeed`: A `BPCellsColBindMatrixSeed` object.
 #' - `BPCellsRowBindMatrixSeed`: A `BPCellsRowBindMatrixSeed` object.
-#' @rdname BPCellsBindMatrix
 #' @noRd
-BPCellsColBindMatrixSeed <- function(x) {
-    assert_s4_class(x, "ColBindMatrices")
+methods::setGeneric("BPCellsBindMatrixSeed", function(x, ...) {
     x@matrix_list <- lapply(x@matrix_list, BPCellsSeed)
-    methods::as(x, "BPCellsColBindMatrixSeed")
-}
+    class <- standardGeneric("BPCellsBindMatrixSeed")
+    methods::as(x, Class = class)
+})
 
-#' @importClassesFrom DelayedArray DelayedArray
-#' @export
-#' @rdname BPCellsBindMatrix
-methods::setClass("BPCellsColBindMatrixArray",
-    contains = "DelayedArray",
-    slots = c(seed = "BPCellsColBindMatrixSeed")
-)
-
-#' @param seed A `BPCellsColBindMatrixSeed` or `BPCellsRowBindMatrixSeed`
-#' object.
-#' @return
-#' - `DelayedArray`: A `BPCellsColBindMatrixMatrix` or
-#'   `BPCellsRowBindMatrixMatrix` object.
-#' @importFrom DelayedArray DelayedArray
-#' @importFrom DelayedArray new_DelayedArray
-#' @export
-#' @rdname BPCellsBindMatrix
 methods::setMethod(
-    "DelayedArray", "BPCellsColBindMatrixSeed",
-    function(seed) new_DelayedArray(seed, Class = "BPCellsColBindMatrixArray")
+    "BPCellsBindMatrixSeed", "ColBindMatrices",
+    function(x) "BPCellsColBindMatrixSeed"
 )
 
-#' @return
-#' - `BPCellsColBindMatrixArray`: A `BPCellsColBindMatrixMatrix` object.
-#' - `BPCellsColBindMatrixArray`: A `BPCellsRowBindMatrixMatrix` object.
-#' @export
-#' @rdname BPCellsBindMatrix
-BPCellsColBindMatrixArray <- function(x) {
-    DelayedArray(BPCellsColBindMatrixSeed(x))
-}
-
-#' @export
-#' @rdname BPCellsBindMatrix
-methods::setClass("BPCellsColBindMatrixMatrix",
-    contains = "BPCellsMatrix",
-    slots = c(seed = "BPCellsColBindMatrixSeed")
-)
-
-#' @importFrom DelayedArray matrixClass
-#' @export
-#' @rdname BPCellsBindMatrix
-methods::setMethod("matrixClass", "BPCellsColBindMatrixArray", function(x) {
-    "BPCellsColBindMatrixMatrix"
-})
-
-###################################################################
-###########################  Methods  #############################
-###################################################################
-
-############################################################
-############################################################
-############################################################
-############################################################
-############################################################
-#' @rdname BPCellsBindMatrix
-#' @noRd
-methods::setClass("BPCellsRowBindMatrixSeed",
-    contains = c("BPCellsSeed", get_class("RowBindMatrices"))
-)
-
-methods::setValidity("BPCellsRowBindMatrixSeed", function(object) {
-    BPCellsSeeds <- vapply(object@matrix_list,
-        methods::is, logical(1L),
-        class = "BPCellsSeed"
-    )
-    if (!all(BPCellsSeeds)) {
-        cli::cli_abort(c(
-            "all `@matrix_list` must be a {.cls BPCellsSeed} object",
-            i = "Please check the `@matrix_list` in {.val {which(!BPCellsMatrices)}}"
-        ))
-    }
-    return(TRUE)
-})
-
-#' @rdname BPCellsBindMatrix
-#' @noRd
-BPCellsRowBindMatrixSeed <- function(x) {
-    assert_s4_class(x, "RowBindMatrices")
-    x@matrix_list <- lapply(x@matrix_list, BPCellsSeed)
-    methods::as(x, "BPCellsRowBindMatrixSeed")
-}
-
-#' @importClassesFrom DelayedArray DelayedArray
-#' @export
-#' @rdname BPCellsBindMatrix
-methods::setClass("BPCellsRowBindMatrixArray",
-    contains = "DelayedArray",
-    slots = c(seed = "BPCellsRowBindMatrixSeed")
-)
-
-#' @importFrom DelayedArray DelayedArray
-#' @importFrom DelayedArray new_DelayedArray
-#' @export
-#' @rdname BPCellsBindMatrix
 methods::setMethod(
-    "DelayedArray", "BPCellsRowBindMatrixSeed",
-    function(seed) new_DelayedArray(seed, Class = "BPCellsRowBindMatrixArray")
+    "BPCellsBindMatrixSeed", "RowBindMatrices",
+    function(x) "BPCellsRowBindMatrixSeed"
 )
 
 #' @export
-#' @rdname BPCellsBindMatrix
-BPCellsRowBindMatrixArray <- function(x) {
-    DelayedArray(BPCellsRowBindMatrixSeed(x))
-}
-
-#' @export
-#' @rdname BPCellsBindMatrix
-methods::setClass("BPCellsRowBindMatrixMatrix",
-    contains = "BPCellsMatrix",
-    slots = c(seed = "BPCellsRowBindMatrixSeed")
-)
-
-#' @export
-#' @importFrom DelayedArray matrixClass
-#' @rdname BPCellsBindMatrix
-methods::setMethod("matrixClass", "BPCellsRowBindMatrixArray", function(x) {
-    "BPCellsRowBindMatrixMatrix"
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "ColBindMatrices", function(x) {
+    BPCellsBindMatrixSeed(x = x)
 })
 
-###################################################################
-###########################  Methods  #############################
-###################################################################
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "RowBindMatrices", function(x) {
+    BPCellsBindMatrixSeed(x = x)
+})
 
 ##############################################################
 #' Set matrix op thread count
@@ -198,7 +76,7 @@ methods::setGeneric("set_threads", function(object, ...) {
 #' @export
 #' @rdname set_threads
 methods::setMethod(
-    "set_threads", "BPCellsRowBindMatrixSeed",
+    "set_threads", "BPCellsBindMatrixSeed",
     function(object, threads = 0L) {
         threads <- as.integer(max(0L, threads, na.rm = TRUE))
         object@threads <- threads
@@ -209,19 +87,9 @@ methods::setMethod(
 #' @export
 #' @rdname set_threads
 methods::setMethod(
-    "set_threads", "BPCellsColBindMatrixSeed",
+    "set_threads", "BPCellsMatrix",
     function(object, threads = 0L) {
-        threads <- as.integer(max(0L, threads, na.rm = TRUE))
-        object@threads <- threads
-        object
-    }
-)
-
-#' @export
-#' @rdname set_threads
-methods::setMethod(
-    "set_threads", "BPCellsRowBindMatrixMatrix",
-    function(object, threads = 0L) {
+        assert_s4_class(object@seed, "BPCellsBindMatrixSeed")
         object@seed <- set_threads(object@seed, threads = threads)
         object
     }
@@ -229,10 +97,8 @@ methods::setMethod(
 
 #' @export
 #' @rdname set_threads
-methods::setMethod(
-    "set_threads", "BPCellsColBindMatrixMatrix",
-    function(object, threads = 0L) {
-        object@seed <- set_threads(object@seed, threads = threads)
-        object
-    }
-)
+methods::setMethod("set_threads", "ANY", function(object, ...) {
+    cli::cli_abort(
+        "{.arg object} must be a {.cls BPCellsBindMatrixSeed} or a {.cls BPCellsMatrix} with a {.cls BPCellsBindMatrixSeed} seed slot"
+    )
+})

@@ -11,6 +11,13 @@
 \alias{\%*\%,matrix,BPCellsMatrix-method}
 \alias{\%*\%,BPCellsMatrix,numeric-method}
 \alias{\%*\%,numeric,BPCellsMatrix-method}
+\alias{\%*\%,BPCellsSeed,BPCellsSeed-method}
+\alias{\%*\%,BPCellsSeed,dgCMatrix-method}
+\alias{\%*\%,dgCMatrix,BPCellsSeed-method}
+\alias{\%*\%,BPCellsSeed,matrix-method}
+\alias{\%*\%,matrix,BPCellsSeed-method}
+\alias{\%*\%,BPCellsSeed,numeric-method}
+\alias{\%*\%,numeric,BPCellsSeed-method}
 \title{Matrix Multiplication}
 \usage{
 \S4method{\%*\%}{BPCellsMatrix,BPCellsMatrix}(x, y)
@@ -30,14 +37,30 @@
 \S4method{\%*\%}{BPCellsMatrix,numeric}(x, y)
 
 \S4method{\%*\%}{numeric,BPCellsMatrix}(x, y)
+
+\S4method{\%*\%}{BPCellsSeed,BPCellsSeed}(x, y)
+
+\S4method{\%*\%}{BPCellsSeed,dgCMatrix}(x, y)
+
+\S4method{\%*\%}{dgCMatrix,BPCellsSeed}(x, y)
+
+\S4method{\%*\%}{BPCellsSeed,matrix}(x, y)
+
+\S4method{\%*\%}{matrix,BPCellsSeed}(x, y)
+
+\S4method{\%*\%}{BPCellsSeed,numeric}(x, y)
+
+\S4method{\%*\%}{numeric,BPCellsSeed}(x, y)
 }
 \arguments{
-\item{x, y}{A \link{BPCellsMatrix} object or matrx-like object which can be coerced
-into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
+\item{x, y}{One of \code{x} or \code{y} must be \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another must be a matrix
+which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 }
 \value{
-\code{x \%*\% y}: Matrix multiplication, a \link{BPCellsMatrix} object or a dense
-matrix (matrix and numeric methods).
+Matrix multiplication, a \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{x} or
+\code{y}.
 }
 \description{
 Multiplies two matrices, if they are conformable. If one argument is a

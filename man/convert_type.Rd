@@ -4,7 +4,7 @@
 \alias{convert_type}
 \alias{convert_type,BPCellsSeed-method}
 \alias{convert_type,BPCellsMatrix-method}
-\title{Convert the type of a BPCells IterableMatrix matrix}
+\title{Convert the storage type of a BPCellsArray object}
 \usage{
 convert_type(object, ...)
 
@@ -29,7 +29,7 @@ A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
-Convert the type of a BPCells IterableMatrix matrix
+Convert the storage type of a BPCellsArray object
 }
 \seealso{
 \link[BPCells:convert_matrix_type]{convert_matrix_type}

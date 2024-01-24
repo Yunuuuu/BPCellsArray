@@ -42,8 +42,8 @@ Additionally, a matrix-like object which can be coerced into
 \item{invert}{A bool, indicates whether revert the mask.}
 }
 \value{
-A \link[=BPCellsMask]{BPCellsMaskSeed} or \link[=BPCellsMask]{BPCellsMatrix}
-object.
+A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{object}.
 }
 \description{
 Set matrix entries to zero given a mask matrix of the same dimensions.

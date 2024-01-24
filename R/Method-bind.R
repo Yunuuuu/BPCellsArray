@@ -9,9 +9,9 @@
 #' [matrix_stats][BPCells::matrix_stats].
 #' @return
 #' - `cbind2`, `acbind`, `cbind`, `bindCOLS`: A
-#'   [BPCellsCOLSBindMatrixMatrix][BPCellsBindMatrix] object.
+#'   [BPCellsMatrix][BPCellsMatrix-class] object.
 #' - `rbind2`, `arbind`, `rbind`, `bindROWS`: A
-#'   [BPCellsRowBindMatrixMatrix][BPCellsBindMatrix] object.
+#'   [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @aliases rbind2 cbind2 rbind cbind arbind acbind bindROWS bindCOLS
 #' @name BPCells-bind
 NULL
@@ -185,10 +185,10 @@ check_BPCellsMatrices <- function(lst, arg) {
 }
 
 
-#################### BPCellsSeed-methods ########################
+#################### BPCellsSeed methods ########################
 #' @importFrom methods rbind2
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-bind
 methods::setMethod(
     "rbind2", c(x = "BPCellsSeed", y = "BPCellsSeed"),
     function(x, y, ..., threads = 0L) {
@@ -228,7 +228,7 @@ methods::setMethod(
 #' @inheritParams BPCells-bind
 #' @importFrom DelayedArray rbind
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-bind
 methods::setMethod(
     "rbind", "BPCellsSeed",
     function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
@@ -240,7 +240,7 @@ methods::setMethod(
 
 #' @importFrom DelayedArray arbind
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-bind
 methods::setMethod(
     "arbind", "BPCellsSeed",
     function(..., threads = 0L, use.first.dimnames = TRUE) {
@@ -252,7 +252,7 @@ methods::setMethod(
 
 #' @importFrom DelayedArray bindROWS
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-bind
 methods::setMethod(
     "bindROWS", "BPCellsSeed",
     function(x, objects = list(), use.names = TRUE,
@@ -266,7 +266,7 @@ methods::setMethod(
 #################### cbind ########################
 #' @importFrom methods cbind2
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-bind
 methods::setMethod(
     "cbind2", c(x = "BPCellsSeed", y = "BPCellsSeed"),
     function(x, y, ..., threads = 0L) {
@@ -305,7 +305,7 @@ methods::setMethod(
 
 #' @importFrom DelayedArray cbind
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-bind
 methods::setMethod(
     "cbind", "BPCellsSeed",
     function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
@@ -317,7 +317,7 @@ methods::setMethod(
 
 #' @importFrom DelayedArray acbind
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-bind
 methods::setMethod("acbind", "BPCellsSeed", function(..., threads = 0L, use.first.dimnames = TRUE) {
     merge_BPCellsSeeds(
         list = pack_BPCellsSeeds(...),
@@ -327,7 +327,7 @@ methods::setMethod("acbind", "BPCellsSeed", function(..., threads = 0L, use.firs
 
 #' @importFrom S4Vectors bindCOLS
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-bind
 methods::setMethod(
     "bindCOLS", "BPCellsSeed",
     function(x, objects = list(), use.names = TRUE,

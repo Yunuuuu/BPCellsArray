@@ -4,8 +4,9 @@
 #'
 #' @inheritParams BPCells-Multiplication
 #' @importFrom DelayedArray crossprod
-#' @return Matrix Crossproduct, a [BPCellsMatrix] object or a dense matrix
-#'   (matrix and numeric methods).
+#' @return Matrix Crossproduct, a [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `x` or
+#' `y`. 
 #' @seealso [%*%]
 #' @aliases crossprod
 #' @name BPCells-crossprod
@@ -70,7 +71,7 @@ methods::setMethod(
 ####################    BPCellsSeed methods    #######################
 #' @importFrom DelayedArray crossprod
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-crossprod
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
@@ -78,7 +79,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-crossprod
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
         t(x) %*% y
@@ -86,7 +87,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-crossprod
 methods::setMethod(
     "crossprod", c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
@@ -96,7 +97,7 @@ methods::setMethod(
 #################### Matrix Crossproduct ########################
 # following methods return a dense matrix
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-crossprod
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
         t(x) %*% y
@@ -104,7 +105,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-crossprod
 methods::setMethod(
     "crossprod", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y
@@ -112,7 +113,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-crossprod
 methods::setMethod(
     "crossprod", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
         t(x) %*% y
@@ -120,7 +121,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-crossprod
 methods::setMethod(
     "crossprod", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
         t(x) %*% y

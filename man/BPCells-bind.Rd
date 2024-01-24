@@ -18,6 +18,14 @@
 \alias{cbind,BPCellsMatrix-method}
 \alias{acbind,BPCellsMatrix-method}
 \alias{bindCOLS,BPCellsMatrix-method}
+\alias{rbind2,BPCellsSeed,BPCellsSeed-method}
+\alias{rbind,BPCellsSeed-method}
+\alias{arbind,BPCellsSeed-method}
+\alias{bindROWS,BPCellsSeed-method}
+\alias{cbind2,BPCellsSeed,BPCellsSeed-method}
+\alias{cbind,BPCellsSeed-method}
+\alias{acbind,BPCellsSeed-method}
+\alias{bindCOLS,BPCellsSeed-method}
 \title{Combine two Objects by Columns or Rows}
 \usage{
 \S4method{rbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, ..., threads = 0L)
@@ -41,6 +49,34 @@
 \S4method{acbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE)
 
 \S4method{bindCOLS}{BPCellsMatrix}(
+  x,
+  objects = list(),
+  use.names = TRUE,
+  ignore.mcols = TRUE,
+  check = TRUE
+)
+
+\S4method{rbind2}{BPCellsSeed,BPCellsSeed}(x, y, ..., threads = 0L)
+
+\S4method{rbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+
+\S4method{arbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE)
+
+\S4method{bindROWS}{BPCellsSeed}(
+  x,
+  objects = list(),
+  use.names = TRUE,
+  ignore.mcols = TRUE,
+  check = TRUE
+)
+
+\S4method{cbind2}{BPCellsSeed,BPCellsSeed}(x, y, ..., threads = 0L)
+
+\S4method{cbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+
+\S4method{acbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE)
+
+\S4method{bindCOLS}{BPCellsSeed}(
   x,
   objects = list(),
   use.names = TRUE,
@@ -78,9 +114,9 @@
 \value{
 \itemize{
 \item \code{cbind2}, \code{acbind}, \code{cbind}, \code{bindCOLS}: A
-\link[=BPCellsBindMatrix]{BPCellsCOLSBindMatrixMatrix} object.
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 \item \code{rbind2}, \code{arbind}, \code{rbind}, \code{bindROWS}: A
-\link[=BPCellsBindMatrix]{BPCellsRowBindMatrixMatrix} object.
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 }
 \description{

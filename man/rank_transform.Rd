@@ -32,8 +32,8 @@ If axis value is different from the storage order of \code{object},
 to transpose the underlying storage order.}
 }
 \value{
-A \link[=BPCellsConvert]{BPCellsConverSeed} object or
-\link[=BPCellsConvert]{BPCellsConvertMatrix} object.
+A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{object}.
 }
 \description{
 Rank-transform a BPCells IterableMatrix matrix

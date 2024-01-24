@@ -1,6 +1,11 @@
+#' Calculate matrix statisticals
+#' 
+#' Calculate matrix statisticals
+#' 
 #' @inherit BPCells::matrix_stats
 #' @aliases matrix_stats
-#' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @return A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
 #' @name BPCells-matrix_stats
 NULL
 
@@ -12,7 +17,7 @@ methods::setGeneric("matrix_stats", function(object, ...) {
 })
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-matrix_stats
 methods::setMethod(
     "matrix_stats", "BPCellsSeed", function(object, ...) {
         BPCells::matrix_stats(matrix = object, ...)

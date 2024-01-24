@@ -7,14 +7,14 @@
 #' @note Usually, you shouldn't use this class directly, instead, you should use
 #' [rank_transform] function to create a `BPCellsRankTransformMatrix`.
 #'
-#' @param x For Specific functions:
-#' - `BPCellsMatrixRankTransformArray`: A `MatrixRankTransform` object.
-#' - `matrixClass`: A `BPCellsMatrixRankTransformArray` object.
+#' @param x A `MatrixRankTransform` object.
 #' @seealso
 #' - [BPCellsSeed]
 #' - [convert_matrix_type][BPCells::convert_matrix_type]
 #' @name BPCellsRankTransform
+#' @noRd
 NULL
+
 methods::setClass("BPCellsRankTransformSeed",
     contains = c("BPCellsSeed", get_class("MatrixRankTransform"))
 )
@@ -23,48 +23,14 @@ methods::setClass("BPCellsRankTransformSeed",
 #' @rdname BPCellsRankTransform
 #' @noRd
 BPCellsRankTransformSeed <- function(x) {
-    assert_s4_class(x, "MatrixRankTransform")
     x@matrix <- BPCellsSeed(x@matrix)
     methods::as(x, "BPCellsRankTransformSeed")
 }
 
-#' @importClassesFrom DelayedArray DelayedArray
 #' @export
-#' @rdname BPCellsRankTransform
-methods::setClass("BPCellsRankTransformArray",
-    contains = "DelayedArray",
-    slots = c(seed = "BPCellsRankTransformSeed")
-)
-
-#' @param seed A `BPCellsRankTransformSeed` object.
-#' @importFrom DelayedArray DelayedArray
-#' @importFrom DelayedArray new_DelayedArray
-#' @export
-#' @rdname BPCellsRankTransform
-methods::setMethod(
-    "DelayedArray", "BPCellsRankTransformSeed",
-    function(seed) new_DelayedArray(seed, Class = "BPCellsRankTransformArray")
-)
-
-#' @export
-#' @rdname BPCellsRankTransform
-BPCellsRankTransformArray <- function(x) {
-    DelayedArray(BPCellsRankTransformSeed(x))
-}
-
-#' @importClassesFrom DelayedArray DelayedMatrix
-#' @export
-#' @rdname BPCellsRankTransform
-methods::setClass("BPCellsRankTransformMatrix",
-    contains = "BPCellsMatrix",
-    slots = c(seed = "BPCellsRankTransformSeed")
-)
-
-#' @importFrom DelayedArray matrixClass
-#' @export
-#' @rdname BPCellsRankTransform
-methods::setMethod("matrixClass", "BPCellsRankTransformArray", function(x) {
-    "BPCellsRankTransformMatrix"
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "MatrixRankTransform", function(x) {
+    BPCellsRankTransformSeed(x = x)
 })
 
 ###################################################################
@@ -89,8 +55,8 @@ methods::setGeneric(
 #'     If axis value is different from the storage order of `object`,
 #'     [transpose_storage_order][BPCells::transpose_storage_order] will be used
 #'     to transpose the underlying storage order.
-#' @return A [BPCellsConverSeed][BPCellsConvert] object or
-#' [BPCellsConvertMatrix][BPCellsConvert] object.
+#' @return A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
 #' @seealso [rank_transform][BPCells::rank_transform]
 #' @importFrom DelayedArray DelayedArray
 #' @export

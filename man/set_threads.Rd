@@ -2,21 +2,18 @@
 % Please edit documentation in R/Class-BindMatrix.R
 \name{set_threads}
 \alias{set_threads}
-\alias{set_threads,BPCellsRowBindMatrixSeed-method}
-\alias{set_threads,BPCellsColBindMatrixSeed-method}
-\alias{set_threads,BPCellsRowBindMatrixMatrix-method}
-\alias{set_threads,BPCellsColBindMatrixMatrix-method}
+\alias{set_threads,BPCellsBindMatrixSeed-method}
+\alias{set_threads,BPCellsMatrix-method}
+\alias{set_threads,ANY-method}
 \title{Set matrix op thread count}
 \usage{
 set_threads(object, ...)
 
-\S4method{set_threads}{BPCellsRowBindMatrixSeed}(object, threads = 0L)
+\S4method{set_threads}{BPCellsBindMatrixSeed}(object, threads = 0L)
 
-\S4method{set_threads}{BPCellsColBindMatrixSeed}(object, threads = 0L)
+\S4method{set_threads}{BPCellsMatrix}(object, threads = 0L)
 
-\S4method{set_threads}{BPCellsRowBindMatrixMatrix}(object, threads = 0L)
-
-\S4method{set_threads}{BPCellsColBindMatrixMatrix}(object, threads = 0L)
+\S4method{set_threads}{ANY}(object, ...)
 }
 \arguments{
 \item{object}{A \code{BPCellsRowBindMatrixSeed}, \code{BPCellsColBindMatrixSeed},

@@ -3,10 +3,13 @@
 \name{BPCells-matrix_stats}
 \alias{BPCells-matrix_stats}
 \alias{matrix_stats}
+\alias{matrix_stats,BPCellsSeed-method}
 \alias{matrix_stats,BPCellsMatrix-method}
-\title{Calculate matrix stats}
+\title{Calculate matrix statisticals}
 \usage{
 matrix_stats(object, ...)
+
+\S4method{matrix_stats}{BPCellsSeed}(object, ...)
 
 \S4method{matrix_stats}{BPCellsMatrix}(object, ...)
 }
@@ -22,10 +25,11 @@ matrix_stats(object, ...)
   }}
 }
 \value{
-A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
+A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{object}.
 }
 \description{
-Calculate matrix stats
+Calculate matrix statisticals
 }
 \details{
 The statistics will be calculated in a single pass over the matrix,

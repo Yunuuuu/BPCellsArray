@@ -34,7 +34,7 @@ methods.
 \item{compress}{Whether or not to compress the data.}
 }
 \value{
-A \link[=BPCellsMem]{BPCellsMemMatrix} object.
+A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Write a sparce matrices into memory with BPCells format

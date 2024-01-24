@@ -5,10 +5,12 @@
 #' arguments conformable. If both are vectors of the same length, it will return
 #' the inner product (as a matrix).
 #'
-#' @param x,y A [BPCellsMatrix] object or matrx-like object which can be coerced
-#'   into a [dgCMatrix][Matrix::dgCMatrix-class].
-#' @return `x %*% y`: Matrix multiplication, a [BPCellsMatrix] object or a dense
-#'   matrix (matrix and numeric methods).
+#' @param x,y One of `x` or `y` must be [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object, and the another must be a matrix
+#' which can be coerced into [dgCMatrix][Matrix::dgCMatrix-class].
+#' @return Matrix multiplication, a [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `x` or
+#' `y`. 
 #' @importMethodsFrom BPCells %*%
 #' @name BPCells-Multiplication
 NULL
@@ -90,7 +92,7 @@ methods::setMethod(
 # Following methods used by internal
 #' @importMethodsFrom BPCells %*%
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
         if (x@transpose != y@transpose) {
@@ -112,7 +114,7 @@ methods::setMethod(
 
 #' @importClassesFrom Matrix dgCMatrix
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
         BPCellsSeed(methods::callNextMethod())
@@ -120,7 +122,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
         BPCellsSeed(methods::callNextMethod())
@@ -130,7 +132,7 @@ methods::setMethod(
 #################### Matrix multiplication ########################
 # following methods return a dense matrix
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
         storage.mode(y) <- "double"
@@ -139,7 +141,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
         storage.mode(x) <- "double"
@@ -148,7 +150,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
         storage.mode(y) <- "double"
@@ -157,7 +159,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
         storage.mode(x) <- "double"

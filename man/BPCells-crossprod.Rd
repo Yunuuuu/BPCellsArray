@@ -10,6 +10,13 @@
 \alias{crossprod,ANY,BPCellsMatrix-method}
 \alias{crossprod,BPCellsMatrix,matrix-method}
 \alias{crossprod,matrix,BPCellsMatrix-method}
+\alias{crossprod,BPCellsSeed,BPCellsSeed-method}
+\alias{crossprod,BPCellsSeed,dgCMatrix-method}
+\alias{crossprod,dgCMatrix,BPCellsSeed-method}
+\alias{crossprod,BPCellsSeed,matrix-method}
+\alias{crossprod,matrix,BPCellsSeed-method}
+\alias{crossprod,BPCellsSeed,numeric-method}
+\alias{crossprod,numeric,BPCellsSeed-method}
 \title{Matrix Crossproduct}
 \usage{
 \S4method{crossprod}{BPCellsMatrix,BPCellsMatrix}(x, y)
@@ -25,14 +32,30 @@
 \S4method{crossprod}{BPCellsMatrix,matrix}(x, y)
 
 \S4method{crossprod}{matrix,BPCellsMatrix}(x, y)
+
+\S4method{crossprod}{BPCellsSeed,BPCellsSeed}(x, y)
+
+\S4method{crossprod}{BPCellsSeed,dgCMatrix}(x, y)
+
+\S4method{crossprod}{dgCMatrix,BPCellsSeed}(x, y)
+
+\S4method{crossprod}{BPCellsSeed,matrix}(x, y)
+
+\S4method{crossprod}{matrix,BPCellsSeed}(x, y)
+
+\S4method{crossprod}{BPCellsSeed,numeric}(x, y)
+
+\S4method{crossprod}{numeric,BPCellsSeed}(x, y)
 }
 \arguments{
-\item{x, y}{A \link{BPCellsMatrix} object or matrx-like object which can be coerced
-into a \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
+\item{x, y}{One of \code{x} or \code{y} must be \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another must be a matrix
+which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 }
 \value{
-Matrix Crossproduct, a \link{BPCellsMatrix} object or a dense matrix
-(matrix and numeric methods).
+Matrix Crossproduct, a \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{x} or
+\code{y}.
 }
 \description{
 Given matrices x and y as arguments, return a matrix cross-product.

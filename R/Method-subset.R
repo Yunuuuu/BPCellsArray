@@ -1,3 +1,5 @@
+#' @param i,j Row and Column index.
+#' @param drop Ignored, always be `FALSE`.
 #' @importMethodsFrom BPCells [
 #' @export
 #' @rdname seed-methods
@@ -75,9 +77,6 @@ methods::setMethod(
     }
 )
 
-# it's not necessary to re-dispatch the "[" method for `BPCellsSubsetSeed` class
-# since the `MatrixSubset` method will use `[` method of `@matrix`. Here, we
-# just re-dispatch it to keep consistent.
 #' @importMethodsFrom BPCells [
 #' @rdname seed-methods
 methods::setMethod(

@@ -1,6 +1,8 @@
 #' @inherit BPCells::binarize
 #' @aliases binarize
-#' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @return A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of
+#' `object` or `e1` (`e2`).
 #' @name BPCells-binarize
 NULL
 
@@ -19,7 +21,9 @@ methods::setMethod("binarize", "BPCellsMatrix", function(object, ...) {
     DelayedArray(binarize(object = object@seed, ...))
 })
 
-#' @param e1,e2 See detailed methods signature.
+#' @param e1,e2 One of `e1` or `e2` must be [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object, and the another must be a
+#' number.
 #' @export
 #' @rdname BPCells-binarize
 methods::setMethod(
@@ -105,14 +109,11 @@ methods::setMethod(
 ########################################################################
 #' @inheritParams BPCells::binarize
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-binarize
 methods::setMethod(
     "binarize", "BPCellsSeed",
-    function(object, threshold = 0, strict_inequality = TRUE) {
-        obj <- BPCells::binarize(
-            mat = object, threshold = threshold,
-            strict_inequality = strict_inequality
-        )
+    function(object, ...) {
+        obj <- BPCells::binarize(mat = object, ...)
         BPCellsSeed(obj)
     }
 )
@@ -120,7 +121,7 @@ methods::setMethod(
 # binary operations ---------------------------------------------
 #' @inheritParams BPCells-binarize
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-binarize
 methods::setMethod(
     "<", c(e1 = "numeric", e2 = "BPCellsSeed"),
     function(e1, e2) {
@@ -140,7 +141,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-binarize
 methods::setMethod(
     ">", c(e1 = "BPCellsSeed", e2 = "numeric"),
     function(e1, e2) {
@@ -160,7 +161,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-binarize
 methods::setMethod(
     "<=", c(e1 = "numeric", e2 = "BPCellsSeed"),
     function(e1, e2) {
@@ -180,7 +181,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-binarize
 methods::setMethod(
     ">=", c(e1 = "BPCellsSeed", e2 = "numeric"),
     function(e1, e2) {

@@ -1,70 +1,20 @@
-#' Delayed BPCells MatrixMask
-#'
-#' The `BPCellsMaskArray` class provides a
-#' [DelayedArray][DelayedArray::DelayedArray] backend for `MatrixMask`
-#' object in BPCells.
-#'
-#' @note Usually, you shouldn't use this class directly, instead, you should use
-#' [mask_matrix] of other BPCellsMatrix objects to create a `BPCellsMaskMatrix`.
-#'
-#' @param x For Specific functions:
-#' - `BPCellsMatrixMaskArray`: A `MatrixMask` object.
-#' - `matrixClass`: A `BPCellsMatrixMaskArray` object.
-#' @seealso [BPCellsSeed]
-#' @name BPCellsMask
-NULL
-
 methods::setClass("BPCellsMaskSeed",
     contains = c("BPCellsSeed", get_class("MatrixMask"))
 )
 
-#' @param x A `MatrixMask` object.
 #' @rdname BPCellsMask
 #' @noRd
 BPCellsMaskSeed <- function(x) {
-    assert_s4_class(x, "MatrixMask")
     x@matrix <- BPCellsSeed(x@matrix)
     x@mask <- BPCellsSeed(x@mask)
     methods::as(x, "BPCellsMaskSeed")
 }
 
-#' @importClassesFrom DelayedArray DelayedArray
-#' @export
-#' @rdname BPCellsMask
-methods::setClass("BPCellsMaskArray",
-    contains = "DelayedArray",
-    slots = c(seed = "BPCellsMaskSeed")
-)
-
-#' @param seed A `BPCellsMaskSeed` object.
-#' @importFrom DelayedArray DelayedArray
-#' @importFrom DelayedArray new_DelayedArray
-#' @export
-#' @rdname BPCellsMask
-methods::setMethod(
-    "DelayedArray", "BPCellsMaskSeed",
-    function(seed) new_DelayedArray(seed, Class = "BPCellsMaskArray")
-)
 
 #' @export
-#' @rdname BPCellsMask
-BPCellsMaskArray <- function(x) {
-    DelayedArray(BPCellsMaskSeed(x))
-}
-
-#' @importClassesFrom DelayedArray DelayedMatrix
-#' @export
-#' @rdname BPCellsMask
-methods::setClass("BPCellsMaskMatrix",
-    contains = "BPCellsMatrix",
-    slots = c(seed = "BPCellsMaskSeed")
-)
-
-#' @importFrom DelayedArray matrixClass
-#' @export
-#' @rdname BPCellsMask
-methods::setMethod("matrixClass", "BPCellsMaskArray", function(x) {
-    "BPCellsMaskMatrix"
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "MatrixMask", function(x) {
+    BPCellsMaskSeed(x = x)
 })
 
 ###################################################################
@@ -93,8 +43,8 @@ methods::setGeneric(
 #' Additionally, a matrix-like object which can be coerced into
 #' [dgCMatrix][Matrix::dgCMatrix-class].
 #' @param invert A bool, indicates whether revert the mask.
-#' @return A [BPCellsMaskSeed][BPCellsMask] or [BPCellsMatrix][BPCellsMask]
-#' object.
+#' @return A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
 #' @seealso [mask_matrix][BPCells::mask_matrix]
 #' @importFrom DelayedArray DelayedArray
 #' @export

@@ -1,69 +1,19 @@
-#' Delayed BPCells ConvertMatrixType
-#'
-#' The `BPCellsConvertArray` class provides a
-#' [DelayedArray][DelayedArray::DelayedArray] backend for `ConvertMatrixType`
-#' object in BPCells.
-#'
-#' @note
-#' Usually, you shouldn't use this class directly, instead, you should use
-#' [convert_type] to create a `BPCellsConvert` object.
-#' @param x For Specific functions:
-#' - `BPCellsConvertArray`: A `ConvertMatrixType` object.
-#' - `matrixClass`: A `BPCellsConvertArray` object.
-#' @seealso [BPCellsSeed]
-#' @name BPCellsConvert
-NULL
-
 methods::setClass("BPCellsConvertSeed",
     contains = c("BPCellsSeed", get_class("ConvertMatrixType")),
     slots = list(matrix = "BPCellsSeed")
 )
 
-#' @param x A `ConvertMatrixType` object.
 #' @rdname BPCellsConvert
 #' @noRd
 BPCellsConvertSeed <- function(x) {
-    assert_s4_class(x, "ConvertMatrixType")
     x@matrix <- BPCellsSeed(x@matrix)
     methods::as(x, "BPCellsConvertSeed")
 }
 
-#' @importClassesFrom DelayedArray DelayedArray
 #' @export
-#' @rdname BPCellsConvert
-methods::setClass("BPCellsConvertArray",
-    contains = "DelayedArray",
-    slots = c(seed = "BPCellsConvertSeed")
-)
-
-#' @param seed A `BPCellsConvertSeed` object.
-#' @importFrom DelayedArray DelayedArray
-#' @importFrom DelayedArray new_DelayedArray
-#' @export
-#' @rdname BPCellsConvert
-methods::setMethod(
-    "DelayedArray", "BPCellsConvertSeed",
-    function(seed) new_DelayedArray(seed, Class = "BPCellsConvertArray")
-)
-
-#' @export
-#' @rdname BPCellsConvert
-BPCellsConvertArray <- function(x) {
-    DelayedArray(BPCellsConvertSeed(x))
-}
-
-#' @export
-#' @rdname BPCellsConvert
-methods::setClass("BPCellsConvertMatrix",
-    contains = "BPCellsMatrix",
-    slots = c(seed = "BPCellsConvertSeed")
-)
-
-#' @importFrom DelayedArray matrixClass
-#' @export
-#' @rdname BPCellsConvert
-methods::setMethod("matrixClass", "BPCellsConvertArray", function(x) {
-    "BPCellsConvertMatrix"
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x) {
+    BPCellsConvertSeed(x = x)
 })
 
 ###################################################################
@@ -71,7 +21,7 @@ methods::setMethod("matrixClass", "BPCellsConvertArray", function(x) {
 ###################################################################
 
 #####################   BPCellsConvertMatrix   #######################
-#' Convert the type of a BPCells IterableMatrix matrix
+#' Convert the storage type of a BPCellsArray object
 #'
 #' @param object A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object.

@@ -5,34 +5,33 @@ mat <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path[1L])
 mat2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
 obj <- rbind(mat, mat2)
 
-testthat::test_that("`BPCellsRowBindMatrixSeed()` works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
-    obj <- BPCellsRowBindMatrixArray(seed)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
+testthat::test_that("`BPCellsBindMatrixSeed()` works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
+    obj <- BPCellsMatrix(seed)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
     testthat::expect_identical(path(seed), path)
     testthat::expect_identical(path(obj), path)
 })
 
-testthat::test_that("subset `BPCellsRowBindMatrixSeed` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
+testthat::test_that("subset `BPCellsBindMatrixSeed` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[, 1:10], "BPCellsRowBindMatrixSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
 })
 
-testthat::test_that("subset `BPCellsRowBindMatrixMatrix` object works as expected", {
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
+testthat::test_that("subset `BPCellsMatrix` object works as expected", {
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
     testthat::expect_identical(path(obj), path)
-    testthat::expect_s4_class(obj[1:10, ], "BPCellsSubsetMatrix")
-    testthat::expect_s4_class(obj[, 1:10], "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsSubsetMatrix")
+    testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
 })
 
-
-testthat::test_that("`convert_type` for `BPCellsRowBindMatrixSeed` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
+testthat::test_that("`convert_type` for `BPCellsBindMatrixSeed` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
     float_seed <- convert_type(seed, "numeric")
     testthat::expect_s4_class(float_seed, "BPCellsConvertSeed")
     testthat::expect_identical(type(float_seed), "double")
@@ -41,62 +40,62 @@ testthat::test_that("`convert_type` for `BPCellsRowBindMatrixSeed` object works 
     testthat::expect_identical(type(integer_seed), "integer")
 })
 
-testthat::test_that("`convert_type` for `BPCellsRowBindMatrixMatrix` object works as expected", {
-    obj <- BPCellsRowBindMatrixArray(obj)
+testthat::test_that("`convert_type` for `BPCellsMatrix` object works as expected", {
+    obj <- BPCellsMatrix(obj)
     float_obj <- convert_type(obj, "numeric")
-    testthat::expect_s4_class(float_obj, "BPCellsConvertMatrix")
+    testthat::expect_s4_class(float_obj, "BPCellsMatrix")
     testthat::expect_identical(type(float_obj), "double")
     integer_obj <- convert_type(float_obj, "integer")
-    testthat::expect_s4_class(integer_obj, "BPCellsConvertMatrix")
+    testthat::expect_s4_class(integer_obj, "BPCellsMatrix")
     testthat::expect_identical(type(integer_obj), "integer")
 })
 
-testthat::test_that("`t()` for `BPCellsRowBindMatrix` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
-    testthat::expect_s4_class(t(seed), "BPCellsRowBindMatrixSeed")
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(t(obj), "BPCellsRowBindMatrixMatrix")
+testthat::test_that("`t()` for `BPCellsColBindMatrix` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
+    testthat::expect_s4_class(t(seed), "BPCellsBindMatrixSeed")
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_s4_class(t(obj), "BPCellsMatrix")
 })
 
-testthat::test_that("`dimnames<-` for `BPCellsRowBindMatrix` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
+testthat::test_that("`dimnames<-` for `BPCellsColBindMatrix` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
     dimnames(seed) <- list(
         paste0("G", seq_len(nrow(seed))),
         paste0("C", seq_len(ncol(seed)))
     )
     testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
     dimnames(obj) <- list(
         paste0("G", seq_len(nrow(obj))),
         paste0("C", seq_len(ncol(obj)))
     )
-    testthat::expect_s4_class(obj, "BPCellsRenameDimsMatrix")
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
 })
 
-testthat::test_that("`%*%` for `BPCellsRowBindMatrix` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
+testthat::test_that("`%*%` for `BPCellsColBindMatrix` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
     testthat::expect_warning(temp <- seed %*% t(seed))
     testthat::expect_s4_class(temp, "BPCellsMultiplySeed")
     testthat::expect_true(is.matrix(seed %*% as.matrix(t(seed))))
     testthat::expect_true(is.matrix(seed %*% seq_len(ncol(seed))))
     testthat::expect_true(is.matrix(seq_len(nrow(seed)) %*% seed))
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
     testthat::expect_warning(temp <- obj %*% t(obj))
-    testthat::expect_s4_class(temp, "BPCellsMultiplyMatrix")
+    testthat::expect_s4_class(temp, "BPCellsMatrix")
     testthat::expect_true(is.matrix(obj %*% as.matrix(t(obj))))
     testthat::expect_true(is.matrix(obj %*% seq_len(ncol(obj))))
     testthat::expect_true(is.matrix(seq_len(nrow(obj)) %*% obj))
 })
 
-testthat::test_that("`rbind` for `BPCellsRowBindMatrix` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
+testthat::test_that("`rbind` for `BPCellsColBindMatrix` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
     testthat::expect_s4_class(rbind2(seed, seed), "BPCellsRowBindMatrixSeed")
     testthat::expect_s4_class(rbind(seed, seed), "BPCellsRowBindMatrixSeed")
     testthat::expect_s4_class(arbind(seed, seed), "BPCellsRowBindMatrixSeed")
@@ -104,41 +103,38 @@ testthat::test_that("`rbind` for `BPCellsRowBindMatrix` object works as expected
         bindROWS(seed, list(seed)),
         "BPCellsRowBindMatrixSeed"
     )
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(rbind2(obj, obj), "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(rbind(obj, obj), "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(arbind(obj, obj), "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(
-        bindROWS(obj, list(obj)),
-        "BPCellsRowBindMatrixMatrix"
-    )
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_s4_class(rbind2(obj, obj), "BPCellsMatrix")
+    testthat::expect_s4_class(rbind(obj, obj), "BPCellsMatrix")
+    testthat::expect_s4_class(arbind(obj, obj), "BPCellsMatrix")
+    testthat::expect_s4_class(bindROWS(obj, list(obj)), "BPCellsMatrix")
 })
 
-testthat::test_that("`cbind` for `BPCellsRowBindMatrix` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
-    testthat::expect_s4_class(cbind2(seed, seed), "BPCellsColBindMatrixSeed")
-    testthat::expect_s4_class(cbind(seed, seed), "BPCellsColBindMatrixSeed")
-    testthat::expect_s4_class(acbind(seed, seed), "BPCellsColBindMatrixSeed")
+testthat::test_that("`cbind` for `BPCellsColBindMatrix` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
+    testthat::expect_s4_class(cbind2(seed, seed), "BPCellsBindMatrixSeed")
+    testthat::expect_s4_class(cbind(seed, seed), "BPCellsBindMatrixSeed")
+    testthat::expect_s4_class(acbind(seed, seed), "BPCellsBindMatrixSeed")
     testthat::expect_s4_class(
         bindCOLS(seed, list(seed)),
-        "BPCellsColBindMatrixSeed"
+        "BPCellsBindMatrixSeed"
     )
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(cbind2(obj, obj), "BPCellsColBindMatrixMatrix")
-    testthat::expect_s4_class(cbind(obj, obj), "BPCellsColBindMatrixMatrix")
-    testthat::expect_s4_class(acbind(obj, obj), "BPCellsColBindMatrixMatrix")
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_s4_class(cbind2(obj, obj), "BPCellsMatrix")
+    testthat::expect_s4_class(cbind(obj, obj), "BPCellsMatrix")
+    testthat::expect_s4_class(acbind(obj, obj), "BPCellsMatrix")
     testthat::expect_s4_class(
         bindCOLS(obj, list(obj)),
-        "BPCellsColBindMatrixMatrix"
+        "BPCellsMatrix"
     )
 })
 
-testthat::test_that("`+` for `BPCellsRowBindMatrixSeed` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
+testthat::test_that("`+` for `BPCellsBindMatrixSeed` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
     testthat::expect_s4_class(seed + 1, "BPCellsTransformScaleShiftSeed")
     testthat::expect_s4_class(seed + 1 + 10, "BPCellsTransformScaleShiftSeed")
     testthat::expect_s4_class(
@@ -160,33 +156,21 @@ testthat::test_that("`+` for `BPCellsRowBindMatrixSeed` object works as expected
     )
 })
 
-testthat::test_that("`+` for `BPCellsRowBindMatrixMatrix` object works as expected", {
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(obj + 1, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(obj + 1 + 10, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(
-        obj + seq_len(nrow(obj)),
-        "BPCellsTransformScaleShiftMatrix"
-    )
-    testthat::expect_s4_class(
-        t(obj) + seq_len(ncol(obj)),
-        "BPCellsTransformScaleShiftMatrix"
-    )
-    testthat::expect_s4_class(1 + obj, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(
-        seq_len(nrow(obj)) + obj,
-        "BPCellsTransformScaleShiftMatrix"
-    )
-    testthat::expect_s4_class(
-        seq_len(ncol(obj)) + t(obj),
-        "BPCellsTransformScaleShiftMatrix"
-    )
+testthat::test_that("`+` for `BPCellsMatrix` object works as expected", {
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_s4_class(obj + 1, "BPCellsMatrix")
+    testthat::expect_s4_class(obj + 1 + 10, "BPCellsMatrix")
+    testthat::expect_s4_class(obj + seq_len(nrow(obj)), "BPCellsMatrix")
+    testthat::expect_s4_class(t(obj) + seq_len(ncol(obj)), "BPCellsMatrix")
+    testthat::expect_s4_class(1 + obj, "BPCellsMatrix")
+    testthat::expect_s4_class(seq_len(nrow(obj)) + obj, "BPCellsMatrix")
+    testthat::expect_s4_class(seq_len(ncol(obj)) + t(obj), "BPCellsMatrix")
 })
 
-testthat::test_that("`-` for `BPCellsRowBindMatrixSeed` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
+testthat::test_that("`-` for `BPCellsBindMatrixSeed` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
     testthat::expect_s4_class(seed - 1, "BPCellsTransformScaleShiftSeed")
     testthat::expect_s4_class(seed - 1 - 10, "BPCellsTransformScaleShiftSeed")
     testthat::expect_s4_class(
@@ -208,33 +192,30 @@ testthat::test_that("`-` for `BPCellsRowBindMatrixSeed` object works as expected
     )
 })
 
-testthat::test_that("`-` for `BPCellsRowBindMatrixMatrix` object works as expected", {
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(obj - 1, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(obj - 1 - 10, "BPCellsTransformScaleShiftMatrix")
+testthat::test_that("`-` for `BPCellsMatrix` object works as expected", {
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_s4_class(obj - 1, "BPCellsMatrix")
+    testthat::expect_s4_class(obj - 1 - 10, "BPCellsMatrix")
     testthat::expect_s4_class(
         obj - seq_len(nrow(obj)),
-        "BPCellsTransformScaleShiftMatrix"
+        "BPCellsMatrix"
     )
     testthat::expect_s4_class(
         t(obj) - seq_len(ncol(obj)),
-        "BPCellsTransformScaleShiftMatrix"
+        "BPCellsMatrix"
     )
-    testthat::expect_s4_class(1 - obj, "BPCellsTransformScaleShiftMatrix")
+    testthat::expect_s4_class(1 - obj, "BPCellsMatrix")
     testthat::expect_s4_class(
         seq_len(nrow(obj)) - obj,
-        "BPCellsTransformScaleShiftMatrix"
+        "BPCellsMatrix"
     )
-    testthat::expect_s4_class(
-        seq_len(ncol(obj)) - t(obj),
-        "BPCellsTransformScaleShiftMatrix"
-    )
+    testthat::expect_s4_class(seq_len(ncol(obj)) - t(obj), "BPCellsMatrix")
 })
 
-testthat::test_that("`*` for `BPCellsRowBindMatrixSeed` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
+testthat::test_that("`*` for `BPCellsBindMatrixSeed` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
     testthat::expect_s4_class(seed * 1, "BPCellsTransformScaleShiftSeed")
     testthat::expect_s4_class(seed * 1 * 10, "BPCellsTransformScaleShiftSeed")
     testthat::expect_s4_class(
@@ -256,33 +237,21 @@ testthat::test_that("`*` for `BPCellsRowBindMatrixSeed` object works as expected
     )
 })
 
-testthat::test_that("`*` for `BPCellsRowBindMatrixMatrix` object works as expected", {
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(obj * 1, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(obj * 1 * 10, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(
-        obj * seq_len(nrow(obj)),
-        "BPCellsTransformScaleShiftMatrix"
-    )
-    testthat::expect_s4_class(
-        t(obj) * seq_len(ncol(obj)),
-        "BPCellsTransformScaleShiftMatrix"
-    )
-    testthat::expect_s4_class(1 * obj, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(
-        seq_len(nrow(obj)) * obj,
-        "BPCellsTransformScaleShiftMatrix"
-    )
-    testthat::expect_s4_class(
-        seq_len(ncol(obj)) * t(obj),
-        "BPCellsTransformScaleShiftMatrix"
-    )
+testthat::test_that("`*` for `BPCellsMatrix` object works as expected", {
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_s4_class(obj * 1, "BPCellsMatrix")
+    testthat::expect_s4_class(obj * 1 * 10, "BPCellsMatrix")
+    testthat::expect_s4_class(obj * seq_len(nrow(obj)), "BPCellsMatrix")
+    testthat::expect_s4_class(t(obj) * seq_len(ncol(obj)), "BPCellsMatrix")
+    testthat::expect_s4_class(1 * obj, "BPCellsMatrix")
+    testthat::expect_s4_class(seq_len(nrow(obj)) * obj, "BPCellsMatrix")
+    testthat::expect_s4_class(seq_len(ncol(obj)) * t(obj), "BPCellsMatrix")
 })
 
-testthat::test_that("`/` for `BPCellsRowBindMatrixSeed` object works as expected", {
-    seed <- BPCellsRowBindMatrixSeed(obj)
-    testthat::expect_s4_class(seed, "BPCellsRowBindMatrixSeed")
+testthat::test_that("`/` for `BPCellsBindMatrixSeed` object works as expected", {
+    seed <- BPCellsBindMatrixSeed(obj)
+    testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
     testthat::expect_s4_class(seed / 1, "BPCellsTransformScaleShiftSeed")
     testthat::expect_s4_class(seed / 1 / 10, "BPCellsTransformScaleShiftSeed")
     testthat::expect_s4_class(
@@ -296,18 +265,12 @@ testthat::test_that("`/` for `BPCellsRowBindMatrixSeed` object works as expected
     testthat::expect_error(1 / seed)
 })
 
-testthat::test_that("`/` for `BPCellsRowBindMatrixMatrix` object works as expected", {
-    obj <- BPCellsRowBindMatrixArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsRowBindMatrixMatrix")
-    testthat::expect_s4_class(obj / 1, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(obj / 1 / 10, "BPCellsTransformScaleShiftMatrix")
-    testthat::expect_s4_class(
-        obj / seq_len(nrow(obj)),
-        "BPCellsTransformScaleShiftMatrix"
-    )
-    testthat::expect_s4_class(
-        t(obj) / seq_len(ncol(obj)),
-        "BPCellsTransformScaleShiftMatrix"
-    )
+testthat::test_that("`/` for `BPCellsMatrix` object works as expected", {
+    obj <- BPCellsMatrix(obj)
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_s4_class(obj / 1, "BPCellsMatrix")
+    testthat::expect_s4_class(obj / 1 / 10, "BPCellsMatrix")
+    testthat::expect_s4_class(obj / seq_len(nrow(obj)), "BPCellsMatrix")
+    testthat::expect_s4_class(t(obj) / seq_len(ncol(obj)), "BPCellsMatrix")
     testthat::expect_error(1 / obj)
 })

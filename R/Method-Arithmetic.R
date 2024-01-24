@@ -1,8 +1,10 @@
 #' Arithmetic operators for BPCellsMatrix
 #' @inheritParams BPCells-binarize
+#' @return A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `e1` /
+#' `e2`. 
 #' @name BPCells-Arithmetic
 #' @aliases + - * /
-#' @include Transform-Arithmetic.R
 NULL
 
 #' @rdname BPCells-Arithmetic
@@ -79,7 +81,7 @@ methods::setMethod(
 
 ######################################################################
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Arithmetic
 methods::setMethod(
     "*", c(e1 = "BPCellsSeed", e2 = "numeric"),
     function(e1, e2) {
@@ -88,7 +90,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Arithmetic
 methods::setMethod(
     "*", c(e1 = "numeric", e2 = "BPCellsSeed"),
     function(e1, e2) {
@@ -97,7 +99,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Arithmetic
 methods::setMethod(
     "+", c(e1 = "BPCellsSeed", e2 = "numeric"),
     function(e1, e2) {
@@ -106,7 +108,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Arithmetic
 methods::setMethod(
     "+", c(e1 = "numeric", e2 = "BPCellsSeed"),
     function(e1, e2) {
@@ -115,7 +117,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Arithmetic
 methods::setMethod(
     "/", c(e1 = "BPCellsSeed", e2 = "numeric"),
     function(e1, e2) {
@@ -133,7 +135,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Arithmetic
 methods::setMethod(
     "-", c(e1 = "BPCellsSeed", e2 = "numeric"),
     function(e1, e2) {
@@ -142,7 +144,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCells-Arithmetic
 methods::setMethod(
     "-", c(e1 = "numeric", e2 = "BPCellsSeed"),
     function(e1, e2) {
@@ -153,6 +155,7 @@ methods::setMethod(
 #####################################################################
 #' @export
 #' @rdname internal-methods
+#' @include Class-Transformed.R
 methods::setMethod(
     "*", c(e1 = "BPCellsTransformScaleShiftSeed", e2 = "numeric"),
     function(e1, e2) {
