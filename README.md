@@ -49,7 +49,7 @@ Other non-lazied operations:
 | col summarize     | colSums,colMeans | colSums,colMeans,colVars |                  |
 | Multiplication    | %\*%             | %\*%                     | For some methods |
 | Crossproduct      |                  | crossprod                | For some methods |
-| svd               | svds             | SpectraParam             |                  |
+| svd               | svds             | `runSVD`+`SpectraParam`  |                  |
 
 ## Matrix Storage Format
 
@@ -190,7 +190,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpD9YpJM/BPCells2ba71b3903b935
+#> 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -210,7 +210,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpD9YpJM/BPCells2ba71b3903b935
+#> 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -275,7 +275,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpD9YpJM/BPCells2ba71b3903b935
+#> 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44
@@ -290,7 +290,8 @@ identical(path(assay(sce, "counts")), path(assay(sce, "logcounts")))
 
 ``` r
 dec_sce <- scran::modelGeneVar(sce)
-hvgs <- scran::getTopHVGs(dec_sce, prop = 0.1)
+#> Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
+#> collapsing to unique 'x' values
 set.seed(1L)
 scater::runPCA(sce,
     subset_row = scran::getTopHVGs(dec_sce, n = 2000L),

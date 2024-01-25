@@ -56,7 +56,7 @@ Other non-lazied operations:
 | col summarize     | colSums,colMeans | colSums,colMeans,colVars |                  |
 | Multiplication    | %*%              | %*%                      | For some methods |
 | Crossproduct      |                  | crossprod                | For some methods |
-| svd               | svds             | SpectraParam             |                  |
+| svd               | svds             | `runSVD`+`SpectraParam`  |                  |
 
 ## Matrix Storage Format
 BPCells provide three format:
@@ -143,7 +143,6 @@ identical(path(assay(sce, "counts")), path(assay(sce, "logcounts")))
 
 ```{r}
 dec_sce <- scran::modelGeneVar(sce)
-hvgs <- scran::getTopHVGs(dec_sce, prop = 0.1)
 set.seed(1L)
 scater::runPCA(sce,
     subset_row = scran::getTopHVGs(dec_sce, n = 2000L),
