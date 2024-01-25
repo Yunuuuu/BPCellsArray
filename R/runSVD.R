@@ -75,6 +75,10 @@ methods::setMethod(
     }
 )
 
+methods::setMethod("svds", "BPCellsMatrix", function(x, ...) {
+    svds(x = entity(x), ...)
+})
+
 methods::setMethod(
     "svds", "IterableMatrix",
     function(x, k, nu, nv, center, scale, ncv, tol, maxitr, threads) {

@@ -40,6 +40,13 @@ methods::setMethod("BPCellsSeed", "BPCellsSeed", function(x) {
     x
 })
 
+#############################################################
+methods::setGeneric("entity", function(x, ...) standardGeneric("entity"))
+methods::setMethod("entity", "BPCellsSeed", function(x) x)
+methods::setMethod("entity", "BPCellsUnaryOpsSeed", function(x) {
+    x@matrix
+})
+
 # nary_seeds <- c(
 #     "BPCellsBindMatrixSeed", "BPCellsMaskSeed",
 #     "BPCellsMultiplySeed"
@@ -86,6 +93,10 @@ BPCellsMultiplySeed <- function(x) {
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x) {
     BPCellsMultiplySeed(x = x)
+})
+
+methods::setMethod("entity", "BPCellsMultiplySeed", function(x) {
+    list(left = x@left, right = x@right)
 })
 
 ############################################################

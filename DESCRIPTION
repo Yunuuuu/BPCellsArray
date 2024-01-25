@@ -57,14 +57,15 @@ Collate:
     'Method-internal.R'
     'Method-matrix_stats.R'
     'Method-multiplication.R'
-    'Method-showtree.R'
     'Method-subset.R'
     'Method-summarization.R'
     'import-standalone-assert.R'
     'import-standalone-cli.R'
     'import-standalone-obj-type.R'
     'runSVD.R'
+    'showtree.R'
     'transpose_storage.R'
     'utils-check.R'
+    'zzz.R'
 Config/testthat/edition: 3
 VignetteBuilder: knitr

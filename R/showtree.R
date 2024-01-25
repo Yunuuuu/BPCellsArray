@@ -10,10 +10,10 @@
 #' [BPCellsMatrix][BPCellsMatrix-class] object
 #' @return
 #'  - `showtree`: return the input invisiblely
-#'  - `path`: An atomic characters
-#'  - `nseed`: An integer number
+#'  - `path`: An atomic characters or a list of characters.
+#'  - `nseed`: An integer number.
 #'  - `seed`: A list of [BPCellsSeed][BPCellsSeed-class] objects or a single
-#'    [BPCellsSeed][BPCellsSeed-class] object
+#'    [BPCellsSeed][BPCellsSeed-class] object.
 #' @name showtree
 showtree <- function(object) {
     if (methods::is(object, "BPCellsMatrix")) {
@@ -57,9 +57,9 @@ showtree <- function(object) {
         )
     }
     if (methods::is(x, "BPCellsUnaryOpsSeed")) {
-        Recall(x = seed(x), indent = indent, last.child = TRUE)
+        Recall(x = entity(x), indent = indent, last.child = TRUE)
     } else if (methods::is(x, "BPCellsNaryOpsSeed")) {
-        x <- seed(x)
+        x <- entity(x)
         nchildren <- length(x)
         nms <- names(x)
         if (is.null(nms)) {
@@ -82,21 +82,21 @@ showtree <- function(object) {
 #' @export
 #' @rdname showtree
 methods::setMethod("nseed", "BPCellsMatrix", function(x) {
-    nseed(x@seed)
+    nseed(entity(x))
 })
 
 #' @importFrom DelayedArray seed
 #' @export
 #' @rdname showtree
 methods::setMethod("seed", "BPCellsMatrix", function(x) {
-    seed(x@seed)
+    seed(entity(x))
 })
 
 #' @importFrom DelayedArray path
 #' @export
 #' @rdname showtree
-methods::setMethod("path", "BPCellsMatrix", function(object) {
-    path(object@seed)
+methods::setMethod("path", "BPCellsMatrix", function(object, ...) {
+    path(entity(object), ...)
 })
 
 #' @importFrom DelayedArray seed<-
@@ -113,133 +113,100 @@ methods::setReplaceMethod("path", "BPCellsMatrix", function(object, value) {
     cli::cli_abort("Cannot set {.field path} for {.cls BPCellsMatrix} object.")
 })
 
-# Three DelayedNaryOp-like seeds ----------------------------------------
+# Three basic seeds ------------------------------------------
 ###########################################################
 #' @importFrom DelayedArray path
 #' @export
 #' @rdname showtree
-methods::setMethod("path", "BPCellsBindMatrixSeed", function(object) {
-    unlist(lapply(object@matrix_list, path),
-        recursive = FALSE, use.names = FALSE
-    )
+methods::setMethod("path", "BPCellsMemSeed", function(object, ...) {
+    character()
 })
 
-#' @importFrom DelayedArray seed
-#' @export
-#' @rdname showtree
-methods::setMethod("seed", "BPCellsBindMatrixSeed", function(x) {
-    lapply(x@matrix_list, seed)
-})
-
-#' @export
-#' @rdname showtree
-methods::setMethod("nseed", "BPCellsBindMatrixSeed", function(x) {
-    sum(vapply(x@matrix_list, nseed, integer(1L), USE.NAMES = FALSE))
-})
-
-###########################################################
 #' @importFrom DelayedArray path
 #' @export
 #' @rdname showtree
-methods::setMethod("path", "BPCellsMaskSeed", function(object) {
-    c(path(object@matrix), path(object@mask))
+methods::setMethod("path", "BPCellsdgCMatrixSeed", function(object, ...) {
+    character()
 })
 
-#' @export
-#' @rdname showtree
-methods::setMethod("seed", "BPCellsMaskSeed", function(x) {
-    list(matrix = seed(x@matrix), mask = seed(x@mask))
-})
-
-#' @export
-#' @rdname showtree
-methods::setMethod("nseed", "BPCellsMaskSeed", function(x) {
-    sum(nseed(x@matrix), nseed(x@mask))
-})
-
-###########################################################
 #' @importFrom DelayedArray path
 #' @export
 #' @rdname showtree
-methods::setMethod("path", "BPCellsMultiplySeed", function(object) {
-    c(path(object@left), path(object@right))
-})
+methods::setMethod("path", "BPCellsDirSeed", function(object, ...) object@dir)
 
 #' @export
 #' @rdname showtree
-methods::setMethod("seed", "BPCellsMultiplySeed", function(x) {
-    list(left = seed(x@left), right = seed(x@right))
-})
+methods::setMethod("seed", "BPCellsSeed", function(x) x)
 
 #' @export
 #' @rdname showtree
-methods::setMethod("nseed", "BPCellsMultiplySeed", function(x) {
-    sum(nseed(x@left), nseed(x@right))
-})
+methods::setMethod("nseed", "BPCellsSeed", function(x) 1L)
 
 # Five DelayedUnaryOp-like seeds ------------------------------------
 ###########################################################
 #' @importFrom DelayedArray path
 #' @export
 #' @rdname showtree
-methods::setMethod("path", "BPCellsUnaryOpsSeed", function(object) {
-    path(object@matrix)
+methods::setMethod("path", "BPCellsUnaryOpsSeed", function(object, ...) {
+    path(entity(object), ...)
 })
 
 #' @export
 #' @rdname showtree
 methods::setMethod("seed", "BPCellsUnaryOpsSeed", function(x) {
-    seed(x@matrix)
+    seed(entity(x))
 })
 
 #' @export
 #' @rdname showtree
 methods::setMethod("nseed", "BPCellsUnaryOpsSeed", function(x) {
-    nseed(x@matrix)
+    nseed(entity(x))
 })
 
-# Three basic seeds ------------------------------------------
+# Three DelayedNaryOp-like seeds ----------------------------------------
 ###########################################################
+#' @param ... Additional arguments passed to other methods.
+#' @param unlist A bool, if `TRUE`, will unlist the output, used to return a
+#' character vector for `path` function, otherwise, `path` function will return
+#' a list of path.
 #' @importFrom DelayedArray path
 #' @export
 #' @rdname showtree
-methods::setMethod("path", "BPCellsMemSeed", function(object) {
-    character()
+methods::setMethod("path", "BPCellsNaryOpsSeed", function(object, unlist = TRUE) {
+    out <- lapply(entity(object), path)
+    if (isTRUE(unlist)) out <- unlist(out, recursive = FALSE, use.names = FALSE)
+    out
 })
-#' @export
-#' @rdname showtree
-methods::setMethod("seed", "BPCellsMemSeed", function(x) x)
 
+#' @importFrom DelayedArray seed
 #' @export
 #' @rdname showtree
-methods::setMethod("nseed", "BPCellsMemSeed", function(x) 1L)
-
-###########################################################
-#' @importFrom DelayedArray path
-#' @export
-#' @rdname showtree
-methods::setMethod("path", "BPCellsdgCMatrixSeed", function(object) {
-    character()
+methods::setMethod("seed", "BPCellsNaryOpsSeed", function(x) {
+    unlist(lapply(entity(x), seed), recursive = FALSE, use.names = FALSE)
 })
 
 #' @export
 #' @rdname showtree
-methods::setMethod("seed", "BPCellsdgCMatrixSeed", function(x) x)
+methods::setMethod("nseed", "BPCellsNaryOpsSeed", function(x) {
+    sum(vapply(entity(x), nseed, integer(1L), USE.NAMES = FALSE))
+})
 
-#' @export
-#' @rdname showtree
-methods::setMethod("nseed", "BPCellsdgCMatrixSeed", function(x) 1L)
-
-###########################################################
-#' @importFrom DelayedArray path
-#' @export
-#' @rdname showtree
-methods::setMethod("path", "BPCellsDirSeed", function(object) object@dir)
-
-#' @export
-#' @rdname showtree
-methods::setMethod("seed", "BPCellsDirSeed", function(x) x)
-
-#' @export
-#' @rdname showtree
-methods::setMethod("nseed", "BPCellsDirSeed", function(x) 1L)
+# Don't use this, we directly use `seed` function to return all seeds
+# this is different with what the DelayedArray does.
+new_seedApply <- function(x, .fn, ...) {
+    if (methods::is(x, "BPCellsMatrix")) {
+        x <- entity(x)
+    }
+    if (methods::is(x, "BPCellsUnaryOpsSeed")) {
+        return(Recall(entity(x), .fn, ...))
+    }
+    if (methods::is(x, "BPCellsNaryOpsSeed")) {
+        x <- entity(x)
+    }
+    if (is.list(x)) {
+        ans <- lapply(x, FUN = new_seedApply, .fn = .fn, ...)
+        return(unlist(ans, recursive = FALSE, use.names = FALSE))
+    } else {
+        list(.fn(x, ...))
+    }
+}

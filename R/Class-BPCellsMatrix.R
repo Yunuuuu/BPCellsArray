@@ -53,3 +53,5 @@ methods::setMethod(
 methods::setMethod("matrixClass", "BPCellsArray", function(x) {
     "BPCellsMatrix"
 })
+
+methods::setMethod("entity", "BPCellsMatrix", function(x) x@seed)

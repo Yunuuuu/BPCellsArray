@@ -56,6 +56,10 @@ methods::setMethod("BPCellsSeed", "RowBindMatrices", function(x) {
     BPCellsBindMatrixSeed(x = x)
 })
 
+methods::setMethod("entity", "BPCellsBindMatrixSeed", function(x) {
+    x@matrix_list
+})
+
 ##############################################################
 #' Set matrix op thread count
 #'

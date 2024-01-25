@@ -16,6 +16,10 @@ methods::setMethod("BPCellsSeed", "MatrixMask", function(x) {
     BPCellsMaskSeed(x = x)
 })
 
+methods::setMethod("entity", "MatrixMask", function(x) {
+    list(matrix = x@matrix, mask = x@mask)
+})
+
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
