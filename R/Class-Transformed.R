@@ -70,7 +70,7 @@ methods::setGeneric("expm1_slow", function(x) {
 })
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("expm1_slow", "BPCellsSeed", function(x) {
     BPCellsSeed(BPCells::expm1_slow(x))
 })
@@ -99,7 +99,7 @@ methods::setGeneric("log1p_slow", function(x) {
 })
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("log1p_slow", "BPCellsSeed", function(x) {
     BPCellsSeed(BPCells::log1p_slow(x))
 })
@@ -123,7 +123,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("expm1", "BPCellsSeed", function(x) {
     BPCellsSeed(methods::callNextMethod())
 })
@@ -150,7 +150,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("log1p", "BPCellsSeed", function(x) {
     BPCellsSeed(methods::callNextMethod())
 })
@@ -184,14 +184,14 @@ methods::setGeneric("pmin_by_col", function(object, values) {
 
 #' @param values A positive atomic numeric.
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "pmin_by_col", "BPCellsSeed", function(object, values) {
         BPCellsSeed(BPCells::min_by_col(mat = object, vals = values))
     }
 )
 
-#' @inheritParams seed-methods
+#' @inheritParams BPCellsSeed-methods
 #' @return
 #' - `pmin_by_col`: Take the minimum with a per-col constant
 #' @export
@@ -221,7 +221,7 @@ methods::setGeneric("pmin_by_row", function(object, values) {
 })
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "pmin_by_row", "BPCellsSeed", function(object, values) {
         BPCellsSeed(BPCells::min_by_row(mat = object, vals = values))
@@ -257,7 +257,7 @@ methods::setGeneric("pmin_scalar", function(object, value) {
 })
 
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "pmin_scalar", "BPCellsSeed", function(object, value) {
         BPCellsSeed(BPCells::min_scalar(mat = object, val = value))
@@ -293,7 +293,7 @@ methods::setGeneric("pow_slow", function(e1, e2) {
 
 #' @inheritParams BPCells-binarize
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("pow_slow", "BPCellsSeed", function(e1, e2) {
     BPCellsSeed(BPCells::pow_slow(x = e1, exponent = e2))
 })
@@ -318,7 +318,7 @@ methods::setMethod(
 
 #' @importMethodsFrom BPCells ^
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("^", "BPCellsSeed", function(e1, e2) {
     BPCellsSeed(methods::callNextMethod())
 })
@@ -355,14 +355,14 @@ methods::setMethod(
 
 #' @param digits Integer indicating the number of decimal places
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "round", "BPCellsSeed", function(x, digits = 0) {
         BPCellsSeed(methods::callNextMethod())
     }
 )
 
-#' @inheritParams seed-methods
+#' @inheritParams BPCellsSeed-methods
 #' @return
 #'  - `round`: Rounding of matrix Numbers.
 #' @export

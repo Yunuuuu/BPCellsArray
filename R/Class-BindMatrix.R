@@ -1,3 +1,6 @@
+############################################################
+# `ColBindMatrices` and `RowBindMatrices`
+
 methods::setClass("BPCellsBindMatrixSeed",
     contains = c("BPCellsNaryOpsSeed", "VIRTUAL")
 )
@@ -5,7 +8,7 @@ methods::setClass("BPCellsBindMatrixSeed",
 methods::setValidity("BPCellsBindMatrixSeed", function(object) {
     BPCellsSeeds <- vapply(object@matrix_list,
         methods::is, logical(1L),
-        class = "BPCellsSeed"
+        class2 = "BPCellsSeed"
     )
     if (!all(BPCellsSeeds)) {
         cli::cli_abort(c(

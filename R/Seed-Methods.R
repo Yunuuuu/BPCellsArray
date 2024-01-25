@@ -18,12 +18,12 @@
 #' - [Arithmetic][BPCells-Arithmetic]: Binary Arithmetic operators.
 #' - [binarize][BPCells-binarize]: Convert matrix elements to zeros and ones.
 #' - [matrix_stats][BPCells-matrix_stats]: Calculate matrix statisticals.
-#' @name seed-methods
+#' @name BPCellsSeed-methods
 NULL
 
 #' @importFrom methods show
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("show", "BPCellsSeed", function(object) {
     show_bpcells(object, "BPCellsSeed", class(object))
 })
@@ -34,7 +34,7 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
 #'   differentiate 32-bit and 64-bit real number.
 #' @importFrom DelayedArray type
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("type", "BPCellsSeed", function(x) {
     switch(BPCells:::matrix_type(x),
         uint32_t = "integer",
@@ -47,7 +47,7 @@ methods::setMethod("type", "BPCellsSeed", function(x) {
 #' - `is_sparse`: Always return `TRUE` for `BPCellsSeed` object.
 #' @importFrom DelayedArray is_sparse
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
 
 #' @inheritParams S4Arrays::extract_array
@@ -55,7 +55,7 @@ methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
 #' - `extract_array`: A dense matrix.
 #' @importFrom DelayedArray extract_array
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "extract_array", "BPCellsSeed",
     function(x, index) {
@@ -70,7 +70,7 @@ methods::setMethod(
 #'   [SparseArraySeed][DelayedArray::SparseArraySeed-class] object.
 #' @importFrom DelayedArray OLD_extract_sparse_array
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsSeed",
     function(x, index) {
@@ -83,7 +83,7 @@ methods::setMethod(
 #'   [SparseArray][SparseArray::SVT_SparseArray-class] object.
 #' @importFrom SparseArray extract_sparse_array
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "extract_sparse_array", "BPCellsSeed",
     function(x, index) {
@@ -100,7 +100,7 @@ methods::setMethod(
 #'   object.
 #' @importMethodsFrom BPCells dimnames<-
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "dimnames<-",
     c(x = "BPCellsSeed", value = "list"), function(x, value) {
@@ -110,7 +110,7 @@ methods::setMethod(
 
 #' @importMethodsFrom BPCells dimnames<-
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "dimnames<-",
     c(x = "BPCellsSeed", value = "NULL"), function(x, value) {
@@ -123,7 +123,7 @@ methods::setMethod(
 #'  - `t`: A [BPCellsSeed] object.
 #' @importMethodsFrom BPCells t
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
 
 # In BPCells, `[<-` was only defined for `IterableMatrix`
@@ -131,7 +131,7 @@ methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
 #' - `[<-`: A [BPCellsSeed] object.
 #' @importMethodsFrom BPCells [<-
 #' @export
-#' @rdname seed-methods
+#' @rdname BPCellsSeed-methods
 methods::setMethod(
     "[<-", "BPCellsSeed", function(x, i, j, ..., value) {
         BPCellsSeed(methods::callNextMethod())

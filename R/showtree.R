@@ -113,6 +113,10 @@ methods::setReplaceMethod("path", "BPCellsMatrix", function(object, value) {
     cli::cli_abort("Cannot set {.field path} for {.cls BPCellsMatrix} object.")
 })
 
+# here: we allow `seed` function to return a list of seeds object, which is
+# different with what DelayedArray dose, this is because that seedApply()
+# function is not a generic function, we cannot define methods for it.
+
 # Three basic seeds ------------------------------------------
 ###########################################################
 #' @importFrom DelayedArray path

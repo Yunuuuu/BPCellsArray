@@ -10,12 +10,7 @@
 NULL
 
 # we cannot use the `DelayedNaryOp` object since it use `seeds` slot to save a
-# list of other seed objects.
-#
-# here: we allow seed to return a list of seeds object, which is different with
-# what DelayedArray dose, this is because that seedApply() function is not a
-# generic function, we cannot define methods for it. To allow, seed return a
-# list of object, we can also use `seedApply` as usual.
+# list of other seed objects while BPCells use left (and right) or
 #
 # BPCells matrix object indeed is a DelayedMatrix, but we regard it as a seed
 # object in DelayedMatrix
@@ -41,6 +36,7 @@ methods::setMethod("BPCellsSeed", "BPCellsSeed", function(x) {
 })
 
 #############################################################
+# used to extract the actual entity of `BPCellsSeed` objet.
 methods::setGeneric("entity", function(x, ...) standardGeneric("entity"))
 methods::setMethod("entity", "BPCellsSeed", function(x) x)
 methods::setMethod("entity", "BPCellsUnaryOpsSeed", function(x) {
@@ -76,36 +72,9 @@ methods::setMethod(
 )
 
 ############################################################
-# MatrixMultiply
-methods::setClass("BPCellsMultiplySeed",
-    contains = c("BPCellsNaryOpsSeed", get_class("MatrixMultiply")),
-    slots = list(left = "BPCellsSeed", right = "BPCellsSeed")
-)
-
-#' @noRd
-BPCellsMultiplySeed <- function(x) {
-    x@left <- BPCellsSeed(x@left)
-    x@right <- BPCellsSeed(x@right)
-    methods::as(x, "BPCellsMultiplySeed")
-}
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x) {
-    BPCellsMultiplySeed(x = x)
-})
-
-methods::setMethod("entity", "BPCellsMultiplySeed", function(x) {
-    list(left = x@left, right = x@right)
-})
-
-############################################################
 # RenameDims
 methods::setClass("BPCellsRenameDimsSeed",
-    contains = c(
-        "BPCellsUnaryOpsSeed",
-        get_class("RenameDims")
-    ),
+    contains = c("BPCellsUnaryOpsSeed", get_class("RenameDims")),
     slots = list(matrix = "BPCellsSeed")
 )
 
@@ -119,26 +88,4 @@ BPCellsRenameDimsSeed <- function(x) {
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "RenameDims", function(x) {
     BPCellsRenameDimsSeed(x = x)
-})
-
-############################################################
-# MatrixSubset
-methods::setClass("BPCellsSubsetSeed",
-    contains = c(
-        "BPCellsUnaryOpsSeed",
-        get_class("MatrixSubset")
-    ),
-    slots = list(matrix = "BPCellsSeed")
-)
-
-#' @noRd
-BPCellsSubsetSeed <- function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    methods::as(x, "BPCellsSubsetSeed")
-}
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixSubset", function(x) {
-    BPCellsSubsetSeed(x = x)
 })

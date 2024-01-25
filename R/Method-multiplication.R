@@ -1,3 +1,28 @@
+############################################################
+# MatrixMultiply
+methods::setClass("BPCellsMultiplySeed",
+    contains = c("BPCellsNaryOpsSeed", get_class("MatrixMultiply")),
+    slots = list(left = "BPCellsSeed", right = "BPCellsSeed")
+)
+
+#' @noRd
+BPCellsMultiplySeed <- function(x) {
+    x@left <- BPCellsSeed(x@left)
+    x@right <- BPCellsSeed(x@right)
+    methods::as(x, "BPCellsMultiplySeed")
+}
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x) {
+    BPCellsMultiplySeed(x = x)
+})
+
+methods::setMethod("entity", "BPCellsMultiplySeed", function(x) {
+    list(left = x@left, right = x@right)
+})
+
+##############################################################
 #' Matrix Multiplication
 #'
 #' Multiplies two matrices, if they are conformable. If one argument is a

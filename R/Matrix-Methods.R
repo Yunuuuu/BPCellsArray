@@ -1,8 +1,8 @@
 #' Basic operations for `BPCellsMatrix` object
-#' 
+#'
 #' @param x,object A `BPCellsMatrix` object.
-#' @inheritParams seed-methods
-#' @inherit seed-methods seealso
+#' @inheritParams BPCellsSeed-methods
+#' @inherit BPCellsSeed-methods seealso
 #' @name BPCellsMatrix-methods
 NULL
 
@@ -22,7 +22,7 @@ methods::setMethod("t", "BPCellsMatrix", function(x) {
     DelayedArray(t(x@seed))
 })
 
-#' @inheritParams seed-methods
+#' @inheritParams BPCellsSeed-methods
 #' @return
 #' - `[`: A [BPCellsMatrix] object.
 #' @export
@@ -34,7 +34,7 @@ methods::setMethod(
     }
 )
 
-#' @inheritParams seed-methods
+#' @inheritParams BPCellsSeed-methods
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
@@ -108,10 +108,13 @@ methods::setMethod(
 
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 
+# https://github.com/Bioconductor/DelayedArray/blob/devel/R/DelayedOp-class.R
 # for `dim`, `dimnames`, `extract_array` and `is_sparse` just use the methods
-# from DelayedArray
+# from `DelayedArray`, All BPCells objects have been regarded a seed of
+# `BPCellsMatrix`.
 #' For BPCellsMatrix object
 #' @importMethodsFrom DelayedArray dim
+#' @importMethodsFrom DelayedArray dimnames
 #' @importMethodsFrom DelayedArray extract_array
 #' @importMethodsFrom DelayedArray is_sparse
 #' @importMethodsFrom DelayedArray OLD_extract_sparse_array
