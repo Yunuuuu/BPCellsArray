@@ -61,10 +61,10 @@ a list of path.}
 \value{
 \itemize{
 \item \code{showtree}: return the input invisiblely
-\item \code{path}: An atomic characters
-\item \code{nseed}: An integer number
+\item \code{path}: An atomic characters or a list of characters.
+\item \code{nseed}: An integer number.
 \item \code{seed}: A list of \link[=BPCellsSeed-class]{BPCellsSeed} objects or a single
-\link[=BPCellsSeed-class]{BPCellsSeed} object
+\link[=BPCellsSeed-class]{BPCellsSeed} object.
 }
 }
 \description{
