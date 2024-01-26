@@ -2,8 +2,8 @@
 % Please edit documentation in R/Method-summarization.R
 \name{BPCells-Summarization}
 \alias{BPCells-Summarization}
-\alias{rowSums}
 \alias{rowSums,BPCellsMatrix-method}
+\alias{rowSums}
 \alias{colSums,BPCellsMatrix-method}
 \alias{colSums}
 \alias{rowMeans,BPCellsMatrix-method}
@@ -17,7 +17,9 @@
 \alias{rowVars,BPCellsMatrix-method}
 \alias{colVars,BPCellsMatrix-method}
 \alias{rowSds,BPCellsSeed-method}
+\alias{rowSds}
 \alias{colSds,BPCellsSeed-method}
+\alias{colSds}
 \alias{rowSds,BPCellsMatrix-method}
 \alias{colSds,BPCellsMatrix-method}
 \title{BPCellsMatrix row/col summarization}

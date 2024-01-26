@@ -2,7 +2,6 @@
 #'
 #' @param x A [BPCellsMatrix][BPCellsMatrix-class] or
 #' [BPcellsSeed][BPCellsSeed-class]object. 
-#' @aliases rowSums
 #' @name BPCells-Summarization
 NULL
 
@@ -11,6 +10,7 @@ NULL
 #' @importMethodsFrom BPCells rowSums
 #' @return
 #' - `rowSums()`: vector of row sums
+#' @aliases rowSums
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
@@ -96,6 +96,7 @@ methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
 #' @importFrom MatrixGenerics rowSds
 #' @return
 #' - `rowSds()`: vector of row Standard Deviation
+#' @aliases rowSds
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("rowSds", c(x = "BPCellsSeed"), function(x) {
@@ -105,6 +106,7 @@ methods::setMethod("rowSds", c(x = "BPCellsSeed"), function(x) {
 #' @importFrom MatrixGenerics colSds
 #' @return
 #' - `colSds()`: vector of column Standard Deviation
+#' @aliases colSds
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("colSds", c(x = "BPCellsSeed"), function(x) {
