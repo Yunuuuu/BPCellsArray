@@ -61,19 +61,23 @@ Other non-lazied operations:
 ## Matrix Storage Format
 BPCells provide three format:
 
-1. Directory of files * `writeBPCellsDirArray`
-2. Hdf5 file
-3. in memory * `writeBPCellsMemArray`
-
-"*" means the format has been implemented in `BPCellsArray` package, followed by
-the function to implement this format.
+1. Directory of files
+    - read: `readBPCellsDirMatrix`
+    - write: `writeBPCellsDirArray`
+2. Hdf5 file 
+    - read: `readBPCellsHDF5Matrix`
+    - write: `writeBPCellsHDF5Array`
+3. in memory 
+    - write: `writeBPCellsMemArray`
 
 Matrices can be stored in a directory on disk, in memory, or in an HDF5 file.
 Saving in a directory on disk is a good default for local analysis, as it
 provides the best I/O performance and lowest memory usage. The HDF5 format
 allows saving within existing hdf5 files to group data together, and the in
 memory format provides the fastest performance in the event memory usage is
-unimportant.
+unimportant. So when using `as(object, "BPCellsArray")` or `as(object,
+"BPCellsMatrix")`, the default behavior will be `as(object,
+"BPCellsDirMatrix")`.
 
 Details see: <https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html>
 

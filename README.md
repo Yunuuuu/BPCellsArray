@@ -55,19 +55,23 @@ Other non-lazied operations:
 
 BPCells provide three format:
 
-1.  Directory of files \* `writeBPCellsDirArray`
+1.  Directory of files
+      - read: `readBPCellsDirMatrix`
+      - write: `writeBPCellsDirArray`
 2.  Hdf5 file
-3.  in memory \* `writeBPCellsMemArray`
-
-"\*" means the format has been implemented in `BPCellsArray` package,
-followed by the function to implement this format.
+      - read: `readBPCellsHDF5Matrix`
+      - write: `writeBPCellsHDF5Array`
+3.  in memory
+      - write: `writeBPCellsMemArray`
 
 Matrices can be stored in a directory on disk, in memory, or in an HDF5
 file. Saving in a directory on disk is a good default for local
 analysis, as it provides the best I/O performance and lowest memory
 usage. The HDF5 format allows saving within existing hdf5 files to group
 data together, and the in memory format provides the fastest performance
-in the event memory usage is unimportant.
+in the event memory usage is unimportant. So when using `as(object,
+"BPCellsArray")` or `as(object, "BPCellsMatrix")`, the default behavior
+will be `as(object, "BPCellsDirMatrix")`.
 
 Details see:
 <https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html>
@@ -190,7 +194,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac
+#> 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -210,7 +214,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac
+#> 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -275,7 +279,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac
+#> 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44

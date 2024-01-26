@@ -769,12 +769,22 @@ body {
 <h2 id="matrix-storage-format">Matrix Storage Format</h2>
 <p>BPCells provide three format:</p>
 <ol>
-<li>Directory of files * <code>writeBPCellsDirArray</code></li>
-<li>Hdf5 file</li>
-<li>in memory * <code>writeBPCellsMemArray</code></li>
+<li>Directory of files
+<ul>
+<li>read: <code>readBPCellsDirMatrix</code></li>
+<li>write: <code>writeBPCellsDirArray</code></li>
+</ul></li>
+<li>Hdf5 file
+<ul>
+<li>read: <code>readBPCellsHDF5Matrix</code></li>
+<li>write: <code>writeBPCellsHDF5Array</code></li>
+</ul></li>
+<li>in memory
+<ul>
+<li>write: <code>writeBPCellsMemArray</code></li>
+</ul></li>
 </ol>
-<p>&quot;*&quot; means the format has been implemented in <code>BPCellsArray</code> package, followed by the function to implement this format.</p>
-<p>Matrices can be stored in a directory on disk, in memory, or in an HDF5 file. Saving in a directory on disk is a good default for local analysis, as it provides the best I/O performance and lowest memory usage. The HDF5 format allows saving within existing hdf5 files to group data together, and the in memory format provides the fastest performance in the event memory usage is unimportant.</p>
+<p>Matrices can be stored in a directory on disk, in memory, or in an HDF5 file. Saving in a directory on disk is a good default for local analysis, as it provides the best I/O performance and lowest memory usage. The HDF5 format allows saving within existing hdf5 files to group data together, and the in memory format provides the fastest performance in the event memory usage is unimportant. So when using <code>as(object, &quot;BPCellsArray&quot;)</code> or <code>as(object, &quot;BPCellsMatrix&quot;)</code>, the default behavior will be <code>as(object, &quot;BPCellsDirMatrix&quot;)</code>.</p>
 <p>Details see: <a href="https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html">https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html</a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(BPCellsArray)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(SingleCellExperiment)</span>
@@ -876,7 +886,7 @@ body {
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">#&gt; Storage order: column major</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">#&gt; Queued Operations:</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac</span></span></code></pre></div>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf</span></span></code></pre></div>
 <p>If you do delayed operations with this assay, the class may be changed, that’s because all of BPCells operations are lazy, no real work is performed on the matrix until the result needs to be returned as an R object or written to disk. You can coerce it into a dense matrix or <code>dgCMatrix</code> to get a actual R object.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">assay</span>(sce, <span class="st">&quot;counts&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="co">#&gt; 10 x 10 DelayedMatrix object with class BPCellsMatrix</span></span>
@@ -888,7 +898,7 @@ body {
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="co">#&gt; Storage order: column major</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="co">#&gt; Queued Operations:</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a><span class="co">#&gt; 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10</span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a><span class="kw">as.matrix</span>(<span class="kw">assay</span>(sce, <span class="st">&quot;counts&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>])</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="co">#&gt;           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007</span></span>
@@ -942,7 +952,7 @@ body {
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="co">#&gt; Storage order: column major</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="co">#&gt; Queued Operations:</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpRHG9Yx/BPCells2e32ea6b10f2ac</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="co">#&gt; 2. Scale columns by 0.984, 1.05 ... 1</span></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="co">#&gt; 3. Transform log1p</span></span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="co">#&gt; 4. Scale by 1.44</span></span></code></pre></div>
