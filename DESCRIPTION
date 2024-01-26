@@ -16,6 +16,7 @@ Imports:
     cli,
     DelayedArray (>= 0.28.0),
     Matrix,
+    MatrixGenerics,
     methods,
     rlang (>= 1.1.0),
     S4Vectors,

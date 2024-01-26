@@ -1,13 +1,16 @@
 #' BPCellsMatrix row/col summarization
 #'
-#' @param x A [BPCellsMatrix][BPCellsMatrix] object.
-#' @return
-#' - `rowSums()`: vector of row sums
+#' @param x A [BPCellsMatrix][BPCellsMatrix-class] or
+#' [BPcellsSeed][BPCellsSeed-class]object. 
 #' @aliases rowSums
 #' @name BPCells-Summarization
 NULL
 
+#######################################################################
+# Sums
 #' @importMethodsFrom BPCells rowSums
+#' @return
+#' - `rowSums()`: vector of row sums
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
@@ -16,7 +19,7 @@ methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
 
 #' @importMethodsFrom BPCells colSums
 #' @return
-#' - `colSums()`: vector of col sums
+#' - `colSums()`: vector of column sums
 #' @aliases colSums
 #' @export
 #' @rdname BPCells-Summarization
@@ -24,6 +27,8 @@ methods::setMethod("colSums", c(x = "BPCellsMatrix"), function(x) {
     colSums(x@seed)
 })
 
+#######################################################################
+# Means
 #' @importMethodsFrom BPCells rowMeans
 #' @return
 #' - `rowMeans()`: vector of row means
@@ -36,7 +41,7 @@ methods::setMethod("rowMeans", c(x = "BPCellsMatrix"), function(x) {
 
 #' @importMethodsFrom BPCells colMeans
 #' @return
-#' - `colMeans()`: vector of col means
+#' - `colMeans()`: vector of column means
 #' @aliases colMeans
 #' @export
 #' @rdname BPCells-Summarization
@@ -44,14 +49,16 @@ methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
     colMeans(x@seed)
 })
 
+#######################################################################
+# Variance
 #' @importFrom DelayedArray rowVars
 #' @return
-#' - `rowVars()`: vector of row vars
+#' - `rowVars()`: vector of row variance
 #' @aliases rowVars
 #' @export
 #' @rdname BPCells-Summarization
-methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
-    stats <- BPCells::matrix_stats(x@seed,
+methods::setMethod("rowVars", c(x = "BPCellsSeed"), function(x) {
+    stats <- BPCells::matrix_stats(x,
         row_stats = "variance", col_stats = "none"
     )
     stats$row_stats["variance", , drop = TRUE]
@@ -59,13 +66,61 @@ methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
 
 #' @importFrom DelayedArray colVars
 #' @return
-#' - `colVars()`: vector of col vars
+#' - `colVars()`: vector of column variance
 #' @aliases colVars
 #' @export
 #' @rdname BPCells-Summarization
-methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
-    stats <- BPCells::matrix_stats(x@seed,
+methods::setMethod("colVars", c(x = "BPCellsSeed"), function(x) {
+    stats <- BPCells::matrix_stats(x,
         row_stats = "none", col_stats = "variance"
     )
     stats$col_stats["variance", , drop = TRUE]
+})
+
+#' @importFrom DelayedArray rowVars
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
+    rowVars(x@seed)
+})
+
+#' @importFrom DelayedArray colVars
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
+    colVars(x@seed)
+})
+
+#######################################################################
+# Standard Deviation
+#' @importFrom MatrixGenerics rowSds
+#' @return
+#' - `rowSds()`: vector of row Standard Deviation
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("rowSds", c(x = "BPCellsSeed"), function(x) {
+    sqrt(rowVars(x))
+})
+
+#' @importFrom MatrixGenerics colSds
+#' @return
+#' - `colSds()`: vector of column Standard Deviation
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("colSds", c(x = "BPCellsSeed"), function(x) {
+    sqrt(colVars(x))
+})
+
+#' @importFrom MatrixGenerics rowSds
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("rowSds", c(x = "BPCellsMatrix"), function(x) {
+    rowSds(x@seed)
+})
+
+#' @importFrom MatrixGenerics colSds
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("colSds", c(x = "BPCellsMatrix"), function(x) {
+    colSds(x@seed)
 })

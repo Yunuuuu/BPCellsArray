@@ -10,10 +10,16 @@
 \alias{rowMeans}
 \alias{colMeans,BPCellsMatrix-method}
 \alias{colMeans}
-\alias{rowVars,BPCellsMatrix-method}
+\alias{rowVars,BPCellsSeed-method}
 \alias{rowVars}
-\alias{colVars,BPCellsMatrix-method}
+\alias{colVars,BPCellsSeed-method}
 \alias{colVars}
+\alias{rowVars,BPCellsMatrix-method}
+\alias{colVars,BPCellsMatrix-method}
+\alias{rowSds,BPCellsSeed-method}
+\alias{colSds,BPCellsSeed-method}
+\alias{rowSds,BPCellsMatrix-method}
+\alias{colSds,BPCellsMatrix-method}
 \title{BPCellsMatrix row/col summarization}
 \usage{
 \S4method{rowSums}{BPCellsMatrix}(x)
@@ -24,12 +30,25 @@
 
 \S4method{colMeans}{BPCellsMatrix}(x)
 
+\S4method{rowVars}{BPCellsSeed}(x)
+
+\S4method{colVars}{BPCellsSeed}(x)
+
 \S4method{rowVars}{BPCellsMatrix}(x)
 
 \S4method{colVars}{BPCellsMatrix}(x)
+
+\S4method{rowSds}{BPCellsSeed}(x)
+
+\S4method{colSds}{BPCellsSeed}(x)
+
+\S4method{rowSds}{BPCellsMatrix}(x)
+
+\S4method{colSds}{BPCellsMatrix}(x)
 }
 \arguments{
-\item{x}{A \link{BPCellsMatrix} object.}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} or
+\link[=BPCellsSeed-class]{BPcellsSeed}object.}
 }
 \value{
 \itemize{
@@ -37,7 +56,7 @@
 }
 
 \itemize{
-\item \code{colSums()}: vector of col sums
+\item \code{colSums()}: vector of column sums
 }
 
 \itemize{
@@ -45,15 +64,23 @@
 }
 
 \itemize{
-\item \code{colMeans()}: vector of col means
+\item \code{colMeans()}: vector of column means
 }
 
 \itemize{
-\item \code{rowVars()}: vector of row vars
+\item \code{rowVars()}: vector of row variance
 }
 
 \itemize{
-\item \code{colVars()}: vector of col vars
+\item \code{colVars()}: vector of column variance
+}
+
+\itemize{
+\item \code{rowSds()}: vector of row Standard Deviation
+}
+
+\itemize{
+\item \code{colSds()}: vector of column Standard Deviation
 }
 }
 \description{

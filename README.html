@@ -737,13 +737,13 @@ body {
 <tr class="even">
 <td>row summarize</td>
 <td>rowSums,rowMeans</td>
-<td>rowSums,rowMeans,rowVars</td>
+<td>rowSums,rowMeans,rowVars,rowSds</td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>col summarize</td>
 <td>colSums,colMeans</td>
-<td>colSums,colMeans,colVars</td>
+<td>colSums,colMeans,colVars,colSds</td>
 <td></td>
 </tr>
 <tr class="even">
@@ -795,7 +795,7 @@ body {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="co">#&gt; Attaching package: &#39;matrixStats&#39;</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="co">#&gt; The following objects are masked from &#39;package:BPCellsArray&#39;:</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">#&gt;     colVars, rowVars</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="co">#&gt;     colSds, colVars, rowSds, rowVars</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="co">#&gt; Attaching package: &#39;MatrixGenerics&#39;</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a><span class="co">#&gt; The following objects are masked from &#39;package:matrixStats&#39;:</span></span>
@@ -886,7 +886,7 @@ body {
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="co">#&gt; Storage order: column major</span></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co">#&gt; Queued Operations:</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf</span></span></code></pre></div>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a</span></span></code></pre></div>
 <p>If you do delayed operations with this assay, the class may be changed, that’s because all of BPCells operations are lazy, no real work is performed on the matrix until the result needs to be returned as an R object or written to disk. You can coerce it into a dense matrix or <code>dgCMatrix</code> to get a actual R object.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">assay</span>(sce, <span class="st">&quot;counts&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="co">#&gt; 10 x 10 DelayedMatrix object with class BPCellsMatrix</span></span>
@@ -898,7 +898,7 @@ body {
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="co">#&gt; Storage order: column major</span></span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a><span class="co">#&gt; Queued Operations:</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a><span class="co">#&gt; 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10</span></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a><span class="kw">as.matrix</span>(<span class="kw">assay</span>(sce, <span class="st">&quot;counts&quot;</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>])</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="co">#&gt;           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007</span></span>
@@ -952,7 +952,7 @@ body {
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="co">#&gt; Storage order: column major</span></span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="co">#&gt; </span></span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a><span class="co">#&gt; Queued Operations:</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a><span class="co">#&gt; 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a</span></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="co">#&gt; 2. Scale columns by 0.984, 1.05 ... 1</span></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="co">#&gt; 3. Transform log1p</span></span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="co">#&gt; 4. Scale by 1.44</span></span></code></pre></div>

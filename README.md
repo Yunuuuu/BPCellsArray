@@ -42,14 +42,14 @@ Here is a summarized delayed operations in BPCells:
 
 Other non-lazied operations:
 
-| Operations        | BPCells          | BPCellsArray             | Note             |
-| ----------------- | ---------------- | ------------------------ | ---------------- |
-| row/col summarize | matrix\_stats    | matrix\_stats            |                  |
-| row summarize     | rowSums,rowMeans | rowSums,rowMeans,rowVars |                  |
-| col summarize     | colSums,colMeans | colSums,colMeans,colVars |                  |
-| Multiplication    | %\*%             | %\*%                     | For some methods |
-| Crossproduct      |                  | crossprod                | For some methods |
-| svd               | svds             | `runSVD`+`SpectraParam`  |                  |
+| Operations        | BPCells          | BPCellsArray                    | Note             |
+| ----------------- | ---------------- | ------------------------------- | ---------------- |
+| row/col summarize | matrix\_stats    | matrix\_stats                   |                  |
+| row summarize     | rowSums,rowMeans | rowSums,rowMeans,rowVars,rowSds |                  |
+| col summarize     | colSums,colMeans | colSums,colMeans,colVars,colSds |                  |
+| Multiplication    | %\*%             | %\*%                            | For some methods |
+| Crossproduct      |                  | crossprod                       | For some methods |
+| svd               | svds             | `runSVD`+`SpectraParam`         |                  |
 
 ## Matrix Storage Format
 
@@ -86,7 +86,7 @@ library(SingleCellExperiment)
 #> Attaching package: 'matrixStats'
 #> The following objects are masked from 'package:BPCellsArray':
 #> 
-#>     colVars, rowVars
+#>     colSds, colVars, rowSds, rowVars
 #> 
 #> Attaching package: 'MatrixGenerics'
 #> The following objects are masked from 'package:matrixStats':
@@ -194,7 +194,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf
+#> 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -214,7 +214,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf
+#> 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -279,7 +279,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpG0nbIy/BPCells336a81150062bf
+#> 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44
