@@ -27,9 +27,9 @@ rank_transform(object, ...)
 \item{axis}{Axis to rank values within. "col" to rank values within each
 column, and "row" to rank values within each row. If \code{NULL}, will use the
 storage order of \code{object} (see \link[BPCells:IterableMatrix-methods]{storage_order}).
-If axis value is different from the storage order of \code{object},
-\link[BPCells:transpose_storage_order]{transpose_storage_order} will be used
-to transpose the underlying storage order.}
+If \code{axis} value specified is different from the storage order of
+\code{object}, \link[BPCells:transpose_storage_order]{transpose_storage_order}
+will be used to transpose the underlying storage order.}
 }
 \value{
 A \link[=BPCellsSeed-class]{BPCellsSeed} or

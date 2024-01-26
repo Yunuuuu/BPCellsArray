@@ -55,9 +55,9 @@ methods::setGeneric(
 #' @param axis Axis to rank values within. "col" to rank values within each
 #'     column, and "row" to rank values within each row. If `NULL`, will use the
 #'     storage order of `object` (see [storage_order][BPCells::storage_order]).
-#'     If axis value is different from the storage order of `object`,
-#'     [transpose_storage_order][BPCells::transpose_storage_order] will be used
-#'     to transpose the underlying storage order.
+#'     If `axis` value specified is different from the storage order of
+#'     `object`, [transpose_storage_order][BPCells::transpose_storage_order]
+#'     will be used to transpose the underlying storage order.
 #' @return A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
 #' @seealso [rank_transform][BPCells::rank_transform]
