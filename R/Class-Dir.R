@@ -42,69 +42,82 @@ methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
     "BPCellsDirMatrix"
 })
 
-#' Read a BPCells Dir matrix from the path
-#' @param path A string for the path of the BPCells matrix dir.
-#' @inheritDotParams BPCells::open_matrix_dir -dir
+#' Read/write sparse matrices from (or into) directory on disk
+#' 
+#' @description
+#' - `readBPCellsDirMatrix`: read a sparce matrices from a directory on disk
+#' - `writeBPCellsDirArray`: Write a sparce matrices into a directory on disk
+#' @param path A string path of Directory to read or save the data into. For
+#' `writeBPCellsDirArray`, if `NULL`, will use a temporary directory.
+#' @inheritParams BPCells::open_matrix_dir
 #' @export
-readDirMatrix <- function(path, ...) {
+#' @name BPCellsDir-IO
+readBPCellsDirMatrix <- function(path, buffer_size = 8192L) {
     assert_string(path, empty_ok = FALSE)
-    obj <- BPCells::open_matrix_dir(dir = path, ...)
+    obj <- BPCells::open_matrix_dir(
+        dir = path,
+        buffer_size = as.integer(buffer_size)
+    )
     DelayedArray(BPCellsDirSeed(obj))
 }
 
-#' Write a sparce matrices into a BPCells Directory of files format
+#' Write a sparce matrices into a directory on disk
 #'
+#' @inherit BPCells::write_matrix_dir details
 #' @param x Input matrix, any matrix can be coerced into
 #' [dgCMatrix][Matrix::dgCMatrix-class] object.
-#' @param path Directory to save the data into, if `NULL`, will use a temporary
-#' directory.
-#' @param ...
-#' - For `BPCellsMatrix` method: additional parameters passed to `BPCellsSeed`
-#'   methods.
-#' - For `ANY` method: additional parameters passed to `dgCMatrix` methods.
+#' @param ... Additional arguments passed into specific methods.
+#' @param bitpacking A bool, whether or not to compress the data using
+#' Bitpacking Compression.
+#' @param overwrite A bool, If `TRUE`, write to a temp dir then overwrite
+#' existing data.
 #' @inheritParams BPCells::write_matrix_dir
 #' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @export
-#' @name writeBPCellsDirArray
+#' @aliases writeBPCellsDirArray
+#' @rdname BPCellsDir-IO
 methods::setGeneric(
     "writeBPCellsDirArray",
     function(x, ...) standardGeneric("writeBPCellsDirArray")
 )
 
 .writeBPCellsDirArray <- function(
-    x, path = NULL, compress = TRUE,
+    x, path = NULL, bitpacking = TRUE,
     buffer_size = 8192L,
     overwrite = FALSE) {
+    assert_bool(bitpacking)
+    assert_bool(overwrite)
     path <- path %||% tempfile("BPCellsDirArray")
     obj <- BPCells::write_matrix_dir(
-        mat = x, dir = path, compress = compress,
-        buffer_size = buffer_size, overwrite = overwrite
+        mat = x, dir = path, compress = bitpacking,
+        buffer_size = as.integer(buffer_size),
+        overwrite = overwrite
     )
     DelayedArray(BPCellsDirSeed(obj))
 }
 
 #' @export
-#' @rdname writeBPCellsDirArray
+#' @rdname BPCellsDir-IO
 methods::setMethod(
     "writeBPCellsDirArray", "IterableMatrix", .writeBPCellsDirArray
 )
 
 #' @export
-#' @rdname writeBPCellsDirArray
+#' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "BPCellsSeed", .writeBPCellsDirArray)
 
 #' @export
-#' @rdname writeBPCellsDirArray
+#' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "BPCellsMatrix", function(x, ...) {
     .writeBPCellsDirArray(x = x@seed, ...)
 })
 
 #' @export
-#' @rdname writeBPCellsDirArray
+#' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "dgCMatrix", .writeBPCellsDirArray)
 
 #' @export
-#' @rdname writeBPCellsDirArray
+#' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "ANY", function(x, ...) {
     .writeBPCellsDirArray(x = coerce_dgCMatrix(x), ...)
 })
