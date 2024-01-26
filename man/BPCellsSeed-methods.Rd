@@ -23,18 +23,19 @@
 \alias{pow_slow,BPCellsSeed-method}
 \alias{^,BPCellsSeed,ANY-method}
 \alias{round,BPCellsSeed-method}
+\alias{[,BPCellsdgCMatrixSeed,ANY,ANY,ANY-method}
+\alias{[,BPCellsDirSeed,ANY,ANY,ANY-method}
+\alias{[,BPCellsHDF5Seed,ANY,ANY,ANY-method}
+\alias{[,BPCellsMemSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsColBindMatrixSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsRowBindMatrixSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsConvertSeed,ANY,ANY,ANY-method}
-\alias{[,BPCellsdgCMatrixSeed,ANY,ANY,ANY-method}
-\alias{[,BPCellsDirSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsMaskSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsMultiplySeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsRankTransformSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsRenameDimsSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsSubsetSeed,ANY,ANY,ANY-method}
 \alias{[,BPCellsTransformedSeed,ANY,ANY,ANY-method}
-\alias{[,BPCellsMemSeed,ANY,ANY,ANY-method}
 \title{House of BPCellsSeed methods}
 \usage{
 \S4method{show}{BPCellsSeed}(object)
@@ -77,15 +78,19 @@
 
 \S4method{round}{BPCellsSeed}(x, digits = 0)
 
+\S4method{[}{BPCellsdgCMatrixSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+
+\S4method{[}{BPCellsDirSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+
+\S4method{[}{BPCellsHDF5Seed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+
+\S4method{[}{BPCellsMemSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+
 \S4method{[}{BPCellsColBindMatrixSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsRowBindMatrixSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsConvertSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{BPCellsdgCMatrixSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{BPCellsDirSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsMaskSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
@@ -98,8 +103,6 @@
 \S4method{[}{BPCellsSubsetSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsTransformedSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
-
-\S4method{[}{BPCellsMemSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 }
 \arguments{
 \item{x, object}{A \link[=BPCellsSeed-class]{BPCellsSeed} object.}

@@ -8,6 +8,7 @@
 \alias{path,BPCellsMemSeed-method}
 \alias{path,BPCellsdgCMatrixSeed-method}
 \alias{path,BPCellsDirSeed-method}
+\alias{path,BPCellsHDF5Seed-method}
 \alias{seed,BPCellsSeed-method}
 \alias{nseed,BPCellsSeed-method}
 \alias{path,BPCellsUnaryOpsSeed-method}
@@ -31,6 +32,8 @@ showtree(object)
 \S4method{path}{BPCellsdgCMatrixSeed}(object, ...)
 
 \S4method{path}{BPCellsDirSeed}(object, ...)
+
+\S4method{path}{BPCellsHDF5Seed}(object, ...)
 
 \S4method{seed}{BPCellsSeed}(x)
 

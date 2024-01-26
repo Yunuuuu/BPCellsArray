@@ -44,6 +44,7 @@ Collate:
     'Class-BindMatrix.R'
     'Class-Convert.R'
     'Class-Dir.R'
+    'Class-HDF5.R'
     'Class-Mask.R'
     'Class-Mem.R'
     'Class-RankTransform.R'

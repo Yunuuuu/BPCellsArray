@@ -28,6 +28,22 @@ BPCellsSubset_internal <- function(x, i, j, ..., drop = FALSE) {
 #' @param i,j Row and Column index.
 #' @param drop Ignored, always be `FALSE`.
 #' @importMethodsFrom BPCells [
+#' @rdname BPCellsSeed-methods
+methods::setMethod("[", "BPCellsdgCMatrixSeed", BPCellsSubset_internal)
+
+#' @importMethodsFrom BPCells [
+#' @rdname BPCellsSeed-methods
+methods::setMethod("[", "BPCellsDirSeed", BPCellsSubset_internal)
+
+#' @importMethodsFrom BPCells [
+#' @rdname BPCellsSeed-methods
+methods::setMethod("[", "BPCellsHDF5Seed", BPCellsSubset_internal)
+
+#' @importMethodsFrom BPCells [
+#' @rdname BPCellsSeed-methods
+methods::setMethod("[", "BPCellsMemSeed", BPCellsSubset_internal)
+
+#' @importMethodsFrom BPCells [
 #' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsColBindMatrixSeed", BPCellsSubset_internal)
@@ -40,14 +56,6 @@ methods::setMethod("[", "BPCellsRowBindMatrixSeed", BPCellsSubset_internal)
 #' @importMethodsFrom BPCells [
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsConvertSeed", BPCellsSubset_internal)
-
-#' @importMethodsFrom BPCells [
-#' @rdname BPCellsSeed-methods
-methods::setMethod("[", "BPCellsdgCMatrixSeed", BPCellsSubset_internal)
-
-#' @importMethodsFrom BPCells [
-#' @rdname BPCellsSeed-methods
-methods::setMethod("[", "BPCellsDirSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @rdname BPCellsSeed-methods
@@ -75,7 +83,3 @@ methods::setMethod("[", "BPCellsSubsetSeed", BPCellsSubset_internal)
 #' @importMethodsFrom BPCells [
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsTransformedSeed", BPCellsSubset_internal)
-
-#' @importMethodsFrom BPCells [
-#' @rdname BPCellsSeed-methods
-methods::setMethod("[", "BPCellsMemSeed", BPCellsSubset_internal)

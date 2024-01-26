@@ -117,7 +117,7 @@ methods::setReplaceMethod("path", "BPCellsMatrix", function(object, value) {
 # different with what DelayedArray dose, this is because that seedApply()
 # function is not a generic function, we cannot define methods for it.
 
-# Three basic seeds ------------------------------------------
+# Four basic seeds ------------------------------------------
 ###########################################################
 #' @importFrom DelayedArray path
 #' @export
@@ -137,6 +137,10 @@ methods::setMethod("path", "BPCellsdgCMatrixSeed", function(object, ...) {
 #' @export
 #' @rdname showtree
 methods::setMethod("path", "BPCellsDirSeed", function(object, ...) object@dir)
+
+#' @export
+#' @rdname showtree
+methods::setMethod("path", "BPCellsHDF5Seed", function(object, ...) object@path)
 
 #' @export
 #' @rdname showtree
