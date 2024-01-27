@@ -30,8 +30,35 @@ methods::setMethod("BPCellsSeed", "MatrixSubset", function(x) {
 methods::setMethod(
     "[", c("BPCellsMatrix", "ANY", "ANY"),
     function(x, i, j, ..., drop = FALSE) {
-        x <- x@seed
-        DelayedArray(methods::callGeneric())
+        DelayedArray(x@seed[i, j, ..., drop = drop])
+    }
+)
+
+#' @inheritParams BPCellsSeed-methods
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[", c("BPCellsMatrix", "missing", "ANY"),
+    function(x, i, j, ..., drop = FALSE) {
+        DelayedArray(x@seed[, j, ..., drop = drop])
+    }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[", c("BPCellsMatrix", "ANY", "missing"),
+    function(x, i, j, ..., drop = FALSE) {
+        DelayedArray(x@seed[i, , ..., drop = drop])
+    }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[", c("BPCellsMatrix", "missing", "missing"),
+    function(x, i, j, ..., drop = FALSE) {
+        return(x)
     }
 )
 

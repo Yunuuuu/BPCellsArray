@@ -2,12 +2,18 @@ mat <- mock_matrix(2000, 200)
 path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 obj <- BPCells:::rank_transform(obj, "col")
+# mat <- matrixStats::colRanks(mat,
+#     ties.method = "average",
+#     preserveShape = TRUE
+# )
 
 testthat::test_that("`BPCellsRankTransformSeed()` works as expected", {
     seed <- BPCellsRankTransformSeed(obj)
     testthat::expect_s4_class(seed, "BPCellsRankTransformSeed")
+    # testthat::expect_equal(as.matrix(seed), mat)
     obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsMatrix")
+    # testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(seed), path)
     testthat::expect_identical(path(obj), path)
 })
@@ -15,17 +21,21 @@ testthat::test_that("`BPCellsRankTransformSeed()` works as expected", {
 testthat::test_that("subset `BPCellsRankTransformSeed` object works as expected", {
     seed <- BPCellsRankTransformSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
+    # testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
+    # testthat::expect_equal(as.matrix(seed[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
+    # testthat::expect_equal(as.matrix(seed[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("subset `BPCellsMatrix` object works as expected", {
     obj <- BPCellsArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsMatrix")
-    testthat::expect_identical(path(obj), path)
     testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    # testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    # testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
+    # testthat::expect_equal(as.matrix(obj[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("`convert_type` for `BPCellsRankTransformSeed` object works as expected", {

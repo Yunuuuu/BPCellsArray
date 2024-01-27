@@ -1,15 +1,18 @@
-mat <- mock_matrix(2000, 200)
+mat1 <- mock_matrix(2000, 200)
 mat2 <- mock_matrix(2000, 200)
 path <- normalizePath(c(tempfile(tmpdir = tmpdir), tempfile(tmpdir = tmpdir)), mustWork = FALSE)
-mat <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path[1L])
+mat <- rbind(mat1, mat2)
+mat1 <- BPCells::write_matrix_dir(mat = as(mat1, "dgCMatrix"), dir = path[1L])
 mat2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
-obj <- rbind(mat, mat2)
+obj <- rbind(mat1, mat2)
 
 testthat::test_that("`BPCellsBindMatrixSeed()` works as expected", {
     seed <- BPCellsBindMatrixSeed(obj)
     testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
-    obj <- BPCellsMatrix(seed)
+    testthat::expect_equal(as.matrix(seed), mat)
+    obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(seed), path)
     testthat::expect_identical(path(obj), path)
 })
@@ -17,17 +20,21 @@ testthat::test_that("`BPCellsBindMatrixSeed()` works as expected", {
 testthat::test_that("subset `BPCellsBindMatrixSeed` object works as expected", {
     seed <- BPCellsBindMatrixSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(seed[, 1:10], "BPCellsRowBindMatrixSeed")
+    testthat::expect_equal(as.matrix(seed[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("subset `BPCellsMatrix` object works as expected", {
-    obj <- BPCellsMatrix(obj)
-    testthat::expect_s4_class(obj, "BPCellsMatrix")
-    testthat::expect_identical(path(obj), path)
+    obj <- BPCellsArray(obj)
     testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("`convert_type` for `BPCellsBindMatrixSeed` object works as expected", {

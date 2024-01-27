@@ -6,8 +6,10 @@ obj <- BPCells::convert_matrix_type(obj, "uint32_t")
 testthat::test_that("`BPCellsConvertSeed()` works as expected", {
     seed <- BPCellsConvertSeed(obj)
     testthat::expect_s4_class(seed, "BPCellsConvertSeed")
-    obj <- BPCellsArray(seed)
+    testthat::expect_equal(as.matrix(seed), mat)
+    obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(seed), path)
     testthat::expect_identical(path(obj), path)
 })
@@ -15,17 +17,21 @@ testthat::test_that("`BPCellsConvertSeed()` works as expected", {
 testthat::test_that("subset `BPCellsConvertSeed` object works as expected", {
     seed <- BPCellsConvertSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsConvertSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(seed[, 1:10], "BPCellsConvertSeed")
+    testthat::expect_equal(as.matrix(seed[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsConvertSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("subset `BPCellsMatrix` object works as expected", {
     obj <- BPCellsArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsMatrix")
-    testthat::expect_identical(path(obj), path)
     testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("`convert_type` for `BPCellsConvertSeed` object works as expected", {

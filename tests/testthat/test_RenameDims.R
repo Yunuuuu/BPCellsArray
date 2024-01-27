@@ -5,13 +5,18 @@ dimnames(obj) <- list(
     paste0("G", seq_len(2000L)),
     paste0("C", seq_len(200))
 )
-
+dimnames(mat) <- list(
+    paste0("G", seq_len(2000L)),
+    paste0("C", seq_len(200))
+)
 
 testthat::test_that("`BPCellsRenameDimsSeed()` works as expected", {
     seed <- BPCellsRenameDimsSeed(obj)
     testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    testthat::expect_equal(as.matrix(seed), mat)
     obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(seed), path)
     testthat::expect_identical(path(obj), path)
 })
@@ -19,17 +24,21 @@ testthat::test_that("`BPCellsRenameDimsSeed()` works as expected", {
 testthat::test_that("subset `BPCellsRenameDimsSeed` object works as expected", {
     seed <- BPCellsRenameDimsSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsRenameDimsSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(seed[, 1:10], "BPCellsRenameDimsSeed")
+    testthat::expect_equal(as.matrix(seed[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsRenameDimsSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("subset `BPCellsMatrix` object works as expected", {
     obj <- BPCellsArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsMatrix")
-    testthat::expect_identical(path(obj), path)
     testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("`convert_type` for `BPCellsRenameDimsSeed` object works as expected", {

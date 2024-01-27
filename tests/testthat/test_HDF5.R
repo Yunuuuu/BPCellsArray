@@ -8,8 +8,10 @@ obj <- BPCells::write_matrix_hdf5(
 testthat::test_that("`BPCellsHDF5Seed()` works as expected", {
     seed <- BPCellsHDF5Seed(obj)
     testthat::expect_s4_class(seed, "BPCellsHDF5Seed")
+    testthat::expect_equal(as.matrix(seed), mat)
     obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsHDF5Matrix")
+    testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(seed), path)
     testthat::expect_identical(path(obj), path)
 })
@@ -28,17 +30,21 @@ testthat::test_that("`writeBPCellsHDF5Array()` works as expected", {
 testthat::test_that("subset `BPCellsHDF5Seed` object works as expected", {
     seed <- BPCellsHDF5Seed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, 1:10]), mat[1:10, 1:10])
 })
 
-testthat::test_that("subset `BPCellsHDF5Matrix` object works as expected", {
+testthat::test_that("subset `BPCellsMatrix` object works as expected", {
     obj <- BPCellsArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsHDF5Matrix")
-    testthat::expect_identical(path(obj), path)
     testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("`convert_type` for `BPCellsHDF5Seed` object works as expected", {

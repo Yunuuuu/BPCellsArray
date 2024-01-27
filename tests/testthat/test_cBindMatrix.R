@@ -4,12 +4,15 @@ path <- normalizePath(c(tempfile(tmpdir = tmpdir), tempfile(tmpdir = tmpdir)), m
 obj1 <- BPCells::write_matrix_dir(mat = as(mat1, "dgCMatrix"), dir = path[1L])
 obj2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
 obj <- cbind(obj1, obj2)
+mat <- cbind(mat1, mat2)
 
 testthat::test_that("`BPCellsBindMatrixSeed()` works as expected", {
     seed <- BPCellsBindMatrixSeed(obj)
     testthat::expect_s4_class(seed, "BPCellsBindMatrixSeed")
+    testthat::expect_equal(as.matrix(seed), mat)
     obj <- BPCellsMatrix(seed)
     testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(seed), path)
     testthat::expect_identical(path(obj), path)
 })
@@ -17,8 +20,11 @@ testthat::test_that("`BPCellsBindMatrixSeed()` works as expected", {
 testthat::test_that("subset `BPCellsBindMatrixSeed` object works as expected", {
     seed <- BPCellsBindMatrixSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsColBindMatrixSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("subset `BPCellsMatrix` object works as expected", {
@@ -26,8 +32,11 @@ testthat::test_that("subset `BPCellsMatrix` object works as expected", {
     testthat::expect_s4_class(obj, "BPCellsMatrix")
     testthat::expect_identical(path(obj), path)
     testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("`convert_type` for `BPCellsBindMatrixSeed` object works as expected", {

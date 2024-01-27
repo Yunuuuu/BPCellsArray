@@ -1,34 +1,38 @@
 mat <- mock_matrix(2000, 200)
-mat <- as(mat, "dgCMatrix")
+sparse_mat <- as(mat, "dgCMatrix")
 
 testthat::test_that("`BPCellsMemSeed()` works as expected", {
     # packed
-    obj <- BPCells::write_matrix_memory(mat = mat)
+    obj <- BPCells::write_matrix_memory(mat = sparse_mat)
     seed <- BPCellsMemSeed(obj)
     testthat::expect_s4_class(seed, "BPCellsMemSeed")
+    testthat::expect_equal(as.matrix(seed), mat)
     testthat::expect_identical(path(seed), character())
     obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsMemMatrix")
+    testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(obj), character())
 
     # unpacked
-    obj <- BPCells::write_matrix_memory(mat = mat, FALSE)
+    obj <- BPCells::write_matrix_memory(mat = sparse_mat, FALSE)
     seed <- BPCellsMemSeed(obj)
     testthat::expect_s4_class(seed, "BPCellsMemSeed")
+    testthat::expect_equal(as.matrix(seed), mat)
     testthat::expect_identical(path(seed), character())
     obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsMemMatrix")
+    testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(obj), character())
 })
 
 testthat::test_that("`writeBPCellsMemArray()` works as expected", {
     testthat::expect_no_error(
-        obj <- writeBPCellsMemArray(mat, compress = TRUE)
+        obj <- writeBPCellsMemArray(sparse_mat, compress = TRUE)
     )
     testthat::expect_identical(path(obj), character())
     testthat::expect_s4_class(obj, "BPCellsMemMatrix")
     testthat::expect_no_error(
-        obj <- writeBPCellsMemArray(mat, compress = FALSE)
+        obj <- writeBPCellsMemArray(sparse_mat, compress = FALSE)
     )
     testthat::expect_identical(path(obj), character())
     testthat::expect_s4_class(obj, "BPCellsMemMatrix")
@@ -39,21 +43,34 @@ testthat::test_that("`as()` methods works as expected", {
     testthat::expect_s4_class(as(mat, "BPCellsMemArray"), "BPCellsMemMatrix")
 })
 
-obj <- BPCells::write_matrix_memory(mat = mat)
+obj <- BPCells::write_matrix_memory(mat = sparse_mat)
+
 testthat::test_that("subset `BPCellsMemSeed` object works as expected", {
     seed <- BPCellsMemSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, ]), as.matrix(mat[1:10, ]))
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[, 1:10]), as.matrix(mat[, 1:10]))
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(
+        as.matrix(seed[1:10, 1:10]),
+        as.matrix(mat[1:10, 1:10])
+    )
 })
 
-testthat::test_that("subset `BPCellsMemMatrix` object works as expected", {
+testthat::test_that("subset `BPCellsMatrix` object works as expected", {
     obj <- BPCellsArray(obj)
     testthat::expect_s4_class(obj, "BPCellsMemMatrix")
     testthat::expect_identical(path(obj), character())
     testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, ]), as.matrix(mat[1:10, ]))
     testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[, 1:10]), as.matrix(mat[, 1:10]))
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(
+        as.matrix(obj[1:10, 1:10]),
+        as.matrix(mat[1:10, 1:10])
+    )
 })
 
 testthat::test_that("`convert_type` for `BPCellsMemSeed` object works as expected", {

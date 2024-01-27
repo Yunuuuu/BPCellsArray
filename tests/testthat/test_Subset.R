@@ -2,12 +2,15 @@ mat <- mock_matrix(2000, 200)
 path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 obj <- obj[1:1000L, 1:100]
+mat <- mat[1:1000L, 1:100]
 
 testthat::test_that("`BPCellsSubsetSeed()` works as expected", {
     seed <- BPCellsSubsetSeed(obj)
     testthat::expect_s4_class(seed, "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed), mat)
     obj <- DelayedArray(seed)
     testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj), mat)
     testthat::expect_identical(path(seed), path)
     testthat::expect_identical(path(obj), path)
 })
@@ -15,17 +18,21 @@ testthat::test_that("`BPCellsSubsetSeed()` works as expected", {
 testthat::test_that("subset `BPCellsSubsetSeed` object works as expected", {
     seed <- BPCellsSubsetSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
+    testthat::expect_equal(as.matrix(seed[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("subset `BPCellsMatrix` object works as expected", {
     obj <- BPCellsArray(obj)
-    testthat::expect_s4_class(obj, "BPCellsMatrix")
-    testthat::expect_identical(path(obj), path)
     testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
     testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
     testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
+    testthat::expect_equal(as.matrix(obj[1:10, 1:10]), mat[1:10, 1:10])
 })
 
 testthat::test_that("`convert_type` for `BPCellsSubsetSeed` object works as expected", {
