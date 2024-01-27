@@ -2,7 +2,7 @@
 % Please edit documentation in R/Class-BPCellsSeed.R, R/Class-BindMatrix.R,
 %   R/Class-Convert.R, R/Class-Dir.R, R/Class-HDF5.R, R/Class-Mask.R,
 %   R/Class-Mem.R, R/Class-Multiply.R, R/Class-RankTransform.R,
-%   R/Class-Transformed.R, R/Method-subset.R
+%   R/Class-Transformed.R, R/Class-subset.R
 \docType{class}
 \name{BPCellsSeed}
 \alias{BPCellsSeed}

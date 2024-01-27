@@ -40,18 +40,6 @@ methods::setMethod(
 )
 
 ####################################################################
-# TransformScaleShift
-methods::setClass("BPCellsTransformScaleShiftSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformScaleShift"))
-)
-
-#' @noRd
-methods::setMethod(
-    "BPCellsTransformedSeed", "TransformScaleShift",
-    function(x) "TransformScaleShift"
-)
-
-####################################################################
 # TransformExpm1Slow
 methods::setClass("BPCellsTransformExpm1SlowSeed",
     contains = c("BPCellsTransformedSeed", get_class("TransformExpm1Slow"))

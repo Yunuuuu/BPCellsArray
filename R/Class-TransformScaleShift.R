@@ -1,3 +1,19 @@
+####################################################################
+# TransformScaleShift
+methods::setClass("BPCellsTransformScaleShiftSeed",
+    contains = c("BPCellsTransformedSeed", get_class("TransformScaleShift"))
+)
+
+#' @noRd
+methods::setMethod(
+    "BPCellsTransformedSeed", "TransformScaleShift",
+    function(x) "TransformScaleShift"
+)
+
+###################################################################
+###########################  Methods  #############################
+###################################################################
+
 #' Arithmetic operators for BPCellsMatrix
 #' @inheritParams BPCells-binarize
 #' @return A [BPCellsSeed][BPCellsSeed-class] or
