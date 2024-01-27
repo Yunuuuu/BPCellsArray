@@ -1,6 +1,6 @@
 mat <- mock_matrix(2000, 200)
 mat2 <- mock_matrix(ncol(mat), 5000)
-path <- normalizePath(c(tempfile(), tempfile()), mustWork = FALSE)
+path <- normalizePath(c(tempfile(tmpdir = tmpdir), tempfile(tmpdir = tmpdir)), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path[1L])
 obj2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
 obj <- obj %*% obj2

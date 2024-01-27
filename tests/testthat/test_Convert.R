@@ -1,5 +1,5 @@
 mat <- mock_matrix(2000, 200)
-path <- normalizePath(tempfile(), mustWork = FALSE)
+path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 obj <- BPCells::convert_matrix_type(obj, "uint32_t")
 
