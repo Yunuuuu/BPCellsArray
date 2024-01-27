@@ -17,7 +17,6 @@
 #' - [summarization][BPCells-Summarization]: row/col summarization.
 #' - [Arithmetic][BPCells-Arithmetic]: Binary Arithmetic operators.
 #' - [binarize][BPCells-binarize]: Convert matrix elements to zeros and ones.
-#' - [matrix_stats][BPCells-matrix_stats]: Calculate matrix statisticals.
 #' @name BPCellsSeed-methods
 NULL
 

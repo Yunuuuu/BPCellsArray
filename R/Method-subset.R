@@ -21,6 +21,9 @@ methods::setMethod("BPCellsSeed", "MatrixSubset", function(x) {
 })
 
 ##############################################################
+# Don't use BPCellsSeed to implement `[` method since it will dispatch
+# IterableMatrix method but some classes of BPCells do have their own `[`
+# method, so we re-dispatch method for every seed class.
 BPCellsSubset_internal <- function(x, i, j, ..., drop = FALSE) {
     BPCellsSeed(methods::callNextMethod())
 }

@@ -2,6 +2,9 @@
 % Please edit documentation in R/Method-summarization.R
 \name{BPCells-Summarization}
 \alias{BPCells-Summarization}
+\alias{matrix_stats}
+\alias{matrix_stats,BPCellsSeed-method}
+\alias{matrix_stats,BPCellsMatrix-method}
 \alias{rowSums,BPCellsMatrix-method}
 \alias{rowSums}
 \alias{colSums,BPCellsMatrix-method}
@@ -24,6 +27,12 @@
 \alias{colSds,BPCellsMatrix-method}
 \title{BPCellsMatrix row/col summarization}
 \usage{
+matrix_stats(object, ...)
+
+\S4method{matrix_stats}{BPCellsSeed}(object, ...)
+
+\S4method{matrix_stats}{BPCellsMatrix}(object, ...)
+
 \S4method{rowSums}{BPCellsMatrix}(x)
 
 \S4method{colSums}{BPCellsMatrix}(x)
@@ -49,10 +58,28 @@
 \S4method{colSds}{BPCellsMatrix}(x)
 }
 \arguments{
+\item{object}{A \link{BPCellsMatrix} object.}
+
+\item{...}{
+  Arguments passed on to \code{\link[BPCells:matrix_stats]{BPCells::matrix_stats}}
+  \describe{
+    \item{\code{row_stats}}{Which row statistics to compute}
+    \item{\code{col_stats}}{Which col statistics to compute}
+    \item{\code{threads}}{Number of threads to use during execution}
+  }}
+
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} or
 \link[=BPCellsSeed-class]{BPcellsSeed}object.}
 }
 \value{
+\itemize{
+\item \code{matrix_stats}: A list of
+\itemize{
+\item \code{row_stats}: matrix of n_stats x n_rows
+\item \code{col_stats}: matrix of n_stats x n_cols
+}
+}
+
 \itemize{
 \item \code{rowSums()}: vector of row sums
 }
@@ -86,5 +113,14 @@
 }
 }
 \description{
-BPCellsMatrix row/col summarization
+Calculate matrix stats
+}
+\details{
+The statistics will be calculated in a single pass over the matrix,
+so this method is desirable to use for efficiency purposes compared to
+the more standard rowMeans or colMeans if multiple statistics are needed.
+The stats are ordered by complexity: nonzero, mean, then variance. All
+less complex stats are calculated in the process of calculating a more complicated stat.
+So to calculate mean and variance simultaneously, just ask for variance,
+which will compute mean and nonzero counts as a side-effect
 }

@@ -147,6 +147,5 @@ Basic operations for \code{BPCellsMatrix} object
 \item \link[=BPCells-Summarization]{summarization}: row/col summarization.
 \item \link[=BPCells-Arithmetic]{Arithmetic}: Binary Arithmetic operators.
 \item \link[=BPCells-binarize]{binarize}: Convert matrix elements to zeros and ones.
-\item \link[=BPCells-matrix_stats]{matrix_stats}: Calculate matrix statisticals.
 }
 }

@@ -5,6 +5,38 @@
 #' @name BPCells-Summarization
 NULL
 
+########################################################################
+# matrix_stats
+#' @inherit BPCells::matrix_stats
+#' @aliases matrix_stats
+#' @return 
+#' - `matrix_stats`: A list of 
+#'    - `row_stats`: matrix of n_stats x n_rows
+#'    - `col_stats`: matrix of n_stats x n_cols
+#' @param object A [BPCellsMatrix] object.
+#' @export
+#' @rdname BPCells-Summarization
+methods::setGeneric("matrix_stats", function(object, ...) {
+    makeStandardGeneric("matrix_stats")
+})
+
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod(
+    "matrix_stats", "BPCellsSeed", function(object, ...) {
+        BPCells::matrix_stats(matrix = object, ...)
+    }
+)
+
+#' @inheritDotParams BPCells::matrix_stats -matrix
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod(
+    "matrix_stats", "BPCellsMatrix", function(object, ...) {
+        BPCells::matrix_stats(matrix = object@seed, ...)
+    }
+)
+
 #######################################################################
 # Sums
 #' @importMethodsFrom BPCells rowSums
