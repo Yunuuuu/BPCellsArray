@@ -17,7 +17,7 @@ NULL
 
 methods::setClass("BPCellsRankTransformSeed",
     contains = c(
-        "BPCellsUnaryOpsSeed", 
+        "BPCellsUnaryOpsSeed",
         get_class("MatrixRankTransform")
     )
 )
@@ -43,7 +43,8 @@ methods::setMethod("BPCellsSeed", "MatrixRankTransform", function(x) {
 #####################   BPCellsRankTransformMatrix   #######################
 #' Rank-transform a BPCells IterableMatrix matrix
 #'
-#' @param object A `BPCellsSeed` or `BPCellsMatrix` object.
+#' @param x,object A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @inheritDotParams BPCells::transpose_storage_order -matrix
 #' @export
 #' @name rank_transform
@@ -58,7 +59,8 @@ methods::setGeneric(
 #'     If `axis` value specified is different from the storage order of
 #'     `object`, [transpose_storage_order][BPCells::transpose_storage_order]
 #'     will be used to transpose the underlying storage order.
-#' @return A [BPCellsSeed][BPCellsSeed-class] or
+#' @return
+#'  - `rank_transform`: A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
 #' @seealso [rank_transform][BPCells::rank_transform]
 #' @importFrom DelayedArray DelayedArray
@@ -80,7 +82,7 @@ methods::setMethod(
                 object <- BPCells::transpose_storage_order(matrix = object, ...)
             }
         }
-        BPCells:::rank_transform(mat = object, axis = axis)
+        BPCellsSeed(BPCells:::rank_transform(mat = object, axis = axis))
     }
 )
 
@@ -100,4 +102,40 @@ methods::setMethod("rank_transform", "ANY", function(object, axis) {
     cli::cli_abort(
         "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"
     )
+})
+
+#######################################################################
+# Rank
+#' @importFrom MatrixGenerics rowRanks
+#' @return
+#' - `rowRanks()`: vector of row ranks.
+#' @aliases rowRanks
+#' @export
+#' @rdname rank_transform
+methods::setMethod("rowRanks", c(x = "BPCellsSeed"), function(x) {
+    rank_transform(x, axis = "row")
+})
+
+#' @importFrom MatrixGenerics colRanks
+#' @return
+#' - `colRanks()`: vector of column ranks.
+#' @aliases colRanks
+#' @export
+#' @rdname rank_transform
+methods::setMethod("colRanks", c(x = "BPCellsSeed"), function(x) {
+    rank_transform(x, axis = "col")
+})
+
+#' @importFrom MatrixGenerics rowRanks
+#' @export
+#' @rdname rank_transform
+methods::setMethod("rowRanks", c(x = "BPCellsMatrix"), function(x) {
+    rank_transform(x, axis = "row")
+})
+
+#' @importFrom MatrixGenerics colRanks
+#' @export
+#' @rdname rank_transform
+methods::setMethod("colRanks", c(x = "BPCellsMatrix"), function(x) {
+    rank_transform(x, axis = "col")
 })

@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # BPCells backend for DelayedArray objects
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/Yunuuuu/BPCellsArray/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Yunuuuu/BPCellsArray/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ```{r child = "vignettes/BPCellsArray.Rmd"}

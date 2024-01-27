@@ -4,6 +4,12 @@
 \alias{rank_transform}
 \alias{rank_transform,BPCellsSeed-method}
 \alias{rank_transform,BPCellsMatrix-method}
+\alias{rowRanks,BPCellsSeed-method}
+\alias{rowRanks}
+\alias{colRanks,BPCellsSeed-method}
+\alias{colRanks}
+\alias{rowRanks,BPCellsMatrix-method}
+\alias{colRanks,BPCellsMatrix-method}
 \title{Rank-transform a BPCells IterableMatrix matrix}
 \usage{
 rank_transform(object, ...)
@@ -11,10 +17,16 @@ rank_transform(object, ...)
 \S4method{rank_transform}{BPCellsSeed}(object, axis = NULL, ...)
 
 \S4method{rank_transform}{BPCellsMatrix}(object, axis = NULL, ...)
+
+\S4method{rowRanks}{BPCellsSeed}(x)
+
+\S4method{colRanks}{BPCellsSeed}(x)
+
+\S4method{rowRanks}{BPCellsMatrix}(x)
+
+\S4method{colRanks}{BPCellsMatrix}(x)
 }
 \arguments{
-\item{object}{A \code{BPCellsSeed} or \code{BPCellsMatrix} object.}
-
 \item{...}{
   Arguments passed on to \code{\link[BPCells:transpose_storage_order]{BPCells::transpose_storage_order}}
   \describe{
@@ -30,10 +42,23 @@ storage order of \code{object} (see \link[BPCells:IterableMatrix-methods]{storag
 If \code{axis} value specified is different from the storage order of
 \code{object}, \link[BPCells:transpose_storage_order]{transpose_storage_order}
 will be used to transpose the underlying storage order.}
+
+\item{x, object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 }
 \value{
-A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\itemize{
+\item \code{rank_transform}: A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{object}.
+}
+
+\itemize{
+\item \code{rowRanks()}: vector of row ranks.
+}
+
+\itemize{
+\item \code{colRanks()}: vector of column ranks.
+}
 }
 \description{
 Rank-transform a BPCells IterableMatrix matrix

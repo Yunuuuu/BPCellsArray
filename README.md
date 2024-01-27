@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/Yunuuuu/BPCellsArray/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Yunuuuu/BPCellsArray/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 BPCells is a package for high performance single cell analysis on
@@ -18,27 +19,27 @@ been optimized by c++ or c.
 
 Here is a summarized delayed operations in BPCells:
 
-| Operations                               | BPCells                     | BPCellsArray                 |
-| ---------------------------------------- | --------------------------- | ---------------------------- |
-| Combine by row                           | rbind2                      | rbind2,rbind,arbind,bindROWS |
-| Combine by column                        | cbind2                      | cbind2,cbind,acbind,bindCOLS |
-| transpose matrix                         | t                           | t                            |
-| subset                                   | `[`                         | `[`                          |
-| Rename                                   | `dimnames<-`                | `dimnames<-`                 |
-| Multiplication                           | `%*%`                       | `%*%`                        |
-| Crossproduct                             |                             | crossprod                    |
-| Arithmetic                               | `+`,`-`,`*`,`/`             | `+`,`-`,`*`,`/`              |
-| Relational Operators                     | Binary (`<`,`>`,`<=`, `>=`) | Binary (`<`,`>`,`<=`, `>=`)  |
-| Storage mode                             | convert\_matrix\_type       | convert\_type                |
-| Rank-transform                           | rank\_transform             | rank\_transform              |
-| Mask matrix entries to zero              | mask\_matrix                | mask\_matrix                 |
-| Take minumum with a global constant      | min\_scalar                 | pmin\_scalar                 |
-| Take the minimum with a per-col constant | min\_by\_col                | pmin\_by\_col                |
-| Take the minimum with a per-row constant | min\_by\_row                | pmin\_by\_row                |
-| Round number                             | round                       | round                        |
-| `exp(x) - 1`                             | `expm1_slow`,`expm1`        | `expm1_slow`,`expm1`         |
-| log(1+x)                                 | `log1p`,`log1p_slow`        | `log1p`,`log1p_slow`         |
-| Power                                    | `pow_slow`,`^`              | `pow_slow`,`^`               |
+| Operations                               | BPCells                     | BPCellsArray                           |
+| ---------------------------------------- | --------------------------- | -------------------------------------- |
+| Combine by row                           | rbind2                      | rbind2,rbind,arbind,bindROWS           |
+| Combine by column                        | cbind2                      | cbind2,cbind,acbind,bindCOLS           |
+| transpose matrix                         | t                           | t                                      |
+| subset                                   | `[`                         | `[`                                    |
+| Rename                                   | `dimnames<-`                | `dimnames<-`                           |
+| Multiplication                           | `%*%`                       | `%*%`                                  |
+| Crossproduct                             |                             | crossprod                              |
+| Arithmetic                               | `+`,`-`,`*`,`/`             | `+`,`-`,`*`,`/`                        |
+| Relational Operators                     | Binary (`<`,`>`,`<=`, `>=`) | Binary (`<`,`>`,`<=`, `>=`)            |
+| Storage mode                             | convert\_matrix\_type       | convert\_type                          |
+| Rank-transform                           | rank\_transform             | `rank_transform`,`rowRanks`,`colRanks` |
+| Mask matrix entries to zero              | mask\_matrix                | mask\_matrix                           |
+| Take minumum with a global constant      | min\_scalar                 | pmin\_scalar                           |
+| Take the minimum with a per-col constant | min\_by\_col                | pmin\_by\_col                          |
+| Take the minimum with a per-row constant | min\_by\_row                | pmin\_by\_row                          |
+| Round number                             | round                       | round                                  |
+| `exp(x) - 1`                             | `expm1_slow`,`expm1`        | `expm1_slow`,`expm1`                   |
+| `log(1+x)`                               | `log1p`,`log1p_slow`        | `log1p`,`log1p_slow`                   |
+| Power                                    | `pow_slow`,`^`              | `pow_slow`,`^`                         |
 
 Other non-lazied operations:
 
@@ -86,7 +87,7 @@ library(SingleCellExperiment)
 #> Attaching package: 'matrixStats'
 #> The following objects are masked from 'package:BPCellsArray':
 #> 
-#>     colSds, colVars, rowSds, rowVars
+#>     colRanks, colSds, colVars, rowRanks, rowSds, rowVars
 #> 
 #> Attaching package: 'MatrixGenerics'
 #> The following objects are masked from 'package:matrixStats':
@@ -194,7 +195,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a
+#> 1. Load compressed matrix from directory /tmp/RtmpF5CN2k/BPCells37494a32e8ae23
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -214,7 +215,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a
+#> 1. Load compressed matrix from directory /tmp/RtmpF5CN2k/BPCells37494a32e8ae23
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -279,7 +280,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpmXAZgW/BPCells33ed53291e4b5a
+#> 1. Load compressed matrix from directory /tmp/RtmpF5CN2k/BPCells37494a32e8ae23
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44
