@@ -1,6 +1,6 @@
 mat <- mock_matrix(2000, 200)
 mat2 <- mock_matrix(2000, 200)
-path <- c(tempfile(), tempfile())
+path <- normalizePath(c(tempfile(), tempfile()), mustWork = FALSE)
 mat <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path[1L])
 mat2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
 obj <- rbind(mat, mat2)

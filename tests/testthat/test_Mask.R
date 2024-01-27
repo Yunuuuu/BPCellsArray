@@ -1,5 +1,5 @@
 mat <- mock_matrix(2000, 200)
-path <- tempfile()
+path <- normalizePath(tempfile(), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 mask <- matrix(
     sample(c(0, 1),

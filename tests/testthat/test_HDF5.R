@@ -1,5 +1,5 @@
 mat <- mock_matrix(2000, 200)
-path <- tempfile()
+path <- normalizePath(tempfile(), mustWork = FALSE)
 obj <- BPCells::write_matrix_hdf5(
     mat = as(mat, "dgCMatrix"),
     path = path, group = "BPCells"
