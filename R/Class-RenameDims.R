@@ -108,23 +108,25 @@ methods::setMethod(
 )
 
 set_dimnames <- function(x, axis, value) {
-    dims <- dim(x)
     dnms <- dimnames(x)
     if (axis == 1L) {
-        axis_nm <- "rownames"
+        axis_nm <- "'rownames'"
+        axis_len <- "nrow(x)"
     } else if (axis == 2L) {
-        axis_nm <- "colnames"
+        axis_nm <- "'colnames'"
+        axis_len <- "ncol(x)"
     } else {
-        axis_nm <- sprintf("names of %d-dimension")
+        axis_nm <- sprintf("names of '%d-dimension'", axis)
+        axis_len <- sprintf("dim(x)[%d]", axis)
     }
     nd <- length(dnms)
     if (nd < 2L) {
         cli::cli_abort(
-            "attempt to set '{axis_nm}' on an object with less than two dimensions"
+            "attempt to set {axis_nm} on an object with less than two dimensions"
         )
     } else if (nd < axis) {
         cli::cli_abort(
-            "attempt to set '{axis_nm}' on an object with only {nd} dimensions"
+            "attempt to set {axis_nm} on an object with only {nd} dimensions"
         )
     }
     dnms <- dnms %||% vector("list", length = nd)
@@ -132,14 +134,14 @@ set_dimnames <- function(x, axis, value) {
         dnms[axis] <- list(NULL)
     } else {
         if (!is.atomic(value)) {
-            cli::cli_abort(
-                "{.arg value} must be a character or {.code NULL}"
-            )
+            cli::cli_abort("{.arg value} must be a character or {.code NULL}")
         }
-        if (length(value) != dims[axis]) {
-            cli::cli_abort(
-                "{.arg value} must have the length of {.code nrow(value)}"
-            )
+        n <- dim(x)[axis]
+        if (length(value) != n) {
+            cli::cli_abort(sprintf(
+                "{.arg value} must have the length of %s",
+                style_code(axis_len)
+            ))
         }
         dnms[[axis]] <- value
     }
