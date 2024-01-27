@@ -92,6 +92,12 @@ testthat::test_that("`rownames<-` for `BPCellsRenameDims` object works as expect
     rownames(obj) <- paste0("G", seq_len(nrow(obj)))
     testthat::expect_s4_class(obj, "BPCellsMatrix")
     testthat::expect_identical(rownames(obj), paste0("G", seq_len(nrow(obj))))
+    rownames(seed) <- NULL
+    testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    testthat::expect_null(rownames(seed))
+    rownames(obj) <- NULL
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_null(rownames(obj))
 })
 
 testthat::test_that("`colnames<-` for `BPCellsRenameDims` object works as expected", {
@@ -109,6 +115,12 @@ testthat::test_that("`colnames<-` for `BPCellsRenameDims` object works as expect
     colnames(obj) <- paste0("G", seq_len(ncol(obj)))
     testthat::expect_s4_class(obj, "BPCellsMatrix")
     testthat::expect_identical(colnames(obj), paste0("G", seq_len(ncol(obj))))
+    colnames(seed) <- NULL
+    testthat::expect_s4_class(seed, "BPCellsRenameDimsSeed")
+    testthat::expect_null(colnames(seed))
+    colnames(obj) <- NULL
+    testthat::expect_s4_class(obj, "BPCellsMatrix")
+    testthat::expect_null(colnames(obj))
 })
 
 testthat::test_that("`%*%` for `BPCellsRenameDims` object works as expected", {
