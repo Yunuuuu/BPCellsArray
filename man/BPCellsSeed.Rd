@@ -2,14 +2,13 @@
 % Please edit documentation in R/Class-BPCellsSeed.R, R/Class-BindMatrix.R,
 %   R/Class-Convert.R, R/Class-Dir.R, R/Class-HDF5.R, R/Class-Mask.R,
 %   R/Class-Mem.R, R/Class-Multiply.R, R/Class-RankTransform.R,
-%   R/Class-Transformed.R, R/Class-subset.R
+%   R/Class-RenameDims.R, R/Class-Transformed.R, R/Class-subset.R
 \docType{class}
 \name{BPCellsSeed}
 \alias{BPCellsSeed}
 \alias{BPCellsSeed-class}
 \alias{BPCellsSeed,BPCellsSeed-method}
 \alias{BPCellsSeed,Iterable_dgCMatrix_wrapper-method}
-\alias{BPCellsSeed,RenameDims-method}
 \alias{BPCellsSeed,ColBindMatrices-method}
 \alias{BPCellsSeed,RowBindMatrices-method}
 \alias{BPCellsSeed,ConvertMatrixType-method}
@@ -22,6 +21,7 @@
 \alias{BPCellsSeed,UnpackedMatrixMemBase-method}
 \alias{BPCellsSeed,MatrixMultiply-method}
 \alias{BPCellsSeed,MatrixRankTransform-method}
+\alias{BPCellsSeed,RenameDims-method}
 \alias{BPCellsSeed,TransformedMatrix-method}
 \alias{BPCellsSeed,MatrixSubset-method}
 \title{Low-level Base Class for Delayed BPCells matrix}
@@ -31,8 +31,6 @@ BPCellsSeed(x)
 \S4method{BPCellsSeed}{BPCellsSeed}(x)
 
 \S4method{BPCellsSeed}{Iterable_dgCMatrix_wrapper}(x)
-
-\S4method{BPCellsSeed}{RenameDims}(x)
 
 \S4method{BPCellsSeed}{ColBindMatrices}(x)
 
@@ -53,6 +51,8 @@ BPCellsSeed(x)
 \S4method{BPCellsSeed}{MatrixMultiply}(x)
 
 \S4method{BPCellsSeed}{MatrixRankTransform}(x)
+
+\S4method{BPCellsSeed}{RenameDims}(x)
 
 \S4method{BPCellsSeed}{TransformedMatrix}(x)
 

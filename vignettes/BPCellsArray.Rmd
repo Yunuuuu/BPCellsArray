@@ -18,9 +18,10 @@ BPCells is a package for high performance single cell analysis on RNA-seq and
 ATAC-seq datasets. This package just bring BPCells into Bioconductor single-cell
 workflow. 
 
-All operations in `BPCells` are lazy, which means that no real work is performed
-on matrix or fragment objects until the result needs to be returned as an R
-object or written to disk. And most operations have been optimized by c++ or c.
+Almost all operations in `BPCells` are lazy, which means that no real work is
+performed on matrix or fragment objects until the result needs to be returned as
+an R object or written to disk. And most operations have been optimized by `c++`
+or `c`.
 
 Here is a summarized delayed operations in BPCells:
 
@@ -30,7 +31,7 @@ Here is a summarized delayed operations in BPCells:
 | Combine by column                        | cbind2                       | cbind2,cbind,acbind,bindCOLS           |
 | transpose matrix                         | t                            | t                                      |
 | subset                                   | `[`                          | `[`                                    |
-| Rename                                   | `dimnames<-`                 | `dimnames<-`                           |
+| Rename                                   | `dimnames<-`                 | `dimnames<-`,`rownames<-`,`colnames<-` |
 | Multiplication                           | `%*%`                        | `%*%`                                  |
 | Crossproduct                             |                              | crossprod                              |
 | Arithmetic                               | `+`,`-`,`*`,`/`              | `+`,`-`,`*`,`/`                        |

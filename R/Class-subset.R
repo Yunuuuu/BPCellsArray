@@ -20,7 +20,22 @@ methods::setMethod("BPCellsSeed", "MatrixSubset", function(x) {
     BPCellsSubsetSeed(x = x)
 })
 
-##############################################################
+################    BPCellsMatrix Methods    ##################
+#' @inheritParams BPCellsSeed-methods
+#' @return
+#' - `[`: A [BPCellsMatrix] object.
+#' @order 2
+#' @export
+#' @rdname BPCellsMatrix-methods
+methods::setMethod(
+    "[", c("BPCellsMatrix", "ANY", "ANY"),
+    function(x, i, j, ..., drop = FALSE) {
+        x <- x@seed
+        DelayedArray(methods::callGeneric())
+    }
+)
+
+################    BPCellsSeed Methods    ########################
 # Don't use BPCellsSeed to implement `[` method since it will dispatch
 # IterableMatrix method but some classes of BPCells do have their own `[`
 # method, so we re-dispatch method for every seed class.
@@ -31,18 +46,22 @@ BPCellsSubset_internal <- function(x, i, j, ..., drop = FALSE) {
 #' @param i,j Row and Column index.
 #' @param drop Ignored, always be `FALSE`.
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsdgCMatrixSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsDirSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsHDF5Seed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsMemSeed", BPCellsSubset_internal)
 
@@ -57,10 +76,12 @@ methods::setMethod("[", "BPCellsColBindMatrixSeed", BPCellsSubset_internal)
 methods::setMethod("[", "BPCellsRowBindMatrixSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsConvertSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsMaskSeed", BPCellsSubset_internal)
 
@@ -68,21 +89,26 @@ methods::setMethod("[", "BPCellsMaskSeed", BPCellsSubset_internal)
 # class since the `MatrixMultiply` method will use `[` method of `@left` and
 # `@right`. Here, we just re-dispatch it to keep consistent.
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsMultiplySeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsRankTransformSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsRenameDimsSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsSubsetSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
+#' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("[", "BPCellsTransformedSeed", BPCellsSubset_internal)

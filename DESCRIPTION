@@ -11,6 +11,7 @@ Description: Implements a DelayedArray backend for reading and
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
+    BiocGenerics,
     BiocSingular,
     BPCells (>= 0.1.0),
     cli,
@@ -50,6 +51,7 @@ Collate:
     'Class-Mem.R'
     'Class-Multiply.R'
     'Class-RankTransform.R'
+    'Class-RenameDims.R'
     'Matrix-Methods.R'
     'Seed-Methods.R'
     'Class-Transformed.R'

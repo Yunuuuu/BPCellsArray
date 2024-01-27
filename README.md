@@ -12,10 +12,10 @@ BPCells is a package for high performance single cell analysis on
 RNA-seq and ATAC-seq datasets. This package just bring BPCells into
 Bioconductor single-cell workflow.
 
-All operations in `BPCells` are lazy, which means that no real work is
-performed on matrix or fragment objects until the result needs to be
-returned as an R object or written to disk. And most operations have
-been optimized by c++ or c.
+Almost all operations in `BPCells` are lazy, which means that no real
+work is performed on matrix or fragment objects until the result needs
+to be returned as an R object or written to disk. And most operations
+have been optimized by `c++` or `c`.
 
 Here is a summarized delayed operations in BPCells:
 
@@ -25,7 +25,7 @@ Here is a summarized delayed operations in BPCells:
 | Combine by column                        | cbind2                      | cbind2,cbind,acbind,bindCOLS           |
 | transpose matrix                         | t                           | t                                      |
 | subset                                   | `[`                         | `[`                                    |
-| Rename                                   | `dimnames<-`                | `dimnames<-`                           |
+| Rename                                   | `dimnames<-`                | `dimnames<-`,`rownames<-`,`colnames<-` |
 | Multiplication                           | `%*%`                       | `%*%`                                  |
 | Crossproduct                             |                             | crossprod                              |
 | Arithmetic                               | `+`,`-`,`*`,`/`             | `+`,`-`,`*`,`/`                        |
@@ -195,7 +195,7 @@ assay(sce, "counts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpF5CN2k/BPCells37494a32e8ae23
+#> 1. Load compressed matrix from directory /tmp/RtmpysclbW/BPCells38e4bf6ace28a6
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -215,7 +215,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpF5CN2k/BPCells37494a32e8ae23
+#> 1. Load compressed matrix from directory /tmp/RtmpysclbW/BPCells38e4bf6ace28a6
 #> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
@@ -280,7 +280,7 @@ assay(sce, "logcounts")
 #> Storage order: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpF5CN2k/BPCells37494a32e8ae23
+#> 1. Load compressed matrix from directory /tmp/RtmpysclbW/BPCells38e4bf6ace28a6
 #> 2. Scale columns by 0.984, 1.05 ... 1
 #> 3. Transform log1p
 #> 4. Scale by 1.44
