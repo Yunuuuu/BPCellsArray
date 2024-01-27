@@ -93,20 +93,7 @@ methods::setMethod(
 methods::setMethod(
     "rownames<-", c(x = "BPCellsSeed", value = "atomic"),
     function(x, value) {
-        if (!is.null(value)) {
-            if (!is.atomic(value)) {
-                cli::cli_abort(
-                    "{.arg value} must be a character or {.code NULL}"
-                )
-            }
-            if (length(value) != nrow(x)) {
-                cli::cli_abort(
-                    "{.arg value} must have the length of {.code nrow(value)}"
-                )
-            }
-        }
-        dimnames(x) <- list(value, colnames(x))
-        BPCellsSeed(x)
+        BPCellsSeed(set_dimnames(x, 1L, value))
     }
 )
 
@@ -116,19 +103,46 @@ methods::setMethod(
 methods::setMethod(
     "colnames<-", c(x = "BPCellsSeed", value = "atomic"),
     function(x, value) {
-        if (!is.null(value)) {
-            if (!is.atomic(value)) {
-                cli::cli_abort(
-                    "{.arg value} must be a character or {.code NULL}"
-                )
-            }
-            if (length(value) != ncol(x)) {
-                cli::cli_abort(
-                    "{.arg value} must have the length of {.code ncol(value)}"
-                )
-            }
-        }
-        dimnames(x) <- list(rownames(x), value)
-        BPCellsSeed(x)
+        BPCellsSeed(set_dimnames(x, 2L, value))
     }
 )
+
+set_dimnames <- function(x, axis, value) {
+    dims <- dim(x)
+    dnms <- dimnames(x)
+    if (axis == 1L) {
+        axis_nm <- "rownames"
+    } else if (axis == 2L) {
+        axis_nm <- "colnames"
+    } else {
+        axis_nm <- sprintf("names of %d-dimension")
+    }
+    nd <- length(dnms)
+    if (nd < 2L) {
+        cli::cli_abort(
+            "attempt to set '{axis_nm}' on an object with less than two dimensions"
+        )
+    } else if (nd < axis) {
+        cli::cli_abort(
+            "attempt to set '{axis_nm}' on an object with only {nd} dimensions"
+        )
+    }
+    dnms <- dnms %||% vector("list", length = nd)
+    if (is.null(value)) {
+        dnms[axis] <- list(NULL)
+    } else {
+        if (!is.atomic(value)) {
+            cli::cli_abort(
+                "{.arg value} must be a character or {.code NULL}"
+            )
+        }
+        if (length(value) != dims[axis]) {
+            cli::cli_abort(
+                "{.arg value} must have the length of {.code nrow(value)}"
+            )
+        }
+        dnms[[axis]] <- value
+    }
+    dimnames(x) <- dnms
+    x
+}
