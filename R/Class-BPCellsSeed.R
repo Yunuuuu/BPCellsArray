@@ -9,11 +9,11 @@
 #' @name BPCellsSeed
 NULL
 
-# we cannot use the `DelayedNaryOp` object since it use `seeds` slot to save a
-# list of other seed objects while BPCells use left (and right) or
-#
 # BPCells matrix object indeed is a DelayedMatrix, but we regard it as a seed
 # object in DelayedMatrix
+# we cannot use the `DelayedNaryOp` object since it use `seeds` slot to save a
+# list of other seed objects while BPCells use left (and right) or matrix_list.
+
 
 #' @include utils.R
 #' @rdname BPCellsSeed
