@@ -193,7 +193,7 @@ methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L) {
 #' @param ignore.mcols Ignored.
 #' @param check Ignored.
 #' @inheritParams S4Vectors::bindROWS
-#' @importFrom DelayedArray bindROWS
+#' @importFrom S4Vectors bindROWS
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(
@@ -366,7 +366,7 @@ methods::setMethod(
     }
 )
 
-#' @importFrom DelayedArray bindROWS
+#' @importFrom S4Vectors bindROWS
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(

@@ -47,7 +47,6 @@ methods::setGeneric(
 #' @return A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
-#' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname convert_type
 methods::setMethod("convert_type", "BPCellsSeed", function(object, type) {
@@ -70,6 +69,7 @@ methods::setMethod("convert_type", "BPCellsSeed", function(object, type) {
     BPCellsSeed(obj)
 })
 
+#' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname convert_type
 methods::setMethod("convert_type", "BPCellsMatrix", function(object, type) {

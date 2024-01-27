@@ -83,7 +83,7 @@ methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
 
 #######################################################################
 # Variance
-#' @importFrom DelayedArray rowVars
+#' @importFrom MatrixGenerics rowVars
 #' @return
 #' - `rowVars()`: vector of row variance
 #' @aliases rowVars
@@ -96,7 +96,7 @@ methods::setMethod("rowVars", c(x = "BPCellsSeed"), function(x) {
     stats$row_stats["variance", , drop = TRUE]
 })
 
-#' @importFrom DelayedArray colVars
+#' @importFrom MatrixGenerics colVars
 #' @return
 #' - `colVars()`: vector of column variance
 #' @aliases colVars
@@ -109,14 +109,14 @@ methods::setMethod("colVars", c(x = "BPCellsSeed"), function(x) {
     stats$col_stats["variance", , drop = TRUE]
 })
 
-#' @importFrom DelayedArray rowVars
+#' @importFrom MatrixGenerics rowVars
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
     rowVars(x@seed)
 })
 
-#' @importFrom DelayedArray colVars
+#' @importFrom MatrixGenerics colVars
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
