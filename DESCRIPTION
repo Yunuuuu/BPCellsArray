@@ -11,20 +11,21 @@ Description: Implements a DelayedArray backend for reading and
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
-    BiocGenerics,
-    BiocSingular,
+    methods,
     BPCells (>= 0.1.0),
-    cli,
     DelayedArray (>= 0.28.0),
     Matrix,
     MatrixGenerics,
-    methods,
+    BiocGenerics,
+    cli,
     rlang (>= 1.1.0),
     S4Vectors,
-    SparseArray
+    SparseArray,
+    BiocSingular
 Remotes: 
     bnprks/BPCells
 Suggests: 
+    SingleCellExperiment,
     BiocNeighbors,
     bluster,
     knitr,
@@ -35,7 +36,6 @@ Suggests:
     scater,
     scran,
     scuttle,
-    SingleCellExperiment,
     testthat (>= 3.0.0)
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.0

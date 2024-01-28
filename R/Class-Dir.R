@@ -43,7 +43,7 @@ methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
 })
 
 #' Read/write sparse matrices from (or into) directory on disk
-#' 
+#'
 #' @description
 #' - `readBPCellsDirMatrix`: read a sparce matrices from a directory on disk
 #' - `writeBPCellsDirArray`: Write a sparce matrices into a directory on disk
@@ -129,16 +129,6 @@ methods::setAs("ANY", "BPCellsDirArray", .as_BPCellsDirArray)
 
 #' @export
 methods::setAs("ANY", "BPCellsDirMatrix", .as_BPCellsDirArray)
-
-#' @export
-methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
-    methods::as(from@seed, "dgCMatrix")
-})
-
-#' @export
-methods::setAs("BPCellsMatrix", "matrix", function(from) {
-    as.matrix(from@seed)
-})
 
 #' @export
 methods::setAs("ANY", "BPCellsArray", .as_BPCellsDirArray)
