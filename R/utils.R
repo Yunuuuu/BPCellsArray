@@ -37,6 +37,9 @@ coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller
     )
 }
 
+storage_axis <- function(x) ifelse(x@transpose, "row", "column")
+storage_mode <- function(x) BPCells:::matrix_type(x)
+
 show_bpcells <- function(object, baseClass, class) {
     cat(sprintf(
         "%d x %d %s object with class %s\n",
@@ -54,11 +57,8 @@ show_bpcells <- function(object, baseClass, class) {
     ))
 
     cat("\n")
-    cat(sprintf("Data type: %s\n", BPCells:::matrix_type(object)))
-    cat(sprintf(
-        "Storage order: %s major\n",
-        ifelse(object@transpose, "row", "column")
-    ))
+    cat(sprintf("Data type: %s\n", storage_mode(object)))
+    cat(sprintf("Storage order: %s major\n", storage_axis(object)))
 
     cat("\n")
     description <- BPCells:::short_description(object)

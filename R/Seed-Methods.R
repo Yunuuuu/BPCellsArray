@@ -36,7 +36,7 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
 #' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("type", "BPCellsSeed", function(x) {
-    switch(BPCells:::matrix_type(x),
+    switch(storage_mode(x),
         uint32_t = "integer",
         float = "double",
         double = "double"
