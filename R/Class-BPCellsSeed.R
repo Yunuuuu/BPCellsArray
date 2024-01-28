@@ -70,10 +70,3 @@ methods::setMethod(
         BPCellsdgCMatrixSeed(x = x)
     }
 )
-
-#' @export
-methods::setAs("BPCellsSeed", "matrix", function(from) {
-    out <- as.matrix(methods::as(from, "dgCMatrix"))
-    storage.mode(out) <- type(from)
-    out
-})

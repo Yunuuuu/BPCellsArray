@@ -14,6 +14,7 @@
 \alias{extract_array,BPCellsSeed-method}
 \alias{OLD_extract_sparse_array,BPCellsSeed-method}
 \alias{extract_sparse_array,BPCellsSeed-method}
+\alias{chunkdim,BPCellsSeed-method}
 \alias{t,BPCellsSeed-method}
 \alias{expm1_slow,BPCellsSeed-method}
 \alias{log1p_slow,BPCellsSeed-method}
@@ -61,6 +62,8 @@
 \S4method{OLD_extract_sparse_array}{BPCellsSeed}(x, index)
 
 \S4method{extract_sparse_array}{BPCellsSeed}(x, index)
+
+\S4method{chunkdim}{BPCellsSeed}(x)
 
 \S4method{t}{BPCellsSeed}(x)
 
@@ -180,6 +183,11 @@ differentiate 32-bit and 64-bit real number.
 \itemize{
 \item \code{extract_sparse_array}: A
 \link[SparseArray:SVT_SparseArray-class]{SparseArray} object.
+}
+
+\itemize{
+\item \code{chunkdim}: \code{NULL} or the chunk dimensions in an integer vector parallel to
+\code{dim(x)}.
 }
 
 \itemize{

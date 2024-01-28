@@ -91,6 +91,17 @@ methods::setMethod(
     }
 )
 
+#' @return 
+#' - `chunkdim`: `NULL` or the chunk dimensions in an integer vector parallel to
+#' `dim(x)`.
+#' @importFrom DelayedArray chunkdim
+#' @export
+#' @rdname BPCellsSeed-methods
+methods::setMethod(
+    "chunkdim", "BPCellsSeed",
+    function(x) if (x@transpose) c(1L, ncol(x)) else c(nrow(x), 1L)
+)
+
 # t will not change the underlying class
 #' @return
 #'  - `t`: A [BPCellsSeed] object.
@@ -111,3 +122,10 @@ methods::setMethod(
         BPCellsSeed(methods::callNextMethod())
     }
 )
+
+#' @export
+methods::setAs("BPCellsSeed", "matrix", function(from) {
+    out <- as.matrix(methods::as(from, "dgCMatrix"))
+    storage.mode(out) <- type(from)
+    out
+})
