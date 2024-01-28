@@ -60,7 +60,11 @@ methods::setClass("BPCellsdgCMatrixSeed",
 
 #' @noRd
 BPCellsdgCMatrixSeed <- function(x) {
-    methods::as(x, "BPCellsdgCMatrixSeed")
+    methods::new(
+        "BPCellsdgCMatrixSeed",
+        dim = dim(x), dimnames = dimnames(x),
+        transpose = x@transpose, mat = x@mat
+    )
 }
 
 #' @export
@@ -83,10 +87,5 @@ methods::setAs("dgCMatrix", "BPCellsdgCMatrixSeed", function(from) {
 
 #' @export
 methods::setAs("ANY", "BPCellsdgCMatrixSeed", function(from) {
-    methods::as(coerce_dgCMatrix(from), "BPCellsdgCMatrixSeed")
-})
-
-#' @export
-methods::setAs("ANY", "BPCellsSeed", function(from) {
     methods::as(coerce_dgCMatrix(from), "BPCellsdgCMatrixSeed")
 })
