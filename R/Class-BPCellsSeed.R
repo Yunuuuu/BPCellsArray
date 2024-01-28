@@ -70,3 +70,23 @@ methods::setMethod(
         BPCellsdgCMatrixSeed(x = x)
     }
 )
+
+############################################################
+#' @export
+methods::setAs("dgCMatrix", "BPCellsdgCMatrixSeed", function(from) {
+    methods::new(
+        "BPCellsdgCMatrixSeed",
+        dim = dim(from), dimnames = dimnames(from),
+        transpose = FALSE, mat = from
+    )
+})
+
+#' @export
+methods::setAs("ANY", "BPCellsdgCMatrixSeed", function(from) {
+    methods::as(coerce_dgCMatrix(from), "BPCellsdgCMatrixSeed")
+})
+
+#' @export
+methods::setAs("ANY", "BPCellsSeed", function(from) {
+    methods::as(coerce_dgCMatrix(from), "BPCellsdgCMatrixSeed")
+})
