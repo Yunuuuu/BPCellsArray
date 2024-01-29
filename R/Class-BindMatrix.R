@@ -1,5 +1,5 @@
 ############################################################
-# `ColBindMatrices` and `RowBindMatrices`
+# Class for `ColBindMatrices` and `RowBindMatrices`
 
 methods::setClass("BPCellsBindMatrixSeed",
     contains = c("BPCellsNaryOpsSeed", "VIRTUAL")
@@ -137,8 +137,11 @@ NULL
 #' @rdname BPCells-bind
 methods::setMethod(
     "rbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
-    function(x, y, ..., threads = 0L) {
-        DelayedArray(rbind2(x = x@seed, y = y@seed, ..., threads = threads))
+    function(x, y, mode = NULL, ..., threads = 0L) {
+        DelayedArray(rbind2(
+            x = x@seed, y = y@seed, mode = mode,
+            ..., threads = threads
+        ))
     }
 )
 
@@ -173,20 +176,24 @@ methods::setMethod(
 #' @rdname BPCells-bind
 methods::setMethod(
     "rbind", "BPCellsMatrix",
-    function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
-        merge_BPCellsMatrices(
-            list = pack_BPCellsMatrices(...), .fn = rbind2, threads = threads
+    function(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
+        out <- combine_matrices(
+            .fn = "rbind2", mode = mode,
+            matrices = pack_BPCellsMatrices(...)
         )
+        set_threads(out, threads = threads)
     }
 )
 
 #' @importFrom DelayedArray arbind
 #' @export
 #' @rdname BPCells-bind
-methods::setMethod("arbind", "BPCellsMatrix", function(..., threads = 0L) {
-    merge_BPCellsMatrices(
-        list = pack_BPCellsMatrices(...), .fn = rbind2, threads = threads
+methods::setMethod("arbind", "BPCellsMatrix", function(..., mode = NULL, threads = 0L) {
+    out <- combine_matrices(
+        .fn = "rbind2", mode = mode,
+        matrices = pack_BPCellsMatrices(...)
     )
+    set_threads(out, threads = threads)
 })
 
 #' @param use.names Ignored, always be `TRUE`.
@@ -202,10 +209,12 @@ methods::setMethod(
              ignore.mcols = TRUE, check = TRUE) {
         assert_(objects, is.list, "a list")
         check_BPCellsMatrices(objects, "objects")
-        merge_BPCellsMatrices(list = c(list(x), objects), .fn = rbind2)
+        combine_matrices(
+            .fn = "rbind2", mode = NULL,
+            matrices = c(list(x), objects)
+        )
     }
 )
-
 
 #################### cbind ########################
 #' @importFrom methods cbind2
@@ -213,8 +222,10 @@ methods::setMethod(
 #' @rdname BPCells-bind
 methods::setMethod(
     "cbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
-    function(x, y, ..., threads = 0L) {
-        DelayedArray(cbind2(x = x@seed, y = y@seed, ..., threads = threads))
+    function(x, y, mode = NULL, ..., threads = 0L) {
+        DelayedArray(cbind2(
+            x = x@seed, y = y@seed, mode = mode, ..., threads = threads
+        ))
     }
 )
 
@@ -247,20 +258,24 @@ methods::setMethod(
 #' @rdname BPCells-bind
 methods::setMethod(
     "cbind", "BPCellsMatrix",
-    function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
-        merge_BPCellsMatrices(
-            list = pack_BPCellsMatrices(...), .fn = cbind2, threads = threads
+    function(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
+        out <- combine_matrices(
+            .fn = "cbind2", mode = mode,
+            matrices = pack_BPCellsMatrices(...)
         )
+        set_threads(out, threads = threads)
     }
 )
 
 #' @importFrom DelayedArray acbind
 #' @export
 #' @rdname BPCells-bind
-methods::setMethod("acbind", "BPCellsMatrix", function(..., threads = 0L, use.first.dimnames = TRUE) {
-    merge_BPCellsMatrices(
-        list = pack_BPCellsMatrices(...), .fn = cbind2, threads = threads
+methods::setMethod("acbind", "BPCellsMatrix", function(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE) {
+    out <- combine_matrices(
+        .fn = "cbind2", mode = mode,
+        matrices = pack_BPCellsMatrices(...)
     )
+    set_threads(out, threads = threads)
 })
 
 #' @importFrom S4Vectors bindCOLS
@@ -272,22 +287,27 @@ methods::setMethod(
              ignore.mcols = TRUE, check = TRUE) {
         assert_(objects, is.list, "a list")
         check_BPCellsMatrices(objects, "objects")
-        merge_BPCellsMatrices(list = c(list(x), objects), .fn = cbind2)
+        combine_matrices(
+            .fn = "cbind2", mode = NULL,
+            matrices = c(list(x), objects)
+        )
     }
 )
 
-merge_BPCellsMatrices <- function(list, .fn, ...) {
-    Reduce(function(x, y) .fn(x = x, y = y, ...), list)
+combine_matrices <- function(.fn, mode, matrices, ...) {
+    seeds <- lapply(matrices, methods::slot, name = "seed")
+    DelayedArray(combine_seeds(.fn = .fn, mode = mode, seeds = seeds, ...))
 }
 
-pack_BPCellsMatrices <- function(...) {
+pack_BPCellsMatrices <- function(..., call = rlang::caller_env()) {
     objects <- list(...)
-    check_BPCellsMatrices(objects, "...")
+    check_BPCellsMatrices(objects, arg = "...", call = call)
     objects
 }
 
-check_BPCellsMatrices <- function(lst, arg) {
-    BPCellsMatrices <- vapply(lst, methods::is, logical(1L),
+check_BPCellsMatrices <- function(list, arg = rlang::caller_arg(list), call = rlang::caller_env()) {
+    BPCellsMatrices <- vapply(list,
+        methods::is, logical(1L),
         class2 = "BPCellsMatrix"
     )
     if (!all(BPCellsMatrices)) {
@@ -295,7 +315,8 @@ check_BPCellsMatrices <- function(lst, arg) {
             c(
                 "all input must be a {.cls BPCellsMatrix} object",
                 i = "Please check the input {.arg {arg}} in {.val {which(!BPCellsMatrices)}}"
-            )
+            ),
+            call = call
         )
     }
 }
@@ -307,13 +328,9 @@ check_BPCellsMatrices <- function(lst, arg) {
 #' @rdname BPCells-bind
 methods::setMethod(
     "rbind2", c(x = "BPCellsSeed", y = "BPCellsSeed"),
-    function(x, y, ..., threads = 0L) {
-        fn <- methods::getMethod(
-            "rbind2", c("IterableMatrix", "IterableMatrix"),
-            where = "BPCells"
-        )
-        out <- fn(x, y, ...)
-        set_threads(BPCellsSeed(out), threads = threads)
+    function(x, y, mode = NULL, ..., threads = 0L) {
+        out <- combine_seeds("rbind2", mode = mode, seeds = list(x, y), ...)
+        set_threads(out, threads = threads)
     }
 )
 
@@ -347,10 +364,13 @@ methods::setMethod(
 #' @rdname BPCells-bind
 methods::setMethod(
     "rbind", "BPCellsSeed",
-    function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
-        merge_BPCellsSeeds(
-            list = pack_BPCellsSeeds(...), .fn = rbind2, threads = threads
+    function(..., mode = NULL, threads = 0L,
+             use.first.dimnames = TRUE, deparse.level = 1L) {
+        out <- combine_seeds(
+            .fn = "rbind2", mode = mode,
+            seeds = pack_BPCellsSeeds(...)
         )
+        set_threads(out, threads = threads)
     }
 )
 
@@ -359,10 +379,12 @@ methods::setMethod(
 #' @rdname BPCells-bind
 methods::setMethod(
     "arbind", "BPCellsSeed",
-    function(..., threads = 0L, use.first.dimnames = TRUE) {
-        merge_BPCellsSeeds(
-            list = pack_BPCellsSeeds(...), .fn = rbind2, threads = threads
+    function(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE) {
+        out <- combine_seeds(
+            .fn = "rbind2", mode = mode,
+            seeds = pack_BPCellsSeeds(...)
         )
+        set_threads(out, threads = threads)
     }
 )
 
@@ -374,8 +396,11 @@ methods::setMethod(
     function(x, objects = list(), use.names = TRUE,
              ignore.mcols = TRUE, check = TRUE) {
         assert_(objects, is.list, "a list")
-        check_BPCellsSeeds(objects, "objects")
-        merge_BPCellsSeeds(list = c(list(x), objects), .fn = rbind2)
+        check_BPCellsSeeds(objects)
+        combine_seeds(
+            .fn = "rbind2", mode = NULL,
+            seeds = c(list(x), objects)
+        )
     }
 )
 
@@ -385,13 +410,9 @@ methods::setMethod(
 #' @rdname BPCells-bind
 methods::setMethod(
     "cbind2", c(x = "BPCellsSeed", y = "BPCellsSeed"),
-    function(x, y, ..., threads = 0L) {
-        fn <- methods::getMethod(
-            "cbind2", c("IterableMatrix", "IterableMatrix"),
-            where = "BPCells"
-        )
-        out <- fn(x, y, ...)
-        set_threads(BPCellsSeed(out), threads = threads)
+    function(x, y, mode = NULL, ..., threads = 0L) {
+        out <- combine_seeds("cbind2", mode = mode, seeds = list(x, y), ...)
+        set_threads(out, threads = threads)
     }
 )
 
@@ -424,21 +445,24 @@ methods::setMethod(
 #' @rdname BPCells-bind
 methods::setMethod(
     "cbind", "BPCellsSeed",
-    function(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
-        merge_BPCellsSeeds(
-            list = pack_BPCellsSeeds(...), .fn = cbind2, threads = threads
+    function(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L) {
+        out <- combine_seeds(
+            .fn = "cbind2", mode = mode,
+            seeds = pack_BPCellsSeeds(...)
         )
+        set_threads(out, threads = threads)
     }
 )
 
 #' @importFrom DelayedArray acbind
 #' @export
 #' @rdname BPCells-bind
-methods::setMethod("acbind", "BPCellsSeed", function(..., threads = 0L, use.first.dimnames = TRUE) {
-    merge_BPCellsSeeds(
-        list = pack_BPCellsSeeds(...),
-        .fn = cbind2, threads = threads
+methods::setMethod("acbind", "BPCellsSeed", function(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE) {
+    out <- combine_seeds(
+        .fn = "cbind2", mode = mode,
+        seeds = pack_BPCellsSeeds(...)
     )
+    set_threads(out, threads = threads)
 })
 
 #' @importFrom S4Vectors bindCOLS
@@ -449,23 +473,35 @@ methods::setMethod(
     function(x, objects = list(), use.names = TRUE,
              ignore.mcols = TRUE, check = TRUE) {
         assert_(objects, is.list, "a list")
-        check_BPCellsSeeds(objects, "objects")
-        merge_BPCellsSeeds(list = c(list(x), objects), .fn = cbind2)
+        check_BPCellsSeeds(objects)
+        combine_seeds(
+            .fn = "cbind2", mode = NULL,
+            seeds = c(list(x), objects)
+        )
     }
 )
 
-merge_BPCellsSeeds <- function(list, .fn, ...) {
-    Reduce(function(x, y) .fn(x = x, y = y, ...), list)
+#################################################################
+combine_seeds <- function(.fn, mode, seeds, ...) {
+    fn <- methods::getMethod(.fn,
+        c("IterableMatrix", "IterableMatrix"),
+        where = "BPCells"
+    )
+    mode <- mode %||% compatible_storage_mode(seeds)
+    seeds <- lapply(seeds, convert_mode, mode = mode)
+    out <- Reduce(function(x, y) fn(x = x, y = y, ...), seeds)
+    BPCellsSeed(out)
 }
 
-pack_BPCellsSeeds <- function(...) {
+pack_BPCellsSeeds <- function(..., call = rlang::caller_env()) {
     objects <- list(...)
-    check_BPCellsSeeds(objects, "...")
+    check_BPCellsSeeds(objects, arg = "...", call = call)
     objects
 }
 
-check_BPCellsSeeds <- function(lst, arg) {
-    BPCellsSeeds <- vapply(lst, methods::is, logical(1L),
+check_BPCellsSeeds <- function(list, arg = rlang::caller_arg(list), call = rlang::caller_env()) {
+    BPCellsSeeds <- vapply(list,
+        methods::is, logical(1L),
         class2 = "BPCellsSeed"
     )
     if (!all(BPCellsSeeds)) {
@@ -473,7 +509,8 @@ check_BPCellsSeeds <- function(lst, arg) {
             c(
                 "all input must be a {.cls BPCellsSeed} object",
                 i = "Please check the input {.arg {arg}} in {.val {which(!BPCellsSeeds)}}"
-            )
+            ),
+            call = call
         )
     }
 }

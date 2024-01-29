@@ -28,11 +28,17 @@
 \alias{bindCOLS,BPCellsSeed-method}
 \title{Combine two Objects by Columns or Rows}
 \usage{
-\S4method{rbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, ..., threads = 0L)
+\S4method{rbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, mode = NULL, ..., threads = 0L)
 
-\S4method{rbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+\S4method{rbind}{BPCellsMatrix}(
+  ...,
+  mode = NULL,
+  threads = 0L,
+  use.first.dimnames = TRUE,
+  deparse.level = 1L
+)
 
-\S4method{arbind}{BPCellsMatrix}(..., threads = 0L)
+\S4method{arbind}{BPCellsMatrix}(..., mode = NULL, threads = 0L)
 
 \S4method{bindROWS}{BPCellsMatrix}(
   x,
@@ -42,11 +48,17 @@
   check = TRUE
 )
 
-\S4method{cbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, ..., threads = 0L)
+\S4method{cbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, mode = NULL, ..., threads = 0L)
 
-\S4method{cbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+\S4method{cbind}{BPCellsMatrix}(
+  ...,
+  mode = NULL,
+  threads = 0L,
+  use.first.dimnames = TRUE,
+  deparse.level = 1L
+)
 
-\S4method{acbind}{BPCellsMatrix}(..., threads = 0L, use.first.dimnames = TRUE)
+\S4method{acbind}{BPCellsMatrix}(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE)
 
 \S4method{bindCOLS}{BPCellsMatrix}(
   x,
@@ -56,11 +68,17 @@
   check = TRUE
 )
 
-\S4method{rbind2}{BPCellsSeed,BPCellsSeed}(x, y, ..., threads = 0L)
+\S4method{rbind2}{BPCellsSeed,BPCellsSeed}(x, y, mode = NULL, ..., threads = 0L)
 
-\S4method{rbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+\S4method{rbind}{BPCellsSeed}(
+  ...,
+  mode = NULL,
+  threads = 0L,
+  use.first.dimnames = TRUE,
+  deparse.level = 1L
+)
 
-\S4method{arbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE)
+\S4method{arbind}{BPCellsSeed}(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE)
 
 \S4method{bindROWS}{BPCellsSeed}(
   x,
@@ -70,11 +88,17 @@
   check = TRUE
 )
 
-\S4method{cbind2}{BPCellsSeed,BPCellsSeed}(x, y, ..., threads = 0L)
+\S4method{cbind2}{BPCellsSeed,BPCellsSeed}(x, y, mode = NULL, ..., threads = 0L)
 
-\S4method{cbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE, deparse.level = 1L)
+\S4method{cbind}{BPCellsSeed}(
+  ...,
+  mode = NULL,
+  threads = 0L,
+  use.first.dimnames = TRUE,
+  deparse.level = 1L
+)
 
-\S4method{acbind}{BPCellsSeed}(..., threads = 0L, use.first.dimnames = TRUE)
+\S4method{acbind}{BPCellsSeed}(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE)
 
 \S4method{bindCOLS}{BPCellsSeed}(
   x,
