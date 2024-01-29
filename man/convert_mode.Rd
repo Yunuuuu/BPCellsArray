@@ -10,7 +10,7 @@ convert_mode(object, ...)
 
 \S4method{convert_mode}{BPCellsSeed}(object, mode)
 
-\S4method{convert_mode}{BPCellsMatrix}(object, type)
+\S4method{convert_mode}{BPCellsMatrix}(object, mode)
 }
 \arguments{
 \item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or

@@ -57,14 +57,14 @@ methods::setMethod("convert_mode", "BPCellsSeed", function(object, mode) {
 #' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname convert_mode
-methods::setMethod("convert_mode", "BPCellsMatrix", function(object, type) {
-    DelayedArray(convert_mode(object@seed, type = type))
+methods::setMethod("convert_mode", "BPCellsMatrix", function(object, mode) {
+    DelayedArray(convert_mode(object@seed, mode = mode))
 })
 
 #' @inheritParams convert_mode
 #' @export
 #' @rdname internal-methods
-methods::setMethod("convert_mode", "ANY", function(object, type) {
+methods::setMethod("convert_mode", "ANY", function(object, mode) {
     cli::cli_abort(
         "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"
     )
