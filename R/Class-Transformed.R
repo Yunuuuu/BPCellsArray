@@ -54,7 +54,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix-methods
 methods::setGeneric("expm1_slow", function(x) {
-    makeStandardGeneric("expm1_slow")
+    standardGeneric("expm1_slow")
 })
 
 #' @export
@@ -83,7 +83,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix-methods
 methods::setGeneric("log1p_slow", function(x) {
-    makeStandardGeneric("log1p_slow")
+    standardGeneric("log1p_slow")
 })
 
 #' @export
@@ -167,7 +167,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix-methods
 methods::setGeneric("pmin_by_col", function(object, values) {
-    makeStandardGeneric("pmin_by_col")
+    standardGeneric("pmin_by_col")
 })
 
 #' @param values A positive atomic numeric.
@@ -205,7 +205,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix-methods
 methods::setGeneric("pmin_by_row", function(object, values) {
-    makeStandardGeneric("pmin_by_row")
+    standardGeneric("pmin_by_row")
 })
 
 #' @export
@@ -241,7 +241,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix-methods
 methods::setGeneric("pmin_scalar", function(object, value) {
-    makeStandardGeneric("pmin_scalar")
+    standardGeneric("pmin_scalar")
 })
 
 #' @export
@@ -276,7 +276,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsMatrix-methods
 methods::setGeneric("pow_slow", function(e1, e2) {
-    makeStandardGeneric("pow_slow")
+    standardGeneric("pow_slow")
 })
 
 #' @inheritParams BPCells-binarize
