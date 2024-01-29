@@ -44,7 +44,7 @@ methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
 
 #' @export
 methods::setAs("BPCellsMatrix", "matrix", function(from) {
-    as(from@seed, "matrix")
+    methods::as(from@seed, "matrix")
 })
 
 #' @export
