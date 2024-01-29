@@ -123,12 +123,12 @@ methods::setMethod(
         if (x@transpose != y@transpose) {
             if (x@transpose) {
                 cli::cli_warn(
-                    "{.arg x} is transposed but {.arg y} not, transposing the storage order for {.arg x}" # nolint
+                    "{.arg x} is transposed but {.arg y} not, transposing the storage axis for {.arg x}" # nolint
                 )
                 x <- BPCells::transpose_storage_order(x)
             } else {
                 cli::cli_warn(
-                    "{.arg y} is transposed but {.arg x} not, transposing the storage order for {.arg y}" # nolint
+                    "{.arg y} is transposed but {.arg x} not, transposing the storage axis for {.arg y}" # nolint
                 )
                 y <- BPCells::transpose_storage_order(y)
             }
