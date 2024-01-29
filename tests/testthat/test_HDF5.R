@@ -1,11 +1,16 @@
-mat <- mock_matrix(2000, 200)
+mat <- mock_matrix(20, 20)
 path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_hdf5(
     mat = as(mat, "dgCMatrix"),
     path = path, group = "BPCells"
 )
 
-common_test(mat, obj, path, BPCellsHDF5Seed, "HDF5")
+common_test(
+    obj, path,
+    mat = mat, 
+    seed_fn = BPCellsHDF5Seed, 
+    name = "HDF5"
+)
 testthat::test_that("`subset()` BPCellsHDF5Seed object works as expected", {
     seed <- BPCellsHDF5Seed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")

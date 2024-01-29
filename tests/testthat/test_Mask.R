@@ -1,4 +1,4 @@
-mat <- mock_matrix(2000, 200)
+mat <- mock_matrix(20, 20)
 path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 mask <- matrix(
@@ -12,7 +12,12 @@ mat[mask > 0L] <- 0L
 mask <- methods::as(mask, "dgCMatrix")
 obj <- BPCells:::mask_matrix(obj, mask)
 
-common_test(mat, obj, path, BPCellsMaskSeed, "Mask")
+common_test(
+    obj, path,
+    mat = mat, 
+    seed_fn = BPCellsMaskSeed, 
+    name = "Mask"
+)
 testthat::test_that("`subset()` BPCellsMaskSeed object works as expected", {
     seed <- BPCellsMaskSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")

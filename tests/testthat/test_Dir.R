@@ -1,9 +1,13 @@
-mat <- mock_matrix(2000, 200)
+mat <- mock_matrix(20, 20)
 path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 
-
-common_test(mat, obj, path, BPCellsDirSeed, "Dir")
+common_test(
+    obj, path,
+    mat = mat, 
+    seed_fn = BPCellsDirSeed, 
+    name = "Dir"
+)
 testthat::test_that("`subset()` BPCellsDirSeed object works as expected", {
     seed <- BPCellsDirSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")

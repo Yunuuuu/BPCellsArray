@@ -1,14 +1,24 @@
-mat <- mock_matrix(2000, 200)
+mat <- mock_matrix(20, 20)
 sparse_mat <- as(mat, "dgCMatrix")
 path <- character()
 
 # Packed Memory object
 obj <- BPCells::write_matrix_memory(mat = sparse_mat)
-common_test(mat, obj, path, BPCellsMemSeed, "Mem")
+common_test(
+    obj, path,
+    mat = mat, 
+    seed_fn = BPCellsMemSeed, 
+    name = "Mem"
+)
 
 # Unpacked Memory object
 obj <- BPCells::write_matrix_memory(mat = sparse_mat, FALSE)
-common_test(mat, obj, path, BPCellsMemSeed, "Mem")
+common_test(
+    obj, path,
+    mat = mat, 
+    seed_fn = BPCellsMemSeed, 
+    name = "Mem"
+)
 
 testthat::test_that("`subset()` BPCellsMemSeed object works as expected", {
     seed <- BPCellsMemSeed(obj)

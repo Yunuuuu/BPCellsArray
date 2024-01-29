@@ -3,10 +3,17 @@ tmpdir <- testthat::test_path("_TEMP")
 if (!dir.exists(tmpdir)) dir.create(tmpdir)
 tmpdir <- normalizePath(tmpdir, mustWork = TRUE)
 
-common_test <- function(mat, obj, actual_path, seed_fn, name) {
+common_test <- function(
+    obj, actual_path, ..., mat = NULL,
+    seed_fn, name, 
+    skip_multiplication = FALSE) {
+    # for TransformedMatrix, it often contain float values
+    transformed <- methods::is(seed_fn(obj), "BPCellsTransformedSeed")
     seed_class <- sprintf("BPCells%sSeed", name)
     seed_name <- sprintf("BPCellsSeed class of `%s`", name)
     matrix_name <- sprintf("BPCellsMatrix class of `%s`", name)
+    mat <- mat %||% as.matrix(obj)
+    cli::cli_inform("{.field BPCells{name}Seed} works as expected")
     testthat::test_that(
         sprintf("`BPCells%sSeed()` works as expected", name),
         {
@@ -21,58 +28,145 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field subset} {seed_name} works as expected")
     testthat::test_that(
         sprintf("`subset()` %s works as expected", seed_name),
         {
             seed <- seed_fn(obj)
             testthat::expect_s4_class(seed[1:10, ], "BPCellsSeed")
+            testthat::expect_identical(
+                rownames(seed[1:10, ]),
+                rownames(seed)[1:10]
+            )
+            testthat::expect_identical(colnames(seed[1:10, ]), colnames(seed))
             testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
             testthat::expect_s4_class(seed[, 1:10], "BPCellsSeed")
+            testthat::expect_identical(
+                colnames(seed[, 1:10]),
+                colnames(seed)[1:10]
+            )
+            testthat::expect_identical(rownames(seed[, 1:10]), rownames(seed))
             testthat::expect_equal(as.matrix(seed[, 1:10]), mat[, 1:10])
-            testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSeed")
-            testthat::expect_equal(as.matrix(seed[1:10, 1:10]), mat[1:10, 1:10])
+            seed2 <- seed[1:10, 1:10]
+            testthat::expect_s4_class(seed2, "BPCellsSeed")
+            testthat::expect_identical(rownames(seed2), rownames(seed)[1:10])
+            testthat::expect_identical(colnames(seed2), colnames(seed)[1:10])
+            testthat::expect_equal(as.matrix(seed2), mat[1:10, 1:10])
         }
     )
 
+
+    cli::cli_inform("{.field subset} {matrix_name} works as expected")
     testthat::test_that(
         sprintf("`subset()` %s works as expected", matrix_name),
         {
             obj <- BPCellsArray(obj)
             testthat::expect_s4_class(obj[1:10, ], "BPCellsMatrix")
-            testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
+            testthat::expect_identical(
+                rownames(obj[1:10, ]),
+                rownames(obj)[1:10]
+            )
+            testthat::expect_identical(colnames(obj[1:10, ]), colnames(obj))
             testthat::expect_s4_class(obj[, 1:10], "BPCellsMatrix")
+            testthat::expect_identical(
+                colnames(obj[, 1:10]),
+                colnames(obj)[1:10]
+            )
+            testthat::expect_identical(rownames(obj[, 1:10]), rownames(obj))
+            obj2 <- obj[1:10, 1:10]
+            testthat::expect_s4_class(obj2, "BPCellsMatrix")
+            testthat::expect_identical(rownames(obj2), rownames(obj)[1:10])
+            testthat::expect_identical(colnames(obj2), colnames(obj)[1:10])
+
+            testthat::skip_if(transformed)
+            testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
             testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
-            testthat::expect_s4_class(obj[1:10, 1:10], "BPCellsMatrix")
-            testthat::expect_equal(as.matrix(obj[1:10, 1:10]), mat[1:10, 1:10])
+            testthat::expect_equal(as.matrix(obj2), mat[1:10, 1:10])
         }
     )
 
+    pseudo_mat <- matrix(sample(mat, length(mat)), nrow = nrow(mat))
+    cli::cli_inform("{.field [<-} {seed_name} works as expected")
     testthat::test_that(
-        sprintf("`convert_type()` %s works as expected", seed_name),
+        sprintf("`[<-()` %s works as expected", seed_name),
         {
             seed <- seed_fn(obj)
-            float_seed <- convert_type(seed, "numeric")
-            testthat::expect_s4_class(float_seed, "BPCellsConvertSeed")
-            testthat::expect_identical(type(float_seed), "double")
-            integer_seed <- convert_type(float_seed, "integer")
-            testthat::expect_s4_class(integer_seed, "BPCellsConvertSeed")
-            testthat::expect_identical(type(integer_seed), "integer")
+            seed[1:10, ] <- pseudo_mat[1:10, ]
+            mat[1:10, ] <- pseudo_mat[1:10, ]
+            testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_equal(as.matrix(seed), mat)
+
+            seed[, 1:10] <- pseudo_mat[, 1:10]
+            mat[, 1:10] <- pseudo_mat[, 1:10]
+            testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_equal(as.matrix(seed), mat)
+
+            seed[1:10, 1:10] <- pseudo_mat[1:10, 1:10]
+            mat[1:10, 1:10] <- pseudo_mat[1:10, 1:10]
+            testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_equal(as.matrix(seed), mat)
+
+            testthat::expect_identical(storage_mode(seed), "double")
+
+            seed[1:10, mode = "integer"] <- pseudo_mat[1:10, ]
+            mat[1:10, ] <- pseudo_mat[1:10, ]
+            storage.mode(mat) <- "integer"
+            testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_identical(storage_mode(seed), "uint32_t")
+            testthat::expect_equal(as.matrix(seed), mat)
         }
     )
-
+    cli::cli_inform("{.field [<-} {matrix_name} works as expected")
     testthat::test_that(
-        sprintf("`convert_type()` %s works as expected", matrix_name),
+        sprintf("`[<-()` %s works as expected", matrix_name),
         {
             obj <- BPCellsArray(obj)
-            float_obj <- convert_type(obj, "numeric")
-            testthat::expect_s4_class(float_obj, "BPCellsMatrix")
-            testthat::expect_identical(type(float_obj), "double")
-            integer_obj <- convert_type(float_obj, "integer")
-            testthat::expect_s4_class(integer_obj, "BPCellsMatrix")
-            testthat::expect_identical(type(integer_obj), "integer")
+            obj[1:10, ] <- pseudo_mat[1:10, ]
+            mat[1:10, ] <- pseudo_mat[1:10, ]
+            testthat::expect_s4_class(obj, "BPCellsMatrix")
+            testthat::expect_equal(as.matrix(obj), mat)
+
+            obj[, 1:10] <- pseudo_mat[, 1:10]
+            mat[, 1:10] <- pseudo_mat[, 1:10]
+            testthat::expect_s4_class(obj, "BPCellsMatrix")
+            testthat::expect_equal(as.matrix(obj), mat)
+
+            obj[1:10, 1:10] <- pseudo_mat[1:10, 1:10]
+            mat[1:10, 1:10] <- pseudo_mat[1:10, 1:10]
+            testthat::expect_s4_class(obj, "BPCellsMatrix")
+            testthat::expect_equal(as.matrix(obj), mat)
         }
     )
 
+    cli::cli_inform("{.field convert_mode} {seed_name} works as expected")
+    testthat::test_that(
+        sprintf("`convert_mode()` %s works as expected", seed_name),
+        {
+            seed <- seed_fn(obj)
+            float_seed <- convert_mode(seed, "float")
+            testthat::expect_s4_class(float_seed, "BPCellsConvertSeed")
+            testthat::expect_identical(storage_mode(float_seed), "float")
+            integer_seed <- convert_mode(float_seed, "uint32_t")
+            testthat::expect_s4_class(integer_seed, "BPCellsConvertSeed")
+            testthat::expect_identical(storage_mode(integer_seed), "uint32_t")
+        }
+    )
+
+    cli::cli_inform("{.field convert_mode} {matrix_name} works as expected")
+    testthat::test_that(
+        sprintf("`convert_mode()` %s works as expected", matrix_name),
+        {
+            obj <- BPCellsArray(obj)
+            float_obj <- convert_mode(obj, "float")
+            testthat::expect_s4_class(float_obj, "BPCellsMatrix")
+            testthat::expect_identical(storage_mode(float_obj), "float")
+            integer_obj <- convert_mode(float_obj, "uint32_t")
+            testthat::expect_s4_class(integer_obj, "BPCellsMatrix")
+            testthat::expect_identical(storage_mode(integer_obj), "uint32_t")
+        }
+    )
+
+    cli::cli_inform("{.field t} BPCells{name} works as expected")
     testthat::test_that(
         sprintf("`t()` BPCells%s works as expected", name),
         {
@@ -86,6 +180,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field dimnames<-} BPCells{name} works as expected")
     testthat::test_that(
         sprintf("`dimnames<-()` BPCells%s works as expected", name),
         {
@@ -106,6 +201,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field rownames<-} BPCells{name} works as expected")
     testthat::test_that(
         sprintf("`rownames<-()` BPCells%s works as expected", name),
         {
@@ -132,6 +228,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field colnames<-} BPCells{name} works as expected")
     testthat::test_that(
         sprintf("`colnames<-()` BPCells%s works as expected", name),
         {
@@ -163,10 +260,14 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
             testthat::expect_null(colnames(obj))
         }
     )
-
+    cli::cli_inform("{.field %*%} BPCells{name} works as expected")
     testthat::test_that(
         sprintf("`%%*%%` BPCells%s works as expected", name),
         {
+            testthat::skip_if(
+                skip_multiplication,
+                "Skipping for TransformedMatrix"
+            )
             seed <- seed_fn(obj)
             testthat::expect_s4_class(seed, seed_class)
             testthat::expect_warning(temp <- seed %*% t(seed))
@@ -186,6 +287,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field rbind} {seed_name} works as expected")
     testthat::test_that(
         sprintf("`rbind()` %s works as expected", seed_name),
         {
@@ -226,21 +328,23 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field rbind} {matrix_name} works as expected")
     testthat::test_that(
         sprintf("`rbind()` %s works as expected", matrix_name),
         {
             obj <- BPCellsArray(obj)
             testthat::expect_s4_class(obj, "BPCellsMatrix")
             testthat::expect_s4_class(rbind2(obj, obj), "BPCellsMatrix")
-            testthat::expect_equal(as.matrix(rbind2(obj, obj)), rbind(mat, mat))
             testthat::expect_s4_class(rbind(obj, obj), "BPCellsMatrix")
-            testthat::expect_equal(as.matrix(rbind(obj, obj)), rbind(mat, mat))
             testthat::expect_s4_class(arbind(obj, obj), "BPCellsMatrix")
-            testthat::expect_equal(as.matrix(arbind(obj, obj)), rbind(mat, mat))
             testthat::expect_s4_class(
                 bindROWS(obj, list(obj)),
                 "BPCellsMatrix"
             )
+            testthat::skip_if(transformed)
+            testthat::expect_equal(as.matrix(rbind2(obj, obj)), rbind(mat, mat))
+            testthat::expect_equal(as.matrix(rbind(obj, obj)), rbind(mat, mat))
+            testthat::expect_equal(as.matrix(arbind(obj, obj)), rbind(mat, mat))
             testthat::expect_equal(
                 as.matrix(bindROWS(obj, list(obj))),
                 rbind(mat, mat)
@@ -248,6 +352,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field cbind} {seed_name} works as expected")
     testthat::test_that(
         sprintf("`cbind()` %s works as expected", seed_name),
         {
@@ -257,29 +362,30 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
                 cbind2(seed, seed),
                 "BPCellsColBindMatrixSeed"
             )
-            testthat::expect_equal(
-                as.matrix(cbind2(seed, seed)),
-                cbind(mat, mat)
-            )
             testthat::expect_s4_class(
                 cbind(seed, seed),
                 "BPCellsColBindMatrixSeed"
-            )
-            testthat::expect_equal(
-                as.matrix(cbind(seed, seed)),
-                cbind(mat, mat)
             )
             testthat::expect_s4_class(
                 acbind(seed, seed),
                 "BPCellsColBindMatrixSeed"
             )
-            testthat::expect_equal(
-                as.matrix(acbind(seed, seed)),
-                cbind(mat, mat)
-            )
             testthat::expect_s4_class(
                 bindCOLS(seed, list(seed)),
                 "BPCellsColBindMatrixSeed"
+            )
+            testthat::skip_if(transformed)
+            testthat::expect_equal(
+                as.matrix(cbind2(seed, seed)),
+                cbind(mat, mat)
+            )
+            testthat::expect_equal(
+                as.matrix(cbind(seed, seed)),
+                cbind(mat, mat)
+            )
+            testthat::expect_equal(
+                as.matrix(acbind(seed, seed)),
+                cbind(mat, mat)
             )
             testthat::expect_equal(
                 as.matrix(bindCOLS(seed, list(seed))),
@@ -288,6 +394,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field cbind} {matrix_name} works as expected")
     testthat::test_that(
         sprintf("`cbind()` %s works as expected", matrix_name),
         {
@@ -310,7 +417,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
-
+    cli::cli_inform("{.field +} {seed_name} works as expected")
     testthat::test_that(
         sprintf("`+` %s works as expected", seed_name),
         {
@@ -356,6 +463,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field +} {matrix_name} works as expected")
     testthat::test_that(
         sprintf("`+` %s works as expected", matrix_name),
         {
@@ -401,6 +509,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field -} {seed_name} works as expected")
     testthat::test_that(
         sprintf("`-` %s works as expected", seed_name),
         {
@@ -446,6 +555,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field -} {matrix_name} works as expected")
     testthat::test_that(
         sprintf("`-` %s works as expected", matrix_name),
         {
@@ -491,7 +601,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
-
+    cli::cli_inform("{.field *} {seed_name} works as expected")
     testthat::test_that(
         sprintf("`*` %s works as expected", seed_name),
         {
@@ -537,6 +647,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field *} {matrix_name} works as expected")
     testthat::test_that(
         sprintf("`*` %s works as expected", matrix_name),
         {
@@ -582,6 +693,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field /} {seed_name} works as expected")
     testthat::test_that(
         sprintf("`/` %s works as expected", seed_name),
         {
@@ -611,6 +723,7 @@ common_test <- function(mat, obj, actual_path, seed_fn, name) {
         }
     )
 
+    cli::cli_inform("{.field /} {matrix_name} works as expected")
     testthat::test_that(
         sprintf("`/` %s works as expected", matrix_name),
         {

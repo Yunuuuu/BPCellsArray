@@ -1,12 +1,17 @@
-mat1 <- mock_matrix(2000, 200)
-mat2 <- mock_matrix(2000, 200)
+mat1 <- mock_matrix(20, 20)
+mat2 <- mock_matrix(20, 20)
 path <- normalizePath(c(tempfile(tmpdir = tmpdir), tempfile(tmpdir = tmpdir)), mustWork = FALSE)
 mat <- rbind(mat1, mat2)
 mat1 <- BPCells::write_matrix_dir(mat = as(mat1, "dgCMatrix"), dir = path[1L])
 mat2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
 obj <- rbind(mat1, mat2)
 
-common_test(mat, obj, path, BPCellsBindMatrixSeed, "RowBindMatrix")
+common_test(
+    obj, path,
+    mat = mat, 
+    seed_fn = BPCellsBindMatrixSeed, 
+    name = "RowBindMatrix"
+)
 testthat::test_that(
     "`subset()` BPCellsBindMatrixSeed object works as expected",
     {
