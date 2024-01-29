@@ -11,7 +11,7 @@
 \alias{rbind2,BPCellsSeed,ANY-method}
 \alias{cbind2,ANY,BPCellsSeed-method}
 \alias{cbind2,BPCellsSeed,ANY-method}
-\alias{convert_type,ANY-method}
+\alias{convert_mode,ANY-method}
 \alias{mask_matrix,ANY,ANY-method}
 \alias{rank_transform,ANY-method}
 \alias{/,numeric,BPCellsMatrix-method}
@@ -23,6 +23,11 @@
 \alias{[,BPCellsMatrix,missing,ANY,ANY-method}
 \alias{[,BPCellsMatrix,ANY,missing,ANY-method}
 \alias{[,BPCellsMatrix,missing,missing,ANY-method}
+\alias{[<-,BPCellsSeed,ANY,ANY,dgCMatrix-method}
+\alias{[<-,BPCellsSeed,ANY,ANY,BPCellsSeed-method}
+\alias{[<-,BPCellsSeed,ANY,missing,BPCellsSeed-method}
+\alias{[<-,BPCellsSeed,missing,ANY,BPCellsSeed-method}
+\alias{[<-,BPCellsSeed,missing,missing,BPCellsSeed-method}
 \alias{<,BPCellsMatrix,numeric-method}
 \alias{>,numeric,BPCellsMatrix-method}
 \alias{<=,BPCellsMatrix,numeric-method}
@@ -52,7 +57,7 @@
 
 \S4method{cbind2}{BPCellsSeed,ANY}(x, y, ...)
 
-\S4method{convert_type}{ANY}(object, type)
+\S4method{convert_mode}{ANY}(object, mode)
 
 \S4method{mask_matrix}{ANY,ANY}(object, mask, invert = FALSE)
 
@@ -75,6 +80,16 @@
 \S4method{[}{BPCellsMatrix,ANY,missing,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsMatrix,missing,missing,ANY}(x, i, j, ..., drop = FALSE)
+
+\S4method{[}{BPCellsSeed,ANY,ANY,dgCMatrix}(x, i, j, ..., mode = NULL) <- value
+
+\S4method{[}{BPCellsSeed,ANY,ANY,BPCellsSeed}(x, i, j, ..., mode = NULL) <- value
+
+\S4method{[}{BPCellsSeed,ANY,missing,BPCellsSeed}(x, i, j, ..., mode = NULL) <- value
+
+\S4method{[}{BPCellsSeed,missing,ANY,BPCellsSeed}(x, i, j, ..., mode = NULL) <- value
+
+\S4method{[}{BPCellsSeed,missing,missing,BPCellsSeed}(x, i, j, ...) <- value
 
 \S4method{<}{BPCellsMatrix,numeric}(e1, e2)
 
@@ -105,7 +120,7 @@
 \item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{type}{Storage mode of BPCells matrix, one of \code{uint32_t} (\code{integer})
+\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (\code{integer})
 (unsigned 32-bit integer), \code{float} (\code{numeric} or \verb{32bit_numeric}) (32-bit
 real number), or \code{double} (\verb{64bit_numeric}) (64-bit real number). R cannot
 differentiate 32-bit and 64-bit real number, here, we use "double" to indicte

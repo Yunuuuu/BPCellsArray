@@ -91,7 +91,7 @@ methods::setMethod(
     }
 )
 
-#' @return 
+#' @return
 #' - `chunkdim`: `NULL` or the chunk dimensions in an integer vector parallel to
 #' `dim(x)`.
 #' @importFrom DelayedArray chunkdim
@@ -125,7 +125,16 @@ methods::setMethod(
 
 #' @export
 methods::setAs("BPCellsSeed", "matrix", function(from) {
-    out <- as.matrix(methods::as(from, "dgCMatrix"))
-    storage.mode(out) <- type(from)
+    out <- methods::as(from, "dgCMatrix")
+    out <- as.matrix(out)
+    if (type(from) == "integer") {
+        if (all(out < .Machine$integer.max)) {
+            storage.mode(out) <- type(from)
+        } else {
+            cli::cli_warn(
+                "Using double data type since some values exceed {.code .Machine$integer.max}"
+            )
+        }
+    }
     out
 })

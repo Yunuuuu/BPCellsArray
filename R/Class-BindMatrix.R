@@ -488,7 +488,7 @@ combine_seeds <- function(.fn, mode, seeds, ...) {
         where = "BPCells"
     )
     mode <- mode %||% compatible_storage_mode(seeds)
-    seeds <- lapply(seeds, convert_mode, mode = mode)
+    seeds <- lapply(seeds, convert_mode_inform, mode = mode, arg = NULL)
     out <- Reduce(function(x, y) fn(x = x, y = y, ...), seeds)
     BPCellsSeed(out)
 }

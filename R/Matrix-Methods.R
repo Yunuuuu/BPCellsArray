@@ -24,19 +24,6 @@ methods::setMethod("t", "BPCellsMatrix", function(x) {
     DelayedArray(t(x@seed))
 })
 
-#' @return
-#' - `[<-`: A [BPCellsMatrix] object.
-#' @export
-#' @order 3
-#' @rdname BPCellsMatrix-methods
-methods::setMethod(
-    "[<-", c("BPCellsMatrix", "ANY", "ANY"),
-    function(x, i, j, ..., value) {
-        x <- x@seed
-        DelayedArray(methods::callGeneric())
-    }
-)
-
 # https://github.com/Bioconductor/DelayedArray/blob/devel/R/DelayedOp-class.R
 # for `dim`, `dimnames`, `extract_array` and `is_sparse` just use the methods
 # from `DelayedArray`, All BPCells objects have been regarded a seed of
@@ -49,3 +36,19 @@ methods::setMethod(
 #' @importMethodsFrom DelayedArray OLD_extract_sparse_array
 #' @noRd
 NULL
+
+#' @export
+methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
+    methods::as(from@seed, "dgCMatrix")
+})
+
+#' @export
+methods::setAs("BPCellsMatrix", "matrix", function(from) {
+    as(from@seed, "matrix")
+})
+
+#' @export
+methods::setAs("ANY", "BPCellsArray", .as_BPCellsDirArray)
+
+#' @export
+methods::setAs("ANY", "BPCellsMatrix", .as_BPCellsDirArray)

@@ -43,7 +43,7 @@
 \usage{
 \S4method{show}{BPCellsSeed}(object)
 
-\S4method{[}{BPCellsSeed,ANY,ANY,ANY}(x, i, j, ...) <- value
+\S4method{[}{BPCellsSeed,ANY,ANY,ANY}(x, i, j, ..., mode = NULL) <- value
 
 \S4method{dimnames}{BPCellsSeed,list}(x) <- value
 
@@ -112,6 +112,8 @@
 \S4method{[}{BPCellsSubsetSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{BPCellsTransformedSeed,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+
+\S4method{[}{BPCellsSeed,ANY,ANY,ANY}(x, i, j, ..., mode = NULL) <- value
 }
 \arguments{
 \item{x, object}{A \link[=BPCellsSeed-class]{BPCellsSeed} object.}

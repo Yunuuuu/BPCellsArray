@@ -201,13 +201,3 @@ methods::setAs("ANY", "BPCellsMemArray", .as_BPCellsMemArray)
 
 #' @export
 methods::setAs("ANY", "BPCellsMemMatrix", .as_BPCellsMemArray)
-
-#' @export
-methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
-    methods::as(from@seed, "dgCMatrix")
-})
-
-#' @export
-methods::setAs("BPCellsMatrix", "matrix", function(from) {
-    as.matrix(from@seed)
-})

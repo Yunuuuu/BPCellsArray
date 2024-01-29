@@ -55,13 +55,3 @@ methods::setMethod("matrixClass", "BPCellsArray", function(x) {
 })
 
 methods::setMethod("entity", "BPCellsMatrix", function(x) x@seed)
-
-#' @export
-methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
-    methods::as(from@seed, "dgCMatrix")
-})
-
-#' @export
-methods::setAs("BPCellsMatrix", "matrix", function(from) {
-    as(from@seed, "matrix")
-})

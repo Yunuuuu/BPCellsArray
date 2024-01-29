@@ -75,7 +75,6 @@ methods::setMethod(
     }
 )
 
-############################################################
 #' @export
 methods::setAs("dgCMatrix", "BPCellsdgCMatrixSeed", function(from) {
     methods::new(
@@ -89,3 +88,5 @@ methods::setAs("dgCMatrix", "BPCellsdgCMatrixSeed", function(from) {
 methods::setAs("ANY", "BPCellsdgCMatrixSeed", function(from) {
     methods::as(coerce_dgCMatrix(from), "BPCellsdgCMatrixSeed")
 })
+
+############################################################

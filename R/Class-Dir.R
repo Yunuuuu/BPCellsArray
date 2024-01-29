@@ -130,8 +130,3 @@ methods::setAs("ANY", "BPCellsDirArray", .as_BPCellsDirArray)
 #' @export
 methods::setAs("ANY", "BPCellsDirMatrix", .as_BPCellsDirArray)
 
-#' @export
-methods::setAs("ANY", "BPCellsArray", .as_BPCellsDirArray)
-
-#' @export
-methods::setAs("ANY", "BPCellsMatrix", .as_BPCellsDirArray)

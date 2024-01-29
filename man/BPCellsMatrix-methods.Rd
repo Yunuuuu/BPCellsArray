@@ -40,7 +40,7 @@
 
 \S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
-\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ...) <- value
+\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ..., mode = NULL) <- value
 
 \S4method{dimnames}{BPCellsMatrix,ListOrNULL}(x) <- value
 
