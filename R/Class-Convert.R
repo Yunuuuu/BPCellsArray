@@ -58,7 +58,8 @@ methods::setMethod("convert_mode", "BPCellsSeed", function(object, mode) {
 #' @export
 #' @rdname convert_mode
 methods::setMethod("convert_mode", "BPCellsMatrix", function(object, mode) {
-    DelayedArray(convert_mode(object@seed, mode = mode))
+    object <- object@seed
+    DelayedArray(methods::callGeneric())
 })
 
 #' @inheritParams convert_mode

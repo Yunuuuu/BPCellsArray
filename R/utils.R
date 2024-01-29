@@ -39,7 +39,16 @@ coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller
 
 # the same as BPCells::storage_order
 storage_axis <- function(x) if (x@transpose) "row" else "column"
-storage_mode <- function(x) BPCells:::matrix_type(x)
+
+methods::setGeneric(
+    "storage_mode", function(object) standardGeneric("storage_mode")
+)
+methods::setMethod("storage_mode", "BPCellsSeed", function(object) {
+    BPCells:::matrix_type(object)
+})
+methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
+    BPCells:::matrix_type(object@seed)
+})
 
 show_bpcells <- function(object, baseClass, class) {
     cat(sprintf(
@@ -69,6 +78,7 @@ show_bpcells <- function(object, baseClass, class) {
     }
 }
 
+
 imap <- function(.x, .f, ...) {
     .mapply(.f, list(.x, names(.x) %||% seq_along(.x)), list(...))
 }
@@ -95,21 +105,31 @@ rebind <- function(sym, value, ns) {
     }
 }
 
-compatible_storage_mode <- function(...) {
+compatible_storage_mode <- function(list) {
     actual_modes <- vapply(
-        list(...), storage_mode,
-        character(1L),
+        list, storage_mode, character(1L),
         USE.NAMES = FALSE
     )
     modes <- c("uint32_t", "float", "double")
     modes[max(match(actual_modes, modes))]
 }
 
+convert_mode_inform <- function(seed, mode, arg = rlang::caller_arg(seed)) {
+    mode <- mode_to_bpcells(mode)
+    if (storage_mode(seed) != mode) {
+        cli::cli_inform("Converting {.arg {arg}} into {mode} data type")
+        BPCells::convert_matrix_type(seed, type = mode)
+    } else {
+        seed
+    }
+}
+
 mode_to_bpcells <- function(mode) {
     mode <- match.arg(
         mode, c(
-            "integer", "uint32_t", "double", "numeric",
-            "32bit_numeric", "64bit_numeric"
+            "integer", "uint32_t",
+            "numeric", "32bit_numeric", "float",
+            "64bit_numeric", "double"
         )
     )
     switch(mode,
