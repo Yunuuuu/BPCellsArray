@@ -129,7 +129,7 @@ methods::setAs("BPCellsSeed", "matrix", function(from) {
     out <- as.matrix(out)
     if (type(from) == "integer") {
         if (all(out < .Machine$integer.max)) {
-            storage.mode(out) <- type(from)
+            storage.mode(out) <- "integer"
         } else {
             cli::cli_warn(
                 "Using double data type since some values exceed {.code .Machine$integer.max}"
