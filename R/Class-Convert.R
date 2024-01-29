@@ -29,17 +29,17 @@ methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x) {
 #' @param object A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @param ... Additional parameters passed into specific methods.
-#' @name convert_type
+#' @name convert_mode
 NULL
 
 #' @export
-#' @rdname convert_type
+#' @rdname convert_mode
 methods::setGeneric(
-    "convert_type",
-    function(object, ...) standardGeneric("convert_type")
+    "convert_mode",
+    function(object, ...) standardGeneric("convert_mode")
 )
 
-#' @param type Storage mode of BPCells matrix, one of `uint32_t` (`integer`)
+#' @param mode Storage mode of BPCells matrix, one of `uint32_t` (`integer`)
 #' (unsigned 32-bit integer), `float` (`numeric` or `32bit_numeric`) (32-bit
 #' real number), or `double` (`64bit_numeric`) (64-bit real number). R cannot
 #' differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
@@ -48,38 +48,23 @@ methods::setGeneric(
 #' [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
 #' @export
-#' @rdname convert_type
-methods::setMethod("convert_type", "BPCellsSeed", function(object, type) {
-    type <- match.arg(
-        type, c(
-            "integer", "uint32_t", "double", "numeric",
-            "32bit_numeric", "64bit_numeric"
-        )
-    )
-    type <- switch(type,
-        integer = ,
-        uint32_t = "uint32_t",
-        float = ,
-        numeric = ,
-        `32bit_numeric` = "float",
-        double = ,
-        `64bit_numeric` = "double",
-    )
-    obj <- BPCells::convert_matrix_type(object, type = type)
+#' @rdname convert_mode
+methods::setMethod("convert_mode", "BPCellsSeed", function(object, mode) {
+    obj <- BPCells::convert_matrix_type(object, type = mode_to_bpcells(mode))
     BPCellsSeed(obj)
 })
 
 #' @importFrom DelayedArray DelayedArray
 #' @export
-#' @rdname convert_type
-methods::setMethod("convert_type", "BPCellsMatrix", function(object, type) {
-    DelayedArray(convert_type(object@seed, type = type))
+#' @rdname convert_mode
+methods::setMethod("convert_mode", "BPCellsMatrix", function(object, type) {
+    DelayedArray(convert_mode(object@seed, type = type))
 })
 
-#' @inheritParams convert_type
+#' @inheritParams convert_mode
 #' @export
 #' @rdname internal-methods
-methods::setMethod("convert_type", "ANY", function(object, type) {
+methods::setMethod("convert_mode", "ANY", function(object, type) {
     cli::cli_abort(
         "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"
     )

@@ -4,24 +4,24 @@
 #' @inheritDotParams BPCells::transpose_storage_order -matrix
 #' @return A [BPCellsSeed] or [BPCellsMatrix] object.
 #' @export
-#' @name transpose_storage
+#' @name transpose_axis
 #' @include Class-BPCellsMatrix.R
-methods::setGeneric("transpose_storage", function(object, ...) {
-    standardGeneric("transpose_storage")
+methods::setGeneric("transpose_axis", function(object, ...) {
+    standardGeneric("transpose_axis")
 })
 
 #' @export
-#' @rdname transpose_storage
+#' @rdname transpose_axis
 methods::setMethod(
-    "transpose_storage", "BPCellsSeed", function(object, ...) {
+    "transpose_axis", "BPCellsSeed", function(object, ...) {
         BPCellsSeed(BPCells::transpose_storage_order(matrix = object, ...))
     }
 )
 
 #' @export
-#' @rdname transpose_storage
+#' @rdname transpose_axis
 methods::setMethod(
-    "transpose_storage", "BPCellsMatrix", function(object, ...) {
-        DelayedArray(transpose_storage(object = object@seed, ...))
+    "transpose_axis", "BPCellsMatrix", function(object, ...) {
+        DelayedArray(transpose_axis(object = object@seed, ...))
     }
 )

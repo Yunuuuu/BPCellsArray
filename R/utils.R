@@ -37,7 +37,8 @@ coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller
     )
 }
 
-storage_axis <- function(x) ifelse(x@transpose, "row", "column")
+# the same as BPCells::storage_order
+storage_axis <- function(x) if (x@transpose) "row" else "column"
 storage_mode <- function(x) BPCells:::matrix_type(x)
 
 show_bpcells <- function(object, baseClass, class) {
@@ -57,8 +58,8 @@ show_bpcells <- function(object, baseClass, class) {
     ))
 
     cat("\n")
-    cat(sprintf("Data type: %s\n", storage_mode(object)))
-    cat(sprintf("Storage order: %s major\n", storage_axis(object)))
+    cat(sprintf("Storage Data type: %s\n", storage_mode(object)))
+    cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
 
     cat("\n")
     description <- BPCells:::short_description(object)
@@ -92,6 +93,34 @@ rebind <- function(sym, value, ns) {
     } else {
         stop("ns must be a string or environment")
     }
+}
+
+compatible_storage_mode <- function(...) {
+    actual_modes <- vapply(
+        list(...), storage_mode,
+        character(1L),
+        USE.NAMES = FALSE
+    )
+    modes <- c("uint32_t", "float", "double")
+    modes[max(match(actual_modes, modes))]
+}
+
+mode_to_bpcells <- function(mode) {
+    mode <- match.arg(
+        mode, c(
+            "integer", "uint32_t", "double", "numeric",
+            "32bit_numeric", "64bit_numeric"
+        )
+    )
+    switch(mode,
+        integer = ,
+        uint32_t = "uint32_t",
+        float = ,
+        numeric = ,
+        `32bit_numeric` = "float",
+        double = ,
+        `64bit_numeric` = "double",
+    )
 }
 
 BPCElls_Transform_classes <- c(
