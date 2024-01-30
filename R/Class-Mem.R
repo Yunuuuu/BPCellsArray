@@ -15,7 +15,7 @@
 #' @noRd
 NULL
 
-methods::setClass("BPCellsMemSeed", contains = "BPCellsSeed")
+methods::setClass("BPCellsMemSeed", contains = c("BPCellsBasicSeed", "VIRTUAL"))
 methods::setClass("BPCellsPackedMemSeed",
     contains = c("BPCellsMemSeed", get_class("PackedMatrixMemBase"))
 )

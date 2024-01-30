@@ -1,5 +1,5 @@
 methods::setClass("BPCellsDirSeed",
-    contains = c("BPCellsSeed", get_class("MatrixDir"))
+    contains = c("BPCellsBasicSeed", get_class("MatrixDir"))
 )
 
 BPCellsDirSeed <- function(x) methods::as(x, "BPCellsDirSeed")

@@ -22,6 +22,7 @@ methods::setClass("BPCellsSeed",
 )
 methods::setClass("BPCellsUnaryOpsSeed", contains = c("BPCellsSeed", "VIRTUAL"))
 methods::setClass("BPCellsNaryOpsSeed", contains = c("BPCellsSeed", "VIRTUAL"))
+methods::setClass("BPCellsBasicSeed", contains = c("BPCellsSeed", "VIRTUAL"))
 
 #' @export
 #' @rdname BPCellsSeed
@@ -38,7 +39,7 @@ methods::setMethod("BPCellsSeed", "BPCellsSeed", function(x) {
 #############################################################
 # used to extract the actual entity of `BPCellsSeed` objet.
 methods::setGeneric("entity", function(x, ...) standardGeneric("entity"))
-methods::setMethod("entity", "BPCellsSeed", function(x) x)
+methods::setMethod("entity", "BPCellsBasicSeed", function(x) x)
 methods::setMethod("entity", "BPCellsUnaryOpsSeed", function(x) {
     x@matrix
 })
@@ -55,7 +56,7 @@ methods::setMethod("entity", "BPCellsUnaryOpsSeed", function(x) {
 ############################################################
 # Iterable_dgCMatrix_wrapper
 methods::setClass("BPCellsdgCMatrixSeed",
-    contains = c("BPCellsSeed", get_class("Iterable_dgCMatrix_wrapper"))
+    contains = c("BPCellsBasicSeed", get_class("Iterable_dgCMatrix_wrapper"))
 )
 
 #' @noRd

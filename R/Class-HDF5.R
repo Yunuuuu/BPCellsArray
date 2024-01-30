@@ -2,7 +2,7 @@
 # - add method of subset: Method-subset.R
 # - add method of showtree: showtree.R
 methods::setClass("BPCellsHDF5Seed",
-    contains = c("BPCellsSeed", get_class("MatrixH5"))
+    contains = c("BPCellsBasicSeed", get_class("MatrixH5"))
 )
 
 BPCellsHDF5Seed <- function(x) methods::as(x, "BPCellsHDF5Seed")

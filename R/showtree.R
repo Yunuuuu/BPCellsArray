@@ -82,21 +82,24 @@ showtree <- function(object) {
 #' @export
 #' @rdname showtree
 methods::setMethod("nseed", "BPCellsMatrix", function(x) {
-    nseed(entity(x))
+    x <- x@seed
+    methods::callGeneric()
 })
 
 #' @importFrom DelayedArray seed
 #' @export
 #' @rdname showtree
 methods::setMethod("seed", "BPCellsMatrix", function(x) {
-    seed(entity(x))
+    x <- x@seed
+    methods::callGeneric()
 })
 
 #' @importFrom DelayedArray path
 #' @export
 #' @rdname showtree
 methods::setMethod("path", "BPCellsMatrix", function(object, ...) {
-    path(entity(object), ...)
+    object <- object@seed
+    methods::callGeneric()
 })
 
 #' @importFrom DelayedArray seed<-
@@ -144,11 +147,11 @@ methods::setMethod("path", "BPCellsHDF5Seed", function(object, ...) object@path)
 
 #' @export
 #' @rdname showtree
-methods::setMethod("seed", "BPCellsSeed", function(x) x)
+methods::setMethod("seed", "BPCellsBasicSeed", function(x) x)
 
 #' @export
 #' @rdname showtree
-methods::setMethod("nseed", "BPCellsSeed", function(x) 1L)
+methods::setMethod("nseed", "BPCellsBasicSeed", function(x) 1L)
 
 # Five DelayedUnaryOp-like seeds ------------------------------------
 ###########################################################
@@ -201,20 +204,34 @@ methods::setMethod("nseed", "BPCellsNaryOpsSeed", function(x) {
 
 # Don't use this, we directly use `seed` function to return all seeds
 # this is different with what the DelayedArray does.
-new_seedApply <- function(x, .fn, ...) {
-    if (methods::is(x, "BPCellsMatrix")) {
+methods::setGeneric("new_seedApply",
+    signature = "x", function(x, .fn, ...) {
+        standardGeneric("new_seedApply")
+    }
+)
+
+methods::setMethod("new_seedApply", "BPCellsMatrix", function(x, .fn, ...) {
+    x <- x@seed
+    methods::callGeneric()
+})
+
+methods::setMethod(
+    "new_seedApply", "BPCellsUnaryOpsSeed",
+    function(x, .fn, ...) {
         x <- entity(x)
+        methods::callGeneric()
     }
-    if (methods::is(x, "BPCellsUnaryOpsSeed")) {
-        return(Recall(entity(x), .fn, ...))
-    }
-    if (methods::is(x, "BPCellsNaryOpsSeed")) {
+)
+
+methods::setMethod(
+    "new_seedApply", "BPCellsNaryOpsSeed",
+    function(x, .fn, ...) {
         x <- entity(x)
-    }
-    if (is.list(x)) {
         ans <- lapply(x, FUN = new_seedApply, .fn = .fn, ...)
-        return(unlist(ans, recursive = FALSE, use.names = FALSE))
-    } else {
-        list(.fn(x, ...))
+        unlist(ans, recursive = FALSE, use.names = FALSE)
     }
-}
+)
+
+methods::setMethod("new_seedApply", "BPCellsBasicSeed", function(x, .fn, ...) {
+    list(.fn(x, ...))
+})

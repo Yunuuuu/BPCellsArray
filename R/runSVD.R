@@ -73,7 +73,8 @@ methods::setMethod(
 )
 
 methods::setMethod("SpectraSVD", "BPCellsMatrix", function(x, ...) {
-    SpectraSVD(x = entity(x), ...)
+    x <- x@seed
+    methods::callGeneric()
 })
 
 methods::setMethod(
