@@ -1,5 +1,7 @@
 ####################################################################
 # TransformScaleShift
+#' @include Class-Transformed.R
+#' @noRd
 methods::setClass("BPCellsTransformScaleShiftSeed",
     contains = c("BPCellsTransformedSeed", get_class("TransformScaleShift"))
 )
@@ -18,7 +20,7 @@ methods::setMethod(
 #' @inheritParams BPCells-binarize
 #' @return A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `e1` /
-#' `e2`. 
+#' `e2`.
 #' @name BPCells-Arithmetic
 #' @aliases + - * /
 NULL
@@ -95,7 +97,7 @@ methods::setMethod(
     }
 )
 
-######################################################################
+# ######################################################################
 #' @export
 #' @rdname BPCells-Arithmetic
 methods::setMethod(
@@ -171,7 +173,6 @@ methods::setMethod(
 #####################################################################
 #' @export
 #' @rdname internal-methods
-#' @include Class-Transformed.R
 methods::setMethod(
     "*", c(e1 = "BPCellsTransformScaleShiftSeed", e2 = "numeric"),
     function(e1, e2) {
