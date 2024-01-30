@@ -1,8 +1,22 @@
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
 get_class <- function(name) {
-    asNamespace("BPCells")[[paste0(".__C__", name)]]
+    BPCells_get(paste0(".__C__", name))
 }
+
+BPCells_get <- local({
+    BPCellsNamespace <- NULL
+    function(nm) {
+        if (is.null(BPCellsNamespace)) {
+            BPCellsNamespace <<- asNamespace("BPCells")
+        }
+        if (exists(nm, envir = BPCellsNamespace, inherits = FALSE)) {
+            get(nm, envir = BPCellsNamespace, inherits = FALSE)
+        } else {
+            cli::cli_abort("Cannot find {.val {nm}} in {.pkg BPCells}")
+        }
+    }
+})
 
 extract_bpcells_array <- function(x, index) {
     if (length(index) > 2L) {
@@ -106,8 +120,25 @@ convert_mode_inform <- function(seed, mode, arg = rlang::caller_arg(seed)) {
     }
 }
 
+swap_axis <- function(.fn, object, column, row, ...) {
+    if (object@transpose) {
+        .fn(object, row, ...)
+    } else {
+        .fn(object, column, ...)
+    }
+}
+
+wrapMatrix <- function(class, m, ...) {
+    dimnames <- dimnames(m)
+    methods::new(class,
+        matrix = m,
+        transpose = m@transpose, dim = m@dim,
+        dimnames = dimnames, ...
+    )
+}
+
 # Use chartr() for safety since toupper() fails to convert i to I in Turkish
-# locale 
+# locale
 lower_ascii <- "abcdefghijklmnopqrstuvwxyz"
 upper_ascii <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -123,7 +154,6 @@ snakeize <- function(x) {
 }
 to_lower_ascii <- function(x) chartr(upper_ascii, lower_ascii, x)
 to_upper_ascii <- function(x) chartr(lower_ascii, upper_ascii, x)
-
 
 BPCells_MODE <- c("uint32_t", "float", "double")
 BPCells_Transform_classes <- c(
