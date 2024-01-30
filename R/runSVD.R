@@ -50,7 +50,7 @@ methods::setMethod(
     "runSVD", "SpectraParam",
     function(x, k, nu = k, nv = k, center = FALSE, scale = FALSE, ncv = NULL,
              tol = 1e-10, maxitr = 1000, threads = 0L, ..., BSPARAM) {
-        svds(
+        SpectraSVD(
             x = x, k = k, nu = nu, nv = nv,
             center = center, scale = scale, ncv = ncv,
             tol = tol, maxitr = maxitr,
@@ -59,34 +59,31 @@ methods::setMethod(
     }
 )
 
-methods::setGeneric("svds", function(x, ...) standardGeneric("svds"))
+methods::setGeneric("SpectraSVD", function(x, ...) {
+    standardGeneric("SpectraSVD")
+})
 methods::setMethod(
-    "svds", "ANY",
+    "SpectraSVD", "ANY",
     function(x, k, nu, nv, center, scale, ncv, tol, maxitr, threads) {
-        ncv <- ncv %||% min(min(nrow(x), ncol(x)), max(2 * k + 1, 20))
-        out <- RSpectra::svds(
-            A = x, k = k, nu = nu, nv = nv,
-            opts = list(
-                ncv = ncv, tol = tol, maxitr = maxitr,
-                center = center, scale = scale
-            )
-        )
+        arg <- list(tol = tol, maxitr = maxitr, center = center, scale = scale)
+        if (!is.null(ncv)) arg <- c(list(ncv = ncv), arg)
+        out <- RSpectra::svds(A = x, k = k, nu = nu, nv = nv, opts = arg)
         out[c("d", "u", "v")]
     }
 )
 
-methods::setMethod("svds", "BPCellsMatrix", function(x, ...) {
-    svds(x = entity(x), ...)
+methods::setMethod("SpectraSVD", "BPCellsMatrix", function(x, ...) {
+    SpectraSVD(x = entity(x), ...)
 })
 
 methods::setMethod(
-    "svds", "IterableMatrix",
+    "SpectraSVD", "IterableMatrix",
     function(x, k, nu, nv, center, scale, ncv, tol, maxitr, threads) {
-        ncv <- ncv %||% min(min(nrow(x), ncol(x)), max(2 * k + 1, 20))
+        arg <- list(tol = tol, maxitr = maxitr)
+        if (!is.null(ncv)) arg <- c(list(ncv = ncv), arg)
         out <- BPCells::svds(
             A = x, k = k, nu = nu, nv = nv,
-            opts = list(ncv = ncv, tol = tol, maxitr = maxitr),
-            threads = threads
+            opts = arg, threads = threads
         )
         out[c("d", "u", "v")]
     }
