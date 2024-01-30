@@ -31,7 +31,8 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
 #' @return
 #' - `type`: A string, indicates the storage type. For all BPCells matrix type
 #'   of `float` and `double`, always return `double` since R cannot
-#'   differentiate 32-bit and 64-bit real number.
+#'   differentiate 32-bit and 64-bit real number. See
+#'   [storage_mode][convert_mode].
 #' @importFrom DelayedArray type
 #' @export
 #' @rdname BPCellsSeed-methods
@@ -109,19 +110,6 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
-
-# In BPCells, `[<-` was only defined for `IterableMatrix`
-#' @return
-#' - `[<-`: A [BPCellsSeed] object.
-#' @importMethodsFrom BPCells [<-
-#' @export
-#' @order 3
-#' @rdname BPCellsSeed-methods
-methods::setMethod(
-    "[<-", "BPCellsSeed", function(x, i, j, ..., value) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
 
 #' @export
 methods::setAs("BPCellsSeed", "matrix", function(from) {

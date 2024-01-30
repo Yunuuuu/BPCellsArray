@@ -109,15 +109,23 @@
 )
 }
 \arguments{
-\item{x, y}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
+\item{x, y}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} or
+\link[=BPCellsSeed-class]{BPCellsSeed} object.}
+
+\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
+32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real
+number). R cannot differentiate 32-bit and 64-bit real number, so
+\link[=BPCellsSeed-methods]{type} method always return "double" for both \code{float}
+and \code{double} mode.}
 
 \item{...}{\itemize{
 \item \code{rbind2} and \code{cbind2}: Not used currently.
 \item \code{rbind}, \code{arbind}, \code{cbind}, and \code{acbind}: A list of
-\link[=BPCellsMatrix-class]{BPCellsMatrix} objects.
+\link[=BPCellsMatrix-class]{BPCellsMatrix} or \link[=BPCellsSeed-class]{BPCellsSeed}
+object.
 }}
 
-\item{threads}{Set number of threads to use for sparse-dense multiply and
+\item{threads}{Set the number of threads to use for sparse-dense multiply and
 \link[BPCells:matrix_stats]{matrix_stats}.}
 
 \item{use.first.dimnames}{Ignored, always be \code{TRUE} in BPCells.}
@@ -136,13 +144,19 @@
 \item{check}{Ignored.}
 }
 \value{
+If \code{mode} is specified, the mode of all specified object will be converted.
 \itemize{
 \item \code{cbind2}, \code{acbind}, \code{cbind}, \code{bindCOLS}: A
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object.
+\link[=BPCellsMatrix-class]{BPCellsMatrix} or \link[=BPCellsSeed-class]{BPCellsSeed}
+object combined by columns.
 \item \code{rbind2}, \code{arbind}, \code{rbind}, \code{bindROWS}: A
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object.
+\link[=BPCellsMatrix-class]{BPCellsMatrix} or \link[=BPCellsSeed-class]{BPCellsSeed}
+object combined by rows.
 }
 }
 \description{
 Combine two Objects by Columns or Rows
+}
+\seealso{
+\link{convert_mode}
 }

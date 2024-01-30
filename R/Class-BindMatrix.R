@@ -116,18 +116,25 @@ methods::setMethod("set_threads", "ANY", function(object, ...) {
 
 #' Combine two Objects by Columns or Rows
 #'
-#' @param x,y A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @param x,y A [BPCellsMatrix][BPCellsMatrix-class] or
+#' [BPCellsSeed][BPCellsSeed-class] object. 
 #' @param ...
 #'  - `rbind2` and `cbind2`: Not used currently.
 #'  - `rbind`, `arbind`, `cbind`, and `acbind`: A list of
-#'    [BPCellsMatrix][BPCellsMatrix-class] objects.
-#' @param threads Set number of threads to use for sparse-dense multiply and
+#'    [BPCellsMatrix][BPCellsMatrix-class] or [BPCellsSeed][BPCellsSeed-class]
+#'    object. 
+#' @param threads Set the number of threads to use for sparse-dense multiply and
 #' [matrix_stats][BPCells::matrix_stats].
+#' @seealso 
+#' [convert_mode]
 #' @return
+#' If `mode` is specified, the mode of all specified object will be converted.
 #' - `cbind2`, `acbind`, `cbind`, `bindCOLS`: A
-#'   [BPCellsMatrix][BPCellsMatrix-class] object.
+#'   [BPCellsMatrix][BPCellsMatrix-class] or [BPCellsSeed][BPCellsSeed-class]
+#'   object combined by columns.
 #' - `rbind2`, `arbind`, `rbind`, `bindROWS`: A
-#'   [BPCellsMatrix][BPCellsMatrix-class] object.
+#'   [BPCellsMatrix][BPCellsMatrix-class] or [BPCellsSeed][BPCellsSeed-class]
+#'   object combined by rows.
 #' @aliases rbind2 cbind2 rbind cbind arbind acbind bindROWS bindCOLS
 #' @name BPCells-bind
 NULL
@@ -324,6 +331,7 @@ check_BPCellsMatrices <- function(list, arg = rlang::caller_arg(list), call = rl
 
 #################### BPCellsSeed methods ########################
 #' @importFrom methods rbind2
+#' @inheritParams convert_mode
 #' @export
 #' @rdname BPCells-bind
 methods::setMethod(

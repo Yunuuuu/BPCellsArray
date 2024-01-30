@@ -9,8 +9,8 @@
 \alias{path,BPCellsdgCMatrixSeed-method}
 \alias{path,BPCellsDirSeed-method}
 \alias{path,BPCellsHDF5Seed-method}
-\alias{seed,BPCellsSeed-method}
-\alias{nseed,BPCellsSeed-method}
+\alias{seed,BPCellsBasicSeed-method}
+\alias{nseed,BPCellsBasicSeed-method}
 \alias{path,BPCellsUnaryOpsSeed-method}
 \alias{seed,BPCellsUnaryOpsSeed-method}
 \alias{nseed,BPCellsUnaryOpsSeed-method}
@@ -35,9 +35,9 @@ showtree(object)
 
 \S4method{path}{BPCellsHDF5Seed}(object, ...)
 
-\S4method{seed}{BPCellsSeed}(x)
+\S4method{seed}{BPCellsBasicSeed}(x)
 
-\S4method{nseed}{BPCellsSeed}(x)
+\S4method{nseed}{BPCellsBasicSeed}(x)
 
 \S4method{path}{BPCellsUnaryOpsSeed}(object, ...)
 
