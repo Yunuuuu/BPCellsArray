@@ -37,19 +37,6 @@ coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller
     )
 }
 
-# the same as BPCells::storage_order
-storage_axis <- function(x) if (x@transpose) "row" else "column"
-
-methods::setGeneric(
-    "storage_mode", function(object) standardGeneric("storage_mode")
-)
-methods::setMethod("storage_mode", "BPCellsSeed", function(object) {
-    BPCells:::matrix_type(object)
-})
-methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
-    BPCells:::matrix_type(object@seed)
-})
-
 show_bpcells <- function(object, baseClass, class) {
     cat(sprintf(
         "%d x %d %s object with class %s\n",
@@ -110,12 +97,11 @@ compatible_storage_mode <- function(list) {
         list, storage_mode, character(1L),
         USE.NAMES = FALSE
     )
-    modes <- c("uint32_t", "float", "double")
-    modes[max(match(actual_modes, modes))]
+    BPCells_MODE[max(match(actual_modes, BPCells_MODE))]
 }
 
 convert_mode_inform <- function(seed, mode, arg = rlang::caller_arg(seed)) {
-    mode <- mode_to_bpcells(mode)
+    mode <- match.arg(mode, BPCells_MODE)
     if (storage_mode(seed) != mode) {
         cli::cli_inform("Converting {.arg {arg}} into {mode} data type")
         BPCells::convert_matrix_type(seed, type = mode)
@@ -123,27 +109,8 @@ convert_mode_inform <- function(seed, mode, arg = rlang::caller_arg(seed)) {
         seed
     }
 }
-
-mode_to_bpcells <- function(mode) {
-    mode <- match.arg(
-        mode, c(
-            "integer", "uint32_t",
-            "numeric", "32bit_numeric", "float",
-            "64bit_numeric", "double"
-        )
-    )
-    switch(mode,
-        integer = ,
-        uint32_t = "uint32_t",
-        float = ,
-        numeric = ,
-        `32bit_numeric` = "float",
-        double = ,
-        `64bit_numeric` = "double",
-    )
-}
-
-BPCElls_Transform_classes <- c(
+BPCells_MODE <- c("uint32_t", "float", "double")
+BPCells_Transform_classes <- c(
     TransformLog1p = "log1p",
     TransformLog1pSlow = "log1p_slow",
     TransformExpm1 = "expm1",

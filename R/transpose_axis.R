@@ -1,8 +1,11 @@
-#' Transpose the storage order for a `BPCellsSeed` or `BPCellsMatrix` object
+#' Transpose the storage axis for a `BPCellsSeed` or `BPCellsMatrix` object
 #'
+#' @inherit BPCells::transpose_storage_order details 
 #' @param object A [BPCellsSeed] or [BPCellsMatrix] object.
 #' @inheritDotParams BPCells::transpose_storage_order -matrix
-#' @return A [BPCellsSeed] or [BPCellsMatrix] object.
+#' @return 
+#'  - `transpose_axis`: A [BPCellsSeed] or [BPCellsMatrix] object with storage
+#'    axis flipped.
 #' @export
 #' @name transpose_axis
 #' @include Class-BPCellsMatrix.R
@@ -25,3 +28,24 @@ methods::setMethod(
         DelayedArray(transpose_axis(object = object@seed, ...))
     }
 )
+
+#' @return 
+#'  - `storage_axis`: A string indicates the storage axis.
+#' @export
+#' @rdname transpose_axis
+methods::setGeneric(
+    "storage_axis", function(object) standardGeneric("storage_axis")
+)
+
+#' @export
+#' @rdname transpose_axis
+methods::setMethod("storage_axis", "BPCellsSeed", function(object) {
+    if (object@transpose) "row" else "column"
+})
+
+#' @export
+#' @rdname transpose_axis
+methods::setMethod("storage_axis", "BPCellsMatrix", function(object) {
+    object <- object@seed
+    methods::callGeneric()
+})

@@ -32,6 +32,10 @@ methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x) {
 #' @name convert_mode
 NULL
 
+#' @return 
+#'  - `convert_mode`: A [BPCellsSeed][BPCellsSeed-class] or
+#' [BPCellsMatrix][BPCellsMatrix-class] object with storage mode converted into
+#' the specified.
 #' @export
 #' @rdname convert_mode
 methods::setGeneric(
@@ -39,18 +43,17 @@ methods::setGeneric(
     function(object, ...) standardGeneric("convert_mode")
 )
 
-#' @param mode Storage mode of BPCells matrix, one of `uint32_t` (`integer`)
-#' (unsigned 32-bit integer), `float` (`numeric` or `32bit_numeric`) (32-bit
-#' real number), or `double` (`64bit_numeric`) (64-bit real number). R cannot
-#' differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
-#' 64-bit real number and "numeric" to indicate 32-bit real number.
-#' @return A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @param mode Storage mode of BPCells matrix, one of `uint32_t` (unsigned
+#' 32-bit integer), `float` (32-bit real number), or `double` (64-bit real
+#' number). R cannot differentiate 32-bit and 64-bit real number, so
+#' [type][BPCellsSeed-methods] method always return "double" for both `float`
+#' and `double` mode.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
 #' @export
 #' @rdname convert_mode
 methods::setMethod("convert_mode", "BPCellsSeed", function(object, mode) {
-    obj <- BPCells::convert_matrix_type(object, type = mode_to_bpcells(mode))
+    mode <- match.arg(mode, BPCells_MODE)
+    obj <- BPCells::convert_matrix_type(object, type = mode)
     BPCellsSeed(obj)
 })
 
@@ -69,4 +72,24 @@ methods::setMethod("convert_mode", "ANY", function(object, mode) {
     cli::cli_abort(
         "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"
     )
+})
+
+#' @return 
+#'  - `storage_mode`: A string indicates the storage mode.
+#' @export
+#' @rdname convert_mode
+methods::setGeneric(
+    "storage_mode", function(object) standardGeneric("storage_mode")
+)
+
+#' @export
+#' @rdname convert_mode
+methods::setMethod("storage_mode", "BPCellsSeed", function(object) {
+    BPCells:::matrix_type(object)
+})
+
+#' @export
+#' @rdname convert_mode
+methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
+    BPCells:::matrix_type(object@seed)
 })

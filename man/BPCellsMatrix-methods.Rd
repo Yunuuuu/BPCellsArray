@@ -91,6 +91,12 @@ pow_slow(e1, e2)
 
 \item{drop}{Ignored, always be \code{FALSE}.}
 
+\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
+32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real
+number). R cannot differentiate 32-bit and 64-bit real number, so
+\link[=BPCellsSeed-methods]{type} method always return "double" for both \code{float}
+and \code{double} mode.}
+
 \item{value}{\itemize{
 \item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
 \item \verb{[<-}: A matrix which can be coerced into

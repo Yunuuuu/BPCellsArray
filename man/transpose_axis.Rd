@@ -4,13 +4,22 @@
 \alias{transpose_axis}
 \alias{transpose_axis,BPCellsSeed-method}
 \alias{transpose_axis,BPCellsMatrix-method}
-\title{Transpose the storage order for a \code{BPCellsSeed} or \code{BPCellsMatrix} object}
+\alias{storage_axis}
+\alias{storage_axis,BPCellsSeed-method}
+\alias{storage_axis,BPCellsMatrix-method}
+\title{Transpose the storage axis for a \code{BPCellsSeed} or \code{BPCellsMatrix} object}
 \usage{
 transpose_axis(object, ...)
 
 \S4method{transpose_axis}{BPCellsSeed}(object, ...)
 
 \S4method{transpose_axis}{BPCellsMatrix}(object, ...)
+
+storage_axis(object)
+
+\S4method{storage_axis}{BPCellsSeed}(object)
+
+\S4method{storage_axis}{BPCellsMatrix}(object)
 }
 \arguments{
 \item{object}{A \link{BPCellsSeed} or \link{BPCellsMatrix} object.}
@@ -25,8 +34,23 @@ transpose_axis(object, ...)
   }}
 }
 \value{
-A \link{BPCellsSeed} or \link{BPCellsMatrix} object.
+\itemize{
+\item \code{transpose_axis}: A \link{BPCellsSeed} or \link{BPCellsMatrix} object with storage
+axis flipped.
+}
+
+\itemize{
+\item \code{storage_axis}: A string indicates the storage axis.
+}
 }
 \description{
-Transpose the storage order for a \code{BPCellsSeed} or \code{BPCellsMatrix} object
+Transpose the storage axis for a \code{BPCellsSeed} or \code{BPCellsMatrix} object
+}
+\details{
+This re-sorts the entries of a matrix to change the storage order
+from row-major to col-major. For large matrices, this can be slow -- around 2
+minutes to transpose a 500k cell RNA-seq matrix The default load_bytes (4MiB)
+and sort_bytes (1GiB) parameters allow ~85GB of data to be sorted with two
+passes through the data, and ~7.3TB of data to be sorted in three passes
+through the data.
 }

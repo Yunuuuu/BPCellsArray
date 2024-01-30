@@ -108,7 +108,7 @@ common_test <- function(
 
             testthat::expect_identical(storage_mode(seed), "double")
 
-            seed[1:10, mode = "integer"] <- pseudo_mat[1:10, ]
+            seed[1:10, mode = "uint32_t"] <- pseudo_mat[1:10, ]
             mat[1:10, ] <- pseudo_mat[1:10, ]
             storage.mode(mat) <- "integer"
             testthat::expect_s4_class(seed, "BPCellsSeed")

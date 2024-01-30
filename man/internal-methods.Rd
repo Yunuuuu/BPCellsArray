@@ -120,11 +120,11 @@
 \item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (\code{integer})
-(unsigned 32-bit integer), \code{float} (\code{numeric} or \verb{32bit_numeric}) (32-bit
-real number), or \code{double} (\verb{64bit_numeric}) (64-bit real number). R cannot
-differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
-64-bit real number and "numeric" to indicate 32-bit real number.}
+\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
+32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real
+number). R cannot differentiate 32-bit and 64-bit real number, so
+\link[=BPCellsSeed-methods]{type} method always return "double" for both \code{float}
+and \code{double} mode.}
 
 \item{mask}{Mask matrix, A \link{BPCellsSeed} or \link{BPCellsMatrix} object.
 Additionally, a matrix-like object which can be coerced into

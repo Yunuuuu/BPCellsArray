@@ -4,6 +4,9 @@
 \alias{convert_mode}
 \alias{convert_mode,BPCellsSeed-method}
 \alias{convert_mode,BPCellsMatrix-method}
+\alias{storage_mode}
+\alias{storage_mode,BPCellsSeed-method}
+\alias{storage_mode,BPCellsMatrix-method}
 \title{Convert the storage type of a BPCellsArray object}
 \usage{
 convert_mode(object, ...)
@@ -11,6 +14,12 @@ convert_mode(object, ...)
 \S4method{convert_mode}{BPCellsSeed}(object, mode)
 
 \S4method{convert_mode}{BPCellsMatrix}(object, mode)
+
+storage_mode(object)
+
+\S4method{storage_mode}{BPCellsSeed}(object)
+
+\S4method{storage_mode}{BPCellsMatrix}(object)
 }
 \arguments{
 \item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
@@ -18,15 +27,22 @@ convert_mode(object, ...)
 
 \item{...}{Additional parameters passed into specific methods.}
 
-\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (\code{integer})
-(unsigned 32-bit integer), \code{float} (\code{numeric} or \verb{32bit_numeric}) (32-bit
-real number), or \code{double} (\verb{64bit_numeric}) (64-bit real number). R cannot
-differentiate 32-bit and 64-bit real number, here, we use "double" to indicte
-64-bit real number and "numeric" to indicate 32-bit real number.}
+\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
+32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real
+number). R cannot differentiate 32-bit and 64-bit real number, so
+\link[=BPCellsSeed-methods]{type} method always return "double" for both \code{float}
+and \code{double} mode.}
 }
 \value{
-A \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object.
+\itemize{
+\item \code{convert_mode}: A \link[=BPCellsSeed-class]{BPCellsSeed} or
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object with storage mode converted into
+the specified.
+}
+
+\itemize{
+\item \code{storage_mode}: A string indicates the storage mode.
+}
 }
 \description{
 Convert the storage type of a BPCellsArray object

@@ -62,6 +62,7 @@ methods::setMethod(
     }
 )
 
+#' @inheritParams convert_mode
 #' @return
 #' - `[<-`: A [BPCellsMatrix] object.
 #' @export
