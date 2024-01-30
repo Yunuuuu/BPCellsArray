@@ -44,7 +44,7 @@ showtree <- function(object) {
             ## 3-char Tprefix
             Tprefix <- paste0(if (last.child) .ELBOW else .TEE, .HBAR, " ")
         }
-        x_as1line <- utils::tail(BPCells:::short_description(x), n = 1L)
+        x_as1line <- summary(x)
         cat(indent, Tprefix, prefix, x_as1line, "\n", sep = "")
     }
     ## Display children.

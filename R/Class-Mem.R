@@ -23,6 +23,15 @@ methods::setClass("BPCellsUnpackedMemSeed",
     contains = c("BPCellsMemSeed", get_class("UnpackedMatrixMemBase"))
 )
 
+################################################################
+methods::setMethod("summary", "BPCellsPackedMemSeed", function(object) {
+    "Load compressed matrix from memory"
+})
+
+methods::setMethod("summary", "BPCellsUnpackedMemSeed", function(object) {
+    "Load uncompressed matrix from memory"
+})
+
 #' @param x A `PackedMatrixMemBase` or `UnpackedMatrixMemBase` object.
 #' @rdname BPCellsMem
 #' @noRd

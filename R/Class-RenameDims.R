@@ -17,6 +17,10 @@ methods::setMethod("BPCellsSeed", "RenameDims", function(x) {
     BPCellsRenameDimsSeed(x = x)
 })
 
+methods::setMethod("summary", "BPCellsRenameDimsSeed", function(object) {
+    "Rename dimnames"
+})
+
 ################    BPCellsMatrix Methods    ##################
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 #' @return

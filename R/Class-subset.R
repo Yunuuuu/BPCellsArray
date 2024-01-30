@@ -20,6 +20,10 @@ methods::setMethod("BPCellsSeed", "MatrixSubset", function(x) {
     BPCellsSubsetSeed(x = x)
 })
 
+methods::setMethod("summary", "BPCellsSubsetSeed", function(object) {
+    "Subset matrix"
+})
+
 ################    BPCellsMatrix Methods    ##################
 #' @inheritParams BPCellsSeed-methods
 #' @return

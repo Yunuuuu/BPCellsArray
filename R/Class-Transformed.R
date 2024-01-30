@@ -21,6 +21,21 @@ methods::setGeneric("BPCellsTransformedSeed", function(x) {
     methods::as(x, Class = sprintf("BPCells%sSeed", class))
 })
 
+methods::setMethod("summary", "BPCellsTransformedSeed", function(object) {
+    cls <- gsub("^BPCellsTransform|Seed$", "", class(object)[1L])
+    sprintf(
+        "Transform by %s",
+        switch(cls,
+            ScaleShift = "scale and (or) shift",
+            Expm1Slow = "expm1_slow",
+            Min = "pmin_scalar",
+            MinByCol = ,
+            MinByRow = paste0("p", snakeize(cls)),
+            snakeize(cls)
+        )
+    )
+})
+
 ####################################################################
 #' @noRd
 methods::setMethod("BPCellsTransformedSeed", "TransformedMatrix", function(x) {

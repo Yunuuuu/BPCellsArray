@@ -16,8 +16,14 @@ methods::setMethod("BPCellsSeed", "MatrixMask", function(x) {
     BPCellsMaskSeed(x = x)
 })
 
-methods::setMethod("entity", "MatrixMask", function(x) {
+methods::setMethod("entity", "BPCellsMaskSeed", function(x) {
     list(matrix = x@matrix, mask = x@mask)
+})
+
+methods::setMethod("summary", "BPCellsMaskSeed", function(object) {
+    out <- "Mask entries"
+    if (object@invert) out <- paste(out, "(inverted)")
+    out
 })
 
 ###################################################################

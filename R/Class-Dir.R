@@ -42,6 +42,13 @@ methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
     "BPCellsDirMatrix"
 })
 
+methods::setMethod("summary", "BPCellsDirSeed", function(object) {
+    sprintf(
+        "Load %s matrix from directory",
+        if (object@compressed) "compressed" else "uncompressed"
+    )
+})
+
 #' Read/write sparse matrices from (or into) directory on disk
 #'
 #' @description
@@ -129,4 +136,3 @@ methods::setAs("ANY", "BPCellsDirArray", .as_BPCellsDirArray)
 
 #' @export
 methods::setAs("ANY", "BPCellsDirMatrix", .as_BPCellsDirArray)
-

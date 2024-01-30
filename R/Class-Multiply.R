@@ -22,6 +22,10 @@ methods::setMethod("entity", "BPCellsMultiplySeed", function(x) {
     list(left = x@left, right = x@right)
 })
 
+methods::setMethod("summary", "BPCellsMultiplySeed", function(object) {
+    "Multiply sparse matrices"
+})
+
 ##############################################################
 #' Matrix Multiplication
 #'
@@ -35,7 +39,7 @@ methods::setMethod("entity", "BPCellsMultiplySeed", function(x) {
 #' which can be coerced into [dgCMatrix][Matrix::dgCMatrix-class].
 #' @return Matrix multiplication, a [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `x` or
-#' `y`. 
+#' `y`.
 #' @importMethodsFrom BPCells %*%
 #' @name BPCells-Multiplication
 NULL

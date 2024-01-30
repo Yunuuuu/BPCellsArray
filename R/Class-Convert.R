@@ -19,6 +19,14 @@ methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x) {
     BPCellsConvertSeed(x = x)
 })
 
+methods::setMethod("summary", "BPCellsConvertSeed", function(object) {
+    sprintf(
+        "Convert type from %s to %s",
+        storage_mode(entity(object)),
+        storage_mode(object)
+    )
+})
+
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
@@ -32,7 +40,7 @@ methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x) {
 #' @name convert_mode
 NULL
 
-#' @return 
+#' @return
 #'  - `convert_mode`: A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object with storage mode converted into
 #' the specified.
@@ -74,7 +82,7 @@ methods::setMethod("convert_mode", "ANY", function(object, mode) {
     )
 })
 
-#' @return 
+#' @return
 #'  - `storage_mode`: A string indicates the storage mode.
 #' @export
 #' @rdname convert_mode

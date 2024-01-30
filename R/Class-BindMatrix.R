@@ -27,6 +27,25 @@ methods::setClass("BPCellsRowBindMatrixSeed",
     contains = c("BPCellsBindMatrixSeed", get_class("RowBindMatrices"))
 )
 
+####################################################################
+methods::setMethod("summary", "BPCellsColBindMatrixSeed", function(object) {
+    sprintf(
+        "Concatenate %s of %d matrix objects (threads=%d)",
+        storage_axis(object),
+        length(object@matrix_list),
+        object@threads
+    )
+})
+methods::setMethod("summary", "BPCellsRowBindMatrixSeed", function(object) {
+    sprintf(
+        "Concatenate %s of %d matrix objects (threads=%d)",
+        if (object@transpose) "cols" else "rows",
+        length(object@matrix_list),
+        object@threads
+    )
+})
+
+####################################################################
 #' @return
 #' - `BPCellsColBindMatrixSeed`: A `BPCellsColBindMatrixSeed` object.
 #' - `BPCellsRowBindMatrixSeed`: A `BPCellsRowBindMatrixSeed` object.
@@ -117,15 +136,15 @@ methods::setMethod("set_threads", "ANY", function(object, ...) {
 #' Combine two Objects by Columns or Rows
 #'
 #' @param x,y A [BPCellsMatrix][BPCellsMatrix-class] or
-#' [BPCellsSeed][BPCellsSeed-class] object. 
+#' [BPCellsSeed][BPCellsSeed-class] object.
 #' @param ...
 #'  - `rbind2` and `cbind2`: Not used currently.
 #'  - `rbind`, `arbind`, `cbind`, and `acbind`: A list of
 #'    [BPCellsMatrix][BPCellsMatrix-class] or [BPCellsSeed][BPCellsSeed-class]
-#'    object. 
+#'    object.
 #' @param threads Set the number of threads to use for sparse-dense multiply and
 #' [matrix_stats][BPCells::matrix_stats].
-#' @seealso 
+#' @seealso
 #' [convert_mode]
 #' @return
 #' If `mode` is specified, the mode of all specified object will be converted.

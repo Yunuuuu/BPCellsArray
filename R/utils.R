@@ -58,11 +58,7 @@ show_bpcells <- function(object, baseClass, class) {
     cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
 
     cat("\n")
-    description <- BPCells:::short_description(object)
-    if (length(description) > 0) cat("Queued Operations:\n")
-    for (i in seq_along(description)) {
-        cat(sprintf("%d. %s\n", i, description[i]))
-    }
+    showtree(object)
 }
 
 
@@ -109,6 +105,26 @@ convert_mode_inform <- function(seed, mode, arg = rlang::caller_arg(seed)) {
         seed
     }
 }
+
+# Use chartr() for safety since toupper() fails to convert i to I in Turkish
+# locale 
+lower_ascii <- "abcdefghijklmnopqrstuvwxyz"
+upper_ascii <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+snake_class <- function(x) {
+    snakeize(class(x)[1])
+}
+
+snakeize <- function(x) {
+    x <- gsub("([A-Za-z])([A-Z])([a-z])", "\\1_\\2\\3", x)
+    x <- gsub(".", "_", x, fixed = TRUE)
+    x <- gsub("([a-z])([A-Z])", "\\1_\\2", x)
+    to_lower_ascii(x)
+}
+to_lower_ascii <- function(x) chartr(upper_ascii, lower_ascii, x)
+to_upper_ascii <- function(x) chartr(lower_ascii, upper_ascii, x)
+
+
 BPCells_MODE <- c("uint32_t", "float", "double")
 BPCells_Transform_classes <- c(
     TransformLog1p = "log1p",

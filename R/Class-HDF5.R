@@ -45,6 +45,14 @@ methods::setMethod("matrixClass", "BPCellsHDF5Array", function(x) {
     "BPCellsHDF5Matrix"
 })
 
+methods::setMethod("summary", "BPCellsHDF5Seed", function(object) {
+    sprintf(
+        "Load %s matrix in HDF5 file (group: %s)",
+        if (object@compressed) "compressed" else "uncompressed",
+        object@group
+    )
+})
+
 #' Read/write sparse matrices from (or into) HDF5 file
 #'
 #' @description

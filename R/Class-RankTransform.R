@@ -36,6 +36,10 @@ methods::setMethod("BPCellsSeed", "MatrixRankTransform", function(x) {
     BPCellsRankTransformSeed(x = x)
 })
 
+methods::setMethod("summary", "BPCellsRankTransformSeed", function(object) {
+    sprintf("Rank transform matrix by %s", storage_axis(object))
+})
+
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################
