@@ -39,6 +39,9 @@ common_test <- function(
                 rownames(seed)[1:10]
             )
             testthat::expect_identical(colnames(seed[1:10, ]), colnames(seed))
+            testthat::skip_if(inherits(seed, c(
+                "BPCellsTransformExpm1Seed", "BPCellsTransformLog1pSeed"
+            )))
             testthat::expect_equal(as.matrix(seed[1:10, ]), mat[1:10, ])
             testthat::expect_s4_class(seed[, 1:10], "BPCellsSeed")
             testthat::expect_identical(
@@ -78,7 +81,9 @@ common_test <- function(
             testthat::expect_identical(rownames(obj2), rownames(obj)[1:10])
             testthat::expect_identical(colnames(obj2), colnames(obj)[1:10])
 
-            testthat::skip_if(transformed)
+            testthat::skip_if(inherits(obj@seed, c(
+                "BPCellsTransformExpm1Seed", "BPCellsTransformLog1pSeed"
+            )))
             testthat::expect_equal(as.matrix(obj[1:10, ]), mat[1:10, ])
             testthat::expect_equal(as.matrix(obj[, 1:10]), mat[, 1:10])
             testthat::expect_equal(as.matrix(obj2), mat[1:10, 1:10])
@@ -92,6 +97,9 @@ common_test <- function(
         sprintf("`[<-()` for double %s works as expected", seed_name),
         {
             seed <- seed_fn(obj)
+            testthat::skip_if(inherits(seed, c(
+                "BPCellsTransformExpm1Seed", "BPCellsTransformLog1pSeed"
+            )))
             seed <- convert_mode(seed, "double")
             # double mode of seed
             testthat::expect_identical(storage_mode(seed), "double")
@@ -120,12 +128,16 @@ common_test <- function(
         sprintf("`[<-()` for integer %s works as expected", seed_name),
         {
             seed <- seed_fn(obj)
+            testthat::skip_if(inherits(
+                seed,
+                c("BPCellsTransformExpm1Seed", "BPCellsTransformExpm1SlowSeed")
+            ))
             seed <- convert_mode(seed, "uint32_t")
-            storage.mode(mat) <- "integer"
+            suppressWarnings(mat <- warn_convert_integer(mat))
             # '[<-()' will convert pseudo_mat into integer automatically
             # Here: we convert it into integer mode manually for test equality
             pseudo_mat2 <- pseudo_mat
-            storage.mode(pseudo_mat2) <- "integer"
+            suppressWarnings(pseudo_mat2 <- warn_convert_integer(pseudo_mat2))
             testthat::expect_identical(storage_mode(seed), "uint32_t")
             testthat::expect_warning(seed[1:10, ] <- pseudo_mat[1:10, ])
             mat[1:10, ] <- pseudo_mat2[1:10, ]
@@ -152,10 +164,14 @@ common_test <- function(
         sprintf("`[<-()` %s works as expected", matrix_name),
         {
             obj <- BPCellsArray(obj)
+            testthat::skip_if(inherits(obj@seed, c(
+                "BPCellsTransformExpm1Seed", "BPCellsTransformLog1pSeed"
+            )))
             obj <- convert_mode(obj, "double")
             obj[1:10, ] <- pseudo_mat[1:10, ]
             mat[1:10, ] <- pseudo_mat[1:10, ]
             testthat::expect_s4_class(obj, "BPCellsMatrix")
+            testthat::expect_identical(storage_mode(obj), "double")
             testthat::expect_equal(as.matrix(obj), mat)
 
             obj[, 1:10] <- pseudo_mat[, 1:10]
@@ -373,7 +389,6 @@ common_test <- function(
                 bindROWS(obj, list(obj)),
                 "BPCellsMatrix"
             )
-            testthat::skip_if(transformed)
             testthat::expect_equal(as.matrix(rbind2(obj, obj)), rbind(mat, mat))
             testthat::expect_equal(as.matrix(rbind(obj, obj)), rbind(mat, mat))
             testthat::expect_equal(as.matrix(arbind(obj, obj)), rbind(mat, mat))
@@ -406,7 +421,6 @@ common_test <- function(
                 bindCOLS(seed, list(seed)),
                 "BPCellsColBindMatrixSeed"
             )
-            testthat::skip_if(transformed)
             testthat::expect_equal(
                 as.matrix(cbind2(seed, seed)),
                 cbind(mat, mat)

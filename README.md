@@ -191,11 +191,11 @@ assay(sce, "counts")
 #> Row names: Gene_0001, Gene_0002 ... Gene_3000
 #> Col names: Cell_001, Cell_002 ... Cell_2000
 #> 
-#> Data type: double
-#> Storage order: column major
+#> Storage Data type: double
+#> Storage axis: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpysclbW/BPCells38e4bf6ace28a6
+#> Load compressed matrix from directory
 ```
 
 If you do delayed operations with this assay, the class may be changed,
@@ -211,12 +211,12 @@ assay(sce, "counts")[1:10, 1:10]
 #> Row names: Gene_0001, Gene_0002 ... Gene_0010
 #> Col names: Cell_001, Cell_002 ... Cell_010
 #> 
-#> Data type: double
-#> Storage order: column major
+#> Storage Data type: double
+#> Storage axis: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpysclbW/BPCells38e4bf6ace28a6
-#> 2. Select rows: 1, 2 ... 10 and cols: 1, 2 ... 10
+#> Subset matrix
+#> └─ Load compressed matrix from directory
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
 #> Gene_0001        0        0        0        0       51        0       16
@@ -276,14 +276,14 @@ assay(sce, "logcounts")
 #> Row names: Gene_0001, Gene_0002 ... Gene_3000
 #> Col names: Cell_001, Cell_002 ... Cell_2000
 #> 
-#> Data type: double
-#> Storage order: column major
+#> Storage Data type: double
+#> Storage axis: column major
 #> 
 #> Queued Operations:
-#> 1. Load compressed matrix from directory /tmp/RtmpysclbW/BPCells38e4bf6ace28a6
-#> 2. Scale columns by 0.984, 1.05 ... 1
-#> 3. Transform log1p
-#> 4. Scale by 1.44
+#> Transform by scale and (or) shift
+#> └─ Transform by log1p
+#>    └─ Transform by scale and (or) shift
+#>       └─ Load compressed matrix from directory
 ```
 
 Both `count` and `logcounts` share the same disk path.

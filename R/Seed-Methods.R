@@ -84,13 +84,7 @@ methods::setMethod("as.array", "BPCellsSeed", as.array.BPCellsSeed)
 as.matrix.BPCellsSeed <- function(x) {
     ans <- as.matrix(methods::as(x, "dgCMatrix")) # always be numeric mode
     if (type(x) == "integer") {
-        if (all(ans < .Machine$integer.max)) {
-            storage.mode(ans) <- "integer"
-        } else {
-            cli::cli_warn(
-                "Using `double` mode since some values exceed {.code .Machine$integer.max}"
-            )
-        }
+        ans <- warn_convert_integer(ans)
     }
     ans
 }
@@ -134,6 +128,18 @@ methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsSeed",
     function(x, index) {
         methods::as(extract_dgCMatrix(x, index), "SparseArraySeed")
+    }
+)
+#' @return
+#' - `extract_sparse_array`: A
+#'   [SparseArray][SparseArray::SVT_SparseArray-class] object.
+#' @importFrom SparseArray extract_sparse_array
+#' @export
+#' @rdname BPCellsSeed-methods
+methods::setMethod(
+    "extract_sparse_array", "BPCellsSeed",
+    function(x, index) {
+        methods::as(extract_dgCMatrix(x, index), "SparseArray")
     }
 )
 

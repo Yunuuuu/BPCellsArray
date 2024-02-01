@@ -51,6 +51,7 @@ show_bpcells <- function(object, baseClass, class) {
     cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
 
     cat("\n")
+    cat("Queued Operations:\n")
     showtree(object)
 }
 
@@ -117,6 +118,17 @@ drop_internal <- function(x) {
     ## derivative with less than 2 effective dimensions except that
     ## the former propagates the names and the latter doesn't).
     as.array(x, drop = TRUE)
+}
+
+warn_convert_integer <- function(matrix) { # a numeric matrix
+    if (all(matrix < .Machine$integer.max)) {
+        storage.mode(matrix) <- "integer"
+    } else {
+        cli::cli_warn(
+            "Using `double` mode since some values exceed {.code .Machine$integer.max}"
+        )
+    }
+    matrix
 }
 
 # Use chartr() for safety since toupper() fails to convert i to I in Turkish

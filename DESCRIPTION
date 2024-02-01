@@ -14,6 +14,7 @@ Imports:
     methods,
     BPCells (>= 0.1.0),
     DelayedArray (>= 0.28.0),
+    SparseArray,
     Matrix,
     MatrixGenerics,
     BiocGenerics,
