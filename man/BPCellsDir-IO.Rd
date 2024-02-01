@@ -4,26 +4,15 @@
 \alias{BPCellsDir-IO}
 \alias{readBPCellsDirMatrix}
 \alias{writeBPCellsDirArray}
-\alias{writeBPCellsDirArray,IterableMatrix-method}
-\alias{writeBPCellsDirArray,BPCellsSeed-method}
-\alias{writeBPCellsDirArray,BPCellsMatrix-method}
-\alias{writeBPCellsDirArray,dgCMatrix-method}
 \alias{writeBPCellsDirArray,ANY-method}
+\alias{writeBPCellsDirArray,BPCellsMatrix-method}
 \title{Read/write sparse matrices from (or into) directory on disk}
 \usage{
 readBPCellsDirMatrix(path, buffer_size = 8192L)
 
 writeBPCellsDirArray(x, ...)
 
-\S4method{writeBPCellsDirArray}{IterableMatrix}(
-  x,
-  path = NULL,
-  bitpacking = TRUE,
-  buffer_size = 8192L,
-  overwrite = FALSE
-)
-
-\S4method{writeBPCellsDirArray}{BPCellsSeed}(
+\S4method{writeBPCellsDirArray}{ANY}(
   x,
   path = NULL,
   bitpacking = TRUE,
@@ -32,16 +21,6 @@ writeBPCellsDirArray(x, ...)
 )
 
 \S4method{writeBPCellsDirArray}{BPCellsMatrix}(x, ...)
-
-\S4method{writeBPCellsDirArray}{dgCMatrix}(
-  x,
-  path = NULL,
-  bitpacking = TRUE,
-  buffer_size = 8192L,
-  overwrite = FALSE
-)
-
-\S4method{writeBPCellsDirArray}{ANY}(x, ...)
 }
 \arguments{
 \item{path}{A string path of Directory to read or save the data into. For

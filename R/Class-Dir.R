@@ -96,7 +96,8 @@ methods::setGeneric(
     assert_bool(overwrite)
     path <- path %||% tempfile("BPCellsDirArray")
     obj <- BPCells::write_matrix_dir(
-        mat = x, dir = path, compress = bitpacking,
+        mat = BPCellsSeed(x),
+        dir = path, compress = bitpacking,
         buffer_size = as.integer(buffer_size),
         overwrite = overwrite
     )
@@ -105,28 +106,12 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsDir-IO
-methods::setMethod(
-    "writeBPCellsDirArray", "IterableMatrix", .writeBPCellsDirArray
-)
-
-#' @export
-#' @rdname BPCellsDir-IO
-methods::setMethod("writeBPCellsDirArray", "BPCellsSeed", .writeBPCellsDirArray)
+methods::setMethod("writeBPCellsDirArray", "ANY", .writeBPCellsDirArray)
 
 #' @export
 #' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "BPCellsMatrix", function(x, ...) {
     .writeBPCellsDirArray(x = x@seed, ...)
-})
-
-#' @export
-#' @rdname BPCellsDir-IO
-methods::setMethod("writeBPCellsDirArray", "dgCMatrix", .writeBPCellsDirArray)
-
-#' @export
-#' @rdname BPCellsDir-IO
-methods::setMethod("writeBPCellsDirArray", "ANY", function(x, ...) {
-    .writeBPCellsDirArray(x = coerce_dgCMatrix(x), ...)
 })
 
 .as_BPCellsDirArray <- function(from) writeBPCellsDirArray(from)

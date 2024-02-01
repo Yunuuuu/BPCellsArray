@@ -4,29 +4,15 @@
 \alias{BPCellsHDF5-IO}
 \alias{readBPCellsHDF5Matrix}
 \alias{writeBPCellsHDF5Array}
-\alias{writeBPCellsHDF5Array,IterableMatrix-method}
-\alias{writeBPCellsHDF5Array,BPCellsSeed-method}
-\alias{writeBPCellsHDF5Array,BPCellsMatrix-method}
-\alias{writeBPCellsHDF5Array,dgCMatrix-method}
 \alias{writeBPCellsHDF5Array,ANY-method}
+\alias{writeBPCellsHDF5Array,BPCellsMatrix-method}
 \title{Read/write sparse matrices from (or into) HDF5 file}
 \usage{
 readBPCellsHDF5Matrix(path, group, buffer_size = 8192L)
 
 writeBPCellsHDF5Array(x, ...)
 
-\S4method{writeBPCellsHDF5Array}{IterableMatrix}(
-  x,
-  path,
-  group,
-  bitpacking = TRUE,
-  buffer_size = 8192L,
-  chunk_size = 1024L,
-  overwrite = FALSE,
-  gzip = 0L
-)
-
-\S4method{writeBPCellsHDF5Array}{BPCellsSeed}(
+\S4method{writeBPCellsHDF5Array}{ANY}(
   x,
   path,
   group,
@@ -38,19 +24,6 @@ writeBPCellsHDF5Array(x, ...)
 )
 
 \S4method{writeBPCellsHDF5Array}{BPCellsMatrix}(x, ...)
-
-\S4method{writeBPCellsHDF5Array}{dgCMatrix}(
-  x,
-  path,
-  group,
-  bitpacking = TRUE,
-  buffer_size = 8192L,
-  chunk_size = 1024L,
-  overwrite = FALSE,
-  gzip = 0L
-)
-
-\S4method{writeBPCellsHDF5Array}{ANY}(x, ...)
 }
 \arguments{
 \item{path}{A string path of the \code{HDF5} file to read or save data into.}

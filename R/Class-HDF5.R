@@ -96,7 +96,8 @@ methods::setGeneric(
         gzip <- as.integer(gzip)
     }
     obj <- BPCells::write_matrix_hdf5(
-        mat = x, path = path, group = group,
+        mat = BPCellsSeed(x), 
+        path = path, group = group,
         compress = bitpacking,
         buffer_size = as.integer(buffer_size),
         chunk_size = as.integer(chunk_size),
@@ -107,31 +108,10 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsHDF5-IO
-methods::setMethod(
-    "writeBPCellsHDF5Array", "IterableMatrix", .writeBPCellsHDF5Array
-)
-
-#' @export
-#' @rdname BPCellsHDF5-IO
-methods::setMethod(
-    "writeBPCellsHDF5Array", "BPCellsSeed",
-    .writeBPCellsHDF5Array
-)
+methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)
 
 #' @export
 #' @rdname BPCellsHDF5-IO
 methods::setMethod("writeBPCellsHDF5Array", "BPCellsMatrix", function(x, ...) {
     .writeBPCellsHDF5Array(x = x@seed, ...)
 })
-
-#' @export
-#' @rdname BPCellsHDF5-IO
-methods::setMethod("writeBPCellsHDF5Array", "dgCMatrix", .writeBPCellsHDF5Array)
-
-#' @export
-#' @rdname BPCellsHDF5-IO
-methods::setMethod("writeBPCellsHDF5Array", "ANY", function(x, ...) {
-    .writeBPCellsHDF5Array(x = coerce_dgCMatrix(x), ...)
-})
-
-.as_BPCellsHDF5Array <- function(from) writeBPCellsHDF5Array(from)

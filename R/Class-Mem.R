@@ -160,10 +160,8 @@ methods::setMethod("matrixClass", "BPCellsMemArray", function(x) {
 #' @param x Input matrix, any matrix can be coerced to a
 #' [dgCMatrix][Matrix::dgCMatrix-class] object.
 #' @inheritParams BPCells::write_matrix_memory
-#' @param ...
-#' - For `BPCellsMatrix` method: additional parameters passed to `BPCellsSeed`
+#' @param ... For `BPCellsMatrix` method: additional parameters passed to `ANY`
 #'   methods.
-#' - For `ANY` method: additional parameters passed to `dgCMatrix` methods.
 #' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @export
 #' @name writeBPCellsMemArray
@@ -173,34 +171,21 @@ methods::setGeneric(
 )
 
 .writeBPCellsMemArray <- function(x, compress = TRUE) {
-    obj <- BPCells::write_matrix_memory(mat = x, compress = compress)
+    obj <- BPCells::write_matrix_memory(
+        mat = BPCellsSeed(x),
+        compress = compress
+    )
     DelayedArray(BPCellsMemSeed(obj))
 }
 
 #' @export
 #' @rdname writeBPCellsMemArray
-methods::setMethod(
-    "writeBPCellsMemArray", "IterableMatrix", .writeBPCellsMemArray
-)
-
-#' @export
-#' @rdname writeBPCellsMemArray
-methods::setMethod("writeBPCellsMemArray", "BPCellsSeed", .writeBPCellsMemArray)
+methods::setMethod("writeBPCellsMemArray", "ANY", .writeBPCellsMemArray)
 
 #' @export
 #' @rdname writeBPCellsMemArray
 methods::setMethod("writeBPCellsMemArray", "BPCellsMatrix", function(x, ...) {
     .writeBPCellsMemArray(x = x@seed, ...)
-})
-
-#' @export
-#' @rdname writeBPCellsMemArray
-methods::setMethod("writeBPCellsMemArray", "dgCMatrix", .writeBPCellsMemArray)
-
-#' @export
-#' @rdname writeBPCellsMemArray
-methods::setMethod("writeBPCellsMemArray", "ANY", function(x, ...) {
-    .writeBPCellsMemArray(x = coerce_dgCMatrix(x), ...)
 })
 
 .as_BPCellsMemArray <- function(from) writeBPCellsMemArray(from)

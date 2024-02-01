@@ -2,34 +2,22 @@
 % Please edit documentation in R/Class-Mem.R
 \name{writeBPCellsMemArray}
 \alias{writeBPCellsMemArray}
-\alias{writeBPCellsMemArray,IterableMatrix-method}
-\alias{writeBPCellsMemArray,BPCellsSeed-method}
-\alias{writeBPCellsMemArray,BPCellsMatrix-method}
-\alias{writeBPCellsMemArray,dgCMatrix-method}
 \alias{writeBPCellsMemArray,ANY-method}
+\alias{writeBPCellsMemArray,BPCellsMatrix-method}
 \title{Write a sparce matrices into memory with BPCells format}
 \usage{
 writeBPCellsMemArray(x, ...)
 
-\S4method{writeBPCellsMemArray}{IterableMatrix}(x, compress = TRUE)
-
-\S4method{writeBPCellsMemArray}{BPCellsSeed}(x, compress = TRUE)
+\S4method{writeBPCellsMemArray}{ANY}(x, compress = TRUE)
 
 \S4method{writeBPCellsMemArray}{BPCellsMatrix}(x, ...)
-
-\S4method{writeBPCellsMemArray}{dgCMatrix}(x, compress = TRUE)
-
-\S4method{writeBPCellsMemArray}{ANY}(x, ...)
 }
 \arguments{
 \item{x}{Input matrix, any matrix can be coerced to a
 \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
-\item{...}{\itemize{
-\item For \code{BPCellsMatrix} method: additional parameters passed to \code{BPCellsSeed}
-methods.
-\item For \code{ANY} method: additional parameters passed to \code{dgCMatrix} methods.
-}}
+\item{...}{For \code{BPCellsMatrix} method: additional parameters passed to \code{ANY}
+methods.}
 
 \item{compress}{Whether or not to compress the data.}
 }
