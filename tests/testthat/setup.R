@@ -5,7 +5,7 @@ tmpdir <- normalizePath(tmpdir, mustWork = TRUE)
 
 common_test <- function(
     obj, actual_path, ..., mat = NULL,
-    seed_fn, name, 
+    seed_fn, name,
     skip_multiplication = FALSE) {
     # for TransformedMatrix, it often contain float values
     transformed <- methods::is(seed_fn(obj), "BPCellsTransformedSeed")
@@ -86,41 +86,73 @@ common_test <- function(
     )
 
     pseudo_mat <- matrix(sample(mat, length(mat)), nrow = nrow(mat))
-    cli::cli_inform("{.field [<-} {seed_name} works as expected")
+    storage.mode(pseudo_mat) <- "double"
+    cli::cli_inform("{.field [<-} for double {seed_name} works as expected")
     testthat::test_that(
-        sprintf("`[<-()` %s works as expected", seed_name),
+        sprintf("`[<-()` for double %s works as expected", seed_name),
         {
             seed <- seed_fn(obj)
+            seed <- convert_mode(seed, "double")
+            # double mode of seed
+            testthat::expect_identical(storage_mode(seed), "double")
             seed[1:10, ] <- pseudo_mat[1:10, ]
             mat[1:10, ] <- pseudo_mat[1:10, ]
             testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_identical(storage_mode(seed), "double")
             testthat::expect_equal(as.matrix(seed), mat)
 
             seed[, 1:10] <- pseudo_mat[, 1:10]
             mat[, 1:10] <- pseudo_mat[, 1:10]
             testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_identical(storage_mode(seed), "double")
             testthat::expect_equal(as.matrix(seed), mat)
 
             seed[1:10, 1:10] <- pseudo_mat[1:10, 1:10]
             mat[1:10, 1:10] <- pseudo_mat[1:10, 1:10]
             testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_identical(storage_mode(seed), "double")
+            testthat::expect_equal(as.matrix(seed), mat)
+        }
+    )
+
+    cli::cli_inform("{.field [<-} for integer {seed_name} works as expected")
+    testthat::test_that(
+        sprintf("`[<-()` for integer %s works as expected", seed_name),
+        {
+            seed <- seed_fn(obj)
+            seed <- convert_mode(seed, "uint32_t")
+            storage.mode(mat) <- "integer"
+            # '[<-()' will convert pseudo_mat into integer automatically
+            # Here: we convert it into integer mode manually for test equality
+            pseudo_mat2 <- pseudo_mat
+            storage.mode(pseudo_mat2) <- "integer"
+            testthat::expect_identical(storage_mode(seed), "uint32_t")
+            testthat::expect_warning(seed[1:10, ] <- pseudo_mat[1:10, ])
+            mat[1:10, ] <- pseudo_mat2[1:10, ]
+            testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_identical(storage_mode(seed), "uint32_t")
             testthat::expect_equal(as.matrix(seed), mat)
 
-            testthat::expect_identical(storage_mode(seed), "double")
+            testthat::expect_warning(seed[, 1:10] <- pseudo_mat[, 1:10])
+            mat[, 1:10] <- pseudo_mat2[, 1:10]
+            testthat::expect_s4_class(seed, "BPCellsSeed")
+            testthat::expect_identical(storage_mode(seed), "uint32_t")
+            testthat::expect_equal(as.matrix(seed), mat)
 
-            seed[1:10, mode = "uint32_t"] <- pseudo_mat[1:10, ]
-            mat[1:10, ] <- pseudo_mat[1:10, ]
-            storage.mode(mat) <- "integer"
+            testthat::expect_warning(seed[1:10, 1:10] <- pseudo_mat[1:10, 1:10])
+            mat[1:10, 1:10] <- pseudo_mat2[1:10, 1:10]
             testthat::expect_s4_class(seed, "BPCellsSeed")
             testthat::expect_identical(storage_mode(seed), "uint32_t")
             testthat::expect_equal(as.matrix(seed), mat)
         }
     )
+
     cli::cli_inform("{.field [<-} {matrix_name} works as expected")
     testthat::test_that(
         sprintf("`[<-()` %s works as expected", matrix_name),
         {
             obj <- BPCellsArray(obj)
+            obj <- convert_mode(obj, "double")
             obj[1:10, ] <- pseudo_mat[1:10, ]
             mat[1:10, ] <- pseudo_mat[1:10, ]
             testthat::expect_s4_class(obj, "BPCellsMatrix")

@@ -12,6 +12,11 @@
 \alias{colnames<-,BPCellsMatrix,atomic-method}
 \alias{colnames<-}
 \alias{BPCellsMatrix-methods}
+\alias{drop,BPCellsMatrix-method}
+\alias{as.array.BPCellsMatrix}
+\alias{as.array,BPCellsMatrix-method}
+\alias{as.matrix.BPCellsMatrix}
+\alias{as.matrix,BPCellsMatrix-method}
 \alias{t,BPCellsMatrix-method}
 \alias{t}
 \alias{expm1_slow}
@@ -40,13 +45,23 @@
 
 \S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
-\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ..., mode = NULL) <- value
+\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{dimnames}{BPCellsMatrix,ListOrNULL}(x) <- value
 
 \S4method{rownames}{BPCellsMatrix,atomic}(x) <- value
 
 \S4method{colnames}{BPCellsMatrix,atomic}(x) <- value
+
+\S4method{drop}{BPCellsMatrix}(x)
+
+\method{as.array}{BPCellsMatrix}(x, drop = FALSE)
+
+\S4method{as.array}{BPCellsMatrix}(x, drop = FALSE)
+
+\method{as.matrix}{BPCellsMatrix}(x)
+
+\S4method{as.matrix}{BPCellsMatrix}(x)
 
 \S4method{t}{BPCellsMatrix}(x)
 
@@ -89,13 +104,8 @@ pow_slow(e1, e2)
 
 \item{...}{Not used currently.}
 
-\item{drop}{Ignored, always be \code{FALSE}.}
-
-\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
-32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real
-number). R cannot differentiate 32-bit and 64-bit real number, so
-\link[=BPCellsSeed-methods]{type} method always return "double" for both \code{float}
-and \code{double} mode.}
+\item{drop}{A bool, if \code{TRUE}, any extents of length one will be removed and
+return an atomic vector.}
 
 \item{value}{\itemize{
 \item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
@@ -114,7 +124,7 @@ number.}
 }
 \value{
 \itemize{
-\item \code{[}: A \link{BPCellsMatrix} object.
+\item \code{[}: A \link{BPCellsMatrix} object or an atomic vector.
 }
 
 \itemize{

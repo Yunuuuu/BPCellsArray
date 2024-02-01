@@ -23,11 +23,9 @@
 \alias{[,BPCellsMatrix,missing,ANY,ANY-method}
 \alias{[,BPCellsMatrix,ANY,missing,ANY-method}
 \alias{[,BPCellsMatrix,missing,missing,ANY-method}
+\alias{[<-,BPCellsSeed,ANY,ANY,matrix-method}
 \alias{[<-,BPCellsSeed,ANY,ANY,dgCMatrix-method}
 \alias{[<-,BPCellsSeed,ANY,ANY,BPCellsSeed-method}
-\alias{[<-,BPCellsSeed,ANY,missing,BPCellsSeed-method}
-\alias{[<-,BPCellsSeed,missing,ANY,BPCellsSeed-method}
-\alias{[<-,BPCellsSeed,missing,missing,BPCellsSeed-method}
 \alias{<,BPCellsMatrix,numeric-method}
 \alias{>,numeric,BPCellsMatrix-method}
 \alias{<=,BPCellsMatrix,numeric-method}
@@ -81,15 +79,11 @@
 
 \S4method{[}{BPCellsMatrix,missing,missing,ANY}(x, i, j, ..., drop = FALSE)
 
-\S4method{[}{BPCellsSeed,ANY,ANY,dgCMatrix}(x, i, j, ..., mode = NULL) <- value
+\S4method{[}{BPCellsSeed,ANY,ANY,matrix}(x, i, j, ...) <- value
 
-\S4method{[}{BPCellsSeed,ANY,ANY,BPCellsSeed}(x, i, j, ..., mode = NULL) <- value
+\S4method{[}{BPCellsSeed,ANY,ANY,dgCMatrix}(x, i, j, ...) <- value
 
-\S4method{[}{BPCellsSeed,ANY,missing,BPCellsSeed}(x, i, j, ..., mode = NULL) <- value
-
-\S4method{[}{BPCellsSeed,missing,ANY,BPCellsSeed}(x, i, j, ..., mode = NULL) <- value
-
-\S4method{[}{BPCellsSeed,missing,missing,BPCellsSeed}(x, i, j, ...) <- value
+\S4method{[}{BPCellsSeed,ANY,ANY,BPCellsSeed}(x, i, j, ...) <- value
 
 \S4method{<}{BPCellsMatrix,numeric}(e1, e2)
 
@@ -145,7 +139,8 @@ number.}
 
 \item{i, j}{Row and Column index.}
 
-\item{drop}{Ignored, always be \code{FALSE}.}
+\item{drop}{A bool, if \code{TRUE}, any extents of length one will be removed and
+return an atomic vector.}
 
 \item{value}{A matrix which can be coerced into
 \link[Matrix:dgCMatrix-class]{dgCMatrix}.}

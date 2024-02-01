@@ -1,7 +1,7 @@
 #' Basic operations for `BPCellsMatrix` object
 #'
 #' @param x,object A `BPCellsMatrix` object.
-#' @inheritParams BPCellsSeed-methods
+#' @inheritParams BPCellsMatrix-methods
 #' @inherit BPCellsSeed-methods seealso
 #' @name BPCellsMatrix-methods
 NULL
@@ -14,6 +14,38 @@ methods::setMethod("show", "BPCellsMatrix", function(object) {
     show_bpcells(object@seed, "DelayedMatrix", class(object))
 })
 
+#' @importMethodsFrom DelayedArray drop
+#' @export
+#' @rdname BPCellsMatrix-methods
+methods::setMethod("drop", "BPCellsMatrix", drop_internal)
+
+#' @export
+methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
+    methods::as(from@seed, "dgCMatrix")
+})
+
+# S3/S4 combo for as.array.BPCellsMatrix
+#' @exportS3Method base::as.array
+#' @rdname BPCellsMatrix-methods
+as.array.BPCellsMatrix <- function(x, drop = FALSE) {
+    as.array(x@seed, drop = drop)
+}
+
+#' @export
+#' @rdname BPCellsMatrix-methods
+methods::setMethod("as.array", "BPCellsMatrix", as.array.BPCellsMatrix)
+
+#' @exportS3Method base::as.matrix
+#' @rdname BPCellsMatrix-methods
+as.matrix.BPCellsMatrix <- function(x) {
+    as.matrix(x@seed)
+}
+
+#' @export
+#' @rdname BPCellsMatrix-methods
+methods::setMethod("as.matrix", "BPCellsMatrix", as.matrix.BPCellsMatrix)
+
+##########################################################
 #' @return
 #' - `t`: A [BPCellsMatrix] object.
 #' @importMethodsFrom BPCells t
@@ -36,19 +68,3 @@ methods::setMethod("t", "BPCellsMatrix", function(x) {
 #' @importMethodsFrom DelayedArray OLD_extract_sparse_array
 #' @noRd
 NULL
-
-#' @export
-methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
-    methods::as(from@seed, "dgCMatrix")
-})
-
-#' @export
-methods::setAs("BPCellsMatrix", "matrix", function(from) {
-    methods::as(from@seed, "matrix")
-})
-
-#' @export
-methods::setAs("ANY", "BPCellsArray", .as_BPCellsDirArray)
-
-#' @export
-methods::setAs("ANY", "BPCellsMatrix", .as_BPCellsDirArray)

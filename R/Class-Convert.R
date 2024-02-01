@@ -99,5 +99,24 @@ methods::setMethod("storage_mode", "BPCellsSeed", function(object) {
 #' @export
 #' @rdname convert_mode
 methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
-    BPCells:::matrix_type(object@seed)
+    object <- object@seed
+    methods::callGeneric()
+})
+
+#' @export
+#' @rdname convert_mode
+methods::setMethod("storage_mode", "dgCMatrix", function(object) {
+    "double"
+})
+
+#' @export
+#' @rdname convert_mode
+methods::setMethod("storage_mode", "matrix", function(object) {
+    mode <- storage.mode(object)
+    switch(mode,
+        integer = "uint32_t",
+        double = ,
+        numeric = "double",
+        cli::cli_abort("{.pkg BPCells} cannot support {.field {mode}} mode")
+    )
 })

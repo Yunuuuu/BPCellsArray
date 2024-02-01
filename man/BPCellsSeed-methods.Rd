@@ -11,9 +11,13 @@
 \alias{BPCellsSeed-methods}
 \alias{type,BPCellsSeed-method}
 \alias{is_sparse,BPCellsSeed-method}
+\alias{drop,BPCellsSeed-method}
+\alias{as.array.BPCellsSeed}
+\alias{as.array,BPCellsSeed-method}
+\alias{as.matrix.BPCellsSeed}
+\alias{as.matrix,BPCellsSeed-method}
 \alias{extract_array,BPCellsSeed-method}
 \alias{OLD_extract_sparse_array,BPCellsSeed-method}
-\alias{extract_sparse_array,BPCellsSeed-method}
 \alias{chunkdim,BPCellsSeed-method}
 \alias{t,BPCellsSeed-method}
 \alias{expm1_slow,BPCellsSeed-method}
@@ -43,7 +47,7 @@
 \usage{
 \S4method{show}{BPCellsSeed}(object)
 
-\S4method{[}{BPCellsSeed,ANY,ANY,ANY}(x, i, j, ..., mode = NULL) <- value
+\S4method{[}{BPCellsSeed,ANY,ANY,ANY}(x, i, j, ...) <- value
 
 \S4method{dimnames}{BPCellsSeed,list}(x) <- value
 
@@ -57,11 +61,19 @@
 
 \S4method{is_sparse}{BPCellsSeed}(x)
 
+\S4method{drop}{BPCellsSeed}(x)
+
+\method{as.array}{BPCellsSeed}(x, drop = FALSE)
+
+\S4method{as.array}{BPCellsSeed}(x, drop = FALSE)
+
+\method{as.matrix}{BPCellsSeed}(x)
+
+\S4method{as.matrix}{BPCellsSeed}(x)
+
 \S4method{extract_array}{BPCellsSeed}(x, index)
 
 \S4method{OLD_extract_sparse_array}{BPCellsSeed}(x, index)
-
-\S4method{extract_sparse_array}{BPCellsSeed}(x, index)
 
 \S4method{chunkdim}{BPCellsSeed}(x)
 
@@ -120,18 +132,15 @@
 
 \item{...}{Not used currently.}
 
-\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
-32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real
-number). R cannot differentiate 32-bit and 64-bit real number, so
-\link[=BPCellsSeed-methods]{type} method always return "double" for both \code{float}
-and \code{double} mode.}
-
 \item{value}{\itemize{
 \item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
 \item \verb{[<-}: A matrix which can be coerced into
 \link[Matrix:dgCMatrix-class]{dgCMatrix}.
 \item \code{pmin_scalar}: Single positive numeric value.
 }}
+
+\item{drop}{A bool, if \code{TRUE}, any extents of length one will be removed and
+return an atomic vector.}
 
 \item{index}{
     An unnamed list of integer vectors, one per dimension in \code{x}.
@@ -154,8 +163,6 @@ and \code{double} mode.}
 number.}
 
 \item{digits}{Integer indicating the number of decimal places}
-
-\item{drop}{Ignored, always be \code{FALSE}.}
 }
 \value{
 \itemize{
@@ -189,13 +196,7 @@ differentiate 32-bit and 64-bit real number. See
 }
 
 \itemize{
-\item \code{extract_sparse_array}: A
-\link[SparseArray:SVT_SparseArray-class]{SparseArray} object.
-}
-
-\itemize{
-\item \code{chunkdim}: \code{NULL} or the chunk dimensions in an integer vector parallel to
-\code{dim(x)}.
+\item \code{chunkdim}: the chunk dimensions in an integer vector parallel to \code{dim(x)}.
 }
 
 \itemize{
@@ -203,8 +204,9 @@ differentiate 32-bit and 64-bit real number. See
 }
 }
 \description{
-Following methods are used by \linkS4class{BPCellsSeed} objects, you should always
-use the methods of \linkS4class{BPCellsMatrix}
+Following methods are used by \link[=BPCellsSeed-class]{BPCellsSeed} object, you
+shouldn't use this directly, just use the methods of
+\link[=BPCellsMatrix-methods]{BPCellsMatrix}
 }
 \seealso{
 \itemize{

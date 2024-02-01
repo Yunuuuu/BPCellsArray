@@ -31,7 +31,7 @@ methods::setClass("BPCellsRowBindMatrixSeed",
 methods::setMethod("summary", "BPCellsColBindMatrixSeed", function(object) {
     sprintf(
         "Concatenate %s of %d matrix objects (threads=%d)",
-        storage_axis(object),
+        if (object@transpose) "rows" else "cols",
         length(object@matrix_list),
         object@threads
     )
@@ -515,7 +515,15 @@ combine_seeds <- function(.fn, mode, seeds, ...) {
         where = "BPCells"
     )
     mode <- mode %||% compatible_storage_mode(seeds)
-    seeds <- lapply(seeds, convert_mode_inform, mode = mode, arg = NULL)
+    mode <- match.arg(mode, BPCells_MODE)
+    seeds <- lapply(seeds, function(seed, mode) {
+        if (storage_mode(seed) != mode) {
+            cli::cli_inform("Converting into {mode} data type")
+            BPCellsSeed(BPCells::convert_matrix_type(seed, type = mode))
+        } else {
+            seed
+        }
+    }, mode = mode)
     out <- Reduce(function(x, y) fn(x = x, y = y, ...), seeds)
     BPCellsSeed(out)
 }

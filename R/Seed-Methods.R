@@ -1,7 +1,8 @@
 #' House of BPCellsSeed methods
 #'
-#' Following methods are used by [BPCellsSeed-class] objects, you should always
-#' use the methods of [BPCellsMatrix-class]
+#' Following methods are used by [BPCellsSeed][BPCellsSeed-class] object, you
+#' shouldn't use this directly, just use the methods of
+#' [BPCellsMatrix][BPCellsMatrix-methods]
 #'
 #' @param x,object A [BPCellsSeed][BPCellsSeed-class] object.
 #' @param value
@@ -51,6 +52,59 @@ methods::setMethod("type", "BPCellsSeed", function(x) {
 #' @rdname BPCellsSeed-methods
 methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
 
+
+###############################################
+#' @export
+methods::setAs(
+    "BPCellsSeed", "dgCMatrix",
+    function(from) methods::callNextMethod()
+)
+
+#' @importMethodsFrom DelayedArray drop
+#' @export
+#' @rdname BPCellsSeed-methods
+methods::setMethod("drop", "BPCellsSeed", drop_internal)
+
+# S3/S4 combo for as.array.BPCellsSeed
+#' @exportS3Method base::as.array
+#' @rdname BPCellsSeed-methods
+as.array.BPCellsSeed <- function(x, drop = FALSE) {
+    assert_bool(drop)
+    ans <- as.matrix(x)
+    if (drop) ans <- drop(ans)
+    ans
+}
+
+#' @export
+#' @rdname BPCellsSeed-methods
+methods::setMethod("as.array", "BPCellsSeed", as.array.BPCellsSeed)
+
+#' @exportS3Method base::as.matrix
+#' @rdname BPCellsSeed-methods
+as.matrix.BPCellsSeed <- function(x) {
+    ans <- as.matrix(methods::as(x, "dgCMatrix")) # always be numeric mode
+    if (type(x) == "integer") {
+        if (all(ans < .Machine$integer.max)) {
+            storage.mode(ans) <- "integer"
+        } else {
+            cli::cli_warn(
+                "Using `double` mode since some values exceed {.code .Machine$integer.max}"
+            )
+        }
+    }
+    ans
+}
+
+#' @export
+#' @rdname BPCellsSeed-methods
+methods::setMethod("as.matrix", "BPCellsSeed", as.matrix.BPCellsSeed)
+
+#' @export
+methods::setAs("ANY", "BPCellsSeed", function(from) {
+    BPCellsSeed(from)
+})
+
+###############################################
 #' @inheritParams S4Arrays::extract_array
 #' @return
 #' - `extract_array`: A dense matrix.
@@ -60,11 +114,15 @@ methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
 methods::setMethod(
     "extract_array", "BPCellsSeed",
     function(x, index) {
-        out <- as.matrix(extract_bpcells_array(x, index))
-        storage.mode(out) <- type(x)
-        out
+        slice <- S4Arrays:::subset_by_Nindex(x, index)
+        as.matrix(slice)
     }
 )
+
+extract_dgCMatrix <- function(x, index) {
+    slice <- S4Arrays:::subset_by_Nindex(x, index)
+    methods::as(slice, "dgCMatrix")
+}
 
 #' @return
 #' - `OLD_extract_sparse_array`: A
@@ -75,26 +133,12 @@ methods::setMethod(
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsSeed",
     function(x, index) {
-        methods::as(extract_bpcells_array(x, index), "SparseArraySeed")
+        methods::as(extract_dgCMatrix(x, index), "SparseArraySeed")
     }
 )
 
 #' @return
-#' - `extract_sparse_array`: A
-#'   [SparseArray][SparseArray::SVT_SparseArray-class] object.
-#' @importFrom SparseArray extract_sparse_array
-#' @export
-#' @rdname BPCellsSeed-methods
-methods::setMethod(
-    "extract_sparse_array", "BPCellsSeed",
-    function(x, index) {
-        methods::as(extract_bpcells_array(x, index), "SparseArray")
-    }
-)
-
-#' @return
-#' - `chunkdim`: `NULL` or the chunk dimensions in an integer vector parallel to
-#' `dim(x)`.
+#' - `chunkdim`: the chunk dimensions in an integer vector parallel to `dim(x)`.
 #' @importFrom DelayedArray chunkdim
 #' @export
 #' @rdname BPCellsSeed-methods
@@ -110,19 +154,3 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())
-
-#' @export
-methods::setAs("BPCellsSeed", "matrix", function(from) {
-    out <- methods::as(from, "dgCMatrix")
-    out <- as.matrix(out)
-    if (type(from) == "integer") {
-        if (all(out < .Machine$integer.max)) {
-            storage.mode(out) <- "integer"
-        } else {
-            cli::cli_warn(
-                "Using double data type since some values exceed {.code .Machine$integer.max}"
-            )
-        }
-    }
-    out
-})

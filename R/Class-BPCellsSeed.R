@@ -4,8 +4,9 @@
 #' BPCells package. The purpose for `BPCellsSeed` class is to provide the common
 #' methods for all low-level BPCells seed classes.
 #'
-#' @param x A `BPCellsSeed` object or a `IterableMatrix` object from BPCells,
-#' details see the method signature.
+#' @param x A `IterableMatrix` object from BPCells, a matrix-like object which
+#' can be coerced into dgCMatrix, or a `BPCellsSeed` object. Details see the
+#' method signature.
 #' @name BPCellsSeed
 NULL
 
@@ -20,6 +21,14 @@ NULL
 methods::setClass("BPCellsSeed",
     contains = c(get_class("IterableMatrix"), "VIRTUAL")
 )
+
+methods::setValidity("BPCellsSeed", function(object) {
+    if (length(dim(object)) != 2L) {
+        cli::cli_abort("{.pkg BPCells} can only support 2-dim matrix")
+    }
+    TRUE
+})
+
 methods::setClass("BPCellsUnaryOpsSeed", contains = c("BPCellsSeed", "VIRTUAL"))
 methods::setClass("BPCellsNaryOpsSeed", contains = c("BPCellsSeed", "VIRTUAL"))
 methods::setClass("BPCellsBasicSeed", contains = c("BPCellsSeed", "VIRTUAL"))
@@ -32,8 +41,34 @@ methods::setGeneric("BPCellsSeed", function(x) {
 
 #' @export
 #' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "ANY", function(x) {
+    x <- coerce_dgCMatrix(x)
+    methods::callGeneric()
+})
+
+#' @export
+#' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "BPCellsSeed", function(x) {
     x
+})
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "matrix", function(x) {
+    mode <- storage_mode(x)
+    x <- methods::as(x, "dgCMatrix")
+    seed <- methods::callGeneric()
+    convert_mode(seed, mode)
+})
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "dgCMatrix", function(x) {
+    methods::new(
+        "BPCellsdgCMatrixSeed",
+        dim = dim(x), dimnames = dimnames(x),
+        transpose = FALSE, mat = x
+    )
 })
 
 #############################################################
@@ -75,19 +110,3 @@ methods::setMethod(
         BPCellsdgCMatrixSeed(x = x)
     }
 )
-
-#' @export
-methods::setAs("dgCMatrix", "BPCellsdgCMatrixSeed", function(from) {
-    methods::new(
-        "BPCellsdgCMatrixSeed",
-        dim = dim(from), dimnames = dimnames(from),
-        transpose = FALSE, mat = from
-    )
-})
-
-#' @export
-methods::setAs("ANY", "BPCellsdgCMatrixSeed", function(from) {
-    methods::as(coerce_dgCMatrix(from), "BPCellsdgCMatrixSeed")
-})
-
-############################################################

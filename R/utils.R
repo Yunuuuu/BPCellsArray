@@ -18,27 +18,6 @@ BPCells_get <- local({
     }
 })
 
-extract_bpcells_array <- function(x, index) {
-    if (length(index) > 2L) {
-        cli::cli_abort(c(
-            "{.arg index} must be a list with length <= 2",
-            i = "BPCells only support matrix operations"
-        ))
-    }
-    i <- index[[1L]]
-    j <- index[[2L]]
-    if (is.null(i) && is.null(j)) {
-        out <- x
-    } else if (!is.null(i) && !is.null(j)) {
-        out <- x[i, j]
-    } else if (!is.null(i)) {
-        out <- x[i, ]
-    } else {
-        out <- x[, j]
-    }
-    methods::as(out, "dgCMatrix")
-}
-
 coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
     tryCatch(
         methods::as(x, "dgCMatrix"),
@@ -110,16 +89,6 @@ compatible_storage_mode <- function(list) {
     BPCells_MODE[max(match(actual_modes, BPCells_MODE))]
 }
 
-convert_mode_inform <- function(seed, mode, arg = rlang::caller_arg(seed)) {
-    mode <- match.arg(mode, BPCells_MODE)
-    if (storage_mode(seed) != mode) {
-        cli::cli_inform("Converting {.arg {arg}} into {mode} data type")
-        BPCells::convert_matrix_type(seed, type = mode)
-    } else {
-        seed
-    }
-}
-
 swap_axis <- function(.fn, object, column, row, ...) {
     if (object@transpose) {
         .fn(object, row, ...)
@@ -135,6 +104,19 @@ wrapMatrix <- function(class, m, ...) {
         transpose = m@transpose, dim = m@dim,
         dimnames = dimnames, ...
     )
+}
+
+drop_internal <- function(x) {
+    perm <- which(dim(x) != 1L)
+    if (length(perm) >= 2L) {
+        return(x)
+    }
+    ## In-memory realization.
+    ## We want to propagate the names so we use 'as.array(x, drop=TRUE)'
+    ## rather than 'as.vector(x)' (both are equivalent on an Array
+    ## derivative with less than 2 effective dimensions except that
+    ## the former propagates the names and the latter doesn't).
+    as.array(x, drop = TRUE)
 }
 
 # Use chartr() for safety since toupper() fails to convert i to I in Turkish

@@ -7,7 +7,10 @@
 \name{BPCellsSeed}
 \alias{BPCellsSeed}
 \alias{BPCellsSeed-class}
+\alias{BPCellsSeed,ANY-method}
 \alias{BPCellsSeed,BPCellsSeed-method}
+\alias{BPCellsSeed,matrix-method}
+\alias{BPCellsSeed,dgCMatrix-method}
 \alias{BPCellsSeed,Iterable_dgCMatrix_wrapper-method}
 \alias{BPCellsSeed,ColBindMatrices-method}
 \alias{BPCellsSeed,RowBindMatrices-method}
@@ -28,7 +31,13 @@
 \usage{
 BPCellsSeed(x)
 
+\S4method{BPCellsSeed}{ANY}(x)
+
 \S4method{BPCellsSeed}{BPCellsSeed}(x)
+
+\S4method{BPCellsSeed}{matrix}(x)
+
+\S4method{BPCellsSeed}{dgCMatrix}(x)
 
 \S4method{BPCellsSeed}{Iterable_dgCMatrix_wrapper}(x)
 
@@ -59,8 +68,9 @@ BPCellsSeed(x)
 \S4method{BPCellsSeed}{MatrixSubset}(x)
 }
 \arguments{
-\item{x}{A \code{BPCellsSeed} object or a \code{IterableMatrix} object from BPCells,
-details see the method signature.}
+\item{x}{A \code{IterableMatrix} object from BPCells, a matrix-like object which
+can be coerced into dgCMatrix, or a \code{BPCellsSeed} object. Details see the
+method signature.}
 }
 \description{
 The \code{BPCellsSeed} class just inherits from the \code{IterableMatrix} class in
