@@ -1,4 +1,4 @@
-mat <- mock_matrix(20, 20)
+mat <- mock_matrix(30, 20)
 path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_hdf5(
     mat = as(mat, "dgCMatrix"),

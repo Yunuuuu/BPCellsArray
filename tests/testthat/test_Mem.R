@@ -1,4 +1,4 @@
-mat <- mock_matrix(20, 20)
+mat <- mock_matrix(30, 20)
 sparse_mat <- as(mat, "dgCMatrix")
 path <- character()
 

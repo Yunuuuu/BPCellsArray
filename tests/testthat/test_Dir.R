@@ -1,4 +1,4 @@
-mat <- mock_matrix(20, 20)
+mat <- mock_matrix(30, 20)
 path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 

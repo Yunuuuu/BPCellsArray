@@ -1,4 +1,4 @@
-mat1 <- mock_matrix(20, 20)
+mat1 <- mock_matrix(30, 20)
 mat2 <- mock_matrix(ncol(mat1), 100)
 path <- normalizePath(
     c(tempfile(tmpdir = tmpdir), tempfile(tmpdir = tmpdir)),
