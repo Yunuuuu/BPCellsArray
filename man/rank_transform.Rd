@@ -14,17 +14,45 @@
 \usage{
 rank_transform(object, ...)
 
-\S4method{rank_transform}{BPCellsSeed}(object, axis = NULL, ...)
+\S4method{rank_transform}{BPCellsSeed}(object, axis = NULL, offset = TRUE, ...)
 
 \S4method{rank_transform}{BPCellsMatrix}(object, axis = NULL, ...)
 
-\S4method{rowRanks}{BPCellsSeed}(x)
+\S4method{rowRanks}{BPCellsSeed}(
+  x,
+  rows = NULL,
+  cols = NULL,
+  ties.method = c("max", "average"),
+  ...,
+  useNames = NA
+)
 
-\S4method{colRanks}{BPCellsSeed}(x)
+\S4method{colRanks}{BPCellsSeed}(
+  x,
+  rows = NULL,
+  cols = NULL,
+  ties.method = c("max", "average"),
+  ...,
+  useNames = NA
+)
 
-\S4method{rowRanks}{BPCellsMatrix}(x)
+\S4method{rowRanks}{BPCellsMatrix}(
+  x,
+  rows = NULL,
+  cols = NULL,
+  ties.method = c("max", "average"),
+  ...,
+  useNames = NA
+)
 
-\S4method{colRanks}{BPCellsMatrix}(x)
+\S4method{colRanks}{BPCellsMatrix}(
+  x,
+  rows = NULL,
+  cols = NULL,
+  ties.method = c("max", "average"),
+  ...,
+  useNames = NA
+)
 }
 \arguments{
 \item{...}{
@@ -42,8 +70,13 @@ storage axis of \code{object} (see \link{storage_axis}).  If \code{axis} specifi
 different from the storage axis of \code{object}, \link{transpose_axis} will be
 used to transpose the underlying storage order.}
 
+\item{offset}{A bool, whether or not to add offset such that the rank of a 0
+value is 0. Default: \code{TRUE}.}
+
 \item{x, object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
+
+\item{rows, cols, ties.method, useNames}{Ignored currently.}
 }
 \value{
 \itemize{
@@ -60,7 +93,11 @@ used to transpose the underlying storage order.}
 }
 }
 \description{
-Rank-transform a BPCells IterableMatrix matrix
+Rank values are default offset such that the rank of a 0 value is 0. If you
+want to get the same result of \code{rowRanks(object, ties.method = "average")}/\code{colRanks(object, ties.method = "average")}, set \code{offset=FALSE}
+}
+\note{
+Ties are always handled by averaging ranks.
 }
 \seealso{
 \link[BPCells:rank_transform]{rank_transform}
