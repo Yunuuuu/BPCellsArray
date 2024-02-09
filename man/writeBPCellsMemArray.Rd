@@ -3,18 +3,15 @@
 \name{writeBPCellsMemArray}
 \alias{writeBPCellsMemArray}
 \alias{writeBPCellsMemArray,ANY-method}
-\alias{writeBPCellsMemArray,BPCellsMatrix-method}
 \title{Write a sparce matrices into memory with BPCells format}
 \usage{
 writeBPCellsMemArray(x, ...)
 
 \S4method{writeBPCellsMemArray}{ANY}(x, compress = TRUE)
-
-\S4method{writeBPCellsMemArray}{BPCellsMatrix}(x, ...)
 }
 \arguments{
-\item{x}{Input matrix, any matrix can be coerced to a
-\link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
+\item{x}{A \code{IterableMatrix} object from \code{BPCells}, a matrix-like object which
+can be coerced into dgCMatrix, or a \code{BPCellsSeed} object.}
 
 \item{...}{For \code{BPCellsMatrix} method: additional parameters passed to \code{ANY}
 methods.}

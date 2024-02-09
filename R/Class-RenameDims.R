@@ -1,20 +1,15 @@
 ############################################################
 # RenameDims
 methods::setClass("BPCellsRenameDimsSeed",
-    contains = c("BPCellsUnaryOpsSeed", get_class("RenameDims")),
+    contains = c("BPCellsUnaryOpsSeed", BPCells_class("RenameDims")),
     slots = list(matrix = "BPCellsSeed")
 )
-
-#' @noRd
-BPCellsRenameDimsSeed <- function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    methods::as(x, "BPCellsRenameDimsSeed")
-}
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "RenameDims", function(x) {
-    BPCellsRenameDimsSeed(x = x)
+    x@matrix <- BPCellsSeed(x@matrix)
+    methods::as(x, "BPCellsRenameDimsSeed")
 })
 
 methods::setMethod("summary", "BPCellsRenameDimsSeed", function(object) {

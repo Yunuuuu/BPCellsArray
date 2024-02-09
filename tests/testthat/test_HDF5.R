@@ -8,11 +8,10 @@ obj <- BPCells::write_matrix_hdf5(
 common_test(
     obj, path,
     mat = mat, 
-    seed_fn = BPCellsHDF5Seed, 
     name = "HDF5"
 )
 testthat::test_that("`subset()` BPCellsHDF5Seed object works as expected", {
-    seed <- BPCellsHDF5Seed(obj)
+    seed <- BPCellsSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")

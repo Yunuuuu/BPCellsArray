@@ -15,11 +15,10 @@ obj <- BPCells:::mask_matrix(obj, mask)
 common_test(
     obj, path,
     mat = mat, 
-    seed_fn = BPCellsMaskSeed, 
     name = "Mask"
 )
 testthat::test_that("`subset()` BPCellsMaskSeed object works as expected", {
-    seed <- BPCellsMaskSeed(obj)
+    seed <- BPCellsSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")

@@ -25,12 +25,13 @@ methods::setMethod(
 #' @rdname transpose_axis
 methods::setMethod(
     "transpose_axis", "BPCellsMatrix", function(object, ...) {
-        DelayedArray(transpose_axis(object = object@seed, ...))
+        object <- object@seed
+        DelayedArray(methods::callGeneric())
     }
 )
 
 #' @return 
-#'  - `storage_axis`: A string indicates the storage axis.
+#'  - `storage_axis`: A string indicates the storage axis, "row" or "col".
 #' @export
 #' @rdname transpose_axis
 methods::setGeneric(
@@ -40,7 +41,7 @@ methods::setGeneric(
 #' @export
 #' @rdname transpose_axis
 methods::setMethod("storage_axis", "BPCellsSeed", function(object) {
-    if (object@transpose) "row" else "column"
+    if (object@transpose) "row" else "col"
 })
 
 #' @export

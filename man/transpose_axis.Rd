@@ -40,7 +40,7 @@ axis flipped.
 }
 
 \itemize{
-\item \code{storage_axis}: A string indicates the storage axis.
+\item \code{storage_axis}: A string indicates the storage axis, "row" or "col".
 }
 }
 \description{

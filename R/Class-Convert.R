@@ -1,22 +1,16 @@
 methods::setClass("BPCellsConvertSeed",
     contains = c(
         "BPCellsUnaryOpsSeed",
-        get_class("ConvertMatrixType")
+        BPCells_class("ConvertMatrixType")
     ),
     slots = list(matrix = "BPCellsSeed")
 )
 
-#' @rdname BPCellsConvert
-#' @noRd
-BPCellsConvertSeed <- function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    methods::as(x, "BPCellsConvertSeed")
-}
-
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x) {
-    BPCellsConvertSeed(x = x)
+    x@matrix <- BPCellsSeed(x@matrix)
+    methods::as(x, "BPCellsConvertSeed")
 })
 
 methods::setMethod("summary", "BPCellsConvertSeed", function(object) {
@@ -90,33 +84,21 @@ methods::setGeneric(
     "storage_mode", function(object) standardGeneric("storage_mode")
 )
 
+storage_mode_internal <- function(object) {
+    BPCells_get("matrix_type")(object)
+}
+
 #' @export
 #' @rdname convert_mode
-methods::setMethod("storage_mode", "BPCellsSeed", function(object) {
-    BPCells:::matrix_type(object)
-})
+methods::setMethod("storage_mode", "BPCellsSeed", storage_mode_internal)
+
+#' @export
+#' @rdname convert_mode
+methods::setMethod("storage_mode", "IterableMatrix", storage_mode_internal)
 
 #' @export
 #' @rdname convert_mode
 methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
     object <- object@seed
     methods::callGeneric()
-})
-
-#' @export
-#' @rdname convert_mode
-methods::setMethod("storage_mode", "dgCMatrix", function(object) {
-    "double"
-})
-
-#' @export
-#' @rdname convert_mode
-methods::setMethod("storage_mode", "matrix", function(object) {
-    mode <- storage.mode(object)
-    switch(mode,
-        integer = "uint32_t",
-        double = ,
-        numeric = "double",
-        cli::cli_abort("{.pkg BPCells} cannot support {.field {mode}} mode")
-    )
 })

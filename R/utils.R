@@ -1,6 +1,6 @@
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
-get_class <- function(name) {
+BPCells_class <- function(name) {
     BPCells_get(paste0(".__C__", name))
 }
 
@@ -98,20 +98,9 @@ swap_axis <- function(.fn, object, column, row, ...) {
     }
 }
 
-wrapMatrix <- function(class, m, ...) {
-    dimnames <- dimnames(m)
-    methods::new(class,
-        matrix = m,
-        transpose = m@transpose, dim = m@dim,
-        dimnames = dimnames, ...
-    )
-}
-
 drop_internal <- function(x) {
     perm <- which(dim(x) != 1L)
-    if (length(perm) >= 2L) {
-        return(x)
-    }
+    if (length(perm) >= 2L) return(x) # styler: off
     ## In-memory realization.
     ## We want to propagate the names so we use 'as.array(x, drop=TRUE)'
     ## rather than 'as.vector(x)' (both are equivalent on an Array
@@ -120,8 +109,9 @@ drop_internal <- function(x) {
     as.array(x, drop = TRUE)
 }
 
-warn_convert_integer <- function(matrix) { # a numeric matrix
-    if (all(matrix < .Machine$integer.max)) {
+matrix_to_integer <- function(matrix) { # a numeric matrix
+    if (is.integer(matrix)) return(matrix) # styler: off
+    if (all(matrix <= .Machine$integer.max)) {
         storage.mode(matrix) <- "integer"
     } else {
         cli::cli_warn(
@@ -131,23 +121,31 @@ warn_convert_integer <- function(matrix) { # a numeric matrix
     matrix
 }
 
-# Use chartr() for safety since toupper() fails to convert i to I in Turkish
-# locale
-lower_ascii <- "abcdefghijklmnopqrstuvwxyz"
-upper_ascii <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-snake_class <- function(x) {
-    snakeize(class(x)[1])
+matrix_to_double <- function(matrix) { # a numeric matrix
+    if (is.double(matrix)) return(matrix) # styler: off
+    storage.mode(matrix) <- "double"
+    matrix
 }
 
-snakeize <- function(x) {
-    x <- gsub("([A-Za-z])([A-Z])([a-z])", "\\1_\\2\\3", x)
-    x <- gsub(".", "_", x, fixed = TRUE)
-    x <- gsub("([a-z])([A-Z])", "\\1_\\2", x)
-    to_lower_ascii(x)
+# type is the storage mode of R (`DelayedArray` use `type()` function and Base R
+# use `storage.mode()` function)
+# mode is the storage mode in BPCells (`BPCells` use `storage_mode()` function)
+mode_to_type <- function(mode) {
+    switch(mode,
+        uint32_t = "integer",
+        float = ,
+        double = "double"
+    )
 }
-to_lower_ascii <- function(x) chartr(upper_ascii, lower_ascii, x)
-to_upper_ascii <- function(x) chartr(lower_ascii, upper_ascii, x)
+
+type_to_mode <- function(type) {
+    switch(type,
+        integer = "uint32_t",
+        double = ,
+        numeric = "double",
+        cli::cli_abort("{.pkg BPCells} cannot support {.field {type}} mode")
+    )
+}
 
 BPCells_MODE <- c("uint32_t", "float", "double")
 BPCells_Transform_classes <- c(
@@ -169,3 +167,21 @@ BPCells_Transform_classes <- c(
     SCTransformPearsonTransposeSlow = "sctransform_pearson",
     TransformScaleShift = NULL
 )
+
+# Use chartr() for safety since toupper() fails to convert i to I in Turkish
+# locale
+lower_ascii <- "abcdefghijklmnopqrstuvwxyz"
+upper_ascii <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+snake_class <- function(x) {
+    snakeize(class(x)[1])
+}
+
+snakeize <- function(x) {
+    x <- gsub("([A-Za-z])([A-Z])([a-z])", "\\1_\\2\\3", x)
+    x <- gsub(".", "_", x, fixed = TRUE)
+    x <- gsub("([a-z])([A-Z])", "\\1_\\2", x)
+    to_lower_ascii(x)
+}
+to_lower_ascii <- function(x) chartr(upper_ascii, lower_ascii, x)
+to_upper_ascii <- function(x) chartr(lower_ascii, upper_ascii, x)

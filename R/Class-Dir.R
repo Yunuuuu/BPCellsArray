@@ -1,13 +1,11 @@
 methods::setClass("BPCellsDirSeed",
-    contains = c("BPCellsBasicSeed", get_class("MatrixDir"))
+    contains = c("BPCellsBasicSeed", BPCells_class("MatrixDir"))
 )
-
-BPCellsDirSeed <- function(x) methods::as(x, "BPCellsDirSeed")
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixDir", function(x) {
-    BPCellsDirSeed(x = x)
+    methods::as(x, "BPCellsDirSeed")
 })
 
 #' @importClassesFrom DelayedArray DelayedArray
@@ -65,14 +63,13 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L) {
         dir = path,
         buffer_size = as.integer(buffer_size)
     )
-    DelayedArray(BPCellsDirSeed(obj))
+    DelayedArray(BPCellsSeed(obj))
 }
 
 #' Write a sparce matrices into a directory on disk
 #'
 #' @inherit BPCells::write_matrix_dir details
-#' @param x Input matrix, any matrix can be coerced into
-#' [dgCMatrix][Matrix::dgCMatrix-class] object.
+#' @inheritParams BPCellsSeed
 #' @param ... Additional arguments passed into specific methods.
 #' @param bitpacking A bool, whether or not to compress the data using
 #' Bitpacking Compression.
@@ -101,18 +98,12 @@ methods::setGeneric(
         buffer_size = as.integer(buffer_size),
         overwrite = overwrite
     )
-    DelayedArray(BPCellsDirSeed(obj))
+    DelayedArray(BPCellsSeed(obj))
 }
 
 #' @export
 #' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "ANY", .writeBPCellsDirArray)
-
-#' @export
-#' @rdname BPCellsDir-IO
-methods::setMethod("writeBPCellsDirArray", "BPCellsMatrix", function(x, ...) {
-    .writeBPCellsDirArray(x = x@seed, ...)
-})
 
 .as_BPCellsDirArray <- function(from) writeBPCellsDirArray(from)
 

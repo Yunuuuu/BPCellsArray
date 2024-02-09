@@ -38,11 +38,7 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
 #' @export
 #' @rdname BPCellsSeed-methods
 methods::setMethod("type", "BPCellsSeed", function(x) {
-    switch(storage_mode(x),
-        uint32_t = "integer",
-        float = "double",
-        double = "double"
-    )
+    mode_to_type(storage_mode(x))
 })
 
 #' @return
@@ -70,9 +66,8 @@ methods::setMethod("drop", "BPCellsSeed", drop_internal)
 #' @rdname BPCellsSeed-methods
 as.array.BPCellsSeed <- function(x, drop = FALSE) {
     assert_bool(drop)
-    ans <- as.matrix(x)
-    if (drop) ans <- drop(ans)
-    ans
+    matrix <- as.matrix(x)
+    if (drop) drop(matrix) else matrix
 }
 
 #' @export
@@ -82,11 +77,11 @@ methods::setMethod("as.array", "BPCellsSeed", as.array.BPCellsSeed)
 #' @exportS3Method base::as.matrix
 #' @rdname BPCellsSeed-methods
 as.matrix.BPCellsSeed <- function(x) {
-    ans <- as.matrix(methods::as(x, "dgCMatrix")) # always be numeric mode
+    mat <- as.matrix(methods::as(x, "dgCMatrix")) # always be numeric mode
     if (type(x) == "integer") {
-        ans <- warn_convert_integer(ans)
+        mat <- matrix_to_integer(mat)
     }
-    ans
+    mat
 }
 
 #' @export

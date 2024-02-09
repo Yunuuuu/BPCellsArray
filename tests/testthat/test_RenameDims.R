@@ -13,13 +13,12 @@ dimnames(mat) <- list(
 common_test(
     obj, path,
     mat = mat, 
-    seed_fn = BPCellsRenameDimsSeed, 
     name = "RenameDims"
 )
 testthat::test_that(
     "`subset()` BPCellsRenameDimsSeed object works as expected",
     {
-        seed <- BPCellsRenameDimsSeed(obj)
+        seed <- BPCellsSeed(obj)
         testthat::expect_s4_class(seed[1:10, ], "BPCellsRenameDimsSeed")
         testthat::expect_s4_class(seed[, 1:10], "BPCellsRenameDimsSeed")
         testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsRenameDimsSeed")

@@ -2,15 +2,13 @@
 # - add method of subset: Method-subset.R
 # - add method of showtree: showtree.R
 methods::setClass("BPCellsHDF5Seed",
-    contains = c("BPCellsBasicSeed", get_class("MatrixH5"))
+    contains = c("BPCellsBasicSeed", BPCells_class("MatrixH5"))
 )
-
-BPCellsHDF5Seed <- function(x) methods::as(x, "BPCellsHDF5Seed")
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixH5", function(x) {
-    BPCellsHDF5Seed(x = x)
+    methods::as(x, "BPCellsHDF5Seed")
 })
 
 #' @importClassesFrom DelayedArray DelayedArray
@@ -67,7 +65,7 @@ readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L) {
         path = path, group = group,
         buffer_size = as.integer(buffer_size)
     )
-    DelayedArray(BPCellsHDF5Seed(obj))
+    DelayedArray(BPCellsSeed(obj))
 }
 
 #' @inherit BPCells::write_matrix_hdf5 details
@@ -103,15 +101,9 @@ methods::setGeneric(
         chunk_size = as.integer(chunk_size),
         overwrite = overwrite, gzip_level = gzip
     )
-    DelayedArray(BPCellsHDF5Seed(obj))
+    DelayedArray(BPCellsSeed(obj))
 }
 
 #' @export
 #' @rdname BPCellsHDF5-IO
 methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)
-
-#' @export
-#' @rdname BPCellsHDF5-IO
-methods::setMethod("writeBPCellsHDF5Array", "BPCellsMatrix", function(x, ...) {
-    .writeBPCellsHDF5Array(x = x@seed, ...)
-})

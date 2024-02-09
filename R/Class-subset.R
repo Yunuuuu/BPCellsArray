@@ -3,21 +3,16 @@
 methods::setClass("BPCellsSubsetSeed",
     contains = c(
         "BPCellsUnaryOpsSeed",
-        get_class("MatrixSubset")
+        BPCells_class("MatrixSubset")
     ),
     slots = list(matrix = "BPCellsSeed")
 )
 
-#' @noRd
-BPCellsSubsetSeed <- function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    methods::as(x, "BPCellsSubsetSeed")
-}
-
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixSubset", function(x) {
-    BPCellsSubsetSeed(x = x)
+    x@matrix <- BPCellsSeed(x@matrix)
+    methods::as(x, "BPCellsSubsetSeed")
 })
 
 methods::setMethod("summary", "BPCellsSubsetSeed", function(object) {
@@ -103,6 +98,7 @@ BPCellsSubset_internal <- function(x, i, j, ..., drop = FALSE) {
 #' @importMethodsFrom BPCells [
 #' @export
 #' @rdname BPCellsSeed-methods
+#' @include Class-dgCMatrix.R
 methods::setMethod("[", "BPCellsdgCMatrixSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
@@ -193,12 +189,12 @@ methods::setMethod(
     "[<-", c("BPCellsSeed", "ANY", "ANY", "matrix"),
     function(x, i, j, ..., value) {
         x_mode <- storage_mode(x)
-        value_mode <- storage_mode(value)
+        value_mode <- type_to_mode(storage.mode(value))
         value <- methods::as(value, "dgCMatrix")
         if (x@transpose) {
-            value <- t(methods::as(t(value), "BPCellsSeed"))
+            value <- t(BPCellsSeed(t(value)))
         } else {
-            value <- methods::as(value, "BPCellsSeed")
+            value <- BPCellsSeed(value)
         }
         if (x_mode == "uint32_t" && value_mode != "uint32_t") {
             cli::cli_warn("Convert {.arg value} into {.field uint32_t} mode")
@@ -219,9 +215,9 @@ methods::setMethod(
     "[<-", c("BPCellsSeed", "ANY", "ANY", "dgCMatrix"),
     function(x, i, j, ..., value) {
         if (x@transpose) {
-            value <- t(methods::as(t(value), "BPCellsSeed"))
+            value <- t(BPCellsSeed(t(value)))
         } else {
-            value <- methods::as(value, "BPCellsSeed")
+            value <- BPCellsSeed(value)
         }
         methods::callGeneric()
     }
@@ -235,7 +231,9 @@ methods::setMethod(
         fn <- methods::getMethod("[<-", "IterableMatrix", "BPCells")
         fn(
             x = x,
-            i = rlang::maybe_missing(i), j = rlang::maybe_missing(j), ...,
+            i = rlang::maybe_missing(i),
+            j = rlang::maybe_missing(j),
+            ...,
             value = value
         )
     }

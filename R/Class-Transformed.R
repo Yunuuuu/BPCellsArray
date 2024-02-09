@@ -3,7 +3,7 @@
 methods::setClass("BPCellsTransformedSeed",
     contains = c(
         "BPCellsUnaryOpsSeed",
-        get_class("TransformedMatrix")
+        BPCells_class("TransformedMatrix")
     ),
     slots = list(matrix = "BPCellsSeed")
 )
@@ -45,7 +45,7 @@ methods::setMethod("BPCellsTransformedSeed", "TransformedMatrix", function(x) {
 ####################################################################
 # TransformBinarize
 methods::setClass("BPCellsTransformBinarizeSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformBinarize"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformBinarize"))
 )
 
 #' @noRd
@@ -57,7 +57,7 @@ methods::setMethod(
 ####################################################################
 # TransformExpm1Slow
 methods::setClass("BPCellsTransformExpm1SlowSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformExpm1Slow"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformExpm1Slow"))
 )
 
 #' @noRd
@@ -87,7 +87,7 @@ methods::setMethod("expm1_slow", "BPCellsMatrix", function(x) {
 ####################################################################
 # TransformLog1pSlow
 methods::setClass("BPCellsTransformLog1pSlowSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformLog1pSlow"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformLog1pSlow"))
 )
 #' @noRd
 methods::setMethod(
@@ -116,7 +116,7 @@ methods::setMethod("log1p_slow", "BPCellsMatrix", function(x) {
 ####################################################################
 # TransformExpm1
 methods::setClass("BPCellsTransformExpm1Seed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformExpm1"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformExpm1"))
 )
 
 #' @noRd
@@ -143,7 +143,7 @@ methods::setMethod("expm1", "BPCellsMatrix", function(x) {
 ####################################################################
 # TransformLog1p
 methods::setClass("BPCellsTransformLog1pSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformLog1p"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformLog1p"))
 )
 
 #' @noRd
@@ -170,7 +170,7 @@ methods::setMethod("log1p", "BPCellsMatrix", function(x) {
 ####################################################################
 # TransformMinByCol
 methods::setClass("BPCellsTransformMinByColSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformMinByCol"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformMinByCol"))
 )
 
 #' @noRd
@@ -208,7 +208,7 @@ methods::setMethod(
 ####################################################################
 # TransformMinByRow
 methods::setClass("BPCellsTransformMinByRowSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformMinByRow"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformMinByRow"))
 )
 
 #' @noRd
@@ -245,7 +245,7 @@ methods::setMethod(
 # TransformMin
 
 methods::setClass("BPCellsTransformMinSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformMin"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformMin"))
 )
 
 #' @noRd
@@ -280,7 +280,7 @@ methods::setMethod(
 ####################################################################
 # TransformPowSlow
 methods::setClass("BPCellsTransformPowSlowSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformPowSlow"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformPowSlow"))
 )
 
 #' @noRd
@@ -311,7 +311,7 @@ methods::setMethod("pow_slow", "BPCellsMatrix", function(e1, e2) {
 ####################################################################
 # TransformPow
 methods::setClass("BPCellsTransformPowSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformPow"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformPow"))
 )
 
 #' @noRd
@@ -337,7 +337,7 @@ methods::setMethod("^", "BPCellsMatrix", function(e1, e2) {
 ####################################################################
 # TransformSquare
 methods::setClass("BPCellsTransformSquareSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformSquare"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformSquare"))
 )
 
 #' @noRd
@@ -348,7 +348,7 @@ methods::setMethod(
 ####################################################################
 # TransformRound
 methods::setClass("BPCellsTransformRoundSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformRound"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformRound"))
 )
 
 #' @noRd

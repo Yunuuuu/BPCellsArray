@@ -8,7 +8,8 @@ methods::setClass("BPCellsBindMatrixSeed",
 methods::setValidity("BPCellsBindMatrixSeed", function(object) {
     BPCellsSeeds <- vapply(object@matrix_list,
         methods::is, logical(1L),
-        class2 = "BPCellsSeed"
+        class2 = "BPCellsSeed",
+        USE.NAMES = FALSE
     )
     if (!all(BPCellsSeeds)) {
         cli::cli_abort(c(
@@ -20,11 +21,11 @@ methods::setValidity("BPCellsBindMatrixSeed", function(object) {
 })
 
 methods::setClass("BPCellsColBindMatrixSeed",
-    contains = c("BPCellsBindMatrixSeed", get_class("ColBindMatrices"))
+    contains = c("BPCellsBindMatrixSeed", BPCells_class("ColBindMatrices"))
 )
 
 methods::setClass("BPCellsRowBindMatrixSeed",
-    contains = c("BPCellsBindMatrixSeed", get_class("RowBindMatrices"))
+    contains = c("BPCellsBindMatrixSeed", BPCells_class("RowBindMatrices"))
 )
 
 ####################################################################
@@ -50,32 +51,21 @@ methods::setMethod("summary", "BPCellsRowBindMatrixSeed", function(object) {
 #' - `BPCellsColBindMatrixSeed`: A `BPCellsColBindMatrixSeed` object.
 #' - `BPCellsRowBindMatrixSeed`: A `BPCellsRowBindMatrixSeed` object.
 #' @noRd
-methods::setGeneric("BPCellsBindMatrixSeed", function(x, ...) {
+BPCellsBindMatrixSeed <- function(x, class) {
     x@matrix_list <- lapply(x@matrix_list, BPCellsSeed)
-    class <- standardGeneric("BPCellsBindMatrixSeed")
     methods::as(x, Class = class)
-})
-
-methods::setMethod(
-    "BPCellsBindMatrixSeed", "ColBindMatrices",
-    function(x) "BPCellsColBindMatrixSeed"
-)
-
-methods::setMethod(
-    "BPCellsBindMatrixSeed", "RowBindMatrices",
-    function(x) "BPCellsRowBindMatrixSeed"
-)
+}
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "ColBindMatrices", function(x) {
-    BPCellsBindMatrixSeed(x = x)
+    BPCellsBindMatrixSeed(x = x, class = "BPCellsColBindMatrixSeed")
 })
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "RowBindMatrices", function(x) {
-    BPCellsBindMatrixSeed(x = x)
+    BPCellsBindMatrixSeed(x = x, class = "BPCellsRowBindMatrixSeed")
 })
 
 methods::setMethod("entity", "BPCellsBindMatrixSeed", function(x) {
@@ -96,7 +86,7 @@ methods::setMethod("entity", "BPCellsBindMatrixSeed", function(x) {
 #' @export
 #' @name set_threads
 methods::setGeneric("set_threads", function(object, ...) {
-    makeStandardGeneric("set_threads")
+    standardGeneric("set_threads")
 })
 
 #' @export
@@ -334,7 +324,8 @@ pack_BPCellsMatrices <- function(..., call = rlang::caller_env()) {
 check_BPCellsMatrices <- function(list, arg = rlang::caller_arg(list), call = rlang::caller_env()) {
     BPCellsMatrices <- vapply(list,
         methods::is, logical(1L),
-        class2 = "BPCellsMatrix"
+        class2 = "BPCellsMatrix",
+        USE.NAMES = FALSE
     )
     if (!all(BPCellsMatrices)) {
         cli::cli_abort(
@@ -514,8 +505,11 @@ combine_seeds <- function(.fn, mode, seeds, ...) {
         c("IterableMatrix", "IterableMatrix"),
         where = "BPCells"
     )
-    mode <- mode %||% compatible_storage_mode(seeds)
-    mode <- match.arg(mode, BPCells_MODE)
+    if (is.null(mode)) {
+        mode <- compatible_storage_mode(seeds)
+    } else {
+        mode <- match.arg(mode, BPCells_MODE)
+    }
     seeds <- lapply(seeds, function(seed, mode) {
         if (storage_mode(seed) != mode) {
             cli::cli_inform("Converting into {mode} data type")
@@ -537,13 +531,14 @@ pack_BPCellsSeeds <- function(..., call = rlang::caller_env()) {
 check_BPCellsSeeds <- function(list, arg = rlang::caller_arg(list), call = rlang::caller_env()) {
     BPCellsSeeds <- vapply(list,
         methods::is, logical(1L),
-        class2 = "BPCellsSeed"
+        class2 = "BPCellsSeed",
+        USE.NAMES = FALSE
     )
     if (!all(BPCellsSeeds)) {
         cli::cli_abort(
             c(
                 "all input must be a {.cls BPCellsSeed} object",
-                i = "Please check the input {.arg {arg}} in {.val {which(!BPCellsSeeds)}}"
+                i = "Please check the input {.arg {arg}} in item{?s} of {.val {which(!BPCellsSeeds)}}"
             ),
             call = call
         )

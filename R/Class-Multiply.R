@@ -1,21 +1,16 @@
 ############################################################
 # MatrixMultiply
 methods::setClass("BPCellsMultiplySeed",
-    contains = c("BPCellsNaryOpsSeed", get_class("MatrixMultiply")),
+    contains = c("BPCellsNaryOpsSeed", BPCells_class("MatrixMultiply")),
     slots = list(left = "BPCellsSeed", right = "BPCellsSeed")
 )
-
-#' @noRd
-BPCellsMultiplySeed <- function(x) {
-    x@left <- BPCellsSeed(x@left)
-    x@right <- BPCellsSeed(x@right)
-    methods::as(x, "BPCellsMultiplySeed")
-}
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x) {
-    BPCellsMultiplySeed(x = x)
+    x@left <- BPCellsSeed(x@left)
+    x@right <- BPCellsSeed(x@right)
+    methods::as(x, "BPCellsMultiplySeed")
 })
 
 methods::setMethod("entity", "BPCellsMultiplySeed", function(x) {
@@ -129,12 +124,12 @@ methods::setMethod(
                 cli::cli_warn(
                     "{.arg x} is transposed but {.arg y} not, transposing the storage axis for {.arg x}" # nolint
                 )
-                x <- BPCells::transpose_storage_order(x)
+                x <- transpose_axis(x)
             } else {
                 cli::cli_warn(
                     "{.arg y} is transposed but {.arg x} not, transposing the storage axis for {.arg y}" # nolint
                 )
-                y <- BPCells::transpose_storage_order(y)
+                y <- transpose_axis(y)
             }
         }
         BPCellsSeed(methods::callNextMethod())
@@ -164,7 +159,7 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
-        storage.mode(y) <- "double"
+        y <- matrix_to_double(y)
         methods::callNextMethod()
     }
 )
@@ -173,7 +168,7 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
-        storage.mode(x) <- "double"
+        x <- matrix_to_double(x)
         methods::callNextMethod()
     }
 )
@@ -182,7 +177,7 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
-        storage.mode(y) <- "double"
+        y <- matrix_to_double(y)
         methods::callNextMethod()
     }
 )
@@ -191,7 +186,7 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
-        storage.mode(x) <- "double"
+        x <- matrix_to_double(x)
         methods::callNextMethod()
     }
 )

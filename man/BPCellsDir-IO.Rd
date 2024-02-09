@@ -5,7 +5,6 @@
 \alias{readBPCellsDirMatrix}
 \alias{writeBPCellsDirArray}
 \alias{writeBPCellsDirArray,ANY-method}
-\alias{writeBPCellsDirArray,BPCellsMatrix-method}
 \title{Read/write sparse matrices from (or into) directory on disk}
 \usage{
 readBPCellsDirMatrix(path, buffer_size = 8192L)
@@ -19,8 +18,6 @@ writeBPCellsDirArray(x, ...)
   buffer_size = 8192L,
   overwrite = FALSE
 )
-
-\S4method{writeBPCellsDirArray}{BPCellsMatrix}(x, ...)
 }
 \arguments{
 \item{path}{A string path of Directory to read or save the data into. For
@@ -29,8 +26,8 @@ writeBPCellsDirArray(x, ...)
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
 
-\item{x}{Input matrix, any matrix can be coerced into
-\link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
+\item{x}{A \code{IterableMatrix} object from \code{BPCells}, a matrix-like object which
+can be coerced into dgCMatrix, or a \code{BPCellsSeed} object.}
 
 \item{...}{Additional arguments passed into specific methods.}
 

@@ -7,11 +7,10 @@ mat <- mat[1:100L, 1:20]
 common_test(
     obj, path,
     mat = mat, 
-    seed_fn = BPCellsSubsetSeed, 
     name = "Subset"
 )
 testthat::test_that("`subset()` BPCellsSubsetSeed object works as expected", {
-    seed <- BPCellsSubsetSeed(obj)
+    seed <- BPCellsSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")

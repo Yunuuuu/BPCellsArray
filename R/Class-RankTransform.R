@@ -18,22 +18,15 @@ NULL
 methods::setClass("BPCellsRankTransformSeed",
     contains = c(
         "BPCellsUnaryOpsSeed",
-        get_class("MatrixRankTransform")
+        BPCells_class("MatrixRankTransform")
     )
 )
-
-#' @param x A `MatrixRankTransform` object.
-#' @rdname BPCellsRankTransform
-#' @noRd
-BPCellsRankTransformSeed <- function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    methods::as(x, "BPCellsRankTransformSeed")
-}
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixRankTransform", function(x) {
-    BPCellsRankTransformSeed(x = x)
+    x@matrix <- BPCellsSeed(x@matrix)
+    methods::as(x, "BPCellsRankTransformSeed")
 })
 
 methods::setMethod("summary", "BPCellsRankTransformSeed", function(object) {
@@ -59,10 +52,9 @@ methods::setGeneric(
 
 #' @param axis Axis to rank values within. "col" to rank values within each
 #'     column, and "row" to rank values within each row. If `NULL`, will use the
-#'     storage order of `object` (see [storage_order][BPCells::storage_order]).
-#'     If `axis` value specified is different from the storage order of
-#'     `object`, [transpose_storage_order][BPCells::transpose_storage_order]
-#'     will be used to transpose the underlying storage order.
+#'     storage axis of `object` (see [storage_axis]).  If `axis` specified is
+#'     different from the storage axis of `object`, [transpose_axis] will be
+#'     used to transpose the underlying storage order.
 #' @return
 #'  - `rank_transform`: A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
@@ -73,17 +65,18 @@ methods::setGeneric(
 methods::setMethod(
     "rank_transform", "BPCellsSeed",
     function(object, axis = NULL, ...) {
-        matrix_order <- BPCells::storage_order(object)
+        main_axis <- storage_axis(object)
         if (is.null(axis)) {
-            axis <- matrix_order
+            axis <- main_axis
             cli::cli_inform("Doing {.val {axis}} rank transformation")
         } else {
             axis <- match.arg(axis, c("row", "col"))
-            if (axis != matrix_order) {
-                cli::cli_warn(
-                    "{.arg axis} is different from the storage order ({.val {matrix_order}}), transposing storage order for {.arg object}" # nolint
-                )
-                object <- BPCells::transpose_storage_order(matrix = object, ...)
+            if (axis != main_axis) {
+                cli::cli_warn(c(
+                    "transposing the storage order for {.arg object}",
+                    i = "{.arg axis} specified is different from the the storage axis of {.arg object} ({.val {main_axis}})" # nolint
+                ))
+                object <- transpose_axis(object = object, ...)
             }
         }
         BPCellsSeed(BPCells:::rank_transform(mat = object, axis = axis))
@@ -95,7 +88,8 @@ methods::setMethod(
 methods::setMethod(
     "rank_transform", "BPCellsMatrix",
     function(object, axis = NULL, ...) {
-        DelayedArray(rank_transform(object@seed, axis = axis, ...))
+        object <- object@seed
+        DelayedArray(methods::callGeneric())
     }
 )
 
@@ -104,7 +98,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod("rank_transform", "ANY", function(object, axis) {
     cli::cli_abort(
-        "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"
+        "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix}"
     )
 })
 

@@ -4,7 +4,6 @@
 #' [DelayedMatrix][DelayedArray::DelayedMatrix] class.
 #'
 #' @slot seed A [BPCellsSeed][BPCellsSeed-class] object.
-#' @importClassesFrom DelayedArray DelayedMatrix
 #' @name BPCellsMatrix-class
 NULL
 
@@ -22,6 +21,7 @@ BPCellsArray <- function(x) {
 #' @rdname BPCellsMatrix-class
 BPCellsMatrix <- BPCellsArray
 
+#' @importClassesFrom DelayedArray DelayedMatrix
 #' @export
 #' @include Class-BPCellsSeed.R
 #' @rdname BPCellsMatrix-class
@@ -52,4 +52,18 @@ methods::setMethod(
 #' @rdname BPCellsMatrix-class
 methods::setMethod("matrixClass", "BPCellsArray", function(x) {
     "BPCellsMatrix"
+})
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "BPCellsArray", function(x) {
+    x <- x@seed
+    methods::callGeneric()
+})
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "BPCellsMatrix", function(x) {
+    x <- x@seed
+    methods::callGeneric()
 })

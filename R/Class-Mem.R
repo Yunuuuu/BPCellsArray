@@ -17,10 +17,10 @@ NULL
 
 methods::setClass("BPCellsMemSeed", contains = c("BPCellsBasicSeed", "VIRTUAL"))
 methods::setClass("BPCellsPackedMemSeed",
-    contains = c("BPCellsMemSeed", get_class("PackedMatrixMemBase"))
+    contains = c("BPCellsMemSeed", BPCells_class("PackedMatrixMemBase"))
 )
 methods::setClass("BPCellsUnpackedMemSeed",
-    contains = c("BPCellsMemSeed", get_class("UnpackedMatrixMemBase"))
+    contains = c("BPCellsMemSeed", BPCells_class("UnpackedMatrixMemBase"))
 )
 
 ################################################################
@@ -56,7 +56,7 @@ methods::setMethod("BPCellsSeed", "UnpackedMatrixMemBase", function(x) {
 methods::setClass("BPCellsPackedMem_uint32_tSeed",
     contains = c(
         "BPCellsPackedMemSeed",
-        get_class("PackedMatrixMem_uint32_t")
+        BPCells_class("PackedMatrixMem_uint32_t")
     )
 )
 methods::setMethod(
@@ -66,7 +66,7 @@ methods::setMethod(
 methods::setClass("BPCellsPackedMem_floatSeed",
     contains = c(
         "BPCellsPackedMemSeed",
-        get_class("PackedMatrixMem_float")
+        BPCells_class("PackedMatrixMem_float")
     )
 )
 methods::setMethod(
@@ -76,7 +76,7 @@ methods::setMethod(
 methods::setClass("BPCellsPackedMem_doubleSeed",
     contains = c(
         "BPCellsPackedMemSeed",
-        get_class("PackedMatrixMem_double")
+        BPCells_class("PackedMatrixMem_double")
     )
 )
 methods::setMethod(
@@ -88,7 +88,7 @@ methods::setMethod(
 methods::setClass("BPCellsunPackedMem_uint32_tSeed",
     contains = c(
         "BPCellsUnpackedMemSeed",
-        get_class("UnpackedMatrixMem_uint32_t")
+        BPCells_class("UnpackedMatrixMem_uint32_t")
     )
 )
 methods::setMethod(
@@ -99,7 +99,7 @@ methods::setMethod(
 methods::setClass("BPCellsunPackedMem_floatSeed",
     contains = c(
         "BPCellsUnpackedMemSeed",
-        get_class("UnpackedMatrixMem_float")
+        BPCells_class("UnpackedMatrixMem_float")
     )
 )
 methods::setMethod(
@@ -110,7 +110,7 @@ methods::setMethod(
 methods::setClass("BPCellsunPackedMem_doubleSeed",
     contains = c(
         "BPCellsUnpackedMemSeed",
-        get_class("UnpackedMatrixMem_double")
+        BPCells_class("UnpackedMatrixMem_double")
     )
 )
 methods::setMethod(
@@ -157,8 +157,7 @@ methods::setMethod("matrixClass", "BPCellsMemArray", function(x) {
 
 #' Write a sparce matrices into memory with BPCells format
 #'
-#' @param x Input matrix, any matrix can be coerced to a
-#' [dgCMatrix][Matrix::dgCMatrix-class] object.
+#' @inheritParams writeBPCellsDirArray
 #' @inheritParams BPCells::write_matrix_memory
 #' @param ... For `BPCellsMatrix` method: additional parameters passed to `ANY`
 #'   methods.
@@ -175,18 +174,12 @@ methods::setGeneric(
         mat = BPCellsSeed(x),
         compress = compress
     )
-    DelayedArray(BPCellsMemSeed(obj))
+    DelayedArray(BPCellsSeed(obj))
 }
 
 #' @export
 #' @rdname writeBPCellsMemArray
 methods::setMethod("writeBPCellsMemArray", "ANY", .writeBPCellsMemArray)
-
-#' @export
-#' @rdname writeBPCellsMemArray
-methods::setMethod("writeBPCellsMemArray", "BPCellsMatrix", function(x, ...) {
-    .writeBPCellsMemArray(x = x@seed, ...)
-})
 
 .as_BPCellsMemArray <- function(from) writeBPCellsMemArray(from)
 

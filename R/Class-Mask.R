@@ -1,19 +1,13 @@
 methods::setClass("BPCellsMaskSeed",
-    contains = c("BPCellsNaryOpsSeed", get_class("MatrixMask"))
+    contains = c("BPCellsNaryOpsSeed", BPCells_class("MatrixMask"))
 )
-
-#' @rdname BPCellsMask
-#' @noRd
-BPCellsMaskSeed <- function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    x@mask <- BPCellsSeed(x@mask)
-    methods::as(x, "BPCellsMaskSeed")
-}
 
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "MatrixMask", function(x) {
-    BPCellsMaskSeed(x = x)
+    x@matrix <- BPCellsSeed(x@matrix)
+    x@mask <- BPCellsSeed(x@mask)
+    methods::as(x, "BPCellsMaskSeed")
 })
 
 methods::setMethod("entity", "BPCellsMaskSeed", function(x) {

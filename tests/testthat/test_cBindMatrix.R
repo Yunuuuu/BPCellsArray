@@ -10,11 +10,10 @@ mat <- cbind(mat1, mat2)
 common_test(
     obj, path,
     mat = mat, 
-    seed_fn = BPCellsBindMatrixSeed, 
     name = "ColBindMatrix"
 )
 testthat::test_that("`subset()` BPCellsBindMatrixSeed object works as expected", {
-    seed <- BPCellsBindMatrixSeed(obj)
+    seed <- BPCellsSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsColBindMatrixSeed")
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")

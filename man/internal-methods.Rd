@@ -128,10 +128,9 @@ Additionally, a matrix-like object which can be coerced into
 
 \item{axis}{Axis to rank values within. "col" to rank values within each
 column, and "row" to rank values within each row. If \code{NULL}, will use the
-storage order of \code{object} (see \link[BPCells:IterableMatrix-methods]{storage_order}).
-If \code{axis} value specified is different from the storage order of
-\code{object}, \link[BPCells:transpose_storage_order]{transpose_storage_order}
-will be used to transpose the underlying storage order.}
+storage axis of \code{object} (see \link{storage_axis}).  If \code{axis} specified is
+different from the storage axis of \code{object}, \link{transpose_axis} will be
+used to transpose the underlying storage order.}
 
 \item{e1, e2}{One of \code{e1} or \code{e2} must be \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another must be a

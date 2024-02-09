@@ -6,9 +6,8 @@
 \alias{convert_mode,BPCellsMatrix-method}
 \alias{storage_mode}
 \alias{storage_mode,BPCellsSeed-method}
+\alias{storage_mode,IterableMatrix-method}
 \alias{storage_mode,BPCellsMatrix-method}
-\alias{storage_mode,dgCMatrix-method}
-\alias{storage_mode,matrix-method}
 \title{Convert the storage type of a BPCellsArray object}
 \usage{
 convert_mode(object, ...)
@@ -21,11 +20,9 @@ storage_mode(object)
 
 \S4method{storage_mode}{BPCellsSeed}(object)
 
+\S4method{storage_mode}{IterableMatrix}(object)
+
 \S4method{storage_mode}{BPCellsMatrix}(object)
-
-\S4method{storage_mode}{dgCMatrix}(object)
-
-\S4method{storage_mode}{matrix}(object)
 }
 \arguments{
 \item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or

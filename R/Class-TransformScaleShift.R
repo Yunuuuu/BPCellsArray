@@ -3,7 +3,7 @@
 #' @include Class-Transformed.R
 #' @noRd
 methods::setClass("BPCellsTransformScaleShiftSeed",
-    contains = c("BPCellsTransformedSeed", get_class("TransformScaleShift"))
+    contains = c("BPCellsTransformedSeed", BPCells_class("TransformScaleShift"))
 )
 
 #' @noRd

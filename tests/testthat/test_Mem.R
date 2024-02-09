@@ -6,8 +6,7 @@ path <- character()
 obj <- BPCells::write_matrix_memory(mat = sparse_mat)
 common_test(
     obj, path,
-    mat = mat, 
-    seed_fn = BPCellsMemSeed, 
+    mat = mat,
     name = "Mem"
 )
 
@@ -15,13 +14,12 @@ common_test(
 obj <- BPCells::write_matrix_memory(mat = sparse_mat, FALSE)
 common_test(
     obj, path,
-    mat = mat, 
-    seed_fn = BPCellsMemSeed, 
+    mat = mat,
     name = "Mem"
 )
 
 testthat::test_that("`subset()` BPCellsMemSeed object works as expected", {
-    seed <- BPCellsMemSeed(obj)
+    seed <- BPCellsSeed(obj)
     testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
     testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
 })
