@@ -16,7 +16,7 @@ rank_transform(object, ...)
 
 \S4method{rank_transform}{BPCellsSeed}(object, axis = NULL, offset = TRUE, ...)
 
-\S4method{rank_transform}{BPCellsMatrix}(object, axis = NULL, ...)
+\S4method{rank_transform}{BPCellsMatrix}(object, axis = NULL, offset = TRUE, ...)
 
 \S4method{rowRanks}{BPCellsSeed}(
   x,

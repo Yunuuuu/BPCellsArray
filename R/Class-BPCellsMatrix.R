@@ -10,7 +10,7 @@ NULL
 #' @param x
 #'  - `BPCellsArray` and `BPCellsMatrix`: Details see [BPCellsSeed] for
 #'    supported object.
-#'  - `matrixClass`: A BPCellsArray object.
+#'  - `matrixClass`: A string.
 #' @export
 #' @rdname BPCellsMatrix-class
 BPCellsArray <- function(x) {

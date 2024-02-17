@@ -59,7 +59,7 @@
 
 \S4method{mask_matrix}{ANY,ANY}(object, mask, invert = FALSE)
 
-\S4method{rank_transform}{ANY}(object, axis)
+\S4method{rank_transform}{ANY}(object, axis = NULL, offset = TRUE, ...)
 
 \S4method{/}{numeric,BPCellsMatrix}(e1, e2)
 
@@ -131,6 +131,9 @@ column, and "row" to rank values within each row. If \code{NULL}, will use the
 storage axis of \code{object} (see \link{storage_axis}).  If \code{axis} specified is
 different from the storage axis of \code{object}, \link{transpose_axis} will be
 used to transpose the underlying storage order.}
+
+\item{offset}{A bool, whether or not to add offset such that the rank of a 0
+value is 0. Default: \code{TRUE}.}
 
 \item{e1, e2}{One of \code{e1} or \code{e2} must be \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another must be a

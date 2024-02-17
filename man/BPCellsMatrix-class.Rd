@@ -45,7 +45,7 @@ BPCellsMatrix(x)
 \item{x}{\itemize{
 \item \code{BPCellsArray} and \code{BPCellsMatrix}: Details see \link{BPCellsSeed} for
 supported object.
-\item \code{matrixClass}: A BPCellsArray object.
+\item \code{matrixClass}: A string.
 }}
 
 \item{seed}{A \code{BPCellsSeed} object.}

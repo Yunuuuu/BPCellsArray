@@ -110,7 +110,7 @@ methods::setMethod(
 #' @rdname rank_transform
 methods::setMethod(
     "rank_transform", "BPCellsMatrix",
-    function(object, axis = NULL, ...) {
+    function(object, axis = NULL, offset = TRUE, ...) {
         object <- object@seed
         DelayedArray(methods::callGeneric())
     }
@@ -119,7 +119,7 @@ methods::setMethod(
 #' @inheritParams rank_transform
 #' @export
 #' @rdname internal-methods
-methods::setMethod("rank_transform", "ANY", function(object, axis) {
+methods::setMethod("rank_transform", "ANY", function(object, axis = NULL, offset = TRUE, ...) {
     cli::cli_abort(
         "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix}"
     )
