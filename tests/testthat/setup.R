@@ -379,29 +379,27 @@ common_test <- function(
             testthat::expect_s4_class(seed, seed_class)
             testthat::expect_warning(temp <- seed %*% t(seed))
             testthat::expect_equal(
-                unname(as.matrix(
-                    suppressWarnings(rowRanks(seed, offset = FALSE))
-                )),
-                rowRanks(mat, ties.method = "average")
+                as.matrix(suppressWarnings(rowRanks(seed, offset = FALSE))),
+                rowRanks(mat, ties.method = "average", useNames = TRUE)
             )
             testthat::expect_equal(
-                unname(as.matrix(
-                    suppressWarnings(colRanks(seed, offset = FALSE))
-                )),
-                colRanks(mat, ties.method = "average", preserveShape = TRUE)
+                as.matrix(suppressWarnings(colRanks(seed, offset = FALSE))),
+                colRanks(mat,
+                    ties.method = "average",
+                    useNames = TRUE, preserveShape = TRUE
+                )
             )
             obj <- BPCellsArray(obj)
             testthat::expect_equal(
-                unname(as.matrix(
-                    suppressWarnings(rowRanks(obj, offset = FALSE))
-                )),
-                rowRanks(mat, ties.method = "average")
+                as.matrix(suppressWarnings(rowRanks(obj, offset = FALSE))),
+                rowRanks(mat, ties.method = "average", useNames = TRUE)
             )
             testthat::expect_equal(
-                unname(as.matrix(
-                    suppressWarnings(colRanks(obj, offset = FALSE))
-                )),
-                colRanks(mat, ties.method = "average", preserveShape = TRUE)
+                as.matrix(suppressWarnings(colRanks(obj, offset = FALSE))),
+                colRanks(mat,
+                    ties.method = "average",
+                    useNames = TRUE, preserveShape = TRUE
+                )
             )
         }
     )
