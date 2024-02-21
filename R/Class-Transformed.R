@@ -327,7 +327,7 @@ methods::setMethod(
 #' @importMethodsFrom BPCells ^
 #' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod("^", "BPCellsSeed", function(e1, e2) {
+methods::setMethod("^", c("BPCellsSeed", "numeric"), function(e1, e2) {
     BPCellsSeed(methods::callNextMethod())
 })
 
