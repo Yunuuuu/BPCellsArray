@@ -30,6 +30,7 @@ Here is a summarized delayed operations in BPCells:
 | Rename                                   | `dimnames<-`                | `dimnames<-`,`rownames<-`,`colnames<-` |
 | Multiplication                           | `%*%`                       | `%*%`                                  |
 | Crossproduct                             |                             | crossprod                              |
+| Matrix product transpose                 |                             | tcrossprod                             |
 | Arithmetic                               | `+`,`-`,`*`,`/`             | `+`,`-`,`*`,`/`                        |
 | Relational Operators                     | Binary (`<`,`>`,`<=`, `>=`) | Binary (`<`,`>`,`<=`, `>=`)            |
 | Storage mode                             | convert\_matrix\_type       | convert\_mode                          |
