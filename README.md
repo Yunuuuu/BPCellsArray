@@ -46,14 +46,15 @@ Here is a summarized delayed operations in BPCells:
 
 Other non-lazied operations:
 
-| Operations        | BPCells          | BPCellsArray                    | Note             |
-| ----------------- | ---------------- | ------------------------------- | ---------------- |
-| row/col summarize | matrix\_stats    | matrix\_stats                   |                  |
-| row summarize     | rowSums,rowMeans | rowSums,rowMeans,rowVars,rowSds |                  |
-| col summarize     | colSums,colMeans | colSums,colMeans,colVars,colSds |                  |
-| Multiplication    | %\*%             | %\*%                            | For some methods |
-| Crossproduct      |                  | crossprod                       | For some methods |
-| svd               | svds             | `runSVD`+`SpectraParam`         |                  |
+| Operations               | BPCells          | BPCellsArray                    | Note             |
+| ------------------------ | ---------------- | ------------------------------- | ---------------- |
+| row/col summarize        | matrix\_stats    | matrix\_stats                   |                  |
+| row summarize            | rowSums,rowMeans | rowSums,rowMeans,rowVars,rowSds |                  |
+| col summarize            | colSums,colMeans | colSums,colMeans,colVars,colSds |                  |
+| Multiplication           | %\*%             | %\*%                            | For some methods |
+| Crossproduct             |                  | crossprod                       | For some methods |
+| Matrix product transpose |                  | tcrossprod                      | For some methods |
+| svd                      | svds             | `runSVD`+`SpectraParam`         |                  |
 
 ## Matrix Storage Format
 
