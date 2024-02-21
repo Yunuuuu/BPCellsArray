@@ -38,7 +38,7 @@ Here is a summarized delayed operations in BPCells:
 | Crossproduct                             |                              | crossprod                              |
 | Arithmetic                               | `+`,`-`,`*`,`/`              | `+`,`-`,`*`,`/`                        |
 | Relational Operators                     | Binary  (`<`,`>`,`<=`, `>=`) | Binary  (`<`,`>`,`<=`, `>=`)           |
-| Storage mode                             | convert_matrix_type          | convert_type                           |
+| Storage mode                             | convert_matrix_type          | convert_mode                           |
 | Rank-transform                           | rank_transform               | `rank_transform`,`rowRanks`,`colRanks` |
 | Mask matrix entries to zero              | mask_matrix                  | mask_matrix                            |
 | Take minumum with a global constant      | min_scalar                   | pmin_scalar                            |

@@ -13,9 +13,11 @@ RNA-seq and ATAC-seq datasets. This package just bring BPCells into
 Bioconductor single-cell workflow.
 
 Almost all operations in `BPCells` are lazy, which means that no real
-work is performed on matrix or fragment objects until the result needs
-to be returned as an R object or written to disk. And most operations
-have been optimized by `c++` or `c`.
+work is performed on `BPCellsMatrix` objects until the result needs to
+be returned as an R object or written to disk. And most operations have
+been optimized by `c++` or `c`. Although `DelayedArray` package provides
+block processing for most usual operations, `BPCellsArray` re-dispatch
+these methods to use the optimized methods in BPCells.
 
 Here is a summarized delayed operations in BPCells:
 
@@ -30,7 +32,7 @@ Here is a summarized delayed operations in BPCells:
 | Crossproduct                             |                             | crossprod                              |
 | Arithmetic                               | `+`,`-`,`*`,`/`             | `+`,`-`,`*`,`/`                        |
 | Relational Operators                     | Binary (`<`,`>`,`<=`, `>=`) | Binary (`<`,`>`,`<=`, `>=`)            |
-| Storage mode                             | convert\_matrix\_type       | convert\_type                          |
+| Storage mode                             | convert\_matrix\_type       | convert\_mode                          |
 | Rank-transform                           | rank\_transform             | `rank_transform`,`rowRanks`,`colRanks` |
 | Mask matrix entries to zero              | mask\_matrix                | mask\_matrix                           |
 | Take minumum with a global constant      | min\_scalar                 | pmin\_scalar                           |
@@ -70,9 +72,7 @@ file. Saving in a directory on disk is a good default for local
 analysis, as it provides the best I/O performance and lowest memory
 usage. The HDF5 format allows saving within existing hdf5 files to group
 data together, and the in memory format provides the fastest performance
-in the event memory usage is unimportant. So when using `as(object,
-"BPCellsArray")` or `as(object, "BPCellsMatrix")`, the default behavior
-will be `as(object, "BPCellsDirMatrix")`.
+in the event memory usage is unimportant.
 
 Details see:
 <https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html>
@@ -192,17 +192,14 @@ assay(sce, "counts")
 #> Col names: Cell_001, Cell_002 ... Cell_2000
 #> 
 #> Storage Data type: double
-#> Storage axis: column major
+#> Storage axis: col major
 #> 
 #> Queued Operations:
 #> Load compressed matrix from directory
 ```
 
-If you do delayed operations with this assay, the class may be changed,
-that’s because all of BPCells operations are lazy, no real work is
-performed on the matrix until the result needs to be returned as an R
-object or written to disk. You can coerce it into a dense matrix or
-`dgCMatrix` to get a actual R object.
+You can coerce it into a dense matrix or `dgCMatrix` to get the actual
+value.
 
 ``` r
 assay(sce, "counts")[1:10, 1:10]
@@ -212,7 +209,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Col names: Cell_001, Cell_002 ... Cell_010
 #> 
 #> Storage Data type: double
-#> Storage axis: column major
+#> Storage axis: col major
 #> 
 #> Queued Operations:
 #> Subset matrix
@@ -277,7 +274,7 @@ assay(sce, "logcounts")
 #> Col names: Cell_001, Cell_002 ... Cell_2000
 #> 
 #> Storage Data type: double
-#> Storage axis: column major
+#> Storage axis: col major
 #> 
 #> Queued Operations:
 #> Transform by scale and (or) shift
