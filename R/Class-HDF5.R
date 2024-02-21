@@ -42,14 +42,14 @@ methods::setClass("BPCellsHDF5Matrix",
 methods::setMethod("matrixClass", "BPCellsHDF5Array", function(x) {
     "BPCellsHDF5Matrix"
 })
-
-methods::setMethod("summary", "BPCellsHDF5Seed", function(object) {
+summary.BPCellsHDF5Seed <- function(object) {
     sprintf(
         "Load %s matrix in HDF5 file (group: %s)",
         if (object@compressed) "compressed" else "uncompressed",
         object@group
     )
-})
+}
+methods::setMethod("summary", "BPCellsHDF5Seed", summary.BPCellsHDF5Seed)
 
 #' Read/write sparse matrices from (or into) HDF5 file
 #'
@@ -94,7 +94,7 @@ methods::setGeneric(
         gzip <- as.integer(gzip)
     }
     obj <- BPCells::write_matrix_hdf5(
-        mat = BPCellsSeed(x), 
+        mat = BPCellsSeed(x),
         path = path, group = group,
         compress = bitpacking,
         buffer_size = as.integer(buffer_size),

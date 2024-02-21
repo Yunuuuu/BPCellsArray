@@ -20,8 +20,7 @@ methods::setGeneric("BPCellsTransformedSeed", function(x) {
     class <- standardGeneric("BPCellsTransformedSeed")
     methods::as(x, Class = sprintf("BPCells%sSeed", class))
 })
-
-methods::setMethod("summary", "BPCellsTransformedSeed", function(object) {
+summary.BPCellsTransformedSeed <- function(object) {
     cls <- gsub("^BPCellsTransform|Seed$", "", class(object)[1L])
     sprintf(
         "Transform by %s",
@@ -34,7 +33,11 @@ methods::setMethod("summary", "BPCellsTransformedSeed", function(object) {
             snakeize(cls)
         )
     )
-})
+}
+methods::setMethod(
+    "summary", "BPCellsTransformedSeed",
+    summary.BPCellsTransformedSeed
+)
 
 ####################################################################
 #' @noRd

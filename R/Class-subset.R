@@ -14,10 +14,10 @@ methods::setMethod("BPCellsSeed", "MatrixSubset", function(x) {
     x@matrix <- BPCellsSeed(x@matrix)
     methods::as(x, "BPCellsSubsetSeed")
 })
-
-methods::setMethod("summary", "BPCellsSubsetSeed", function(object) {
+summary.BPCellsSubsetSeed <- function(object) {
     "Subset matrix"
-})
+}
+methods::setMethod("summary", "BPCellsSubsetSeed", summary.BPCellsSubsetSeed)
 
 ################    BPCellsMatrix Methods    ##################
 #' @inheritParams BPCellsSeed-class

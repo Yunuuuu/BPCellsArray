@@ -5,10 +5,13 @@ methods::setClass("BPCellsdgCMatrixSeed",
         BPCells_class("Iterable_dgCMatrix_wrapper")
     )
 )
-
-methods::setMethod("summary", "BPCellsdgCMatrixSeed", function(object) {
+summary.BPCellsdgCMatrixSeed <- function(object) {
     "Load dgCMatrix from memory"
-})
+}
+methods::setMethod(
+    "summary", "BPCellsdgCMatrixSeed",
+    summary.BPCellsdgCMatrixSeed
+)
 
 #' @export
 #' @rdname BPCellsSeed

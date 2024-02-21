@@ -11,10 +11,13 @@ methods::setMethod("BPCellsSeed", "RenameDims", function(x) {
     x@matrix <- BPCellsSeed(x@matrix)
     methods::as(x, "BPCellsRenameDimsSeed")
 })
-
-methods::setMethod("summary", "BPCellsRenameDimsSeed", function(object) {
+summary.BPCellsRenameDimsSeed <- function(object) {
     "Rename dimnames"
-})
+}
+methods::setMethod(
+    "summary", "BPCellsRenameDimsSeed",
+    summary.BPCellsRenameDimsSeed
+)
 
 ################    BPCellsMatrix Methods    ##################
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))

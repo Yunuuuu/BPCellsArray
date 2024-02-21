@@ -16,10 +16,13 @@ methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x) {
 methods::setMethod("entity", "BPCellsMultiplySeed", function(x) {
     list(left = x@left, right = x@right)
 })
-
-methods::setMethod("summary", "BPCellsMultiplySeed", function(object) {
+summary.BPCellsMultiplySeed <- function(object) {
     "Multiply sparse matrices"
-})
+}
+methods::setMethod(
+    "summary", "BPCellsMultiplySeed",
+    summary.BPCellsMultiplySeed
+)
 
 ##############################################################
 #' Matrix Multiplication

@@ -12,14 +12,14 @@ methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x) {
     x@matrix <- BPCellsSeed(x@matrix)
     methods::as(x, "BPCellsConvertSeed")
 })
-
-methods::setMethod("summary", "BPCellsConvertSeed", function(object) {
+summary.BPCellsConvertSeed <- function(object) {
     sprintf(
         "Convert type from %s to %s",
         storage_mode(entity(object)),
         storage_mode(object)
     )
-})
+}
+methods::setMethod("summary", "BPCellsConvertSeed", summary.BPCellsConvertSeed)
 
 ###################################################################
 ###########################  Methods  #############################

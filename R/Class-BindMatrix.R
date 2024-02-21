@@ -29,22 +29,31 @@ methods::setClass("BPCellsRowBindMatrixSeed",
 )
 
 ####################################################################
-methods::setMethod("summary", "BPCellsColBindMatrixSeed", function(object) {
+summary.BPCellsColBindMatrixSeed <- function(object) {
     sprintf(
         "Concatenate %s of %d matrix objects (threads=%d)",
         if (object@transpose) "rows" else "cols",
         length(object@matrix_list),
         object@threads
     )
-})
-methods::setMethod("summary", "BPCellsRowBindMatrixSeed", function(object) {
+}
+methods::setMethod(
+    "summary", "BPCellsColBindMatrixSeed",
+    summary.BPCellsColBindMatrixSeed
+)
+
+summary.BPCellsRowBindMatrixSeed <- function(object) {
     sprintf(
         "Concatenate %s of %d matrix objects (threads=%d)",
         if (object@transpose) "cols" else "rows",
         length(object@matrix_list),
         object@threads
     )
-})
+}
+methods::setMethod(
+    "summary", "BPCellsRowBindMatrixSeed",
+    summary.BPCellsRowBindMatrixSeed
+)
 
 ####################################################################
 #' @return

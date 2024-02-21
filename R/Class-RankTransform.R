@@ -28,10 +28,13 @@ methods::setMethod("BPCellsSeed", "MatrixRankTransform", function(x) {
     x@matrix <- BPCellsSeed(x@matrix)
     methods::as(x, "BPCellsRankTransformSeed")
 })
-
-methods::setMethod("summary", "BPCellsRankTransformSeed", function(object) {
+summary.BPCellsRankTransformSeed <- function(object) {
     sprintf("Rank transform matrix by %s", storage_axis(object))
-})
+}
+methods::setMethod(
+    "summary", "BPCellsRankTransformSeed",
+    summary.BPCellsRankTransformSeed
+)
 
 ###################################################################
 ###########################  Methods  #############################

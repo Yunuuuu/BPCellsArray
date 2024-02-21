@@ -24,13 +24,20 @@ methods::setClass("BPCellsUnpackedMemSeed",
 )
 
 ################################################################
-methods::setMethod("summary", "BPCellsPackedMemSeed", function(object) {
+summary.BPCellsPackedMemSeed <- function(object) {
     "Load compressed matrix from memory"
-})
-
-methods::setMethod("summary", "BPCellsUnpackedMemSeed", function(object) {
+}
+methods::setMethod(
+    "summary", "BPCellsPackedMemSeed",
+    summary.BPCellsPackedMemSeed
+)
+summary.BPCellsUnpackedMemSeed <- function(object) {
     "Load uncompressed matrix from memory"
-})
+}
+methods::setMethod(
+    "summary", "BPCellsUnpackedMemSeed",
+    summary.BPCellsUnpackedMemSeed
+)
 
 #' @param x A `PackedMatrixMemBase` or `UnpackedMatrixMemBase` object.
 #' @rdname BPCellsMem
