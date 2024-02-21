@@ -40,7 +40,7 @@ Here is a summarized delayed operations in BPCells:
 | Take the minimum with a per-row constant | min\_by\_row                | pmin\_by\_row                          |
 | Round number                             | round                       | round                                  |
 | `exp(x) - 1`                             | `expm1_slow`,`expm1`        | `expm1_slow`,`expm1`                   |
-| `log(1+x)`                               | `log1p`,`log1p_slow`        | `log1p`,`log1p_slow`                   |
+| `log(1+x)`                               | `log1p`,`log1p_slow`        | `log1p_single`,`log1p`                 |
 | Power                                    | `pow_slow`,`^`              | `pow_slow`,`^`                         |
 
 Other non-lazied operations:

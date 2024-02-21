@@ -24,9 +24,9 @@
 \alias{rownames<-,BPCellsSeed,atomic-method}
 \alias{colnames<-,BPCellsSeed,atomic-method}
 \alias{expm1_slow,BPCellsSeed-method}
-\alias{log1p_slow,BPCellsSeed-method}
-\alias{expm1,BPCellsSeed-method}
 \alias{log1p,BPCellsSeed-method}
+\alias{expm1,BPCellsSeed-method}
+\alias{log1p_single,BPCellsSeed-method}
 \alias{pmin_by_col,BPCellsSeed-method}
 \alias{pmin_by_row,BPCellsSeed-method}
 \alias{pmin_scalar,BPCellsSeed-method}
@@ -86,11 +86,11 @@
 
 \S4method{expm1_slow}{BPCellsSeed}(x)
 
-\S4method{log1p_slow}{BPCellsSeed}(x)
+\S4method{log1p}{BPCellsSeed}(x)
 
 \S4method{expm1}{BPCellsSeed}(x)
 
-\S4method{log1p}{BPCellsSeed}(x)
+\S4method{log1p_single}{BPCellsSeed}(x)
 
 \S4method{pmin_by_col}{BPCellsSeed}(object, values)
 

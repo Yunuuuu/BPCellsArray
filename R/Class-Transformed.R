@@ -81,36 +81,36 @@ methods::setMethod("expm1_slow", "BPCellsSeed", function(x) {
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("expm1_slow", "BPCellsMatrix", function(x) {
-    DelayedArray(expm1_slow(x@seed))
+    x <- x@seed
+    DelayedArray(methods::callGeneric())
 })
 
 ####################################################################
 # TransformLog1pSlow
-methods::setClass("BPCellsTransformLog1pSlowSeed",
+methods::setClass("BPCellsTransformLog1pSeed",
     contains = c("BPCellsTransformedSeed", BPCells_class("TransformLog1pSlow"))
 )
+
 #' @noRd
 methods::setMethod(
     "BPCellsTransformedSeed", "TransformLog1pSlow",
-    function(x) "TransformLog1pSlow"
+    function(x) "TransformLog1p"
 )
 
 #' @export
-#' @rdname BPCellsMatrix-class
-methods::setGeneric("log1p_slow", function(x) {
-    standardGeneric("log1p_slow")
-})
-
-#' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod("log1p_slow", "BPCellsSeed", function(x) {
+methods::setMethod("log1p", "BPCellsSeed", function(x) {
+    # https://github.com/bnprks/BPCells/issues/73#issuecomment-1936642287
+    # log1p_slow use double-precision math
     BPCellsSeed(BPCells::log1p_slow(x))
 })
 
 #' @export
+#' @aliases log1p
 #' @rdname BPCellsMatrix-class
-methods::setMethod("log1p_slow", "BPCellsMatrix", function(x) {
-    DelayedArray(log1p_slow(x@seed))
+methods::setMethod("log1p", "BPCellsMatrix", function(x) {
+    x <- x@seed
+    DelayedArray(methods::callGeneric())
 })
 
 ####################################################################
@@ -137,34 +137,45 @@ methods::setMethod("expm1", "BPCellsSeed", function(x) {
 #' @aliases expm1
 #' @rdname BPCellsMatrix-class
 methods::setMethod("expm1", "BPCellsMatrix", function(x) {
-    DelayedArray(expm1(x@seed))
+    x <- x@seed
+    DelayedArray(methods::callGeneric())
 })
 
 ####################################################################
 # TransformLog1p
-methods::setClass("BPCellsTransformLog1pSeed",
+methods::setClass("BPCellsTransformLog1pSingleSeed",
     contains = c("BPCellsTransformedSeed", BPCells_class("TransformLog1p"))
 )
 
 #' @noRd
 methods::setMethod(
     "BPCellsTransformedSeed", "TransformLog1p",
-    function(x) "TransformLog1p"
+    function(x) "TransformLog1pSingle"
 )
 
 #' @export
+#' @rdname BPCellsMatrix-class
+methods::setGeneric("log1p_single", function(x) {
+    standardGeneric("log1p_single")
+})
+
+#' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod("log1p", "BPCellsSeed", function(x) {
-    BPCellsSeed(methods::callNextMethod())
+methods::setMethod("log1p_single", "BPCellsSeed", function(x) {
+    fn <- methods::getMethod("log1p", "IterableMatrix", where = "BPCells")
+    BPCellsSeed(fn(x))
 })
 
 #' @return
-#'  - `log1p` and `log1p_slow`: compute `log(1+x)` of matrix.
+#'  - `log1p` and `log1p_single`: compute `log(1+x)` of matrix. `log1p_single`
+#'    use single-precision math in intermediate stages, which is 2x faster than
+#'    `log1p`.
 #' @export
-#' @aliases log1p
+#' @aliases log1p_single
 #' @rdname BPCellsMatrix-class
-methods::setMethod("log1p", "BPCellsMatrix", function(x) {
-    DelayedArray(log1p(x@seed))
+methods::setMethod("log1p_single", "BPCellsMatrix", function(x) {
+    x <- x@seed
+    DelayedArray(methods::callGeneric())
 })
 
 ####################################################################
@@ -199,11 +210,10 @@ methods::setMethod(
 #' - `pmin_by_col`: Take the minimum with a per-col constant
 #' @export
 #' @rdname BPCellsMatrix-class
-methods::setMethod(
-    "pmin_by_col", "BPCellsMatrix", function(object, values) {
-        DelayedArray(pmin_by_col(object = object, values = values))
-    }
-)
+methods::setMethod("pmin_by_col", "BPCellsMatrix", function(object, values) {
+    object <- object@seed
+    DelayedArray(methods::callGeneric())
+})
 
 ####################################################################
 # TransformMinByRow
@@ -225,21 +235,18 @@ methods::setGeneric("pmin_by_row", function(object, values) {
 
 #' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod(
-    "pmin_by_row", "BPCellsSeed", function(object, values) {
-        BPCellsSeed(BPCells::min_by_row(mat = object, vals = values))
-    }
-)
+methods::setMethod("pmin_by_row", "BPCellsSeed", function(object, values) {
+    BPCellsSeed(BPCells::min_by_row(mat = object, vals = values))
+})
 
 #' @return
 #' - `pmin_by_row`: Take the minimum with a per-row constant
 #' @export
 #' @rdname BPCellsMatrix-class
-methods::setMethod(
-    "pmin_by_row", "BPCellsMatrix", function(object, values) {
-        DelayedArray(pmin_by_row(object = object, values = values))
-    }
-)
+methods::setMethod("pmin_by_row", "BPCellsMatrix", function(object, values) {
+    object <- object@seed
+    DelayedArray(methods::callGeneric())
+})
 
 ####################################################################
 # TransformMin
@@ -261,21 +268,18 @@ methods::setGeneric("pmin_scalar", function(object, value) {
 
 #' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod(
-    "pmin_scalar", "BPCellsSeed", function(object, value) {
-        BPCellsSeed(BPCells::min_scalar(mat = object, val = value))
-    }
-)
+methods::setMethod("pmin_scalar", "BPCellsSeed", function(object, value) {
+    BPCellsSeed(BPCells::min_scalar(mat = object, val = value))
+})
 
 #' @return
 #' - `pmin_scalar`: Take minumum with a global constant
 #' @export
 #' @rdname BPCellsMatrix-class
-methods::setMethod(
-    "pmin_scalar", "BPCellsMatrix", function(object, value) {
-        DelayedArray(pmin_scalar(object = object, value = value))
-    }
-)
+methods::setMethod("pmin_scalar", "BPCellsMatrix", function(object, value) {
+    object <- object@seed
+    DelayedArray(methods::callGeneric())
+})
 
 ####################################################################
 # TransformPowSlow
@@ -305,7 +309,8 @@ methods::setMethod("pow_slow", "BPCellsSeed", function(e1, e2) {
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("pow_slow", "BPCellsMatrix", function(e1, e2) {
-    DelayedArray(pow_slow(e1@seed, e2))
+    e1 <- e1@seed
+    DelayedArray(methods::callGeneric())
 })
 
 ####################################################################
@@ -331,7 +336,7 @@ methods::setMethod("^", "BPCellsSeed", function(e1, e2) {
 #' @rdname BPCellsMatrix-class
 methods::setMethod("^", "BPCellsMatrix", function(e1, e2) {
     e1 <- e1@seed
-    DelayedArray(e1^e2)
+    DelayedArray(methods::callGeneric())
 })
 
 ####################################################################
@@ -359,11 +364,9 @@ methods::setMethod(
 #' @param digits Integer indicating the number of decimal places
 #' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod(
-    "round", "BPCellsSeed", function(x, digits = 0) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
+methods::setMethod("round", "BPCellsSeed", function(x, digits = 0) {
+    BPCellsSeed(methods::callNextMethod())
+})
 
 #' @inheritParams BPCellsSeed-class
 #' @return
@@ -371,8 +374,7 @@ methods::setMethod(
 #' @export
 #' @aliases round
 #' @rdname BPCellsMatrix-class
-methods::setMethod(
-    "round", "BPCellsMatrix", function(x, digits = 0) {
-        DelayedArray(round(x = x, digits = digits))
-    }
-)
+methods::setMethod("round", "BPCellsMatrix", function(x, digits = 0) {
+    x <- x@seed
+    DelayedArray(methods::callGeneric())
+})

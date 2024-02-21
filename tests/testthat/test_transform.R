@@ -10,7 +10,7 @@ common_test(
 
 common_test(
     BPCells::log1p_slow(obj), path,
-    name = "TransformLog1pSlow"
+    name = "TransformLog1p"
 )
 
 # common_test(
@@ -21,7 +21,7 @@ common_test(
 
 # common_test(
 #     log1p(obj), path,
-#     name = "TransformLog1p"
+#     name = "TransformLog1pSingle"
 # )
 
 common_test(

@@ -39,12 +39,12 @@
 \alias{colnames<-}
 \alias{expm1_slow}
 \alias{expm1_slow,BPCellsMatrix-method}
-\alias{log1p_slow}
-\alias{log1p_slow,BPCellsMatrix-method}
-\alias{expm1,BPCellsMatrix-method}
-\alias{expm1}
 \alias{log1p,BPCellsMatrix-method}
 \alias{log1p}
+\alias{expm1,BPCellsMatrix-method}
+\alias{expm1}
+\alias{log1p_single}
+\alias{log1p_single,BPCellsMatrix-method}
 \alias{pmin_by_col}
 \alias{pmin_by_col,BPCellsMatrix-method}
 \alias{pmin_by_row}
@@ -107,13 +107,13 @@ expm1_slow(x)
 
 \S4method{expm1_slow}{BPCellsMatrix}(x)
 
-log1p_slow(x)
-
-\S4method{log1p_slow}{BPCellsMatrix}(x)
+\S4method{log1p}{BPCellsMatrix}(x)
 
 \S4method{expm1}{BPCellsMatrix}(x)
 
-\S4method{log1p}{BPCellsMatrix}(x)
+log1p_single(x)
+
+\S4method{log1p_single}{BPCellsMatrix}(x)
 
 pmin_by_col(object, values)
 
@@ -199,7 +199,9 @@ number.}
 }
 
 \itemize{
-\item \code{log1p} and \code{log1p_slow}: compute \code{log(1+x)} of matrix.
+\item \code{log1p} and \code{log1p_single}: compute \code{log(1+x)} of matrix. \code{log1p_single}
+use single-precision math in intermediate stages, which is 2x faster than
+\code{log1p}.
 }
 
 \itemize{
