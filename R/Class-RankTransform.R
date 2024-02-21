@@ -39,10 +39,10 @@ methods::setMethod("summary", "BPCellsRankTransformSeed", function(object) {
 
 #####################   BPCellsRankTransformMatrix   #######################
 #' Rank-transform a BPCells IterableMatrix matrix
-#' 
+#'
 #' Rank values are default offset such that the rank of a 0 value is 0. If you
-#' want to get the same result of `rowRanks(object, ties.method =
-#' "average")`/`colRanks(object, ties.method = "average")`, set `offset=FALSE`
+#' want to get the same result of regular matrix `rowRanks(matrix, ties.method =
+#' "average")`/`colRanks(matrix, ties.method = "average")`, set `offset=FALSE`.
 #'
 #' @param x,object A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object.
@@ -62,8 +62,10 @@ methods::setGeneric(
 #'     used to transpose the underlying storage order.
 #' @param offset A bool, whether or not to add offset such that the rank of a 0
 #' value is 0. Default: `TRUE`.
-#' @return
-#'  - `rank_transform`: A [BPCellsSeed][BPCellsSeed-class] or
+#' @param ties.method Always be "average", cannot be changed.
+#' @param useNames Always be `TRUE`, cannot be changed.
+#' @param preserveShape Always be `TRUE`, cannot be changed.
+#' @return A [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
 #' @seealso [rank_transform][BPCells::rank_transform]
 #' @importFrom DelayedArray DelayedArray
@@ -89,18 +91,27 @@ methods::setMethod(
         }
         seed <- BPCellsSeed(BPCells:::rank_transform(mat = object, axis = axis))
         if (!offset) {
-            nonzero <- switch(axis,
-                row = BPCells::matrix_stats(object,
+            if (axis == "row") {
+                nonzero <- BPCells::matrix_stats(object,
                     row_stats = "nonzero"
-                )$row_stats["nonzero", , drop = TRUE],
-                col = BPCells::matrix_stats(object,
+                )$row_stats["nonzero", , drop = TRUE]
+                zeros <- ncol(object) - nonzero
+                negatives <- ncol(object) - rowSums(object > 0) - zeros
+                rank_offsets <- ifelse(zeros != 0,
+                    negatives + (1 + zeros) / 2, 0
+                )
+                seed <- seed + rank_offsets
+            } else {
+                nonzero <- BPCells::matrix_stats(object,
                     col_stats = "nonzero"
                 )$col_stats["nonzero", , drop = TRUE]
-            )
-            zeros <- nrow(object) - nonzero
-            negatives <- nrow(object) - colSums(object > 0) - zeros
-            rank_offsets <- ifelse(zeros != 0, negatives + (1 + zeros) / 2, 0)
-            seed <- BPCells::add_cols(mat = seed, rank_offsets)
+                zeros <- nrow(object) - nonzero
+                negatives <- nrow(object) - colSums(object > 0) - zeros
+                rank_offsets <- ifelse(zeros != 0,
+                    negatives + (1 + zeros) / 2, 0
+                )
+                seed <- t(t(seed) + rank_offsets)
+            }
         }
         seed
     }
@@ -127,37 +138,41 @@ methods::setMethod("rank_transform", "ANY", function(object, axis = NULL, offset
 
 #######################################################################
 # Rank
-#' @param rows,cols,ties.method,useNames Ignored currently.
+#' @param rows,cols Ignored currently.
 #' @importFrom MatrixGenerics rowRanks
-#' @return
-#' - `rowRanks()`: vector of row ranks.
 #' @aliases rowRanks
 #' @export
 #' @rdname rank_transform
-methods::setMethod("rowRanks", c(x = "BPCellsSeed"), function(x, ...) {
+methods::setMethod("rowRanks", c(x = "BPCellsSeed"), function(
+    x, rows = NULL, cols = NULL, ties.method = "average",
+    ..., useNames = TRUE) {
     rank_transform(object = x, axis = "row", ...)
 })
 
 #' @importFrom MatrixGenerics colRanks
-#' @return
-#' - `colRanks()`: vector of column ranks.
 #' @aliases colRanks
 #' @export
 #' @rdname rank_transform
-methods::setMethod("colRanks", c(x = "BPCellsSeed"), function(x, ...) {
+methods::setMethod("colRanks", c(x = "BPCellsSeed"), function(
+    x, rows = NULL, cols = NULL, ties.method = "average",
+    preserveShape = TRUE, ..., useNames = TRUE) {
     rank_transform(object = x, axis = "col", ...)
 })
 
 #' @importFrom MatrixGenerics rowRanks
 #' @export
 #' @rdname rank_transform
-methods::setMethod("rowRanks", c(x = "BPCellsMatrix"), function(x, ...) {
+methods::setMethod("rowRanks", c(x = "BPCellsMatrix"), function(
+    x, rows = NULL, cols = NULL, ties.method = "average",
+    ..., useNames = TRUE) {
     rank_transform(object = x, axis = "row", ...)
 })
 
 #' @importFrom MatrixGenerics colRanks
 #' @export
 #' @rdname rank_transform
-methods::setMethod("colRanks", c(x = "BPCellsMatrix"), function(x, ...) {
+methods::setMethod("colRanks", c(x = "BPCellsMatrix"), function(
+    x, rows = NULL, cols = NULL, ties.method = "average",
+    preserveShape = TRUE, ..., useNames = TRUE) {
     rank_transform(object = x, axis = "col", ...)
 })

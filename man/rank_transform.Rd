@@ -22,36 +22,38 @@ rank_transform(object, ...)
   x,
   rows = NULL,
   cols = NULL,
-  ties.method = c("max", "average"),
+  ties.method = "average",
   ...,
-  useNames = NA
+  useNames = TRUE
 )
 
 \S4method{colRanks}{BPCellsSeed}(
   x,
   rows = NULL,
   cols = NULL,
-  ties.method = c("max", "average"),
+  ties.method = "average",
+  preserveShape = TRUE,
   ...,
-  useNames = NA
+  useNames = TRUE
 )
 
 \S4method{rowRanks}{BPCellsMatrix}(
   x,
   rows = NULL,
   cols = NULL,
-  ties.method = c("max", "average"),
+  ties.method = "average",
   ...,
-  useNames = NA
+  useNames = TRUE
 )
 
 \S4method{colRanks}{BPCellsMatrix}(
   x,
   rows = NULL,
   cols = NULL,
-  ties.method = c("max", "average"),
+  ties.method = "average",
+  preserveShape = TRUE,
   ...,
-  useNames = NA
+  useNames = TRUE
 )
 }
 \arguments{
@@ -76,25 +78,21 @@ value is 0. Default: \code{TRUE}.}
 \item{x, object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{rows, cols, ties.method, useNames}{Ignored currently.}
+\item{rows, cols}{Ignored currently.}
+
+\item{ties.method}{Always be "average", cannot be changed.}
+
+\item{useNames}{Always be \code{TRUE}, cannot be changed.}
+
+\item{preserveShape}{Always be \code{TRUE}, cannot be changed.}
 }
 \value{
-\itemize{
-\item \code{rank_transform}: A \link[=BPCellsSeed-class]{BPCellsSeed} or
+A \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{object}.
-}
-
-\itemize{
-\item \code{rowRanks()}: vector of row ranks.
-}
-
-\itemize{
-\item \code{colRanks()}: vector of column ranks.
-}
 }
 \description{
 Rank values are default offset such that the rank of a 0 value is 0. If you
-want to get the same result of \code{rowRanks(object, ties.method = "average")}/\code{colRanks(object, ties.method = "average")}, set \code{offset=FALSE}
+want to get the same result of regular matrix \code{rowRanks(matrix, ties.method = "average")}/\code{colRanks(matrix, ties.method = "average")}, set \code{offset=FALSE}.
 }
 \note{
 Ties are always handled by averaging ranks.

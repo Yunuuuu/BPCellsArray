@@ -205,9 +205,6 @@ common_test <- function(
             ),
             {
                 seed <- BPCellsSeed(obj)
-                # testthat::skip_if(inherits(seed, c(
-                #     "BPCellsTransformExpm1Seed", "BPCellsTransformLog1pSeed"
-                # )))
                 seed <- convert_mode(seed, mm)
                 testthat::expect_identical(storage_mode(seed), mm)
                 suppressWarnings(seed[1:10, 1:5] <- values[1:10, 1:5])
@@ -373,6 +370,42 @@ common_test <- function(
             testthat::expect_null(colnames(obj))
         }
     )
+
+    cli::cli_inform("{.field rank_transform} BPCells{name} works as expected")
+    testthat::test_that(
+        sprintf("`rank_transform` BPCells%s works as expected", name),
+        {
+            seed <- BPCellsSeed(obj)
+            testthat::expect_s4_class(seed, seed_class)
+            testthat::expect_warning(temp <- seed %*% t(seed))
+            testthat::expect_equal(
+                unname(as.matrix(
+                    suppressWarnings(rowRanks(seed, offset = FALSE))
+                )),
+                rowRanks(mat, ties.method = "average")
+            )
+            testthat::expect_equal(
+                unname(as.matrix(
+                    suppressWarnings(colRanks(seed, offset = FALSE))
+                )),
+                colRanks(mat, ties.method = "average", preserveShape = TRUE)
+            )
+            obj <- BPCellsArray(obj)
+            testthat::expect_equal(
+                unname(as.matrix(
+                    suppressWarnings(rowRanks(obj, offset = FALSE))
+                )),
+                rowRanks(mat, ties.method = "average")
+            )
+            testthat::expect_equal(
+                unname(as.matrix(
+                    suppressWarnings(colRanks(obj, offset = FALSE))
+                )),
+                colRanks(mat, ties.method = "average", preserveShape = TRUE)
+            )
+        }
+    )
+
     cli::cli_inform("{.field %*%} BPCells{name} works as expected")
     testthat::test_that(
         sprintf("`%%*%%` BPCells%s works as expected", name),
