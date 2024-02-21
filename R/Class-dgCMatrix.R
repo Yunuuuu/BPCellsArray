@@ -6,6 +6,10 @@ methods::setClass("BPCellsdgCMatrixSeed",
     )
 )
 
+methods::setMethod("summary", "BPCellsdgCMatrixSeed", function(object) {
+    "Load dgCMatrix from memory"
+})
+
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "Iterable_dgCMatrix_wrapper", function(x) {
