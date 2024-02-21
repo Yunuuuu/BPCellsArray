@@ -10,7 +10,7 @@ NULL
 #' @export
 #' @rdname BPCells-binarize
 methods::setGeneric("binarize", function(object, ...) {
-    makeStandardGeneric("binarize")
+    standardGeneric("binarize")
 })
 
 #########################################################################
