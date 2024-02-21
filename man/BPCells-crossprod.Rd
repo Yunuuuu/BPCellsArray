@@ -53,7 +53,8 @@
 which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 }
 \value{
-Matrix Crossproduct, a \link[=BPCellsSeed-class]{BPCellsSeed} or
+A dense matrix if one of \code{x} or \code{y} is a regular matrix or atomic
+vector. Otherwise, a \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{x} or
 \code{y}.
 }
@@ -61,5 +62,8 @@ Matrix Crossproduct, a \link[=BPCellsSeed-class]{BPCellsSeed} or
 Given matrices x and y as arguments, return a matrix cross-product.
 }
 \seealso{
-\link{\%*\%}
+\itemize{
+\item \link[=BPCells-Multiplication]{\%*\%}
+\item \link[=BPCells-tcrossprod]{tcrossprod}
+}
 }

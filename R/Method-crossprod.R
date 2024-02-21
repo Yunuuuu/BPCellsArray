@@ -4,10 +4,10 @@
 #'
 #' @inheritParams BPCells-Multiplication
 #' @importFrom Matrix crossprod
-#' @return Matrix Crossproduct, a [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `x` or
-#' `y`. 
-#' @seealso [%*%]
+#' @inherit BPCells-Multiplication return
+#' @seealso
+#'  - [%*%][BPCells-Multiplication]
+#'  - [tcrossprod][BPCells-tcrossprod]
 #' @aliases crossprod
 #' @name BPCells-crossprod
 NULL

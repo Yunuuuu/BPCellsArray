@@ -58,7 +58,8 @@
 which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
 }
 \value{
-Matrix multiplication, a \link[=BPCellsSeed-class]{BPCellsSeed} or
+A dense matrix if one of \code{x} or \code{y} is a regular matrix or atomic
+vector. Otherwise, a \link[=BPCellsSeed-class]{BPCellsSeed} or
 \link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{x} or
 \code{y}.
 }
@@ -67,4 +68,10 @@ Multiplies two matrices, if they are conformable. If one argument is a
 vector, it will be promoted to either a row or column matrix to make the two
 arguments conformable. If both are vectors of the same length, it will return
 the inner product (as a matrix).
+}
+\seealso{
+\itemize{
+\item \link[=BPCells-crossprod]{crossprod}
+\item \link[=BPCells-tcrossprod]{tcrossprod}
+}
 }

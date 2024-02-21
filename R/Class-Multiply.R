@@ -32,10 +32,14 @@ methods::setMethod("summary", "BPCellsMultiplySeed", function(object) {
 #' @param x,y One of `x` or `y` must be [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object, and the another must be a matrix
 #' which can be coerced into [dgCMatrix][Matrix::dgCMatrix-class].
-#' @return Matrix multiplication, a [BPCellsSeed][BPCellsSeed-class] or
+#' @return A dense matrix if one of `x` or `y` is a regular matrix or atomic
+#' vector. Otherwise, a [BPCellsSeed][BPCellsSeed-class] or
 #' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `x` or
 #' `y`.
 #' @importMethodsFrom BPCells %*%
+#' @seealso
+#'  - [crossprod][BPCells-crossprod]
+#'  - [tcrossprod][BPCells-tcrossprod]
 #' @name BPCells-Multiplication
 NULL
 
