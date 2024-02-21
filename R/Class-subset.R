@@ -169,8 +169,8 @@ methods::setMethod("[", "BPCellsTransformedSeed", BPCellsSubset_internal)
 # In BPCells, `[<-` was only defined for `IterableMatrix`
 #' @inheritParams convert_mode
 #' @return
-#' - `[<-`: A [BPCellsSeed] object, if `mode` is specified, `x` and `value` will
-#'   be converted using [convert_mode] before combining.
+#' - `[<-`: A [BPCellsSeed] object, the `mode` of `value` will be converted
+#'   to be consistent with `x` using [convert_mode].
 #' @importMethodsFrom BPCells [<-
 #' @export
 #' @order 3

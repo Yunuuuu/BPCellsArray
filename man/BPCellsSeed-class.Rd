@@ -171,8 +171,8 @@ number.}
 }
 \value{
 \itemize{
-\item \verb{[<-}: A \link{BPCellsSeed} object, if \code{mode} is specified, \code{x} and \code{value} will
-be converted using \link{convert_mode} before combining.
+\item \verb{[<-}: A \link{BPCellsSeed} object, the \code{mode} of \code{value} will be converted
+to be consistent with \code{x} using \link{convert_mode}.
 }
 
 \itemize{
