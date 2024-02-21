@@ -42,6 +42,7 @@ RoxygenNote: 7.3.0
 Collate: 
     'utils.R'
     'Class-BPCellsSeed.R'
+    'BPCellsSeed.R'
     'Class-BPCellsMatrix.R'
     'Class-BindMatrix.R'
     'Class-Convert.R'
@@ -52,8 +53,6 @@ Collate:
     'Class-Multiply.R'
     'Class-RankTransform.R'
     'Class-RenameDims.R'
-    'Matrix-Methods.R'
-    'Seed-Methods.R'
     'Class-Transformed.R'
     'Class-TransformScaleShift.R'
     'Class-dgCMatrix.R'

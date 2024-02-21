@@ -27,7 +27,7 @@ writeBPCellsDirArray(x, ...)
 in memory before calling writes to disk.}
 
 \item{x}{A \code{IterableMatrix} object from \code{BPCells}, a matrix-like object which
-can be coerced into dgCMatrix, or a \code{BPCellsSeed} object.}
+can be coerced into dgCMatrix, or a \link[=BPCellsSeed-class]{BPCellsSeed} object.}
 
 \item{...}{Additional arguments passed into specific methods.}
 

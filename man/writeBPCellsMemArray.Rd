@@ -11,7 +11,7 @@ writeBPCellsMemArray(x, ...)
 }
 \arguments{
 \item{x}{A \code{IterableMatrix} object from \code{BPCells}, a matrix-like object which
-can be coerced into dgCMatrix, or a \code{BPCellsSeed} object.}
+can be coerced into dgCMatrix, or a \link[=BPCellsSeed-class]{BPCellsSeed} object.}
 
 \item{...}{For \code{BPCellsMatrix} method: additional parameters passed to \code{ANY}
 methods.}

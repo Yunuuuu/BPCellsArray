@@ -48,7 +48,7 @@ methods::setGeneric(
 #' @param mode Storage mode of BPCells matrix, one of `uint32_t` (unsigned
 #' 32-bit integer), `float` (32-bit real number), or `double` (64-bit real
 #' number). R cannot differentiate 32-bit and 64-bit real number, so
-#' [type][BPCellsSeed-methods] method always return "double" for both `float`
+#' [type][BPCellsSeed-class] method always return "double" for both `float`
 #' and `double` mode.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
 #' @export

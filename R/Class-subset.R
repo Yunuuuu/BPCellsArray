@@ -20,12 +20,12 @@ methods::setMethod("summary", "BPCellsSubsetSeed", function(object) {
 })
 
 ################    BPCellsMatrix Methods    ##################
-#' @inheritParams BPCellsSeed-methods
+#' @inheritParams BPCellsSeed-class
 #' @return
 #' - `[`: A [BPCellsMatrix] object or an atomic vector.
 #' @order 2
 #' @export
-#' @rdname BPCellsMatrix-methods
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "[", c("BPCellsMatrix", "ANY", "ANY"),
     function(x, i, j, ..., drop = FALSE) {
@@ -35,7 +35,7 @@ methods::setMethod(
     }
 )
 
-#' @inheritParams BPCellsSeed-methods
+#' @inheritParams BPCellsSeed-class
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
@@ -73,7 +73,7 @@ methods::setMethod(
 #' - `[<-`: A [BPCellsMatrix] object.
 #' @export
 #' @order 3
-#' @rdname BPCellsMatrix-methods
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "ANY"),
     function(x, i, j, ..., value) {
@@ -97,43 +97,43 @@ BPCellsSubset_internal <- function(x, i, j, ..., drop = FALSE) {
 #' return an atomic vector.
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 #' @include Class-dgCMatrix.R
 methods::setMethod("[", "BPCellsdgCMatrixSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsDirSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsHDF5Seed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsMemSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsColBindMatrixSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsRowBindMatrixSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsConvertSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsMaskSeed", BPCellsSubset_internal)
 
 # it's not necessary to re-dispatch the "[" method for `BPCellsMultiplySeed`
@@ -141,27 +141,27 @@ methods::setMethod("[", "BPCellsMaskSeed", BPCellsSubset_internal)
 # `@right`. Here, we just re-dispatch it to keep consistent.
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsMultiplySeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsRankTransformSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsRenameDimsSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsSubsetSeed", BPCellsSubset_internal)
 
 #' @importMethodsFrom BPCells [
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod("[", "BPCellsTransformedSeed", BPCellsSubset_internal)
 
 ##################################################################
@@ -174,7 +174,7 @@ methods::setMethod("[", "BPCellsTransformedSeed", BPCellsSubset_internal)
 #' @importMethodsFrom BPCells [<-
 #' @export
 #' @order 3
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "[<-", c("BPCellsSeed", "ANY", "ANY", "ANY"),
     function(x, i, j, ..., value) {

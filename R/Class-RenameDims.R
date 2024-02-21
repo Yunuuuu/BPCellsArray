@@ -23,7 +23,7 @@ methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 #' @importMethodsFrom BPCells dimnames<-
 #' @export
 #' @aliases dimnames<-
-#' @rdname BPCellsMatrix-methods
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "dimnames<-", c(x = "BPCellsMatrix", value = "ListOrNULL"),
     function(x, value) {
@@ -37,7 +37,7 @@ methods::setMethod(
 #' @importFrom BiocGenerics rownames<-
 #' @export
 #' @aliases rownames<-
-#' @rdname BPCellsMatrix-methods
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "rownames<-", c(x = "BPCellsMatrix", value = "atomic"),
     function(x, value) {
@@ -51,7 +51,7 @@ methods::setMethod(
 #' @importFrom BiocGenerics colnames<-
 #' @export
 #' @aliases colnames<-
-#' @rdname BPCellsMatrix-methods
+#' @rdname BPCellsMatrix-class
 methods::setMethod(
     "colnames<-", c(x = "BPCellsMatrix", value = "atomic"),
     function(x, value) {
@@ -70,7 +70,7 @@ methods::setMethod(
 #'   object.
 #' @importMethodsFrom BPCells dimnames<-
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames<-", c(x = "BPCellsSeed", value = "list"), function(x, value) {
         BPCellsSeed(methods::callNextMethod())
@@ -79,7 +79,7 @@ methods::setMethod(
 
 #' @importMethodsFrom BPCells dimnames<-
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames<-", c(x = "BPCellsSeed", value = "NULL"), function(x, value) {
         BPCellsSeed(methods::callNextMethod())
@@ -88,7 +88,7 @@ methods::setMethod(
 
 #' @importFrom BiocGenerics rownames<-
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "rownames<-", c(x = "BPCellsSeed", value = "atomic"),
     function(x, value) {
@@ -98,7 +98,7 @@ methods::setMethod(
 
 #' @importFrom BiocGenerics colnames<-
 #' @export
-#' @rdname BPCellsSeed-methods
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "colnames<-", c(x = "BPCellsSeed", value = "atomic"),
     function(x, value) {
