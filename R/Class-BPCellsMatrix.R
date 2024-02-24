@@ -89,7 +89,10 @@ methods::setMethod("show", "BPCellsMatrix", .show_internal)
 
 ###########################################################
 #' @export
-methods::setAs("BPCellsMatrix", "dgCMatrix", set_BPCellsArray_method(from = ))
+methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
+    from <- to_BPCells(from@seed)
+    methods::as(from, "dgCMatrix")
+})
 
 # Default drop use `as.array` and `aperm` methods
 #' @importMethodsFrom DelayedArray drop
