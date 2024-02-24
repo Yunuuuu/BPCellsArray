@@ -1,10 +1,6 @@
-#' Low-level Base Class for Delayed BPCells matrix
+#' Seed Contract methods for `IterableMatrix`
 #'
-#' The `BPCellsSeed` class just inherits from the `IterableMatrix` class in
-#' `BPCells` package. The purpose for `BPCellsSeed` class is to provide the
-#' common methods for all low-level BPCells seed classes.
-#'
-#' @param x,object A [BPCellsSeed][BPCellsSeed-class] object.
+#' @param x,object A `IterableMatrix` object.
 #' @param value
 #'  - `dimnames<-`: A list of dimnames or `NULL`.
 #'  - `[<-`: A matrix which can be coerced into
@@ -19,34 +15,9 @@
 #' - [Arithmetic][BPCells-Arithmetic]: Binary Arithmetic operators.
 #' - [binarize][BPCells-binarize]: Convert matrix elements to zeros and ones.
 #' @include utils.R Class-Delayed.R
-#' @aliases BPCellsSeed-methods
-#' @export
+#' @aliases IterableMatrix
+#' @name BPCellsSeed-class
 NULL
-
-methods::setClass("BPCellsSeed",
-    contains = c(BPCells_class("IterableMatrix"), "VIRTUAL")
-)
-
-# BPCells matrix object indeed is a DelayedMatrix, but we regard it as a `seed`
-# object in DelayedArray
-# we won't use the `DelayedNaryOp` object since it use `seeds` slot to save a
-# list of other seed objects while BPCells use left (and right) or matrix_list.
-methods::setValidity("BPCellsSeed", function(object) {
-    if (length(dim(object)) != 2L) {
-        cli::cli_abort("{.pkg BPCells} can only support 2-dim matrix")
-    }
-    TRUE
-})
-
-methods::setClass("BPCellsBasicSeed", contains = c("BPCellsSeed", "VIRTUAL"))
-methods::setClass("BPCellsUnaryOpsSeed", contains = c("BPCellsSeed", "VIRTUAL"))
-methods::setClass("BPCellsNaryOpsSeed", contains = c("BPCellsSeed", "VIRTUAL"))
-
-#############################################################
-# used to extract the actual entity of `BPCellsSeed` objet.
-methods::setGeneric("entity", function(x, ...) standardGeneric("entity"))
-methods::setMethod("entity", "BPCellsBasicSeed", function(x) x)
-methods::setMethod("entity", "BPCellsUnaryOpsSeed", function(x) x@matrix)
 
 # nary_seeds <- c(
 #     "BPCellsBindMatrixSeed", "BPCellsMaskSeed",
@@ -56,15 +27,9 @@ methods::setMethod("entity", "BPCellsUnaryOpsSeed", function(x) x@matrix)
 #     "BPCellsConvertSeed", "BPCellsRankTransformSeed",
 #     "BPCellsRenameDimsSeed", "BPCellsSubsetSeed", "BPCellsTransformedSeed"
 # )
-
-##################################################################
-#' @importFrom methods show
-#' @export
-#' @order 1
-#' @rdname BPCellsSeed-class
-methods::setMethod("show", "BPCellsSeed", function(object) {
-    show_bpcells(object, "BPCellsSeed", class(object))
-})
+is_BPCellsSeed <- function(seed) {
+    methods::is(seed, "BPCellsDelayedOp") || methods::is(seed, "IterableMatrix")
+}
 
 ###########################################################
 # Seed Contract

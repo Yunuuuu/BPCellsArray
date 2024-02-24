@@ -42,3 +42,10 @@ methods::setGeneric(
 #' @export
 #' @rdname writeBPCellsMemArray
 methods::setMethod("writeBPCellsMemArray", "ANY", .writeBPCellsMemArray)
+
+#' @export
+#' @rdname writeBPCellsMemArray
+methods::setMethod(
+    "writeBPCellsMemArray", "BPCellsMatrix",
+    set_BPCellsArray_method(x = , ... = )
+)

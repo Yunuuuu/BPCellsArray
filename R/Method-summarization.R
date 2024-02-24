@@ -20,17 +20,11 @@ methods::setGeneric("matrix_stats", function(object, ...) {
     standardGeneric("matrix_stats")
 })
 
-#' @export
-#' @rdname BPCells-Summarization
-methods::setMethod("matrix_stats", "BPCellsSeed", function(object, ...) {
-    BPCells::matrix_stats(matrix = object, ...)
-})
-
 #' @inheritDotParams BPCells::matrix_stats -matrix
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("matrix_stats", "BPCellsMatrix", function(object, ...) {
-    BPCells::matrix_stats(matrix = object@seed, ...)
+    BPCells::matrix_stats(matrix = to_BPCells(object@seed), ...)
 })
 
 #######################################################################
@@ -42,7 +36,7 @@ methods::setMethod("matrix_stats", "BPCellsMatrix", function(object, ...) {
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
-    rowSums(x@seed)
+    rowSums(to_BPCells(x@seed))
 })
 
 #' @importMethodsFrom BPCells colSums
@@ -52,7 +46,7 @@ methods::setMethod("rowSums", c(x = "BPCellsMatrix"), function(x) {
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("colSums", c(x = "BPCellsMatrix"), function(x) {
-    colSums(x@seed)
+    colSums(to_BPCells(x@seed))
 })
 
 #######################################################################
@@ -64,7 +58,7 @@ methods::setMethod("colSums", c(x = "BPCellsMatrix"), function(x) {
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("rowMeans", c(x = "BPCellsMatrix"), function(x) {
-    rowMeans(x@seed)
+    rowMeans(to_BPCells(x@seed))
 })
 
 #' @importMethodsFrom BPCells colMeans
@@ -74,7 +68,7 @@ methods::setMethod("rowMeans", c(x = "BPCellsMatrix"), function(x) {
 #' @export
 #' @rdname BPCells-Summarization
 methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
-    colMeans(x@seed)
+    colMeans(to_BPCells(x@seed))
 })
 
 #######################################################################
@@ -85,8 +79,9 @@ methods::setMethod("colMeans", c(x = "BPCellsMatrix"), function(x) {
 #' @aliases rowVars
 #' @export
 #' @rdname BPCells-Summarization
-methods::setMethod("rowVars", c(x = "BPCellsSeed"), function(x) {
-    stats <- BPCells::matrix_stats(x,
+methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
+    stats <- BPCells::matrix_stats(
+        to_BPCells(x@seed),
         row_stats = "variance", col_stats = "none"
     )
     stats$row_stats["variance", , drop = TRUE]
@@ -98,25 +93,11 @@ methods::setMethod("rowVars", c(x = "BPCellsSeed"), function(x) {
 #' @aliases colVars
 #' @export
 #' @rdname BPCells-Summarization
-methods::setMethod("colVars", c(x = "BPCellsSeed"), function(x) {
-    stats <- BPCells::matrix_stats(x,
+methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
+    stats <- BPCells::matrix_stats(to_BPCells(x@seed),
         row_stats = "none", col_stats = "variance"
     )
     stats$col_stats["variance", , drop = TRUE]
-})
-
-#' @importFrom MatrixGenerics rowVars
-#' @export
-#' @rdname BPCells-Summarization
-methods::setMethod("rowVars", c(x = "BPCellsMatrix"), function(x) {
-    rowVars(x@seed)
-})
-
-#' @importFrom MatrixGenerics colVars
-#' @export
-#' @rdname BPCells-Summarization
-methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
-    colVars(x@seed)
 })
 
 #######################################################################
@@ -127,7 +108,7 @@ methods::setMethod("colVars", c(x = "BPCellsMatrix"), function(x) {
 #' @aliases rowSds
 #' @export
 #' @rdname BPCells-Summarization
-methods::setMethod("rowSds", c(x = "BPCellsSeed"), function(x) {
+methods::setMethod("rowSds", c(x = "BPCellsMatrix"), function(x) {
     sqrt(rowVars(x))
 })
 
@@ -137,20 +118,6 @@ methods::setMethod("rowSds", c(x = "BPCellsSeed"), function(x) {
 #' @aliases colSds
 #' @export
 #' @rdname BPCells-Summarization
-methods::setMethod("colSds", c(x = "BPCellsSeed"), function(x) {
-    sqrt(colVars(x))
-})
-
-#' @importFrom MatrixGenerics rowSds
-#' @export
-#' @rdname BPCells-Summarization
-methods::setMethod("rowSds", c(x = "BPCellsMatrix"), function(x) {
-    rowSds(x@seed)
-})
-
-#' @importFrom MatrixGenerics colSds
-#' @export
-#' @rdname BPCells-Summarization
 methods::setMethod("colSds", c(x = "BPCellsMatrix"), function(x) {
-    colSds(x@seed)
+    sqrt(colVars(x))
 })

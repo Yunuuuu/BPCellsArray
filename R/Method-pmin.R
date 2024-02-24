@@ -1,3 +1,7 @@
+#' Maxima and Minima
+#' @name pmin2
+NULL
+
 ####################################################################
 # TransformMinByCol
 methods::setClass("BPCellsTransformMinByCol",

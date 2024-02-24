@@ -9,6 +9,7 @@
 \alias{BPCellsMatrix-class}
 \alias{BPCellsMatrix-methods}
 \alias{BPCellsArray}
+\alias{BPCellsMatrix}
 \alias{BPCellsArray-class}
 \alias{matrixClass,BPCellsArray-method}
 \alias{DelayedArray,IterableMatrix-method}
@@ -33,6 +34,8 @@
 \S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ...) <- value
 
 BPCellsArray(x)
+
+BPCellsMatrix(x)
 
 \S4method{matrixClass}{BPCellsArray}(x)
 
@@ -59,6 +62,15 @@ BPCellsArray(x)
 \item \code{BPCellsArray} and \code{BPCellsMatrix}: Details see \link{BPCellsSeed} for
 supported object.
 \item \code{matrixClass}: A string.
+}}
+
+\item{...}{Not used currently.}
+
+\item{value}{\itemize{
+\item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
+\item \verb{[<-}: A matrix which can be coerced into
+\link[Matrix:dgCMatrix-class]{dgCMatrix}.
+\item \code{pmin_scalar}: Single positive numeric value.
 }}
 
 \item{seed}{A \code{IterableMatrix} or \code{BPCellsDelayedOp} object.}
@@ -98,3 +110,13 @@ The \code{BPCellsMatrix} class just inherits from the
 \item{\code{seed}}{A \link[=BPCellsSeed-class]{BPCellsSeed} object.}
 }}
 
+\seealso{
+\itemize{
+\item \link[=BPCells-bind]{bind}: Combine two Objects by Columns or Rows.
+\item \link[=BPCells-Multiplication]{\%*\%}: Matrix Multiplication.
+\item \link[=BPCells-crossprod]{crossprod}: Matrix Crossproduct.
+\item \link[=BPCells-Summarization]{summarization}: row/col summarization.
+\item \link[=BPCells-Arithmetic]{Arithmetic}: Binary Arithmetic operators.
+\item \link[=BPCells-binarize]{binarize}: Convert matrix elements to zeros and ones.
+}
+}

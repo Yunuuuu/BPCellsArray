@@ -17,6 +17,17 @@ rename <- function(x, replace) {
     x
 }
 
+list_methods <- function(class, where = asNamespace("DelayedArray"), ...) {
+    fns <- methods::showMethods(...,
+        classes = class, where = where, printTo = FALSE
+    )
+    gsub(
+        "^Function(\\:\\s|\\s\\\")([^\\s]+)(\\s\\(|\\\")(.+$)",
+        "\\2", grep("^Function", fns, value = TRUE, perl = TRUE),
+        perl = TRUE
+    )
+}
+
 coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
     tryCatch(
         methods::as(x, "dgCMatrix"),
@@ -119,31 +130,6 @@ BPCells_get <- local({
         }
     }
 })
-
-show_bpcells <- function(object, baseClass, class) {
-    cat(sprintf(
-        "%d x %d %s object with class %s\n",
-        nrow(object), ncol(object), baseClass, class
-    ))
-
-    cat("\n")
-    cat(sprintf(
-        "Row names: %s\n",
-        BPCells:::pretty_print_vector(rownames(object), empty = "unknown names")
-    ))
-    cat(sprintf(
-        "Col names: %s\n",
-        BPCells:::pretty_print_vector(colnames(object), empty = "unknown names")
-    ))
-
-    cat("\n")
-    cat(sprintf("Storage Data type: %s\n", storage_mode(object)))
-    cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
-
-    cat("\n")
-    cat("Queued Operations:\n")
-    DelayedArray::showtree(object)
-}
 
 swap_axis <- function(.fn, object, column, row, ...) {
     if (object@transpose) {

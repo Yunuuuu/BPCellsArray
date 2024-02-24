@@ -3,7 +3,6 @@
 \name{BPCells-Summarization}
 \alias{BPCells-Summarization}
 \alias{matrix_stats}
-\alias{matrix_stats,BPCellsSeed-method}
 \alias{matrix_stats,BPCellsMatrix-method}
 \alias{rowSums,BPCellsMatrix-method}
 \alias{rowSums}
@@ -13,23 +12,17 @@
 \alias{rowMeans}
 \alias{colMeans,BPCellsMatrix-method}
 \alias{colMeans}
-\alias{rowVars,BPCellsSeed-method}
-\alias{rowVars}
-\alias{colVars,BPCellsSeed-method}
-\alias{colVars}
 \alias{rowVars,BPCellsMatrix-method}
+\alias{rowVars}
 \alias{colVars,BPCellsMatrix-method}
-\alias{rowSds,BPCellsSeed-method}
-\alias{rowSds}
-\alias{colSds,BPCellsSeed-method}
-\alias{colSds}
+\alias{colVars}
 \alias{rowSds,BPCellsMatrix-method}
+\alias{rowSds}
 \alias{colSds,BPCellsMatrix-method}
+\alias{colSds}
 \title{BPCellsMatrix row/col summarization}
 \usage{
 matrix_stats(object, ...)
-
-\S4method{matrix_stats}{BPCellsSeed}(object, ...)
 
 \S4method{matrix_stats}{BPCellsMatrix}(object, ...)
 
@@ -41,17 +34,9 @@ matrix_stats(object, ...)
 
 \S4method{colMeans}{BPCellsMatrix}(x)
 
-\S4method{rowVars}{BPCellsSeed}(x)
-
-\S4method{colVars}{BPCellsSeed}(x)
-
 \S4method{rowVars}{BPCellsMatrix}(x)
 
 \S4method{colVars}{BPCellsMatrix}(x)
-
-\S4method{rowSds}{BPCellsSeed}(x)
-
-\S4method{colSds}{BPCellsSeed}(x)
 
 \S4method{rowSds}{BPCellsMatrix}(x)
 

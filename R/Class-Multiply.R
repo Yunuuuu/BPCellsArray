@@ -1,27 +1,39 @@
 ############################################################
 # MatrixMultiply
-methods::setClass("BPCellsMultiplySeed",
-    contains = c("BPCellsNaryOpsSeed", BPCells_class("MatrixMultiply")),
-    slots = list(left = "BPCellsSeed", right = "BPCellsSeed")
+mould_BPCells("BPCellsDelayedMultiply", "MatrixMultiply",
+    delete = c("left", "right"),
+    contains = "BPCellsDelayedNaryOp"
 )
 
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixMultiply", function(x) {
-    x@left <- BPCellsSeed(x@left)
-    x@right <- BPCellsSeed(x@right)
-    methods::as(x, "BPCellsMultiplySeed")
+methods::setMethod("to_DelayedArray", "MatrixMultiply", function(object) {
+    slots <- setdiff(methods::slotNames(object), c("left", "right"))
+    slots <- lapply(slots, methods::slot, object = object)
+    slots$seeds <- list(
+        left = DelayedArray(to_DelayedArray(object@left)),
+        right = DelayedArray(to_DelayedArray(object@right))
+    )
+    rlang::inject(S4Vectors::new2(
+        Class = "BPCellsDelayedMultiply", !!!slots, check = FALSE
+    ))
 })
 
-methods::setMethod("entity", "BPCellsMultiplySeed", function(x) {
-    list(left = x@left, right = x@right)
+methods::setMethod("to_BPCells", "BPCellsDelayedMultiply", function(object) {
+    slots <- setdiff(methods::slotNames(object), "seeds")
+    slots <- lapply(slots, methods::slot, object = object)
+    seeds <- object@seeds
+    slots$left <- to_BPCells(seeds$left@seed)
+    slots$right <- to_BPCells(seeds$right@seed)
+    rlang::inject(
+        S4Vectors::new2(Class = "MatrixMultiply", !!!slots, check = FALSE)
+    )
 })
-summary.BPCellsMultiplySeed <- function(object) {
+
+summary.BPCellsDelayedMultiply <- function(object) {
     "Multiply sparse matrices"
 }
 methods::setMethod(
-    "summary", "BPCellsMultiplySeed",
-    summary.BPCellsMultiplySeed
+    "summary", "BPCellsDelayedMultiply",
+    summary.BPCellsDelayedMultiply
 )
 
 ##############################################################
@@ -46,100 +58,28 @@ methods::setMethod(
 #' @name BPCells-Multiplication
 NULL
 
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
-        DelayedArray(x@seed %*% y@seed)
-    }
-)
-
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
-        DelayedArray(x@seed %*% y)
-    }
-)
-
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
-        DelayedArray(x %*% y@seed)
-    }
-)
-
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
-        DelayedArray(x@seed %*% coerce_dgCMatrix(y))
-    }
-)
-
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
-        DelayedArray(coerce_dgCMatrix(x) %*% y@seed)
-    }
-)
-
-# following methods return dense matrix
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
-        x@seed %*% y
-    }
-)
-
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
-        x %*% y@seed
-    }
-)
-
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "numeric"), function(x, y) {
-        x@seed %*% y
-    }
-)
-
-#' @export
-#' @rdname BPCells-Multiplication
-methods::setMethod(
-    "%*%", c(x = "numeric", y = "BPCellsMatrix"), function(x, y) {
-        x %*% y@seed
-    }
-)
-
-#################### BPCellsSeed methods ####################################
-# Following methods used by internal
+#' @include Class-BPCellsMatrix.R
 #' @importMethodsFrom BPCells %*%
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsSeed", y = "BPCellsSeed"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
+        x <- to_BPCells(x@seed)
+        y <- to_BPCells(y@seed)
         if (x@transpose != y@transpose) {
             if (x@transpose) {
                 cli::cli_warn(
                     "{.arg x} is transposed but {.arg y} not, transposing the storage axis for {.arg x}" # nolint
                 )
-                x <- transpose_axis(x)
+                x <- BPCells::transpose_storage_order(x)
             } else {
                 cli::cli_warn(
                     "{.arg y} is transposed but {.arg x} not, transposing the storage axis for {.arg y}" # nolint
                 )
-                y <- transpose_axis(y)
+                y <- BPCells::transpose_storage_order(y)
             }
         }
-        BPCellsSeed(methods::callNextMethod())
+        DelayedArray(to_DelayedArray(methods::callGeneric()))
     }
 )
 
@@ -147,16 +87,18 @@ methods::setMethod(
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsSeed", y = "dgCMatrix"), function(x, y) {
-        BPCellsSeed(methods::callNextMethod())
+    "%*%", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
+        y <- DelayedArray(BPCellsSeed(y))
+        methods::callGeneric()
     }
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "dgCMatrix", y = "BPCellsSeed"), function(x, y) {
-        BPCellsSeed(methods::callNextMethod())
+    "%*%", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
+        x <- DelayedArray(BPCellsSeed(x))
+        methods::callGeneric()
     }
 )
 
@@ -165,35 +107,39 @@ methods::setMethod(
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsSeed", y = "matrix"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
+        x <- to_BPCells(x@seed)
         y <- matrix_to_double(y)
-        methods::callNextMethod()
+        methods::callGeneric()
     }
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "matrix", y = "BPCellsSeed"), function(x, y) {
+    "%*%", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
+        y <- to_BPCells(y@seed)
         x <- matrix_to_double(x)
-        methods::callNextMethod()
+        methods::callGeneric()
     }
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsSeed", y = "numeric"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "numeric"), function(x, y) {
+        x <- to_BPCells(x@seed)
         y <- matrix_to_double(y)
-        methods::callNextMethod()
+        methods::callGeneric()
     }
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "numeric", y = "BPCellsSeed"), function(x, y) {
+    "%*%", c(x = "numeric", y = "BPCellsMatrix"), function(x, y) {
+        y <- to_BPCells(y@seed)
         x <- matrix_to_double(x)
-        methods::callNextMethod()
+        methods::callGeneric()
     }
 )

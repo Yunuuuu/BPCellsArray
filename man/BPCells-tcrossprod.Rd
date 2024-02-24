@@ -10,13 +10,6 @@
 \alias{tcrossprod,ANY,BPCellsMatrix-method}
 \alias{tcrossprod,BPCellsMatrix,matrix-method}
 \alias{tcrossprod,matrix,BPCellsMatrix-method}
-\alias{tcrossprod,BPCellsSeed,BPCellsSeed-method}
-\alias{tcrossprod,BPCellsSeed,dgCMatrix-method}
-\alias{tcrossprod,dgCMatrix,BPCellsSeed-method}
-\alias{tcrossprod,BPCellsSeed,matrix-method}
-\alias{tcrossprod,matrix,BPCellsSeed-method}
-\alias{tcrossprod,BPCellsSeed,numeric-method}
-\alias{tcrossprod,numeric,BPCellsSeed-method}
 \title{Matrix Products of Transpose}
 \usage{
 \S4method{tcrossprod}{BPCellsMatrix,BPCellsMatrix}(x, y)
@@ -32,20 +25,6 @@
 \S4method{tcrossprod}{BPCellsMatrix,matrix}(x, y)
 
 \S4method{tcrossprod}{matrix,BPCellsMatrix}(x, y)
-
-\S4method{tcrossprod}{BPCellsSeed,BPCellsSeed}(x, y)
-
-\S4method{tcrossprod}{BPCellsSeed,dgCMatrix}(x, y)
-
-\S4method{tcrossprod}{dgCMatrix,BPCellsSeed}(x, y)
-
-\S4method{tcrossprod}{BPCellsSeed,matrix}(x, y)
-
-\S4method{tcrossprod}{matrix,BPCellsSeed}(x, y)
-
-\S4method{tcrossprod}{BPCellsSeed,numeric}(x, y)
-
-\S4method{tcrossprod}{numeric,BPCellsSeed}(x, y)
 }
 \arguments{
 \item{x, y}{One of \code{x} or \code{y} must be \link[=BPCellsSeed-class]{BPCellsSeed} or

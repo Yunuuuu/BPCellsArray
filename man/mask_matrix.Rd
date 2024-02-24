@@ -2,31 +2,16 @@
 % Please edit documentation in R/Class-Mask.R
 \name{mask_matrix}
 \alias{mask_matrix}
-\alias{mask_matrix,BPCellsSeed,BPCellsSeed-method}
-\alias{mask_matrix,BPCellsSeed,dgCMatrix-method}
-\alias{mask_matrix,BPCellsSeed,BPCellsMatrix-method}
-\alias{mask_matrix,BPCellsSeed,ANY-method}
-\alias{mask_matrix,BPCellsMatrix,BPCellsSeed-method}
-\alias{mask_matrix,BPCellsMatrix,dgCMatrix-method}
 \alias{mask_matrix,BPCellsMatrix,BPCellsMatrix-method}
+\alias{mask_matrix,BPCellsMatrix,dgCMatrix-method}
 \alias{mask_matrix,BPCellsMatrix,ANY-method}
 \title{Mask matrix entries to zero}
 \usage{
 mask_matrix(object, mask, ...)
 
-\S4method{mask_matrix}{BPCellsSeed,BPCellsSeed}(object, mask, invert = FALSE)
-
-\S4method{mask_matrix}{BPCellsSeed,dgCMatrix}(object, mask, invert = FALSE)
-
-\S4method{mask_matrix}{BPCellsSeed,BPCellsMatrix}(object, mask, invert = FALSE)
-
-\S4method{mask_matrix}{BPCellsSeed,ANY}(object, mask, invert = FALSE)
-
-\S4method{mask_matrix}{BPCellsMatrix,BPCellsSeed}(object, mask, invert = FALSE)
+\S4method{mask_matrix}{BPCellsMatrix,BPCellsMatrix}(object, mask, invert = FALSE)
 
 \S4method{mask_matrix}{BPCellsMatrix,dgCMatrix}(object, mask, invert = FALSE)
-
-\S4method{mask_matrix}{BPCellsMatrix,BPCellsMatrix}(object, mask, invert = FALSE)
 
 \S4method{mask_matrix}{BPCellsMatrix,ANY}(object, mask, invert = FALSE)
 }

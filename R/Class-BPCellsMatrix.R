@@ -15,7 +15,10 @@ NULL
 #'  - `matrixClass`: A string.
 #' @export
 #' @rdname BPCellsMatrix-class
-BPCellsArray <- function(x) DelayedArray(x)
+BPCellsArray <- function(x) DelayedArray(BPCellsSeed(x))
+
+#' @export
+#' @rdname BPCellsMatrix-class
 BPCellsMatrix <- BPCellsArray
 
 #' @export
@@ -34,8 +37,8 @@ methods::setMethod("matrixClass", "BPCellsArray", function(x) {
     "BPCellsMatrix"
 })
 
-methods::setValidity("BPCellsArray", validate_BPCellsDelayed)
-methods::setValidity("BPCellsMatrix", validate_BPCellsDelayed)
+methods::setValidity("BPCellsArray", validate_BPCellsDelayed_seed)
+methods::setValidity("BPCellsMatrix", validate_BPCellsDelayed_seed)
 
 #' Since BPCells only support 2-dim matrix, `new_BPCellsArray` will always
 #' return a `BPCellsMatrix` object.
@@ -70,7 +73,28 @@ set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = N
 #' @order 1
 #' @rdname BPCellsMatrix-class
 methods::setMethod("show", "BPCellsArray", function(object) {
-    show_bpcells(object@seed, "DelayedMatrix", class(object))
+    cat(sprintf(
+        "%d x %d %s object\n",
+        nrow(object), ncol(object), "BPCellsArray"
+    ))
+
+    cat("\n")
+    cat(sprintf(
+        "Row names: %s\n",
+        BPCells:::pretty_print_vector(rownames(object), empty = "unknown names")
+    ))
+    cat(sprintf(
+        "Col names: %s\n",
+        BPCells:::pretty_print_vector(colnames(object), empty = "unknown names")
+    ))
+
+    cat("\n")
+    cat(sprintf("Storage Data type: %s\n", storage_mode(object)))
+    cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
+
+    cat("\n")
+    cat("Queued Operations:\n")
+    DelayedArray::showtree(object)
 })
 
 ###########################################################

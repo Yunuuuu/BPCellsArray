@@ -1,7 +1,7 @@
 ############################################################
 # RenameDims
 mould_BPCells("BPCellsDelayedRenameDims", "RenameDims",
-    c(matrix = "seed"),
+    rename = c(matrix = "seed"),
     contains = "BPCellsDelayedUnaryIsoOp"
 )
 
@@ -24,7 +24,7 @@ methods::setMethod(
 )
 
 #' @importFrom DelayedArray is_noop
-methods::setMethod("is_noop", "BPCellsDelayedSubset", function(x) FALSE)
+methods::setMethod("is_noop", "BPCellsDelayedRenameDims", function(x) FALSE)
 
 ################    BPCellsMatrix Methods    ##################
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))

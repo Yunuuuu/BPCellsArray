@@ -14,10 +14,9 @@
 methods::setClass("BPCellsDelayedOp", contains = c("DelayedOp", "VIRTUAL"))
 
 # For child-class with a seed slot
-validate_BPCellsDelayed <- function(object) {
+validate_BPCellsDelayed_seed <- function(object) {
     seed <- object@seed
-    if (methods::is(seed, "BPCellsDelayedOp") ||
-        methods::is(seed, "IterableMatrix")) {
+    if (is_BPCellsSeed(seed)) {
         cli::cli_abort("{.code @seed} must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object")
     }
     TRUE
@@ -28,7 +27,7 @@ methods::setClass("BPCellsDelayedUnaryOp",
     contains = c("DelayedUnaryOp", "BPCellsDelayedOp", "VIRTUAL")
 )
 
-methods::setValidity("BPCellsDelayedUnaryOp", validate_BPCellsDelayed)
+methods::setValidity("BPCellsDelayedUnaryOp", validate_BPCellsDelayed_seed)
 
 #' @importClassesFrom DelayedArray DelayedUnaryIsoOp
 methods::setClass("BPCellsDelayedUnaryIsoOp",
@@ -40,11 +39,39 @@ methods::setClass("BPCellsDelayedNaryOp",
     contains = c("DelayedNaryOp", "BPCellsDelayedOp", "VIRTUAL")
 )
 
+#' @importClassesFrom DelayedArray DelayedNaryIsoOp
+methods::setClass("BPCellsDelayedNaryIsoOp",
+    contains = c("DelayedNaryIsoOp", "BPCellsDelayedNaryOp", "VIRTUAL")
+)
+
+methods::setValidity("BPCellsDelayedNaryOp", function(object) {
+    BPCellsSeeds <- vapply(object@seeds,
+        is_BPCellsSeed, logical(1L),
+        USE.NAMES = FALSE
+    )
+    if (!all(BPCellsSeeds)) {
+        cli::cli_abort(
+            "all `@seeds` must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object"
+        )
+    }
+    return(TRUE)
+})
+
 ##################################################################
 # helper function to create a `BPCellsDelayedOp` class from BPCells Class.
-mould_BPCells <- function(myClass, mould, replace, ...) {
-    mould <- BPCells_class(mould)
-    methods::setClass(myClass, ..., slots = rename(mould@slots, replace))
+mould_BPCells <- function(myClass, mould, ..., rename = NULL, delete = NULL, add = NULL) {
+    slots <- methods::getSlots(BPCells_class(mould))
+    if (!is.null(delete)) slots <- slots[!names(slots) %in% delete]
+    if (!is.null(add)) slots <- c(slots, add)
+    if (!is.null(rename)) slots <- rename(slots, rename)
+    methods::setClass(myClass, ..., slots = slots)
+}
+
+rename_slot <- function(Object, ..., Class) {
+    slots <- methods::slotNames(Object)
+    names(slots) <- recode(slots, c(...))
+    slots <- lapply(slots, methods::slot, object = Object)
+    rlang::inject(S4Vectors::new2(Class = Class, !!!slots, check = FALSE))
 }
 
 #######################################################################
@@ -65,7 +92,7 @@ methods::setMethod("to_BPCells", "DelayedOp", function(object) {
 methods::setMethod(
     "to_BPCells", "BPCellsDelayedUnaryOp",
     function(object, Class) {
-        object <- rename_slot(object = object, seed = "matrix", Class = Class)
+        object <- rename_slot(Object = object, seed = "matrix", Class = Class)
         object@matrix <- to_BPCells(object@matrix)
         object
     }
@@ -78,17 +105,19 @@ methods::setMethod(
 methods::setGeneric("to_DelayedArray", function(object) {
     standardGeneric("to_DelayedArray")
 })
+
+# only used by `MatrixDir`, `MatrixH5`, `PackedMatrixMemBase`,
+# `UnpackedMatrixMemBase`, and `Iterable_dgCMatrix_wrapper`
 methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
+
+# used by c(
+#    "BPCellsConvertSeed", "BPCellsRankTransformSeed",
+#    "BPCellsRenameDimsSeed", "BPCellsSubsetSeed", "BPCellsTransformedSeed"
+# )
 to_DelayedUnaryOp <- function(object, Class) {
-    object <- rename_slot(object = object, matrix = "seed", Class = Class)
+    object <- rename_slot(Object = object, matrix = "seed", Class = Class)
     object@seed <- to_DelayedArray(object@seed)
     object
-}
-rename_slot <- function(object, ..., Class) {
-    slots <- methods::slotNames(object)
-    names(slots) <- recode(slots, c(...))
-    slots <- lapply(slots, methods::slot, object = object)
-    rlang::inject(S4Vectors::new2(Class = Class, !!!slots, check = FALSE))
 }
 
 ##############################################################
@@ -171,4 +200,34 @@ methods::setMethod(
     call_BPCells_method(
         x = , after = expression(to_DelayedArray(object)), Op = "x"
     )
+)
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### list_methods("DelayedNaryIsoOp")
+### Seed contract
+### here: we override the `DelayedNaryIsoOp` methods
+methods::setMethod(
+    "dim", "BPCellsDelayedNaryIsoOp",
+    call_BPCells_method(x = , Op = "x")
+)
+
+methods::setMethod(
+    "dimnames", "BPCellsDelayedNaryIsoOp",
+    call_BPCells_method(x = , Op = "x")
+)
+
+methods::setMethod("is_sparse", "BPCellsDelayedNaryIsoOp", function(x) TRUE)
+methods::setMethod(
+    "extract_array", "BPCellsDelayedNaryIsoOp",
+    call_BPCells_method(x = , index = , Op = "x")
+)
+
+methods::setMethod(
+    "OLD_extract_sparse_array", "BPCellsDelayedNaryIsoOp",
+    call_BPCells_method(x = , index = , Op = "x")
+)
+
+methods::setMethod(
+    "extract_sparse_array", "BPCellsDelayedNaryIsoOp",
+    call_BPCells_method(x = , index = , Op = "x")
 )

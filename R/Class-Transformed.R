@@ -1,5 +1,5 @@
 mould_BPCells("BPCellsDelayedTransformed", "TransformedMatrix",
-    c(matrix = "seed"),
+    rename = c(matrix = "seed"),
     contains = "BPCellsDelayedUnaryIsoOp"
 )
 

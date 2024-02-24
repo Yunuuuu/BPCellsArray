@@ -1,6 +1,6 @@
 ###########################################################
 mould_BPCells("BPCellsDelayedConvert", "ConvertMatrixType",
-    c(matrix = "seed"),
+    rename = c(matrix = "seed"),
     contains = "BPCellsDelayedUnaryOp"
 )
 

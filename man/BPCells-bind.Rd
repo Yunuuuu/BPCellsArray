@@ -18,14 +18,6 @@
 \alias{cbind,BPCellsMatrix-method}
 \alias{acbind,BPCellsMatrix-method}
 \alias{bindCOLS,BPCellsMatrix-method}
-\alias{rbind2,BPCellsSeed,BPCellsSeed-method}
-\alias{rbind,BPCellsSeed-method}
-\alias{arbind,BPCellsSeed-method}
-\alias{bindROWS,BPCellsSeed-method}
-\alias{cbind2,BPCellsSeed,BPCellsSeed-method}
-\alias{cbind,BPCellsSeed-method}
-\alias{acbind,BPCellsSeed-method}
-\alias{bindCOLS,BPCellsSeed-method}
 \title{Combine two Objects by Columns or Rows}
 \usage{
 \S4method{rbind2}{BPCellsMatrix,BPCellsMatrix}(x, y, mode = NULL, ..., threads = 0L)
@@ -67,56 +59,10 @@
   ignore.mcols = TRUE,
   check = TRUE
 )
-
-\S4method{rbind2}{BPCellsSeed,BPCellsSeed}(x, y, mode = NULL, ..., threads = 0L)
-
-\S4method{rbind}{BPCellsSeed}(
-  ...,
-  mode = NULL,
-  threads = 0L,
-  use.first.dimnames = TRUE,
-  deparse.level = 1L
-)
-
-\S4method{arbind}{BPCellsSeed}(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE)
-
-\S4method{bindROWS}{BPCellsSeed}(
-  x,
-  objects = list(),
-  use.names = TRUE,
-  ignore.mcols = TRUE,
-  check = TRUE
-)
-
-\S4method{cbind2}{BPCellsSeed,BPCellsSeed}(x, y, mode = NULL, ..., threads = 0L)
-
-\S4method{cbind}{BPCellsSeed}(
-  ...,
-  mode = NULL,
-  threads = 0L,
-  use.first.dimnames = TRUE,
-  deparse.level = 1L
-)
-
-\S4method{acbind}{BPCellsSeed}(..., mode = NULL, threads = 0L, use.first.dimnames = TRUE)
-
-\S4method{bindCOLS}{BPCellsSeed}(
-  x,
-  objects = list(),
-  use.names = TRUE,
-  ignore.mcols = TRUE,
-  check = TRUE
-)
 }
 \arguments{
 \item{x, y}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} or
 \link[=BPCellsSeed-class]{BPCellsSeed} object.}
-
-\item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
-32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real
-number). R cannot differentiate 32-bit and 64-bit real number, so
-\link[=BPCellsSeed-class]{type} method always return "double" for both \code{float}
-and \code{double} mode.}
 
 \item{...}{\itemize{
 \item \code{rbind2} and \code{cbind2}: Not used currently.

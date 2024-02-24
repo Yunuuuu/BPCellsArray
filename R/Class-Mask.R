@@ -1,24 +1,37 @@
-methods::setClass("BPCellsMaskSeed",
-    contains = c("BPCellsNaryOpsSeed", BPCells_class("MatrixMask"))
+mould_BPCells("BPCellsDelayedMask", "MatrixMask",
+    delete = c("matrix", "mask"),
+    contains = "BPCellsDelayedNaryIsoOp"
 )
 
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixMask", function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    x@mask <- BPCellsSeed(x@mask)
-    methods::as(x, "BPCellsMaskSeed")
+methods::setMethod("to_DelayedArray", "MatrixMask", function(object) {
+    slots <- setdiff(methods::slotNames(object), c("matrix", "mask"))
+    slots <- lapply(slots, methods::slot, object = object)
+    slots$seeds <- list(
+        matrix = DelayedArray(to_DelayedArray(object@matrix)),
+        mask = DelayedArray(to_DelayedArray(object@mask))
+    )
+    rlang::inject(
+        S4Vectors::new2(Class = "BPCellsDelayedMask", !!!slots, check = FALSE)
+    )
 })
 
-methods::setMethod("entity", "BPCellsMaskSeed", function(x) {
-    list(matrix = x@matrix, mask = x@mask)
+methods::setMethod("to_BPCells", "BPCellsDelayedMask", function(object) {
+    slots <- setdiff(methods::slotNames(object), "seeds")
+    slots <- lapply(slots, methods::slot, object = object)
+    seeds <- object@seeds
+    slots$matrix <- to_BPCells(seeds$matrix@seed)
+    slots$mask <- to_BPCells(seeds$mask@seed)
+    rlang::inject(
+        S4Vectors::new2(Class = "MatrixMask", !!!slots, check = FALSE)
+    )
 })
-summary.BPCellsMaskSeed <- function(object) {
+
+summary.BPCellsDelayedMask <- function(object) {
     out <- "Mask entries"
     if (object@invert) out <- paste(out, "(inverted)")
     out
 }
-methods::setMethod("summary", "BPCellsMaskSeed", summary.BPCellsMaskSeed)
+methods::setMethod("summary", "BPCellsDelayedMask", summary.BPCellsDelayedMask)
 
 ###################################################################
 ###########################  Methods  #############################
@@ -53,47 +66,14 @@ methods::setGeneric(
 #' @export
 #' @rdname mask_matrix
 methods::setMethod(
-    "mask_matrix", c(object = "BPCellsSeed", mask = "BPCellsSeed"),
+    "mask_matrix", c(object = "BPCellsMatrix", mask = "BPCellsMatrix"),
     function(object, mask, invert = FALSE) {
-        seed <- BPCells:::mask_matrix(object, mask = mask, invert = invert)
-        BPCellsSeed(seed)
-    }
-)
-
-#' @export
-#' @rdname mask_matrix
-methods::setMethod(
-    "mask_matrix", c(object = "BPCellsSeed", mask = "dgCMatrix"),
-    function(object, mask, invert = FALSE) {
-        seed <- BPCells:::mask_matrix(object, mask = mask, invert = invert)
-        BPCellsSeed(seed)
-    }
-)
-
-#' @export
-#' @rdname mask_matrix
-methods::setMethod(
-    "mask_matrix", c(object = "BPCellsSeed", mask = "BPCellsMatrix"),
-    function(object, mask, invert = FALSE) {
-        mask_matrix(object, mask = mask@seed, invert = invert)
-    }
-)
-
-#' @export
-#' @rdname mask_matrix
-methods::setMethod(
-    "mask_matrix", c(object = "BPCellsSeed", mask = "ANY"),
-    function(object, mask, invert = FALSE) {
-        mask_matrix(object, mask = coerce_dgCMatrix(mask), invert = invert)
-    }
-)
-
-#' @export
-#' @rdname mask_matrix
-methods::setMethod(
-    "mask_matrix", c(object = "BPCellsMatrix", mask = "BPCellsSeed"),
-    function(object, mask, invert = FALSE) {
-        DelayedArray(mask_matrix(object@seed, mask = mask, invert = invert))
+        object <- BPCells:::mask_matrix(
+            mat = to_BPCells(object@seed),
+            mask = to_BPCells(mask@seed), 
+            invert = invert
+        )
+        DelayedArray(to_DelayedArray(object))
     }
 )
 
@@ -102,16 +82,12 @@ methods::setMethod(
 methods::setMethod(
     "mask_matrix", c(object = "BPCellsMatrix", mask = "dgCMatrix"),
     function(object, mask, invert = FALSE) {
-        DelayedArray(mask_matrix(object@seed, mask = mask, invert = invert))
-    }
-)
-
-#' @export
-#' @rdname mask_matrix
-methods::setMethod(
-    "mask_matrix", c(object = "BPCellsMatrix", mask = "BPCellsMatrix"),
-    function(object, mask, invert = FALSE) {
-        mask_matrix(object, mask = mask@seed, invert = invert)
+        object <- BPCells:::mask_matrix(
+            mat = to_BPCells(object@seed),
+            mask = BPCellsSeed(mask@seed),
+            invert = invert
+        )
+        DelayedArray(to_DelayedArray(object))
     }
 )
 

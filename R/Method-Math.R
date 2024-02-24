@@ -122,7 +122,7 @@ methods::setGeneric("log1p_single", function(x) {
 #' @export
 #' @rdname BPCells-Math
 methods::setMethod(
-    "log1p_single", "BPCellsSeed",
+    "log1p_single", "BPCellsMatrix",
     set_BPCellsArray_method(
         x = , method = quote(log1p(x)),
         after = expression(DelayedArray(to_DelayedArray(object))),

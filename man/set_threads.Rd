@@ -2,29 +2,23 @@
 % Please edit documentation in R/Class-BindMatrix.R
 \name{set_threads}
 \alias{set_threads}
-\alias{set_threads,BPCellsBindMatrixSeed-method}
 \alias{set_threads,BPCellsMatrix-method}
-\alias{set_threads,ANY-method}
 \title{Set matrix op thread count}
 \usage{
 set_threads(object, ...)
 
-\S4method{set_threads}{BPCellsBindMatrixSeed}(object, threads = 0L)
-
 \S4method{set_threads}{BPCellsMatrix}(object, threads = 0L)
-
-\S4method{set_threads}{ANY}(object, ...)
 }
 \arguments{
-\item{object}{A \code{BPCellsRowBindMatrixSeed}, \code{BPCellsColBindMatrixSeed},
-\code{BPCellsColBindMatrixMatrix} or \code{BPCellsRowBindMatrixMatrix} object.}
+\item{object}{A \code{BPCellsMatrix} object with a seed slot of
+\code{BPCellsDelayedColBind}, or \code{BPCellsDelayedRowBind} object.}
 
 \item{...}{Additional arguments to specific methods.}
 
 \item{threads}{Number of threads to use for execution.}
 }
 \value{
-A \code{BPCellsRowBindMatrixSeed} or \code{BPCellsRowBindMatrixMatrix} object.
+A \code{BPCellsMatrix} object.
 }
 \description{
 Set number of threads to use for sparse-dense multiply and matrix_stats.

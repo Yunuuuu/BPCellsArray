@@ -6,6 +6,11 @@ summary.MatrixDir <- function(object) {
 }
 methods::setMethod("summary", "MatrixDir", summary.MatrixDir)
 
+#' @importFrom DelayedArray path
+#' @export
+#' @rdname internal-methods
+methods::setMethod("path", "MatrixDir", function(object, ...) object@dir)
+
 #' Read/write sparse matrices from (or into) directory on disk
 #'
 #' @description
@@ -63,3 +68,10 @@ methods::setGeneric(
 #' @export
 #' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "ANY", .writeBPCellsDirArray)
+
+#' @export
+#' @rdname BPCellsDir-IO
+methods::setMethod(
+    "writeBPCellsDirArray", "BPCellsMatrix",
+    set_BPCellsArray_method(x = , ... = )
+)

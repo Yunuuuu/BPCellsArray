@@ -7,6 +7,11 @@ summary.MatrixH5 <- function(object) {
 }
 methods::setMethod("summary", "MatrixH5", summary.MatrixH5)
 
+#' @importFrom DelayedArray path
+#' @export
+#' @rdname internal-methods
+methods::setMethod("path", "MatrixH5", function(object, ...) object@path)
+
 #' Read/write sparse matrices from (or into) HDF5 file
 #'
 #' @description
@@ -63,3 +68,10 @@ methods::setGeneric(
 #' @export
 #' @rdname BPCellsHDF5-IO
 methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)
+
+#' @export
+#' @rdname BPCellsHDF5-IO
+methods::setMethod(
+    "writeBPCellsHDF5Array", "BPCellsMatrix",
+    set_BPCellsArray_method(x = , ... = )
+)
