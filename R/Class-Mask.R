@@ -16,7 +16,10 @@ methods::setMethod("to_DelayedArray", "MatrixMask", function(object) {
     slots <- lapply(slots, methods::slot, object = object)
     matrix <- to_DelayedArray(object@matrix)
     mask <- to_DelayedArray(object@mask)
-    if (methods::is(DelayedArray::seed(mask), "Iterable_dgCMatrix_wrapper")) {
+    mask_seed <- DelayedArray::seed(mask)
+    if (methods::is(mask_seed, "Iterable_dgCMatrix_wrapper") ||
+        methods::is(mask_seed, "PackedMatrixMemBase") ||
+        methods::is(mask_seed, "UnpackedMatrixMemBase")) {
         slots$seed <- matrix
         slots$mask <- object@mask
         Class <- "BPCellsDelayedMaskUnaryIsoOp"
