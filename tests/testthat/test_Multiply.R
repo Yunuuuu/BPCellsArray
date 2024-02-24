@@ -14,9 +14,3 @@ common_test(
     mat = mat, 
     name = "Multiply"
 )
-testthat::test_that("`subset()` BPCellsMultiplySeed object works as expected", {
-    seed <- BPCellsSeed(obj)
-    testthat::expect_s4_class(seed[1:10, ], "BPCellsMultiplySeed")
-    testthat::expect_s4_class(seed[, 1:10], "BPCellsMultiplySeed")
-    testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsMultiplySeed")
-})

@@ -68,25 +68,8 @@ set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = N
 }
 
 ###################################################################
-#' @importFrom methods show
-#' @export
-#' @order 1
-#' @rdname BPCellsMatrix-class
-methods::setMethod("show", "BPCellsArray", function(object) {
-    cat(sprintf(
-        "%d x %d %s object\n",
-        nrow(object), ncol(object), "BPCellsArray"
-    ))
-
-    cat("\n")
-    cat(sprintf(
-        "Row names: %s\n",
-        BPCells:::pretty_print_vector(rownames(object), empty = "unknown names")
-    ))
-    cat(sprintf(
-        "Col names: %s\n",
-        BPCells:::pretty_print_vector(colnames(object), empty = "unknown names")
-    ))
+.show_internal <- function(object) {
+    methods::callNextMethod()
 
     cat("\n")
     cat(sprintf("Storage Data type: %s\n", storage_mode(object)))
@@ -95,7 +78,14 @@ methods::setMethod("show", "BPCellsArray", function(object) {
     cat("\n")
     cat("Queued Operations:\n")
     DelayedArray::showtree(object)
-})
+}
+
+#' @importFrom methods show
+#' @export
+#' @order 1
+#' @rdname BPCellsMatrix-class
+methods::setMethod("show", "BPCellsArray", .show_internal)
+methods::setMethod("show", "BPCellsMatrix", .show_internal)
 
 ###########################################################
 #' @export

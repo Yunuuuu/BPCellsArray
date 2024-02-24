@@ -16,7 +16,7 @@ methods::setClass("BPCellsDelayedOp", contains = c("DelayedOp", "VIRTUAL"))
 # For child-class with a seed slot
 validate_BPCellsDelayed_seed <- function(object) {
     seed <- object@seed
-    if (is_BPCellsSeed(seed)) {
+    if (!is_BPCellsSeed(seed)) {
         cli::cli_abort("{.code @seed} must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object")
     }
     TRUE
@@ -59,7 +59,7 @@ methods::setValidity("BPCellsDelayedNaryOp", function(object) {
 
 ##################################################################
 # helper function to create a `BPCellsDelayedOp` class from BPCells Class.
-mould_BPCells <- function(myClass, mould, ..., rename = NULL, delete = NULL, add = NULL) {
+mould_BPCells <- function(myClass, mould, ..., delete = NULL, add = NULL, rename = NULL) {
     slots <- methods::getSlots(BPCells_class(mould))
     if (!is.null(delete)) slots <- slots[!names(slots) %in% delete]
     if (!is.null(add)) slots <- c(slots, add)
@@ -92,9 +92,8 @@ methods::setMethod("to_BPCells", "DelayedOp", function(object) {
 methods::setMethod(
     "to_BPCells", "BPCellsDelayedUnaryOp",
     function(object, Class) {
-        object <- rename_slot(Object = object, seed = "matrix", Class = Class)
-        object@matrix <- to_BPCells(object@matrix)
-        object
+        object@seed <- to_BPCells(object@seed)
+        rename_slot(Object = object, seed = "matrix", Class = Class)
     }
 )
 
@@ -115,6 +114,8 @@ methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
 #    "BPCellsRenameDimsSeed", "BPCellsSubsetSeed", "BPCellsTransformedSeed"
 # )
 to_DelayedUnaryOp <- function(object, Class) {
+    # Must define Class firstly, the `@<-` method for `IterableMatrix` will
+    # check slot class
     object <- rename_slot(Object = object, matrix = "seed", Class = Class)
     object@seed <- to_DelayedArray(object@seed)
     object
@@ -122,26 +123,37 @@ to_DelayedUnaryOp <- function(object, Class) {
 
 ##############################################################
 # helper function to re-dispath `DelayedArray` method
+# should just used for `BPCellsMatrix` method
 call_DelayedArray_method <- function(..., type = "S4") {
     next_method <- switch(type,
         S4 = quote(methods::callNextMethod()),
         S3 = quote(NextMethod())
     )
     body <- rlang::expr({
-        cli::cli_inform("Using {.pkg DelayedArray} method")
         object <- !!next_method
-        new_BPCellsArray(object@seed)
+        seed <- object@seed
+        if (is_BPCellsSeed(seed)) {
+            new_BPCellsArray(seed)
+        } else {
+            cli::cli_warn(
+                "{.fn {.Generic}} method return a {.cls {obj_type_friendly(object)}}, which will prevent subsequent {.pkg BPCells} methods"
+            )
+            object
+        }
     })
     rlang::new_function(rlang::pairlist2(...), body = body)
 }
 
 # helper function to re-dispath `BPCells` method
-call_BPCells_method <- function(..., before = NULL, after = NULL, Op = "object") {
+# should just used for `BPCellsDelayedOp` method
+call_BPCells_method <- function(..., before = NULL, after = NULL, Op = "object", inform = FALSE) {
     Op <- rlang::sym(Op)
-    body <- list(
-        quote(cli::cli_inform("Using {.pkg BPCells} method")),
-        rlang::expr(!!Op <- to_BPCells(!!Op))
-    )
+    body <- list(rlang::expr(!!Op <- to_BPCells(!!Op)))
+    if (inform) {
+        body <- c(
+            list(quote(cli::cli_inform("Using {.pkg BPCells} method"))), body
+        )
+    }
     new_method(rlang::pairlist2(...),
         body = body, method = quote(methods::callGeneric()),
         before = before, after = after
@@ -227,7 +239,27 @@ methods::setMethod(
     call_BPCells_method(x = , index = , Op = "x")
 )
 
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+### list_methods("DelayedUnaryIsoOp")
+### Seed contract
+### here: we override the `DelayedNaryIsoOp` methods
 methods::setMethod(
-    "extract_sparse_array", "BPCellsDelayedNaryIsoOp",
+    "dim", "BPCellsDelayedUnaryIsoOp",
+    call_BPCells_method(x = , Op = "x")
+)
+
+methods::setMethod(
+    "dimnames", "BPCellsDelayedUnaryIsoOp",
+    call_BPCells_method(x = , Op = "x")
+)
+
+methods::setMethod("is_sparse", "BPCellsDelayedUnaryIsoOp", function(x) TRUE)
+methods::setMethod(
+    "extract_array", "BPCellsDelayedUnaryIsoOp",
+    call_BPCells_method(x = , index = , Op = "x")
+)
+
+methods::setMethod(
+    "OLD_extract_sparse_array", "BPCellsDelayedUnaryIsoOp",
     call_BPCells_method(x = , index = , Op = "x")
 )

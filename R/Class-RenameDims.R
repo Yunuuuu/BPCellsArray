@@ -1,7 +1,7 @@
 ############################################################
 # RenameDims
 mould_BPCells("BPCellsDelayedRenameDims", "RenameDims",
-    rename = c(matrix = "seed"),
+    delete = "matrix",
     contains = "BPCellsDelayedUnaryIsoOp"
 )
 
@@ -51,7 +51,7 @@ methods::setMethod(
 #' @aliases rownames<-
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
-    "rownames<-", c(x = "BPCellsMatrix", value = "atomic"),
+    "rownames<-", c(x = "BPCellsMatrix", value = "ANY"),
     function(x, value) {
         set_dimnames(x, 1L, value)
     }
@@ -64,13 +64,14 @@ methods::setMethod(
 #' @aliases colnames<-
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
-    "colnames<-", c(x = "BPCellsMatrix", value = "atomic"),
+    "colnames<-", c(x = "BPCellsMatrix", value = "ANY"),
     function(x, value) {
         set_dimnames(x, 2L, value)
     }
 )
 
-set_dimnames <- function(x, axis, value) {
+set_dimnames <- function(x, axis, value, arg = rlang::caller_arg(value), call = rlang::caller_env()) {
+
     dnms <- dimnames(x)
     if (axis == 1L) {
         axis_nm <- "'rownames'" # nolint
@@ -106,7 +107,7 @@ set_dimnames <- function(x, axis, value) {
                 style_code(axis_len)
             ))
         }
-        dnms[[axis]] <- value
+        dnms[[axis]] <- as.character(value)
     }
     dimnames(x) <- dnms
     x

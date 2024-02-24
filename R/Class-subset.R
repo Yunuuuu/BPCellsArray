@@ -3,7 +3,7 @@
 # used as a intermediate `BPCellsSeed` object of `subset_BPCellsSeed` function
 # so we can re-dispath the seed contract methods of `BPCellsSeed`
 mould_BPCells("BPCellsDelayedSubset", "MatrixSubset",
-    rename = c(matrix = "seed"),
+    delete = "matrix",
     contains = "BPCellsDelayedUnaryOp"
 )
 

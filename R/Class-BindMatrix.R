@@ -10,26 +10,23 @@ methods::setMethod("to_DelayedArray", "ColBindMatrices", function(object) {
         Object = object, matrix_list = "seeds",
         Class = "BPCellsDelayedColBind"
     )
-    object@seeds <- lapply(object@seeds, function(seed) {
-        DelayedArray(to_DelayedArray(seed))
-    })
+    object@seeds <- lapply(object@seeds, to_DelayedArray)
     object
 })
 
 methods::setMethod("to_BPCells", "BPCellsDelayedColBind", function(object) {
-    object <- rename_slot(
+    object@seeds <- lapply(object@seeds, to_BPCells)
+    rename_slot(
         Object = object,
         seeds = "matrix_list", Class = "ColBindMatrices"
     )
-    object@matrix_list <- lapply(object@matrix_list, to_BPCells)
-    object
 })
 
 summary.BPCellsDelayedColBind <- function(object) {
     sprintf(
         "Concatenate %s of %d matrix objects (threads=%d)",
         if (object@transpose) "rows" else "cols",
-        length(object@matrix_list),
+        length(object@seeds),
         object@threads
     )
 }
@@ -54,20 +51,20 @@ methods::setMethod("to_DelayedArray", "RowBindMatrices", function(object) {
     object@seeds <- lapply(object@seeds, to_DelayedArray)
     object
 })
+
 methods::setMethod("to_BPCells", "BPCellsDelayedRowBind", function(object) {
-    object <- rename_slot(
+    object@seeds <- lapply(object@seeds, to_BPCells)
+    rename_slot(
         Object = object,
         seeds = "matrix_list", Class = "RowBindMatrices"
     )
-    object@matrix_list <- lapply(object@matrix_list, to_BPCells)
-    object
 })
 
 summary.BPCellsDelayedRowBind <- function(object) {
     sprintf(
         "Concatenate %s of %d matrix objects (threads=%d)",
         if (object@transpose) "cols" else "rows",
-        length(object@matrix_list),
+        length(object@seeds),
         object@threads
     )
 }
@@ -116,7 +113,10 @@ methods::setMethod(
 #' @rdname set_threads
 methods::setMethod(
     "set_threads", "BPCellsMatrix",
-    set_BPCellsArray_method(object = , threads = 0L)
+    function(object, threads = 0L) {
+        object <- object@seed
+        DelayedArray(methods::callGeneric())
+    }
 )
 
 #' @export
@@ -162,7 +162,10 @@ NULL
 methods::setMethod(
     "rbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
     function(x, y, mode = NULL, ..., threads = 0L) {
-        out <- combine_matrices("rbind2", mode = mode, seeds = list(x, y), ...)
+        out <- combine_matrices("rbind2",
+            mode = mode,
+            matrices = list(x, y), ...
+        )
         set_threads(out, threads = threads)
     }
 )
@@ -245,7 +248,10 @@ methods::setMethod(
 methods::setMethod(
     "cbind2", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
     function(x, y, mode = NULL, ..., threads = 0L) {
-        out <- combine_matrices("cbind2", mode = mode, seeds = list(x, y), ...)
+        out <- combine_matrices("cbind2",
+            mode = mode,
+            matrices = list(x, y), ...
+        )
         set_threads(out, threads = threads)
     }
 )

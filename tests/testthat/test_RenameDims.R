@@ -15,12 +15,3 @@ common_test(
     mat = mat, 
     name = "RenameDims"
 )
-testthat::test_that(
-    "`subset()` BPCellsRenameDimsSeed object works as expected",
-    {
-        seed <- BPCellsSeed(obj)
-        testthat::expect_s4_class(seed[1:10, ], "BPCellsRenameDimsSeed")
-        testthat::expect_s4_class(seed[, 1:10], "BPCellsRenameDimsSeed")
-        testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsRenameDimsSeed")
-    }
-)

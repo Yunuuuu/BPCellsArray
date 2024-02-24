@@ -21,9 +21,9 @@
 \alias{t}
 \alias{dimnames<-,BPCellsMatrix,ListOrNULL-method}
 \alias{dimnames<-}
-\alias{rownames<-,BPCellsMatrix,atomic-method}
+\alias{rownames<-,BPCellsMatrix-method}
 \alias{rownames<-}
-\alias{colnames<-,BPCellsMatrix,atomic-method}
+\alias{colnames<-,BPCellsMatrix-method}
 \alias{colnames<-}
 \title{DelayedArray backend of BPCells matrix}
 \usage{
@@ -53,9 +53,9 @@ BPCellsMatrix(x)
 
 \S4method{dimnames}{BPCellsMatrix,ListOrNULL}(x) <- value
 
-\S4method{rownames}{BPCellsMatrix,atomic}(x) <- value
+\S4method{rownames}{BPCellsMatrix}(x) <- value
 
-\S4method{colnames}{BPCellsMatrix,atomic}(x) <- value
+\S4method{colnames}{BPCellsMatrix}(x) <- value
 }
 \arguments{
 \item{x}{\itemize{

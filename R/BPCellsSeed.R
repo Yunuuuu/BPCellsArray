@@ -1,8 +1,9 @@
-#' Build `BPCellsSeed` object
+#' Build seed object for `BPCellsMatrix`
 #'
 #' @param x A `IterableMatrix` object from `BPCells`, a matrix-like object which
 #' can be coerced into dgCMatrix object.
-#' @return A [BPCellsSeed][BPCellsSeed-class] object.
+#' @return A `IterableMatrix` object or a `BPCellsDelayedOp` object, both can be
+#' directly used as the seed of [BPCellsMatrix] object.
 #' @name BPCellsSeed
 #' @seealso [BPCellsSeed-class][BPCellsSeed-class]
 NULL
@@ -29,7 +30,7 @@ methods::setMethod("BPCellsSeed", "matrix", function(x) {
     mode <- storage_mode(x)
     x <- methods::as(x, "dgCMatrix")
     seed <- methods::callGeneric()
-    convert_mode(seed, mode)
+    BPCells::convert_matrix_type(matrix = seed, type = mode)
 })
 
 ############################################################

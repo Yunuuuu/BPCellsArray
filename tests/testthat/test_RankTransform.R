@@ -10,12 +10,3 @@ common_test(
     obj, path,
     name = "RankTransform"
 )
-testthat::test_that(
-    "`subset()` BPCellsRankTransformSeed object works as expected",
-    {
-        seed <- BPCellsSeed(obj)
-        testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
-        testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
-        testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
-    }
-)

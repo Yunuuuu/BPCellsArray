@@ -11,15 +11,4 @@ mask <- matrix(
 mat[mask > 0L] <- 0L
 mask <- methods::as(mask, "dgCMatrix")
 obj <- BPCells:::mask_matrix(obj, mask)
-
-common_test(
-    obj, path,
-    mat = mat, 
-    name = "Mask"
-)
-testthat::test_that("`subset()` BPCellsMaskSeed object works as expected", {
-    seed <- BPCellsSeed(obj)
-    testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
-    testthat::expect_s4_class(seed[, 1:10], "BPCellsSubsetSeed")
-    testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
-})
+common_test(obj, path, mat = mat, name = "Mask")

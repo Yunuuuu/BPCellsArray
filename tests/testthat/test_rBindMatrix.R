@@ -11,12 +11,3 @@ common_test(
     mat = mat, 
     name = "RowBindMatrix"
 )
-testthat::test_that(
-    "`subset()` BPCellsBindMatrixSeed object works as expected",
-    {
-        seed <- BPCellsSeed(obj)
-        testthat::expect_s4_class(seed[1:10, ], "BPCellsSubsetSeed")
-        testthat::expect_s4_class(seed[, 1:10], "BPCellsRowBindMatrixSeed")
-        testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsSubsetSeed")
-    }
-)

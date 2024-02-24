@@ -1,7 +1,6 @@
 ###########################################################
 mould_BPCells("BPCellsDelayedConvert", "ConvertMatrixType",
-    rename = c(matrix = "seed"),
-    contains = "BPCellsDelayedUnaryOp"
+    delete = "matrix", contains = "BPCellsDelayedUnaryOp"
 )
 
 methods::setMethod("to_DelayedArray", "ConvertMatrixType", function(object) {
@@ -12,8 +11,6 @@ methods::setMethod("to_BPCells", "BPCellsDelayedConvert", function(object) {
     methods::callNextMethod(object = object, Class = "ConvertMatrixType")
 })
 
-#' @export
-#' @rdname BPCellsSeed
 summary.BPCellsDelayedConvert <- function(object) {
     sprintf(
         "Convert type from %s to %s",

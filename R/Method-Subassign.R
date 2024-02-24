@@ -17,6 +17,7 @@ methods::setMethod(
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "matrix"),
     function(x, i, j, ..., value) {
+        x <- to_BPCells(x@seed)
         x_mode <- storage_mode(x)
         value_mode <- storage_mode(value)
         value <- methods::as(value, "dgCMatrix")
@@ -36,7 +37,7 @@ methods::setMethod(
         } else {
             value <- BPCells::convert_matrix_type(matrix = value, type = x_mode)
         }
-        methods::callGeneric()
+        DelayedArray(to_DelayedArray(methods::callGeneric()))
     }
 )
 
@@ -45,12 +46,13 @@ methods::setMethod(
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "dgCMatrix"),
     function(x, i, j, ..., value) {
+        x <- to_BPCells(x@seed)
         if (x@transpose) {
             value <- t(BPCellsSeed(t(value)))
         } else {
             value <- BPCellsSeed(value)
         }
-        methods::callGeneric()
+        DelayedArray(to_DelayedArray(methods::callGeneric()))
     }
 )
 

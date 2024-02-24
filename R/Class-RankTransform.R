@@ -17,7 +17,7 @@ NULL
 
 mould_BPCells("BPCellsDelayedRankTransform",
     "MatrixRankTransform",
-    rename = c(matrix = "seed"),
+    delete = "matrix",
     contains = "BPCellsDelayedUnaryIsoOp"
 )
 

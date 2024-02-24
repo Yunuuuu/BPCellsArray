@@ -9,9 +9,3 @@ common_test(
     mode = "uint32_t",
     mat = mat, name = "Convert"
 )
-testthat::test_that("`subset()` BPCellsConvertSeed object works as expected", {
-    seed <- BPCellsSeed(obj)
-    testthat::expect_s4_class(seed[1:10, ], "BPCellsConvertSeed")
-    testthat::expect_s4_class(seed[, 1:10], "BPCellsConvertSeed")
-    testthat::expect_s4_class(seed[1:10, 1:10], "BPCellsConvertSeed")
-})
