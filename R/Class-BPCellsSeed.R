@@ -18,9 +18,11 @@
 #' - [summarization][BPCells-Summarization]: row/col summarization.
 #' - [Arithmetic][BPCells-Arithmetic]: Binary Arithmetic operators.
 #' - [binarize][BPCells-binarize]: Convert matrix elements to zeros and ones.
-#' @include utils.R
+#' @include utils.R Class-Delayed.R
 #' @aliases BPCellsSeed-methods
 #' @export
+NULL
+
 methods::setClass("BPCellsSeed",
     contains = c(BPCells_class("IterableMatrix"), "VIRTUAL")
 )
@@ -29,7 +31,6 @@ methods::setClass("BPCellsSeed",
 # object in DelayedArray
 # we won't use the `DelayedNaryOp` object since it use `seeds` slot to save a
 # list of other seed objects while BPCells use left (and right) or matrix_list.
-
 methods::setValidity("BPCellsSeed", function(object) {
     if (length(dim(object)) != 2L) {
         cli::cli_abort("{.pkg BPCells} can only support 2-dim matrix")
@@ -65,6 +66,8 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
     show_bpcells(object, "BPCellsSeed", class(object))
 })
 
+###########################################################
+# Seed Contract
 #' @return
 #' - `type`: A string, indicates the storage type. For all BPCells matrix type
 #'   of `float` and `double`, always return `double` since R cannot
@@ -73,78 +76,58 @@ methods::setMethod("show", "BPCellsSeed", function(object) {
 #' @importFrom DelayedArray type
 #' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod("type", "BPCellsSeed", function(x) {
-    mode_to_type(storage_mode(x))
+methods::setMethod("type", "IterableMatrix", function(x) {
+    switch(storage_mode(x),
+        uint32_t = "integer",
+        float = ,
+        double = "double"
+    )
 })
 
-#' @return
-#' - `is_sparse`: Always return `TRUE` for `BPCellsSeed` object.
-#' @importFrom DelayedArray is_sparse
-#' @export
-#' @rdname BPCellsSeed-class
-methods::setMethod("is_sparse", "BPCellsSeed", function(x) TRUE)
-
-###############################################
-#' @export
-methods::setAs(
-    "BPCellsSeed", "dgCMatrix",
-    function(from) methods::callNextMethod()
-)
-
-#' @importMethodsFrom DelayedArray drop
-#' @export
-#' @rdname BPCellsSeed-class
-methods::setMethod("drop", "BPCellsSeed", drop_internal)
-
-# S3/S4 combo for as.array.BPCellsSeed
-#' @exportS3Method base::as.array
-#' @rdname BPCellsSeed-class
-as.array.BPCellsSeed <- function(x, drop = FALSE) {
-    assert_bool(drop)
-    matrix <- as.matrix(x)
-    if (drop) drop(matrix) else matrix
+subset_IterableMatrix <- function(x, Nindex) {
+    # `subset_by_Nindex` will just use the `[` method.
+    # `[.IterableMatrix` don't support `drop` argument
+    S4Arrays:::subset_by_Nindex(x, Nindex = Nindex, drop = FALSE)
 }
 
-#' @export
-#' @rdname BPCellsSeed-class
-methods::setMethod("as.array", "BPCellsSeed", as.array.BPCellsSeed)
-
-#' @exportS3Method base::as.matrix
-#' @rdname BPCellsSeed-class
-as.matrix.BPCellsSeed <- function(x) {
-    mat <- as.matrix(methods::as(x, "dgCMatrix")) # always be numeric mode
-    if (type(x) == "integer") {
+# respect `type(x)`
+as_matrix_IterableMatrix <- function(x) {
+    # `mat` will always be numeric mode
+    mat <- as.matrix(methods::as(x, "dgCMatrix"))
+    # to keep the original mode, we transform it when necessary
+    if (storage_mode(x) == "uint32_t") {
         mat <- matrix_to_integer(mat)
     }
     mat
 }
 
+# S3/S4 combo for as.array.IterableMatrix
+#' @exportS3Method base::as.array
+#' @rdname BPCellsSeed-class
+as.array.IterableMatrix <- function(x, drop = FALSE) {
+    assert_bool(drop)
+    # IterableMatrix only support 2-dimention
+    mat <- as_matrix_IterableMatrix(x)
+    if (drop) drop(mat) else mat
+}
+
 #' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod("as.matrix", "BPCellsSeed", as.matrix.BPCellsSeed)
+methods::setMethod("as.array", "IterableMatrix", as.array.IterableMatrix)
 
-#' @export
-methods::setAs("ANY", "BPCellsSeed", function(from) {
-    BPCellsSeed(from)
-})
-
-###############################################
 #' @inheritParams S4Arrays::extract_array
 #' @return
 #' - `extract_array`: A dense matrix.
 #' @importFrom DelayedArray extract_array
 #' @export
 #' @rdname BPCellsSeed-class
-methods::setMethod(
-    "extract_array", "BPCellsSeed",
-    function(x, index) {
-        slice <- S4Arrays:::subset_by_Nindex(x, index)
-        as.matrix(slice)
-    }
-)
+methods::setMethod("extract_array", "IterableMatrix", function(x, index) {
+    slice <- subset_IterableMatrix(x, index)
+    as_matrix_IterableMatrix(slice)
+})
 
 extract_dgCMatrix <- function(x, index) {
-    slice <- S4Arrays:::subset_by_Nindex(x, index)
+    slice <- subset_IterableMatrix(x, index)
     methods::as(slice, "dgCMatrix")
 }
 
@@ -155,11 +138,12 @@ extract_dgCMatrix <- function(x, index) {
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
-    "OLD_extract_sparse_array", "BPCellsSeed",
+    "OLD_extract_sparse_array", "IterableMatrix",
     function(x, index) {
         methods::as(extract_dgCMatrix(x, index), "SparseArraySeed")
     }
 )
+
 #' @return
 #' - `extract_sparse_array`: A
 #'   [SparseArray][SparseArray::SVT_SparseArray-class] object.
@@ -167,11 +151,13 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
-    "extract_sparse_array", "BPCellsSeed",
+    "extract_sparse_array", "IterableMatrix",
     function(x, index) {
         methods::as(extract_dgCMatrix(x, index), "SparseArray")
     }
 )
+
+methods::setMethod("is_sparse", "IterableMatrix", function(x) TRUE)
 
 #' @return
 #' - `chunkdim`: the chunk dimensions in an integer vector parallel to `dim(x)`.
@@ -179,14 +165,6 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
-    "chunkdim", "BPCellsSeed",
+    "chunkdim", "IterableMatrix",
     function(x) if (x@transpose) c(1L, ncol(x)) else c(nrow(x), 1L)
 )
-
-# t will not change the underlying class
-#' @return
-#'  - `t`: A [BPCellsSeed] object.
-#' @importMethodsFrom BPCells t
-#' @export
-#' @rdname BPCellsSeed-class
-methods::setMethod("t", "BPCellsSeed", function(x) methods::callNextMethod())

@@ -2,40 +2,16 @@
 % Please edit documentation in R/Class-RankTransform.R
 \name{rank_transform}
 \alias{rank_transform}
-\alias{rank_transform,BPCellsSeed-method}
 \alias{rank_transform,BPCellsMatrix-method}
-\alias{rowRanks,BPCellsSeed-method}
-\alias{rowRanks}
-\alias{colRanks,BPCellsSeed-method}
-\alias{colRanks}
 \alias{rowRanks,BPCellsMatrix-method}
+\alias{rowRanks}
 \alias{colRanks,BPCellsMatrix-method}
+\alias{colRanks}
 \title{Rank-transform a BPCells IterableMatrix matrix}
 \usage{
 rank_transform(object, ...)
 
-\S4method{rank_transform}{BPCellsSeed}(object, axis = NULL, offset = TRUE, ...)
-
 \S4method{rank_transform}{BPCellsMatrix}(object, axis = NULL, offset = TRUE, ...)
-
-\S4method{rowRanks}{BPCellsSeed}(
-  x,
-  rows = NULL,
-  cols = NULL,
-  ties.method = "average",
-  ...,
-  useNames = TRUE
-)
-
-\S4method{colRanks}{BPCellsSeed}(
-  x,
-  rows = NULL,
-  cols = NULL,
-  ties.method = "average",
-  preserveShape = TRUE,
-  ...,
-  useNames = TRUE
-)
 
 \S4method{rowRanks}{BPCellsMatrix}(
   x,

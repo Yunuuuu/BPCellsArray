@@ -1,25 +1,31 @@
-methods::setClass("BPCellsConvertSeed",
-    contains = c(
-        "BPCellsUnaryOpsSeed",
-        BPCells_class("ConvertMatrixType")
-    ),
-    slots = list(matrix = "BPCellsSeed")
+###########################################################
+mould_BPCells("BPCellsDelayedConvert", "ConvertMatrixType",
+    c(matrix = "seed"),
+    contains = "BPCellsDelayedUnaryOp"
 )
+
+methods::setMethod("to_DelayedArray", "ConvertMatrixType", function(object) {
+    to_DelayedUnaryOp(object, Class = "BPCellsDelayedConvert")
+})
+
+methods::setMethod("to_BPCells", "BPCellsDelayedConvert", function(object) {
+    methods::callNextMethod(object = object, Class = "ConvertMatrixType")
+})
 
 #' @export
 #' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "ConvertMatrixType", function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    methods::as(x, "BPCellsConvertSeed")
-})
-summary.BPCellsConvertSeed <- function(object) {
+summary.BPCellsDelayedConvert <- function(object) {
     sprintf(
         "Convert type from %s to %s",
-        storage_mode(entity(object)),
+        storage_mode(object@seed),
         storage_mode(object)
     )
 }
-methods::setMethod("summary", "BPCellsConvertSeed", summary.BPCellsConvertSeed)
+
+methods::setMethod(
+    "summary", "BPCellsDelayedConvert",
+    summary.BPCellsDelayedConvert
+)
 
 ###################################################################
 ###########################  Methods  #############################
@@ -51,31 +57,29 @@ methods::setGeneric(
 #' [type][BPCellsSeed-class] method always return "double" for both `float`
 #' and `double` mode.
 #' @seealso [convert_matrix_type][BPCells::convert_matrix_type]
-#' @export
-#' @rdname convert_mode
-methods::setMethod("convert_mode", "BPCellsSeed", function(object, mode) {
-    mode <- match.arg(mode, BPCells_MODE)
-    obj <- BPCells::convert_matrix_type(object, type = mode)
-    BPCellsSeed(obj)
-})
-
 #' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname convert_mode
-methods::setMethod("convert_mode", "BPCellsMatrix", function(object, mode) {
-    object <- object@seed
-    DelayedArray(methods::callGeneric())
-})
+methods::setMethod(
+    "convert_mode", "BPCellsMatrix",
+    set_BPCellsArray_method(
+        object = , mode = ,
+        method = quote(BPCells::convert_matrix_type(
+            matrix = object, type = mode
+        )),
+        before = expression(mode <- match.arg(mode, BPCells_MODE)),
+        after = expression(DelayedArray(to_DelayedArray(object)))
+    )
+)
 
 #' @inheritParams convert_mode
 #' @export
 #' @rdname internal-methods
 methods::setMethod("convert_mode", "ANY", function(object, mode) {
-    cli::cli_abort(
-        "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"
-    )
+    cli::cli_abort("{.arg object} must be a {.cls BPCellsMatrix} object")
 })
 
+##############################################################
 #' @return
 #'  - `storage_mode`: A string indicates the storage mode.
 #' @export
@@ -84,21 +88,34 @@ methods::setGeneric(
     "storage_mode", function(object) standardGeneric("storage_mode")
 )
 
-storage_mode_internal <- function(object) {
-    BPCells_get("matrix_type")(object)
-}
-
-#' @export
-#' @rdname convert_mode
-methods::setMethod("storage_mode", "BPCellsSeed", storage_mode_internal)
-
-#' @export
-#' @rdname convert_mode
-methods::setMethod("storage_mode", "IterableMatrix", storage_mode_internal)
-
 #' @export
 #' @rdname convert_mode
 methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
     object <- object@seed
     methods::callGeneric()
+})
+
+#' @export
+#' @rdname convert_mode
+methods::setMethod(
+    "storage_mode", "BPCellsDelayedOp",
+    call_BPCells_method(object = )
+)
+
+#' @export
+#' @rdname convert_mode
+methods::setMethod("storage_mode", "IterableMatrix", function(object) {
+    BPCells_get("matrix_type")(object)
+})
+
+#' @export
+#' @rdname convert_mode
+methods::setMethod("storage_mode", "matrix", function(object) {
+    x <- storage.mode(object)
+    switch(x,
+        integer = "uint32_t",
+        double = ,
+        numeric = "double",
+        cli::cli_abort("{.pkg BPCells} cannot support {.field {x}} mode")
+    )
 })

@@ -1,51 +1,10 @@
-methods::setClass("BPCellsDirSeed",
-    contains = c("BPCellsBasicSeed", BPCells_class("MatrixDir"))
-)
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixDir", function(x) {
-    methods::as(x, "BPCellsDirSeed")
-})
-
-#' @importClassesFrom DelayedArray DelayedArray
-#' @export
-#' @rdname BPCellsSeed
-#' @include Class-BPCellsMatrix.R
-methods::setClass("BPCellsDirArray",
-    contains = "BPCellsArray",
-    slots = c(seed = "BPCellsDirSeed")
-)
-
-#' @importFrom DelayedArray DelayedArray
-#' @importFrom DelayedArray new_DelayedArray
-#' @export
-#' @rdname BPCellsMatrix-class
-methods::setMethod(
-    "DelayedArray", "BPCellsDirSeed",
-    function(seed) new_DelayedArray(seed, Class = "BPCellsDirArray")
-)
-
-#' @export
-#' @rdname BPCellsMatrix-class
-methods::setClass("BPCellsDirMatrix",
-    contains = c("BPCellsMatrix"),
-    slots = c(seed = "BPCellsDirSeed")
-)
-
-#' @importFrom DelayedArray matrixClass
-#' @export
-#' @rdname BPCellsMatrix-class
-methods::setMethod("matrixClass", "BPCellsDirArray", function(x) {
-    "BPCellsDirMatrix"
-})
-summary.BPCellsDirSeed <- function(object) {
+summary.MatrixDir <- function(object) {
     sprintf(
         "Load %s matrix from directory",
         if (object@compressed) "compressed" else "uncompressed"
     )
 }
-methods::setMethod("summary", "BPCellsDirSeed", summary.BPCellsDirSeed)
+methods::setMethod("summary", "MatrixDir", summary.MatrixDir)
 
 #' Read/write sparse matrices from (or into) directory on disk
 #'
@@ -63,7 +22,7 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L) {
         dir = path,
         buffer_size = as.integer(buffer_size)
     )
-    DelayedArray(BPCellsSeed(obj))
+    DelayedArray(obj)
 }
 
 #' Write a sparce matrices into a directory on disk
@@ -98,17 +57,9 @@ methods::setGeneric(
         buffer_size = as.integer(buffer_size),
         overwrite = overwrite
     )
-    DelayedArray(BPCellsSeed(obj))
+    DelayedArray(obj)
 }
 
 #' @export
 #' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "ANY", .writeBPCellsDirArray)
-
-.as_BPCellsDirArray <- function(from) writeBPCellsDirArray(from)
-
-#' @export
-methods::setAs("ANY", "BPCellsDirArray", .as_BPCellsDirArray)
-
-#' @export
-methods::setAs("ANY", "BPCellsDirMatrix", .as_BPCellsDirArray)

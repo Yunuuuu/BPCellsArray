@@ -2,27 +2,27 @@
 % Please edit documentation in R/Class-Convert.R
 \name{convert_mode}
 \alias{convert_mode}
-\alias{convert_mode,BPCellsSeed-method}
 \alias{convert_mode,BPCellsMatrix-method}
 \alias{storage_mode}
-\alias{storage_mode,BPCellsSeed-method}
-\alias{storage_mode,IterableMatrix-method}
 \alias{storage_mode,BPCellsMatrix-method}
+\alias{storage_mode,BPCellsDelayedOp-method}
+\alias{storage_mode,IterableMatrix-method}
+\alias{storage_mode,matrix-method}
 \title{Convert the storage type of a BPCellsArray object}
 \usage{
 convert_mode(object, ...)
-
-\S4method{convert_mode}{BPCellsSeed}(object, mode)
 
 \S4method{convert_mode}{BPCellsMatrix}(object, mode)
 
 storage_mode(object)
 
-\S4method{storage_mode}{BPCellsSeed}(object)
+\S4method{storage_mode}{BPCellsMatrix}(object)
+
+\S4method{storage_mode}{BPCellsDelayedOp}(object)
 
 \S4method{storage_mode}{IterableMatrix}(object)
 
-\S4method{storage_mode}{BPCellsMatrix}(object)
+\S4method{storage_mode}{matrix}(object)
 }
 \arguments{
 \item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or

@@ -1,22 +1,21 @@
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
-BPCells_class <- function(name) {
-    BPCells_get(paste0(".__C__", name))
+recode <- function(x, replace) {
+    old_values <- names(replace)
+    missing_values <- setdiff(old_values, x)
+    if (length(missing_values) > 0) {
+        keep <- !old_values %in% missing_values
+        replace <- replace[keep]
+        old_values <- old_values[keep]
+    }
+    x[match(old_values, x)] <- as.vector(replace)
+    x
 }
 
-BPCells_get <- local({
-    BPCellsNamespace <- NULL
-    function(nm) {
-        if (is.null(BPCellsNamespace)) {
-            BPCellsNamespace <<- asNamespace("BPCells")
-        }
-        if (exists(nm, envir = BPCellsNamespace, inherits = FALSE)) {
-            get(nm, envir = BPCellsNamespace, inherits = FALSE)
-        } else {
-            cli::cli_abort("Cannot find {.val {nm}} in {.pkg BPCells}")
-        }
-    }
-})
+rename <- function(x, replace) {
+    names(x) <- recode(names(x), replace)
+    x
+}
 
 coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
     tryCatch(
@@ -29,32 +28,6 @@ coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller
         }
     )
 }
-
-show_bpcells <- function(object, baseClass, class) {
-    cat(sprintf(
-        "%d x %d %s object with class %s\n",
-        nrow(object), ncol(object), baseClass, class
-    ))
-
-    cat("\n")
-    cat(sprintf(
-        "Row names: %s\n",
-        BPCells:::pretty_print_vector(rownames(object), empty = "unknown names")
-    ))
-    cat(sprintf(
-        "Col names: %s\n",
-        BPCells:::pretty_print_vector(colnames(object), empty = "unknown names")
-    ))
-
-    cat("\n")
-    cat(sprintf("Storage Data type: %s\n", storage_mode(object)))
-    cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
-
-    cat("\n")
-    cat("Queued Operations:\n")
-    showtree(object)
-}
-
 
 imap <- function(.x, .f, ...) {
     .mapply(.f, list(.x, names(.x) %||% seq_along(.x)), list(...))
@@ -90,25 +63,6 @@ compatible_storage_mode <- function(list) {
     BPCells_MODE[max(match(actual_modes, BPCells_MODE))]
 }
 
-swap_axis <- function(.fn, object, column, row, ...) {
-    if (object@transpose) {
-        .fn(object, row, ...)
-    } else {
-        .fn(object, column, ...)
-    }
-}
-
-drop_internal <- function(x) {
-    perm <- which(dim(x) != 1L)
-    if (length(perm) >= 2L) return(x) # styler: off
-    ## In-memory realization.
-    ## We want to propagate the names so we use 'as.array(x, drop=TRUE)'
-    ## rather than 'as.vector(x)' (both are equivalent on an Array
-    ## derivative with less than 2 effective dimensions except that
-    ## the former propagates the names and the latter doesn't).
-    as.array(x, drop = TRUE)
-}
-
 matrix_to_integer <- function(matrix) { # a numeric matrix
     if (is.integer(matrix)) return(matrix) # styler: off
     if (all(matrix <= .Machine$integer.max)) {
@@ -127,24 +81,76 @@ matrix_to_double <- function(matrix) { # a numeric matrix
     matrix
 }
 
-# type is the storage mode of R (`DelayedArray` use `type()` function and Base R
-# use `storage.mode()` function)
-# mode is the storage mode in BPCells (`BPCells` use `storage_mode()` function)
-mode_to_type <- function(mode) {
-    switch(mode,
-        uint32_t = "integer",
-        float = ,
-        double = "double"
-    )
+# Use chartr() for safety since toupper() fails to convert i to I in Turkish
+# locale
+lower_ascii <- "abcdefghijklmnopqrstuvwxyz"
+upper_ascii <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+snake_class <- function(x) {
+    snakeize(class(x)[1])
 }
 
-type_to_mode <- function(type) {
-    switch(type,
-        integer = "uint32_t",
-        double = ,
-        numeric = "double",
-        cli::cli_abort("{.pkg BPCells} cannot support {.field {type}} mode")
-    )
+snakeize <- function(x) {
+    x <- gsub("([A-Za-z])([A-Z])([a-z])", "\\1_\\2\\3", x)
+    x <- gsub(".", "_", x, fixed = TRUE)
+    x <- gsub("([a-z])([A-Z])", "\\1_\\2", x)
+    to_lower_ascii(x)
+}
+to_lower_ascii <- function(x) chartr(upper_ascii, lower_ascii, x)
+to_upper_ascii <- function(x) chartr(lower_ascii, upper_ascii, x)
+
+#############################################################
+
+##########################################################
+BPCells_class <- function(name) {
+    BPCells_get(paste0(".__C__", name))
+}
+
+BPCells_get <- local({
+    BPCellsNamespace <- NULL
+    function(nm) {
+        if (is.null(BPCellsNamespace)) {
+            BPCellsNamespace <<- asNamespace("BPCells")
+        }
+        if (exists(nm, envir = BPCellsNamespace, inherits = FALSE)) {
+            get(nm, envir = BPCellsNamespace, inherits = FALSE)
+        } else {
+            cli::cli_abort("Cannot find {.val {nm}} in {.pkg BPCells}")
+        }
+    }
+})
+
+show_bpcells <- function(object, baseClass, class) {
+    cat(sprintf(
+        "%d x %d %s object with class %s\n",
+        nrow(object), ncol(object), baseClass, class
+    ))
+
+    cat("\n")
+    cat(sprintf(
+        "Row names: %s\n",
+        BPCells:::pretty_print_vector(rownames(object), empty = "unknown names")
+    ))
+    cat(sprintf(
+        "Col names: %s\n",
+        BPCells:::pretty_print_vector(colnames(object), empty = "unknown names")
+    ))
+
+    cat("\n")
+    cat(sprintf("Storage Data type: %s\n", storage_mode(object)))
+    cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
+
+    cat("\n")
+    cat("Queued Operations:\n")
+    DelayedArray::showtree(object)
+}
+
+swap_axis <- function(.fn, object, column, row, ...) {
+    if (object@transpose) {
+        .fn(object, row, ...)
+    } else {
+        .fn(object, column, ...)
+    }
 }
 
 BPCells_MODE <- c("uint32_t", "float", "double")
@@ -167,21 +173,3 @@ BPCells_Transform_classes <- c(
     SCTransformPearsonTransposeSlow = "sctransform_pearson",
     TransformScaleShift = NULL
 )
-
-# Use chartr() for safety since toupper() fails to convert i to I in Turkish
-# locale
-lower_ascii <- "abcdefghijklmnopqrstuvwxyz"
-upper_ascii <- "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-snake_class <- function(x) {
-    snakeize(class(x)[1])
-}
-
-snakeize <- function(x) {
-    x <- gsub("([A-Za-z])([A-Z])([a-z])", "\\1_\\2\\3", x)
-    x <- gsub(".", "_", x, fixed = TRUE)
-    x <- gsub("([a-z])([A-Z])", "\\1_\\2", x)
-    to_lower_ascii(x)
-}
-to_lower_ascii <- function(x) chartr(upper_ascii, lower_ascii, x)
-to_upper_ascii <- function(x) chartr(lower_ascii, upper_ascii, x)

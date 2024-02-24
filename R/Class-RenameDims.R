@@ -1,26 +1,34 @@
 ############################################################
 # RenameDims
-methods::setClass("BPCellsRenameDimsSeed",
-    contains = c("BPCellsUnaryOpsSeed", BPCells_class("RenameDims")),
-    slots = list(matrix = "BPCellsSeed")
+mould_BPCells("BPCellsDelayedRenameDims", "RenameDims",
+    c(matrix = "seed"),
+    contains = "BPCellsDelayedUnaryIsoOp"
 )
 
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "RenameDims", function(x) {
-    x@matrix <- BPCellsSeed(x@matrix)
-    methods::as(x, "BPCellsRenameDimsSeed")
+methods::setMethod("to_DelayedArray", "RenameDims", function(object) {
+    to_DelayedUnaryOp(object, Class = "BPCellsDelayedRenameDims")
 })
-summary.BPCellsRenameDimsSeed <- function(object) {
+
+methods::setMethod("to_BPCells", "BPCellsDelayedRenameDims", function(object) {
+    methods::callNextMethod(object = object, Class = "RenameDims")
+})
+
+#############################################################
+summary.BPCellsDelayedRenameDims <- function(object) {
     "Rename dimnames"
 }
+
 methods::setMethod(
-    "summary", "BPCellsRenameDimsSeed",
-    summary.BPCellsRenameDimsSeed
+    "summary", "BPCellsDelayedRenameDims",
+    summary.BPCellsDelayedRenameDims
 )
+
+#' @importFrom DelayedArray is_noop
+methods::setMethod("is_noop", "BPCellsDelayedSubset", function(x) FALSE)
 
 ################    BPCellsMatrix Methods    ##################
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))
+
 #' @return
 #' - `dimnames<-`: A [BPCellsMatrix][BPCellsMatrix] object.
 #' @importMethodsFrom BPCells dimnames<-
@@ -29,10 +37,11 @@ methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
     "dimnames<-", c(x = "BPCellsMatrix", value = "ListOrNULL"),
-    function(x, value) {
-        x <- x@seed
-        DelayedArray(methods::callGeneric())
-    }
+    set_BPCellsArray_method(
+        x = , value = ,
+        after = expression(DelayedArray(to_DelayedArray(object))),
+        Arrays = "x"
+    )
 )
 
 #' @return
@@ -44,8 +53,7 @@ methods::setMethod(
 methods::setMethod(
     "rownames<-", c(x = "BPCellsMatrix", value = "atomic"),
     function(x, value) {
-        x <- x@seed
-        DelayedArray(methods::callGeneric())
+        set_dimnames(x, 1L, value)
     }
 )
 
@@ -58,61 +66,14 @@ methods::setMethod(
 methods::setMethod(
     "colnames<-", c(x = "BPCellsMatrix", value = "atomic"),
     function(x, value) {
-        x <- x@seed
-        DelayedArray(methods::callGeneric())
-    }
-)
-
-################    BPCellsSeed Methods    ########################
-# All delayed operations should be wrapped into a `BPCellsSeed` object
-# In BPCells, `dimnames<-` was only defined for `IterableMatrix`.
-# `dimnames<-` return another `IterableMatrix` object.
-# we wrap it into a `BPCellsSeed` object.
-#' @return
-#' - `dimnames<-`: A [BPCellsSeed] object, usually a `BPCellsRenameDimsSeed`
-#'   object.
-#' @importMethodsFrom BPCells dimnames<-
-#' @export
-#' @rdname BPCellsSeed-class
-methods::setMethod(
-    "dimnames<-", c(x = "BPCellsSeed", value = "list"), function(x, value) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
-#' @importMethodsFrom BPCells dimnames<-
-#' @export
-#' @rdname BPCellsSeed-class
-methods::setMethod(
-    "dimnames<-", c(x = "BPCellsSeed", value = "NULL"), function(x, value) {
-        BPCellsSeed(methods::callNextMethod())
-    }
-)
-
-#' @importFrom BiocGenerics rownames<-
-#' @export
-#' @rdname BPCellsSeed-class
-methods::setMethod(
-    "rownames<-", c(x = "BPCellsSeed", value = "atomic"),
-    function(x, value) {
-        BPCellsSeed(set_dimnames(x, 1L, value))
-    }
-)
-
-#' @importFrom BiocGenerics colnames<-
-#' @export
-#' @rdname BPCellsSeed-class
-methods::setMethod(
-    "colnames<-", c(x = "BPCellsSeed", value = "atomic"),
-    function(x, value) {
-        BPCellsSeed(set_dimnames(x, 2L, value))
+        set_dimnames(x, 2L, value)
     }
 )
 
 set_dimnames <- function(x, axis, value) {
     dnms <- dimnames(x)
     if (axis == 1L) {
-        axis_nm <- "'rownames'"
+        axis_nm <- "'rownames'" # nolint
         axis_len <- "nrow(x)"
     } else if (axis == 2L) {
         axis_nm <- "'colnames'"

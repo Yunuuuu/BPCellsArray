@@ -130,8 +130,6 @@ methods::setMethod(
 methods::setMethod(
     "mask_matrix", c(object = "ANY", mask = "ANY"),
     function(object, mask, invert = FALSE) {
-        cli::cli_abort(
-            "{.arg object} must be a {.cls BPCellsSeed} or {.cls BPCellsMatrix} object"
-        )
+        cli::cli_abort("{.arg object} must be a {.cls BPCellsMatrix} object")
     }
 )

@@ -1,55 +1,11 @@
-# For every new class
-# - add method of subset: Method-subset.R
-# - add method of showtree: showtree.R
-methods::setClass("BPCellsHDF5Seed",
-    contains = c("BPCellsBasicSeed", BPCells_class("MatrixH5"))
-)
-
-#' @export
-#' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "MatrixH5", function(x) {
-    methods::as(x, "BPCellsHDF5Seed")
-})
-
-#' @importClassesFrom DelayedArray DelayedArray
-#' @export
-#' @rdname BPCellsSeed
-#' @include Class-BPCellsMatrix.R
-methods::setClass("BPCellsHDF5Array",
-    contains = "BPCellsArray",
-    slots = c(seed = "BPCellsHDF5Seed")
-)
-
-#' @importFrom DelayedArray DelayedArray
-#' @importFrom DelayedArray new_DelayedArray
-#' @export
-#' @rdname BPCellsMatrix-class
-methods::setMethod(
-    "DelayedArray", "BPCellsHDF5Seed",
-    function(seed) new_DelayedArray(seed, Class = "BPCellsHDF5Array")
-)
-
-#' @export
-#' @rdname BPCellsMatrix-class
-methods::setClass("BPCellsHDF5Matrix",
-    contains = c("BPCellsMatrix"),
-    slots = c(seed = "BPCellsHDF5Seed")
-)
-
-#' @importFrom DelayedArray matrixClass
-#' @export
-#' @rdname BPCellsMatrix-class
-methods::setMethod("matrixClass", "BPCellsHDF5Array", function(x) {
-    "BPCellsHDF5Matrix"
-})
-summary.BPCellsHDF5Seed <- function(object) {
+summary.MatrixH5 <- function(object) {
     sprintf(
         "Load %s matrix in HDF5 file (group: %s)",
         if (object@compressed) "compressed" else "uncompressed",
         object@group
     )
 }
-methods::setMethod("summary", "BPCellsHDF5Seed", summary.BPCellsHDF5Seed)
+methods::setMethod("summary", "MatrixH5", summary.MatrixH5)
 
 #' Read/write sparse matrices from (or into) HDF5 file
 #'
@@ -65,7 +21,7 @@ readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L) {
         path = path, group = group,
         buffer_size = as.integer(buffer_size)
     )
-    DelayedArray(BPCellsSeed(obj))
+    DelayedArray(obj)
 }
 
 #' @inherit BPCells::write_matrix_hdf5 details
@@ -101,7 +57,7 @@ methods::setGeneric(
         chunk_size = as.integer(chunk_size),
         overwrite = overwrite, gzip_level = gzip
     )
-    DelayedArray(BPCellsSeed(obj))
+    DelayedArray(obj)
 }
 
 #' @export
