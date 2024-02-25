@@ -188,16 +188,26 @@ We can inspect the assay info by print it. Attention the class name.
 
 ``` r
 assay(sce, "counts")
-#> 3000 x 2000 DelayedMatrix object with class BPCellsDirMatrix
+#> <3000 x 2000> sparse BPCellsMatrix object of type "double":
+#>            Cell_001  Cell_002  Cell_003 ... Cell_1999 Cell_2000
+#> Gene_0001         0         0         0   .         0         0
+#> Gene_0002       188        61         0   .        44       195
+#> Gene_0003       625       897      1324   .       134       575
+#> Gene_0004         0         0         0   .         0         0
+#> Gene_0005         0         2         1   .        41         0
+#>       ...         .         .         .   .         .         .
+#> Gene_2996       246        75       205   .         4        95
+#> Gene_2997         0        89       120   .        28         0
+#> Gene_2998        46       868       234   .       134       200
+#> Gene_2999       217      1774       369   .       173      1415
+#> Gene_3000      3014       215      1219   .       137       300
 #> 
-#> Row names: Gene_0001, Gene_0002 ... Gene_3000
-#> Col names: Cell_001, Cell_002 ... Cell_2000
-#> 
+#> `@seed` stored in BPCells format
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
 #> Queued Operations:
-#> Load compressed matrix from directory
+#> 3000x2000 double, sparse: [seed] MatrixDir object
 ```
 
 You can coerce it into a dense matrix or `dgCMatrix` to get the actual
@@ -205,17 +215,26 @@ value.
 
 ``` r
 assay(sce, "counts")[1:10, 1:10]
-#> 10 x 10 DelayedMatrix object with class BPCellsMatrix
+#> <10 x 10> sparse BPCellsMatrix object of type "double":
+#>           Cell_001 Cell_002 Cell_003 ... Cell_009 Cell_010
+#> Gene_0001        0        0        0   .        0        0
+#> Gene_0002      188       61        0   .       20      107
+#> Gene_0003      625      897     1324   .      349      433
+#> Gene_0004        0        0        0   .        0        0
+#> Gene_0005        0        2        1   .        1       34
+#> Gene_0006        0        2       40   .        0       49
+#> Gene_0007        0        7        0   .        0       56
+#> Gene_0008      198       78       21   .      146       74
+#> Gene_0009      464      494       21   .      135      167
+#> Gene_0010       52      142        1   .      454      157
 #> 
-#> Row names: Gene_0001, Gene_0002 ... Gene_0010
-#> Col names: Cell_001, Cell_002 ... Cell_010
-#> 
+#> `@seed` stored in BPCells format
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
 #> Queued Operations:
-#> Subset matrix
-#> └─ Load compressed matrix from directory
+#> 10x10 double, sparse: [seed] MatrixSubset object
+#> └─ 3000x2000 double, sparse: [seed] MatrixDir object
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
 #> Gene_0001        0        0        0        0       51        0       16
@@ -270,19 +289,29 @@ Operations` information.
 ``` r
 sce <- scuttle::logNormCounts(sce)
 assay(sce, "logcounts")
-#> 3000 x 2000 DelayedMatrix object with class BPCellsMatrix
+#> <3000 x 2000> sparse BPCellsMatrix object of type "double":
+#>             Cell_001   Cell_002   Cell_003 ... Cell_1999 Cell_2000
+#> Gene_0001  0.0000000  0.0000000  0.0000000   .  0.000000  0.000000
+#> Gene_0002  7.5384602  6.0269795  0.0000000   .  5.533738  7.616844
+#> Gene_0003  9.2661476  9.8844377 10.3411101   .  7.119326  9.172066
+#> Gene_0004  0.0000000  0.0000000  0.0000000   .  0.000000  0.000000
+#> Gene_0005  0.0000000  1.6346787  0.9847366   .  5.434136  0.000000
+#>       ...          .          .          .   .         .         .
+#> Gene_2996   7.924555   6.320925   7.655961   .  2.356288  6.587085
+#> Gene_2997   0.000000   6.564998   6.888430   .  4.899349  0.000000
+#> Gene_2998   5.531192   9.837076   7.845959   .  7.119326  7.653186
+#> Gene_2999   7.744385  10.867509   8.500775   .  7.485524 10.469749
+#> Gene_3000  11.534041   7.828500  10.222001   .  7.151042  8.235757
 #> 
-#> Row names: Gene_0001, Gene_0002 ... Gene_3000
-#> Col names: Cell_001, Cell_002 ... Cell_2000
-#> 
+#> `@seed` stored in BPCells format
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
 #> Queued Operations:
-#> Transform by scale and (or) shift
-#> └─ Transform by log1p
-#>    └─ Transform by scale and (or) shift
-#>       └─ Load compressed matrix from directory
+#> 3000x2000 double, sparse: [seed] TransformScaleShift object
+#> └─ 3000x2000 double, sparse: [seed] TransformLog1pSlow object
+#>    └─ 3000x2000 double, sparse: [seed] TransformScaleShift object
+#>       └─ 3000x2000 double, sparse: [seed] MatrixDir object
 ```
 
 Both `count` and `logcounts` share the same disk path.
@@ -294,8 +323,6 @@ identical(path(assay(sce, "counts")), path(assay(sce, "logcounts")))
 
 ``` r
 dec_sce <- scran::modelGeneVar(sce)
-#> Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-#> collapsing to unique 'x' values
 set.seed(1L)
 scater::runPCA(sce,
     subset_row = scran::getTopHVGs(dec_sce, n = 2000L),
