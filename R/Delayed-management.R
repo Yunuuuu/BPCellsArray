@@ -20,7 +20,8 @@
 #' @param ... Additional argumentds passed into specific methods.
 #' @return
 #' - `missing`: Get current default `delayed` value.
-#' - `logical`: Change the default `delayed` value.
+#' - `logical`: Change the default `delayed` value and return original default
+#'   `delayed` value invisiblely.
 #' - `BPCellsMatrix`: Change the `delayed` value of a [BPCellsMatrix] object.
 #' @export
 methods::setGeneric("set_delayed", function(x, ...) {
@@ -45,7 +46,7 @@ methods::setMethod("set_delayed", "logical", function(x) {
     }
     old <- GlobalOptions$DelayedBPCells
     GlobalOptions$DelayedBPCells <- x
-    old
+    invisible(old)
 })
 
 #' @include Class-BPCellsMatrix.R

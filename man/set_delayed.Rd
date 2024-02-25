@@ -25,7 +25,8 @@ set_delayed(x, ...)
 \value{
 \itemize{
 \item \code{missing}: Get current default \code{delayed} value.
-\item \code{logical}: Change the default \code{delayed} value.
+\item \code{logical}: Change the default \code{delayed} value and return original default
+\code{delayed} value invisiblely.
 \item \code{BPCellsMatrix}: Change the \code{delayed} value of a \link{BPCellsMatrix} object.
 }
 }
