@@ -6,7 +6,6 @@
 \alias{writeBPCellsDirArray}
 \alias{writeBPCellsDirArray,BPCellsMatrix-method}
 \alias{writeBPCellsDirArray,ANY-method}
-\alias{path,MatrixDir-method}
 \title{Read/write sparse matrices from (or into) directory on disk}
 \usage{
 readBPCellsDirMatrix(path, buffer_size = 8192L)
@@ -22,8 +21,6 @@ writeBPCellsDirArray(x, ...)
   buffer_size = 8192L,
   overwrite = FALSE
 )
-
-\S4method{path}{MatrixDir}(object)
 }
 \arguments{
 \item{path}{A string path of directory to read or save the data into. For
@@ -46,8 +43,6 @@ Bitpacking Compression.}
 
 \item{overwrite}{A bool, If \code{TRUE}, write to a temp dir then overwrite
 existing data.}
-
-\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

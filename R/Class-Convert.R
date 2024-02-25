@@ -4,6 +4,7 @@ mould_BPCells("BPCellsDelayedConvert", "ConvertMatrixType",
     remove = "matrix", contains = "BPCellsDelayedUnaryOp"
 )
 
+#################################################################
 methods::setMethod("to_DelayedArray", "ConvertMatrixType", function(object) {
     to_DelayedUnaryOp(object, Class = "BPCellsDelayedConvert")
 })
@@ -24,6 +25,7 @@ methods::setMethod(
     "summary", "BPCellsDelayedConvert",
     summary.BPCellsDelayedConvert
 )
+
 
 ###################################################################
 ###########################  Methods  #############################

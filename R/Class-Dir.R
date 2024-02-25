@@ -74,9 +74,3 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "ANY", .writeBPCellsDirArray)
-
-#' @inheritParams convert_mode
-#' @importFrom DelayedArray path
-#' @export
-#' @rdname BPCellsDir-IO
-methods::setMethod("path", "MatrixDir", function(object) object@dir)

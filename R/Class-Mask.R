@@ -12,22 +12,23 @@ mould_BPCells("BPCellsDelayedMaskUnaryIsoOp", "MatrixMask",
     contains = c("BPCellsDelayedMask", "BPCellsDelayedUnaryIsoOp")
 )
 
+###################################################################
 methods::setMethod("to_DelayedArray", "MatrixMask", function(object) {
     slots <- setdiff(methods::slotNames(object), c("matrix", "mask"))
     names(slots) <- slots
     slots <- lapply(slots, methods::slot, object = object)
     matrix <- to_DelayedArray(object@matrix)
-    mask <- to_DelayedArray(object@mask)
-    mask_seed <- DelayedArray::seed(mask)
-    if (methods::is(mask_seed, "Iterable_dgCMatrix_wrapper") ||
-        methods::is(mask_seed, "PackedMatrixMemBase") ||
-        methods::is(mask_seed, "UnpackedMatrixMemBase")) {
-        slots$seed <- matrix
-        slots$mask <- object@mask
-        Class <- "BPCellsDelayedMaskUnaryIsoOp"
-    } else {
-        slots$seeds <- list(matrix = matrix, mask = mask)
+    mask <- object@mask
+    if (is_BPCellsInDisk(mask)) {
+        slots$seeds <- list(
+            matrix = matrix,
+            mask = to_DelayedArray(mask)
+        )
         Class <- "BPCellsDelayedMaskNaryIsoOp"
+    } else {
+        slots$seed <- matrix
+        slots$mask <- mask
+        Class <- "BPCellsDelayedMaskUnaryIsoOp"
     }
     rlang::inject(S4Vectors::new2(Class = Class, !!!slots, check = FALSE))
 })
@@ -106,7 +107,7 @@ methods::setMethod(
         method = quote(
             BPCells:::mask_matrix(
                 mat = object,
-                mask = to_BPCells(BPCellsSeed(mask)), 
+                mask = to_BPCells(BPCellsSeed(mask)),
                 invert = invert
             )
         ),

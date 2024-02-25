@@ -135,19 +135,6 @@ methods::setClass("BPCellsDelayedNaryIsoOp",
     contains = c("DelayedNaryIsoOp", "BPCellsDelayedNaryOp", "VIRTUAL")
 )
 
-methods::setValidity("BPCellsDelayedNaryOp", function(object) {
-    BPCellsSeeds <- vapply(object@seeds,
-        is_BPCellsSeed, logical(1L),
-        USE.NAMES = FALSE
-    )
-    if (!all(BPCellsSeeds)) {
-        cli::cli_abort(
-            "all `@seeds` must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object"
-        )
-    }
-    return(TRUE)
-})
-
 ### list_methods("DelayedNaryIsoOp")
 ### Seed contract
 ### here: we override the `DelayedNaryIsoOp` methods

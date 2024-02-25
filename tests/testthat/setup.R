@@ -15,7 +15,10 @@ common_test <- function(
         sprintf("`BPCellsSeed()` works as expected for %s", name),
         {
             seed <- BPCellsSeed(obj)
-            testthat::expect_true(is_BPCellsSeed(seed))
+            testthat::expect_true(
+                methods::is(seed, "BPCellsDelayedOp") ||
+                    methods::is(seed, "IterableMatrix")
+            )
             testthat::expect_identical(storage_mode(seed), mode)
             if (length(actual_path) == 1L) {
                 testthat::expect_identical(path(seed), actual_path)

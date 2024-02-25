@@ -17,6 +17,15 @@ rename <- function(x, replace) {
     x
 }
 
+c_msg <- function(..., sep = " ") {
+    paste0(..., collapse = sep)
+}
+
+obj_s4_friendly <- function(object) {
+    if (isS4(object)) return(class(object)[1L]) # styler: off
+    obj_type_friendly(object)
+}
+
 list_methods <- function(class, where = asNamespace("DelayedArray"), ...) {
     fns <- methods::showMethods(...,
         classes = class, where = where, printTo = FALSE

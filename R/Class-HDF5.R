@@ -70,8 +70,3 @@ methods::setMethod(
 #' @export
 #' @rdname BPCellsHDF5-IO
 methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)
-
-#' @importFrom DelayedArray path
-#' @export
-#' @rdname BPCellsHDF5-IO
-methods::setMethod("path", "MatrixH5", function(object, ...) object@path)

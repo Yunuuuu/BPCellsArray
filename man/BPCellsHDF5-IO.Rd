@@ -6,7 +6,6 @@
 \alias{writeBPCellsHDF5Array}
 \alias{writeBPCellsHDF5Array,BPCellsMatrix-method}
 \alias{writeBPCellsHDF5Array,ANY-method}
-\alias{path,MatrixH5-method}
 \title{Read/write sparse matrices from (or into) HDF5 file}
 \usage{
 readBPCellsHDF5Matrix(path, group, buffer_size = 8192L)
@@ -25,8 +24,6 @@ writeBPCellsHDF5Array(x, ...)
   overwrite = FALSE,
   gzip = 0L
 )
-
-\S4method{path}{MatrixH5}(object, ...)
 }
 \arguments{
 \item{path}{A string path of the \code{HDF5} file to read or save data into.}
@@ -58,8 +55,6 @@ is recommended when both compression and compatibility with outside programs
 is required. Using \code{compress=TRUE} is recommended as it is >10x faster with
 often similar compression levels. So \code{gzip} will always be zero when
 \code{compress} is \code{TRUE}.}
-
-\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

@@ -31,25 +31,104 @@ BPCells_Transform_classes <- c(
     TransformMinByCol = "min_by_col",
     TransformBinarize = "binarize",
     TransformRound = "round",
+    TransformScaleShift = NULL,
+    # Following Class were not implemented currently
     SCTransformPearson = NULL,
     SCTransformPearsonTranspose = NULL,
     SCTransformPearsonSlow = NULL,
-    SCTransformPearsonTransposeSlow = "sctransform_pearson",
-    TransformScaleShift = NULL
+    SCTransformPearsonTransposeSlow = "sctransform_pearson"
 )
 
 #########################################################
+SUPPORTED_BPCELLS_MATRIX <- c(
+    # On-memory matrix
+    "Iterable_dgCMatrix_wrapper",
+    "PackedMatrixMemBase", "UnpackedMatrixMemBase",
+    # On-disk matrix
+    "MatrixDir", "MatrixH5",
+    # Unary operations
+    "ConvertMatrixType",
+    "MatrixRankTransform",
+    "RenameDims",
+    "MatrixSubset",
+    "TransformedMatrix",
+    # Nary operations
+    "MatrixMask",
+    "MatrixMultiply",
+    "RowBindMatrices", "ColBindMatrices"
+)
+
 # we regard `BPCellsDelayedOp` or `IterableMatrix` as seed for BPCellsMatrix
-is_BPCellsSeed <- function(seed) {
-    methods::is(seed, "BPCellsDelayedOp") ||
-        methods::is(seed, "IterableMatrix")
-}
 validate_seed <- function(object) {
     seed <- object@seed
-    if (!is_BPCellsSeed(seed)) {
-        cli::cli_abort("{.code @seed} must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object")
+    if (methods::is(seed, "BPCellsDelayedOp")) {
+        return(TRUE)
+    } else if (methods::is(seed, "IterableMatrix")) {
+        for (ii in SUPPORTED_BPCELLS_MATRIX) {
+            if (methods::is(seed, ii)) return(TRUE) # styler: off
+        }
+        cli::cli_abort(
+            "{.cls {obj_s4_friendly(seed)}} is not supported at the moment"
+        )
+    } else {
+        cli::cli_abort(
+            "{.code @seed} must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object"
+        )
     }
     TRUE
+}
+
+is_BPCellsMemory <- function(seed) {
+    methods::is(seed, "PackedMatrixMemBase") ||
+        methods::is(seed, "UnpackedMatrixMemBase") ||
+        methods::is(seed, "Iterable_dgCMatrix_wrapper")
+}
+
+is_BPCellsDisk <- function(seed) {
+    methods::is(seed, "MatrixDir") || methods::is(seed, "MatrixH5")
+}
+
+is_BPCellsUnary <- function(seed) {
+    methods::is(seed, "ConvertMatrixType") ||
+        methods::is(seed, "MatrixRankTransform") ||
+        methods::is(seed, "RenameDims") ||
+        methods::is(seed, "MatrixSubset") ||
+        methods::is(seed, "TransformedMatrix")
+}
+
+is_BPCellsInDisk <- function(seed) {
+    if (is_BPCellsDisk(seed)) {
+        return(TRUE)
+    } else if (is_BPCellsMemory(seed)) {
+        return(FALSE)
+    } else if (is_BPCellsUnary(seed)) {
+        Recall(seed@matrix)
+    } else if (methods::is(seed, "MatrixMask")) {
+        Recall(seed@mask) || Recall(seed@matrix)
+    } else if (methods::is(seed, "MatrixMultiply")) {
+        # MatrixMultiply
+        Recall(seed@left) || Recall(seed@right)
+    } else {
+        # RowBindMatrices or ColBindMatrices
+        seeds <- seed@matrix_list
+        for (seed in seeds) if (Recall(seed)) return(TRUE) # styler: off
+        return(FALSE)
+    }
+}
+
+is_BPCellsInMemory <- function(seed) !is_BPCellsInDisk(seed)
+
+# not used currently
+is_BPCellsMatrixMaskUnary <- function(seed) {
+    methods::is(seed, "MatrixMask") && is_BPCellsInDisk(seed@mask)
+}
+
+# not used currently
+is_BPCellsMatrixMultiplyUnary <- function(seed) {
+    methods::is(seed, "MatrixMultiply") &&
+        sum(vapply(list(seed@left, seed@right), is_BPCellsInDisk, logical(1L),
+            USE.NAMES = FALSE
+        )) < 2L
 }
 
 ##################################################################
@@ -108,8 +187,7 @@ methods::setGeneric("to_DelayedArray", function(object) {
     standardGeneric("to_DelayedArray")
 })
 
-# only used by `MatrixDir`, `MatrixH5`, `PackedMatrixMemBase`,
-# `UnpackedMatrixMemBase`, and `Iterable_dgCMatrix_wrapper`
+# only used by on-disk and on-memory BPCells Matrix
 methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
 
 # used by c(
@@ -135,17 +213,14 @@ call_DelayedArray_method <- function(..., type = "S4") {
     )
     body <- rlang::expr({
         object <- !!next_method
-        seed <- object@seed
-        if (is_BPCellsSeed(seed)) {
-            # if `@seed` is a BPCellsSeed, always return a BPCellsMatrix object
-            new_BPCellsArray(seed)
-        } else {
+        # this will call validate method
+        tryCatch(new_BPCellsArray(object@seed), error = function(cnd) {
             cli::cli_warn(c(
-                "{.fn {.Generic}} method return a {.cls {obj_type_friendly(object)}} object",
+                "{.fn {.Generic}} method return a {.cls {obj_s4_friendly(object)}} object",
                 i = "Subsequent operation won't use {.pkg BPCells} methods"
             ))
             object
-        }
+        })
     })
     rlang::new_function(rlang::pairlist2(...), body = body)
 }

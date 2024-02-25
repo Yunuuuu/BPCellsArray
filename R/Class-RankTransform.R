@@ -6,6 +6,7 @@ mould_BPCells("BPCellsDelayedRankTransform",
 )
 
 
+#################################################################
 methods::setMethod("to_DelayedArray", "MatrixRankTransform", function(object) {
     to_DelayedUnaryOp(object, Class = "BPCellsDelayedRankTransform")
 })

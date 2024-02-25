@@ -71,6 +71,7 @@ Collate:
     'import-standalone-cli.R'
     'import-standalone-obj-type.R'
     'runSVD.R'
+    'showtree.R'
     'utils-check.R'
     'zzz.R'
 Config/testthat/edition: 3

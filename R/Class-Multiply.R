@@ -6,6 +6,7 @@ mould_BPCells("BPCellsDelayedMultiply", "MatrixMultiply",
     contains = "BPCellsDelayedNaryOp"
 )
 
+#####################################################
 methods::setMethod("to_DelayedArray", "MatrixMultiply", function(object) {
     slots <- setdiff(methods::slotNames(object), c("left", "right"))
     names(slots) <- slots
@@ -23,9 +24,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedMultiply", function(object) {
     slots <- setdiff(methods::slotNames(object), "seeds")
     names(slots) <- slots
     slots <- lapply(slots, methods::slot, object = object)
-    seeds <- object@seeds
-    slots$left <- to_BPCells(seeds$left)
-    slots$right <- to_BPCells(seeds$right)
+    slots <- c(slots, lapply(object@seeds, to_BPCells))
     rlang::inject(
         S4Vectors::new2(Class = "MatrixMultiply", !!!slots, check = FALSE)
     )
