@@ -14,7 +14,7 @@
 # Global options control whether use `to_DelayedArray` to convert
 # BPCells matrix into a `DelayedOp` object
 GlobalOptions <- new.env(parent = emptyenv())
-GlobalOptions$DelayedBPCells <- TRUE
+GlobalOptions$DelayedBPCells <- FALSE
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #' @include utils-BPCells.R
@@ -65,8 +65,8 @@ methods::setMethod(
 methods::setMethod(
     "t", "BPCellsDelayedOp",
     call_BPCells_method(
-        x = , 
-        after = expression(to_DelayedArray(object, delayed = TRUE)), 
+        x = ,
+        after = expression(to_DelayedArray(object, delayed = TRUE)),
         Op = "x"
     )
 )
