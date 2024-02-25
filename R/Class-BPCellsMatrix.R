@@ -161,13 +161,13 @@ NULL
 ### S3/S4 combo for aperm.BPCellsMatrix
 # list_methods("DelayedAperm")
 aperm.BPCellsMatrix <- call_DelayedArray_method(
-    a = , perm = , ... = , type = "S3"
+    a = , perm = , ... = , type = "S3", Array = "a"
 )
 
 #' @importFrom BiocGenerics aperm
 methods::setMethod(
     "aperm", "BPCellsMatrix",
-    call_DelayedArray_method(a = , perm = , ... = )
+    call_DelayedArray_method(a = , perm = , ... = , Array = "a")
 )
 
 # S3/S4 combo for as.array.BPCellsMatrix
@@ -232,15 +232,15 @@ methods::setMethod(
 #' @importFrom methods Ops
 methods::setMethod(
     "Ops", c("BPCellsArray", "vector"),
-    call_DelayedArray_method(e1 = , e2 = )
+    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )
 
 methods::setMethod(
     "Ops", c("vector", "BPCellsArray"),
-    call_DelayedArray_method(e1 = , e2 = )
+    call_DelayedArray_method(e1 = , e2 = , Array = "e2")
 )
 
 methods::setMethod(
     "Ops", c("BPCellsArray", "BPCellsArray"),
-    call_DelayedArray_method(e1 = , e2 = )
+    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )

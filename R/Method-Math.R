@@ -179,7 +179,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Math", "BPCellsArray",
-    call_DelayedArray_method(x = )
+    call_DelayedArray_method(x = , Array = "x")
 )
 
 #' @importFrom methods Math2
@@ -187,5 +187,5 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Math2", "BPCellsArray",
-    call_DelayedArray_method(x = )
+    call_DelayedArray_method(x = , Array = "x")
 )

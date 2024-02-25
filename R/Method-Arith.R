@@ -107,28 +107,28 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "%%", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    call_DelayedArray_method(e1 = , e2 = )
+    call_DelayedArray_method(e1 = , e2 = , Array = "e2")
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%%", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    call_DelayedArray_method(e1 = , e2 = )
+    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%/%", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    call_DelayedArray_method(e1 = , e2 = )
+    call_DelayedArray_method(e1 = , e2 = , Array = "e2")
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%/%", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    call_DelayedArray_method(e1 = , e2 = )
+    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )
 
 #######################################################################

@@ -233,39 +233,37 @@ to_DelayedUnaryOp <- function(object, Class) {
 ##############################################################
 # helper function to re-dispath `DelayedArray` method
 # should just used for `BPCellsMatrix` method
-call_DelayedArray_method <- function(..., type = "S4") {
-    next_method <- switch(type,
+call_DelayedArray_method <- function(..., type = "S4", Array = "object") {
+    method <- switch(type,
         S4 = quote(methods::callNextMethod()),
         S3 = quote(NextMethod())
     )
-    body <- rlang::expr({
-        object <- !!next_method
-        # for some method, it will return DelayedArray directly although
-        # @seed is compatible with `BPCellsMatrix`.
-        # here we just re-creating a BPCellsMatrix object when it could be.
-        object <- DelayedArray(object@seed)
-        if (!(methods::is(object, "BPCellsMatrix") ||
-            methods::is(object, "BPCellsArray"))) {
-            cli::cli_warn(c(
-                sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
-                i = "Subsequent operation won't use {.pkg BPCells} methods"
-            ))
-        }
-        object
-    })
-    rlang::new_function(rlang::pairlist2(...), body = body)
+    Array <- rlang::sym(Array)
+    body <- list(substitute(delayed <- Array@delayed, list(Array = Array)))
+    new_method(rlang::pairlist2(...),
+        method = method, body = body,
+        after = expression(
+            # for some method, it will return DelayedArray directly although
+            # @seed is compatible with `BPCellsMatrix`.
+            # here we just re-creating a BPCellsMatrix object when it could be.
+            object <- with_delayed(delayed, DelayedArray(object@seed)),
+            if (!(methods::is(object, "BPCellsMatrix") ||
+                methods::is(object, "BPCellsArray"))) {
+                cli::cli_warn(c(
+                    sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
+                    i = "Subsequent operation won't use {.pkg BPCells} methods"
+                ))
+            },
+            object
+        )
+    )
 }
 
 # helper function to re-dispath `BPCells` method
 # should just used for `BPCellsDelayedOp` method
-call_BPCells_method <- function(..., before = NULL, after = NULL, Op = "object", inform = FALSE) {
+call_BPCells_method <- function(..., before = NULL, after = NULL, Op = "object") {
     Op <- rlang::sym(Op)
     body <- list(substitute(Op <- to_BPCells(Op), list(Op = Op)))
-    if (inform) {
-        body <- c(
-            list(quote(cli::cli_inform("Using {.pkg BPCells} method"))), body
-        )
-    }
     new_method(rlang::pairlist2(...),
         body = body, method = quote(methods::callGeneric()),
         before = before, after = after
@@ -274,6 +272,7 @@ call_BPCells_method <- function(..., before = NULL, after = NULL, Op = "object",
 
 # hepler function to set method for `BPCellsArray`
 set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = NULL, Arrays = "object") {
+    method <- method %||% quote(methods::callGeneric())
     body <- lapply(rlang::syms(Arrays), function(Array) {
         substitute(
             BPCells_mat <- to_BPCells(BPCells_mat@seed), # nolint
@@ -289,17 +288,11 @@ set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = N
 ########################################################
 #' @include utils.R
 #' @noRd
-new_method <- function(args, body, method = NULL, before = NULL, after = NULL) {
-    method <- method %||% quote(methods::callGeneric())
-    if (is.null(after)) {
-        after <- list(method)
-    } else {
-        after <- c(list(rlang::expr(object <- !!method)), after) # nolint
+new_method <- function(args, body, method, before = NULL, after = NULL) {
+    if (!is.null(after)) {
+        method <- substitute(object <- method, list(method = method)) # nolint
     }
-    new_function(args, body = body, before = before, after = after)
-}
-
-new_function <- function(args, body, before = NULL, after = NULL) {
+    body <- c(body, list(method))
     if (!is.null(before)) body <- c(before, body)
     if (!is.null(after)) body <- c(body, after)
     body <- as.call(c(as.name("{"), body))
