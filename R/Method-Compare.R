@@ -36,7 +36,8 @@ methods::setMethod(
     set_BPCellsArray_method(
         object = , ... = ,
         method = quote(BPCells::binarize(mat = object, ...)),
-        after = expression(DelayedArray(to_DelayedArray(object)))
+        before = expression(delayed <- object@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
     )
 )
 

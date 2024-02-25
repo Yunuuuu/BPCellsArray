@@ -19,13 +19,21 @@
 NULL
 
 
-#' @return 
+#' @param delayed A bool value. If `TRUE`, will convert `IterableMatrix` into a
+#'   parallel [DelayedOp][DelayedArray::DelayedOp-class] object
+#'   (`BPCellsDelayedOp`), if `FALSE`, will use the `IterableMatrix` object as
+#'   the seed directly. see [set_delayed] for details.
+#' @return
 #'  - `BPCellsArray` and `BPCellsMatrix`: A `BPCellsMatrix` object, since
 #'    `BPCells` can only support 2-dim array.
 #' @param x,object A [BPCellsMatrix][BPCellsMatrix-class] object
 #' @export
 #' @rdname BPCellsMatrix-class
-BPCellsArray <- function(x) DelayedArray(BPCellsSeed(x))
+BPCellsArray <- function(x, delayed = NULL) {
+    assert_bool(delayed, null_ok = TRUE)
+    delayed <- delayed %||% GlobalOptions$DelayedBPCells
+    with_delayed(delayed, DelayedArray(BPCellsSeed(x)))
+}
 
 #' @export
 #' @rdname BPCellsMatrix-class
@@ -33,13 +41,21 @@ BPCellsMatrix <- BPCellsArray
 
 #' @export
 #' @rdname BPCellsMatrix-class
-methods::setClass("BPCellsArray", contains = "DelayedArray")
+methods::setClass("BPCellsArray",
+    contains = "DelayedArray",
+    slots = list(delayed = "logical"),
+    prototype = list(delayed = GlobalOptions$DelayedBPCells)
+)
 
 #' @export
 #' @rdname BPCellsMatrix-class
-methods::setClass("BPCellsMatrix", contains = "DelayedMatrix")
+methods::setClass("BPCellsMatrix",
+    contains = "DelayedMatrix",
+    slots = list(delayed = "logical"),
+    prototype = list(delayed = GlobalOptions$DelayedBPCells)
+)
 
-#' @return 
+#' @return
 #'  - `matrixClass`: A string, always be `"BPCellsMatrix"`.
 #' @importFrom DelayedArray matrixClass
 #' @export
@@ -48,40 +64,76 @@ methods::setMethod("matrixClass", "BPCellsArray", function(x) {
     "BPCellsMatrix"
 })
 
-methods::setValidity("BPCellsArray", validate_seed)
-methods::setValidity("BPCellsMatrix", validate_seed)
+.validate_delayed <- function(delayed, arg = rlang::caller_arg(delayed)) {
+    msg <- "{.arg {arg}} must be a single bool value"
+    if (length(delayed) != 1L) {
+        cli::cli_abort(
+            c(msg, i = "You have provided a length {length(delayed)}")
+        )
+    } else if (is.na(delayed)) {
+        cli::cli_abort(c(msg, i = "{.code NA} is not allowed"))
+    }
+    return(TRUE)
+}
+
+.validate_BPCellsArray <- function(object) {
+    .validate_seed(object@seed, arg = "@seed")
+    .validate_delayed(object@delayed, arg = "@delayed")
+}
+
+methods::setValidity("BPCellsArray", .validate_BPCellsArray)
+methods::setValidity("BPCellsMatrix", .validate_BPCellsArray)
 
 #' Since BPCells only support 2-dim matrix, `new_BPCellsArray` will always
 #' return a `BPCellsMatrix` object.
 #' @importFrom DelayedArray new_DelayedArray
 #' @noRd
-new_BPCellsArray <- function(seed) {
-    new_DelayedArray(seed, Class = "BPCellsArray")
-}
+NULL
 
 #' @param seed A [IterableMatrix][BPCellsSeed-class] or
-#' [BPCellsDelayedOp][BPCellsSeed-class] object. 
+#' [BPCellsDelayedOp][BPCellsSeed-class] object.
 #' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname BPCellsMatrix-class
-methods::setMethod("DelayedArray", "IterableMatrix", new_BPCellsArray)
+methods::setMethod("DelayedArray", "IterableMatrix", function(seed) {
+    # DelayedArray can only accept one argument,
+    # so we always use with_delayed with DelayedArray to
+    # control the delayed behaviour and just assign the delayed
+    # value into the `BPCellsArray` object after creating `BPCellsArray` object
+    delayed <- GlobalOptions$DelayedBPCells
+    object <- new_DelayedArray(
+        to_DelayedArray(seed, delayed = delayed),
+        Class = "BPCellsArray"
+    )
+    object@delayed <- delayed
+    object
+})
 
 #' @include Class-Delayed.R
 #' @export
 #' @rdname BPCellsMatrix-class
-methods::setMethod("DelayedArray", "BPCellsDelayedOp", new_BPCellsArray)
+methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
+    object <- new_DelayedArray(seed, Class = "BPCellsArray")
+    object@delayed <- TRUE
+    object
+})
 
 ###################################################################
 .show_internal <- function(object) {
     methods::callNextMethod()
-
+    delayed <- object@delayed
     cat("\n")
+    cat(sprintf(
+        "`@seed` stored in %s format\n",
+        if (delayed) "DelayedArray" else "BPCells"
+    ))
     cat(sprintf("Storage Data type: %s\n", storage_mode(object)))
     cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
 
     cat("\n")
     cat("Queued Operations:\n")
-    DelayedArray::showtree(object@seed)
+    showtree(object@seed)
+    invisible(object)
 }
 
 #' @importFrom methods show
@@ -98,8 +150,7 @@ methods::setMethod("show", "BPCellsMatrix", .show_internal)
 ###########################################################
 #' @export
 methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
-    from <- to_BPCells(from@seed)
-    methods::as(from, "dgCMatrix")
+    methods::as(to_BPCells(from@seed), "dgCMatrix")
 })
 
 # Default drop use `as.array` and `aperm` methods
@@ -129,13 +180,13 @@ as.array.BPCellsMatrix <- function(x, drop = FALSE) {
     if (drop) drop(mat) else mat
 }
 
-#' @return 
+#' @return
 #'  - `as.array`: A dense matrix or an atomic vector.
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("as.array", "BPCellsMatrix", as.array.BPCellsMatrix)
 
-#' @return 
+#' @return
 #'  - `as.matrix`: A dense matrix.
 #' @exportS3Method base::as.matrix
 #' @rdname BPCellsMatrix-class
@@ -172,7 +223,8 @@ NULL
 methods::setMethod(
     "t", "BPCellsMatrix",
     set_BPCellsArray_method(
-        x = , after = expression(DelayedArray(to_DelayedArray(object))),
+        x = , before = expression(delayed <- x@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )

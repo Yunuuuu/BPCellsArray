@@ -11,6 +11,11 @@
 # `DelayedArray`, so that `BPCells` delayed operations can transform into
 # parallel `DelayedOp` class easily.
 
+# Global options control whether use `to_DelayedArray` to convert
+# BPCells matrix into a `DelayedOp` object
+GlobalOptions <- new.env(parent = emptyenv())
+GlobalOptions$DelayedBPCells <- TRUE
+
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #' @include utils-BPCells.R
 #' @importClassesFrom DelayedArray DelayedOp
@@ -60,7 +65,9 @@ methods::setMethod(
 methods::setMethod(
     "t", "BPCellsDelayedOp",
     call_BPCells_method(
-        x = , after = expression(to_DelayedArray(object)), Op = "x"
+        x = , 
+        after = expression(to_DelayedArray(object, delayed = TRUE)), 
+        Op = "x"
     )
 )
 methods::setMethod(

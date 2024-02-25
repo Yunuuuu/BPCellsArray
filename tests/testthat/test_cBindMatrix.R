@@ -6,7 +6,7 @@ obj2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
 obj <- cbind(obj1, obj2)
 mat <- cbind(mat1, mat2)
 
-common_test(
+test_BPCellsArray(
     obj, path,
     mat = mat, 
     name = "ColBindMatrix"

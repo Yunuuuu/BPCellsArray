@@ -95,8 +95,9 @@ methods::setMethod(
     "[", "BPCellsMatrix",
     set_BPCellsArray_method(
         x = , i = , j = , ... = , drop = TRUE,
+        before = expression(delayed <- x@delayed),
         after = expression(
-            ans <- DelayedArray(to_DelayedArray(object)),
+            ans <- with_delayed(delayed, DelayedArray(object)),
             if (drop) drop(ans) else ans
         ),
         Arrays = "x"

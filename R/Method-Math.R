@@ -35,7 +35,8 @@ methods::setMethod(
     "expm1_slow", "BPCellsMatrix",
     set_BPCellsArray_method(
         x = , method = quote(BPCells::expm1_slow(x)),
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- x@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
@@ -70,7 +71,8 @@ methods::setMethod(
     "expm1", "BPCellsMatrix",
     set_BPCellsArray_method(
         x = ,
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- x@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
@@ -101,7 +103,8 @@ methods::setMethod(
     "log1p", "BPCellsMatrix",
     set_BPCellsArray_method(
         x = , method = quote(BPCells::log1p_slow(x)),
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- x@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
@@ -134,7 +137,8 @@ methods::setMethod(
     "log1p_single", "BPCellsMatrix",
     set_BPCellsArray_method(
         x = , method = quote(log1p(x)),
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- x@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
@@ -164,7 +168,8 @@ methods::setMethod(
     "round", "BPCellsMatrix",
     set_BPCellsArray_method(
         x = , digits = 0,
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- x@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )

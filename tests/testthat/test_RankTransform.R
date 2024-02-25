@@ -6,7 +6,7 @@ obj <- BPCells:::rank_transform(obj, "col")
 #     ties.method = "average",
 #     preserveShape = TRUE
 # )
-common_test(
+test_BPCellsArray(
     obj, path,
     name = "RankTransform"
 )

@@ -64,6 +64,7 @@ NULL
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
+        delayed <- x@delayed
         x <- to_BPCells(x@seed)
         y <- to_BPCells(y@seed)
         if (x@transpose != y@transpose) {
@@ -79,7 +80,7 @@ methods::setMethod(
                 y <- BPCells::transpose_storage_order(y)
             }
         }
-        DelayedArray(to_DelayedArray(methods::callGeneric()))
+        with_delayed(delayed, DelayedArray(methods::callGeneric()))
     }
 )
 

@@ -33,9 +33,9 @@
 
 \S4method{show}{BPCellsMatrix}(object)
 
-BPCellsArray(x)
+BPCellsArray(x, delayed = NULL)
 
-BPCellsMatrix(x)
+BPCellsMatrix(x, delayed = NULL)
 
 \S4method{matrixClass}{BPCellsArray}(x)
 
@@ -65,6 +65,11 @@ BPCellsMatrix(x)
 }
 \arguments{
 \item{x, object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object}
+
+\item{delayed}{A bool value. If \code{TRUE}, will convert \code{IterableMatrix} into a
+parallel \link[DelayedArray:DelayedOp-class]{DelayedOp} object
+(\code{BPCellsDelayedOp}), if \code{FALSE}, will use the \code{IterableMatrix} object as
+the seed directly. see \link{set_delayed} for details.}
 
 \item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} or
 \link[=BPCellsSeed-class]{BPCellsDelayedOp} object.}

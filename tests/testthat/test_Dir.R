@@ -2,7 +2,7 @@ mat <- mock_matrix(30, 20)
 path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 
-common_test(
+test_BPCellsArray(
     obj, path,
     mat = mat, 
     name = "Dir"

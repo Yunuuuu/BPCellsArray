@@ -65,8 +65,11 @@ methods::setMethod(
         method = quote(BPCells::convert_matrix_type(
             matrix = object, type = mode
         )),
-        before = expression(mode <- match.arg(mode, BPCells_MODE)),
-        after = expression(DelayedArray(to_DelayedArray(object)))
+        before = expression(
+            mode <- match.arg(mode, BPCells_MODE),
+            delayed <- object@delayed
+        ),
+        after = expression(with_delayed(delayed, DelayedArray(object)))
     )
 )
 

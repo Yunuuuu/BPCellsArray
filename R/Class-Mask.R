@@ -93,7 +93,8 @@ methods::setMethod(
         method = quote(
             BPCells:::mask_matrix(mat = object, mask = mask, invert = invert)
         ),
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- object@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = list("object", "mask")
     )
 )
@@ -111,7 +112,8 @@ methods::setMethod(
                 invert = invert
             )
         ),
-        after = expression(DelayedArray(to_DelayedArray(object)))
+        before = expression(delayed <- object@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object)))
     )
 )
 

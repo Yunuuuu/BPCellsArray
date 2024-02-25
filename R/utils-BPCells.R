@@ -59,8 +59,7 @@ SUPPORTED_BPCELLS_MATRIX <- c(
 )
 
 # we regard `BPCellsDelayedOp` or `IterableMatrix` as seed for BPCellsMatrix
-validate_seed <- function(object) {
-    seed <- object@seed
+.validate_seed <- function(seed, arg = rlang::caller_arg(seed)) {
     if (methods::is(seed, "BPCellsDelayedOp")) {
         return(TRUE)
     } else if (methods::is(seed, "IterableMatrix")) {
@@ -72,7 +71,7 @@ validate_seed <- function(object) {
         )
     } else {
         cli::cli_abort(
-            "{.code @seed} must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object"
+            "{.arg {arg}} must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object"
         )
     }
     TRUE
@@ -94,6 +93,13 @@ is_BPCellsUnary <- function(seed) {
         methods::is(seed, "RenameDims") ||
         methods::is(seed, "MatrixSubset") ||
         methods::is(seed, "TransformedMatrix")
+}
+
+is_BPCellsNary <- function(seed) {
+    methods::is(seed, "MatrixMask") ||
+        methods::is(seed, "MatrixMultiply") ||
+        methods::is(seed, "RowBindMatrices") ||
+        methods::is(seed, "ColBindMatrices")
 }
 
 is_BPCellsInDisk <- function(seed) {
@@ -181,18 +187,39 @@ methods::setMethod("to_BPCells", "DelayedOp", function(object) {
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # to_DelayedArray
 # Function used to translate `BPCells` class into `BPCellsDelayed` class
+# This function only used for `BPCells` object, so it's safe to regard `object`
+# in generic function as a `IterableMatrix` object
 #' @keywords internal
 #' @noRd
-methods::setGeneric("to_DelayedArray", function(object) {
-    standardGeneric("to_DelayedArray")
-})
+methods::setGeneric("to_DelayedArray",
+    signature = c("object"), function(object, ..., delayed = NULL) {
+        delayed <- delayed %||% GlobalOptions$DelayedBPCells
+        if (delayed) {
+            with_delayed(TRUE, standardGeneric("to_DelayedArray"))
+        } else {
+            to_DelayedArray_return_IterableMatrix(object)
+        }
+    }
+)
+
+to_DelayedArray_return_IterableMatrix <- function(object) {
+    for (ii in SUPPORTED_BPCELLS_MATRIX) {
+        if (methods::is(object, ii)) return(object) # styler: off
+    }
+    cli::cli_abort(
+        "{.cls {obj_s4_friendly(object)}} is not supported at the moment"
+    )
+}
 
 # only used by on-disk and on-memory BPCells Matrix
-methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
+methods::setMethod(
+    "to_DelayedArray", "IterableMatrix",
+    to_DelayedArray_return_IterableMatrix
+)
 
 # used by c(
-#    "BPCellsConvertSeed", "BPCellsRankTransformSeed",
-#    "BPCellsRenameDimsSeed", "BPCellsSubsetSeed", "BPCellsTransformedSeed"
+#    "BPCellsConvert", "BPCellsRankTransform",
+#    "BPCellsRenameDims", "BPCellsSubset", "BPCellsTransformed"
 # )
 to_DelayedUnaryOp <- function(object, Class) {
     object <- migrate_slots(
@@ -213,14 +240,18 @@ call_DelayedArray_method <- function(..., type = "S4") {
     )
     body <- rlang::expr({
         object <- !!next_method
-        # this will call validate method
-        tryCatch(new_BPCellsArray(object@seed), error = function(cnd) {
+        # for some method, it will return DelayedArray directly although
+        # @seed is compatible with `BPCellsMatrix`.
+        # here we just re-creating a BPCellsMatrix object when it could be.
+        object <- DelayedArray(object@seed)
+        if (!(methods::is(object, "BPCellsMatrix") ||
+            methods::is(object, "BPCellsArray"))) {
             cli::cli_warn(c(
-                "{.fn {.Generic}} method return a {.cls {obj_s4_friendly(object)}} object",
+                sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
                 i = "Subsequent operation won't use {.pkg BPCells} methods"
             ))
-            object
-        })
+        }
+        object
     })
     rlang::new_function(rlang::pairlist2(...), body = body)
 }

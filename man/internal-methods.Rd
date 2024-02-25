@@ -5,6 +5,8 @@
 %   R/Method-internal.R, R/Method-pmin.R
 \name{set_threads,BPCellsDelayedAbind-method}
 \alias{set_threads,BPCellsDelayedAbind-method}
+\alias{set_threads,ColBindMatrices-method}
+\alias{set_threads,RowBindMatrices-method}
 \alias{set_threads,ANY-method}
 \alias{rbind2,ANY,BPCellsMatrix-method}
 \alias{rbind2,BPCellsMatrix,ANY-method}
@@ -41,6 +43,10 @@
 \title{House of internal methods}
 \usage{
 \S4method{set_threads}{BPCellsDelayedAbind}(object, threads = 0L)
+
+\S4method{set_threads}{ColBindMatrices}(object, threads = 0L)
+
+\S4method{set_threads}{RowBindMatrices}(object, threads = 0L)
 
 \S4method{set_threads}{ANY}(object, ...)
 

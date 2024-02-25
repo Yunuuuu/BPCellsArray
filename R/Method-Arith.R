@@ -74,7 +74,8 @@ methods::setMethod(
     "Arith", c(e1 = "BPCellsMatrix", e2 = "numeric"),
     set_BPCellsArray_method(
         e1 = , e2 = ,
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- e1@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "e1"
     )
 )
@@ -85,7 +86,8 @@ methods::setMethod(
     "Arith", c(e1 = "numeric", e2 = "BPCellsMatrix"),
     set_BPCellsArray_method(
         e1 = , e2 = ,
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- e2@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "e2"
     )
 )
@@ -157,7 +159,8 @@ methods::setMethod(
     set_BPCellsArray_method(
         e1 = , e2 = ,
         method = quote(BPCells::pow_slow(x = e1, exponent = e2)),
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- e1@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "e1"
     )
 )

@@ -3,10 +3,14 @@ tmpdir <- testthat::test_path("_TEMP")
 if (!dir.exists(tmpdir)) dir.create(tmpdir)
 tmpdir <- normalizePath(tmpdir, mustWork = TRUE)
 
+test_BPCellsArray <- function(obj, actual_path, ...) {
+    with_delayed(FALSE, common_test(obj = obj, actual_path = actual_path, ...))
+    with_delayed(TRUE, common_test(obj = obj, actual_path = actual_path, ...))
+}
+
 common_test <- function(
     obj, actual_path, ...,
-    mode = NULL, mat = NULL,
-    name, skip_multiplication = FALSE) {
+    mode = NULL, mat = NULL, name, skip_multiplication = FALSE) {
     mode <- mode %||% storage_mode(obj)
     mat <- convert_mode(mat %||% as.matrix(obj), mode)
     ########################################################

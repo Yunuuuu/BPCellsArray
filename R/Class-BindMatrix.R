@@ -38,7 +38,7 @@ to_DelayedAbind <- function(object, along) {
         Class = "BPCellsDelayedAbind"
     )
     object@along <- along
-    object@seeds <- lapply(object@seeds, to_DelayedArray)
+    object@seeds <- lapply(object@seeds, to_DelayedArray, delayed = TRUE)
     object
 }
 
@@ -118,23 +118,30 @@ methods::setMethod(
     }
 )
 
+.set_threads_internal <- function(object, threads = 0L) {
+    threads <- as.integer(max(0L, threads, na.rm = TRUE))
+    object@threads <- threads
+    object
+}
+
 #' @inheritParams set_threads
 #' @export
 #' @rdname internal-methods
-methods::setMethod(
-    "set_threads", "BPCellsDelayedAbind",
-    function(object, threads = 0L) {
-        threads <- as.integer(max(0L, threads, na.rm = TRUE))
-        object@threads <- threads
-        object
-    }
-)
+methods::setMethod("set_threads", "BPCellsDelayedAbind", .set_threads_internal)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod("set_threads", "ColBindMatrices", .set_threads_internal)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod("set_threads", "RowBindMatrices", .set_threads_internal)
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod("set_threads", "ANY", function(object, ...) {
     cli::cli_abort(
-        "{.arg object@seed} must be a {.cls BPCellsDelayedAbind} object"
+        "{.arg object@seed} must be a {.cls BPCellsDelayedAbind}, {.cls ColBindMatrices}, or {.cls ColBindMatrices} object"
     )
 })
 
@@ -358,7 +365,7 @@ combine_matrices <- function(.fn, mode, matrices, ...) {
         }
     }, mode = mode)
     seed <- Reduce(function(x, y) fn(x = x, y = y, ...), seeds)
-    DelayedArray(to_DelayedArray(seed))
+    with_delayed(matrices[[1L]]@delayed, DelayedArray(seed))
 }
 
 pack_BPCellsMatrices <- function(..., call = rlang::caller_env()) {

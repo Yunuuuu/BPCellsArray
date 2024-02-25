@@ -4,7 +4,7 @@ path <- character()
 
 # Packed Memory object
 obj <- BPCells::write_matrix_memory(mat = sparse_mat)
-common_test(
+test_BPCellsArray(
     obj, path,
     mat = mat,
     name = "Mem"
@@ -12,7 +12,7 @@ common_test(
 
 # Unpacked Memory object
 obj <- BPCells::write_matrix_memory(mat = sparse_mat, FALSE)
-common_test(
+test_BPCellsArray(
     obj, path,
     mat = mat,
     name = "Mem"

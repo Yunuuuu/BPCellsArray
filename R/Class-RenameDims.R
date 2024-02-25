@@ -55,7 +55,8 @@ methods::setMethod(
     "dimnames<-", c(x = "BPCellsMatrix", value = "ListOrNULL"),
     set_BPCellsArray_method(
         x = , value = ,
-        after = expression(DelayedArray(to_DelayedArray(object))),
+        before = expression(delayed <- x@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )

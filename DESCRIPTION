@@ -57,6 +57,7 @@ Collate:
     'Class-RenameDims.R'
     'Class-Subset.R'
     'Class-Transformed.R'
+    'Delayed-management.R'
     'Method-Arith.R'
     'Method-Compare.R'
     'Method-Math.R'

@@ -34,7 +34,8 @@ methods::setMethod(
     set_BPCellsArray_method(
         object = , values = ,
         method = quote(BPCells::min_by_col(mat = object, vals = values)),
-        after = expression(DelayedArray(to_DelayedArray(object)))
+        before = expression(delayed <- object@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object)))
     )
 )
 
@@ -68,7 +69,8 @@ methods::setMethod(
     set_BPCellsArray_method(
         object = , values = ,
         method = quote(BPCells::min_by_row(mat = object, vals = values)),
-        after = expression(DelayedArray(to_DelayedArray(object)))
+        before = expression(delayed <- object@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object)))
     )
 )
 
@@ -103,7 +105,8 @@ methods::setMethod(
     set_BPCellsArray_method(
         object = , value = ,
         method = quote(BPCells::min_scalar(mat = object, val = value)),
-        after = expression(DelayedArray(to_DelayedArray(object)))
+        before = expression(delayed <- object@delayed),
+        after = expression(with_delayed(delayed, DelayedArray(object)))
     )
 )
 
