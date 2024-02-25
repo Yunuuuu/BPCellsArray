@@ -28,18 +28,6 @@ list_methods <- function(class, where = asNamespace("DelayedArray"), ...) {
     )
 }
 
-coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    tryCatch(
-        methods::as(x, "dgCMatrix"),
-        error = function(cnd) {
-            cli::cli_abort(
-                "{.arg {arg}} must be a matrix-like object which can be coerced into {.cls dgCMatrix}",
-                call = call
-            )
-        }
-    )
-}
-
 imap <- function(.x, .f, ...) {
     .mapply(.f, list(.x, names(.x) %||% seq_along(.x)), list(...))
 }
@@ -64,14 +52,6 @@ rebind <- function(sym, value, ns) {
     } else {
         stop("ns must be a string or environment")
     }
-}
-
-compatible_storage_mode <- function(list) {
-    actual_modes <- vapply(
-        list, storage_mode, character(1L),
-        USE.NAMES = FALSE
-    )
-    BPCells_MODE[max(match(actual_modes, BPCells_MODE))]
 }
 
 matrix_to_integer <- function(matrix) { # a numeric matrix
@@ -109,53 +89,3 @@ snakeize <- function(x) {
 }
 to_lower_ascii <- function(x) chartr(upper_ascii, lower_ascii, x)
 to_upper_ascii <- function(x) chartr(lower_ascii, upper_ascii, x)
-
-#############################################################
-
-##########################################################
-BPCells_class <- function(name) {
-    BPCells_get(paste0(".__C__", name))
-}
-
-BPCells_get <- local({
-    BPCellsNamespace <- NULL
-    function(nm) {
-        if (is.null(BPCellsNamespace)) {
-            BPCellsNamespace <<- asNamespace("BPCells")
-        }
-        if (exists(nm, envir = BPCellsNamespace, inherits = FALSE)) {
-            get(nm, envir = BPCellsNamespace, inherits = FALSE)
-        } else {
-            cli::cli_abort("Cannot find {.val {nm}} in {.pkg BPCells}")
-        }
-    }
-})
-
-swap_axis <- function(.fn, object, column, row, ...) {
-    if (object@transpose) {
-        .fn(object, row, ...)
-    } else {
-        .fn(object, column, ...)
-    }
-}
-
-BPCells_MODE <- c("uint32_t", "float", "double")
-BPCells_Transform_classes <- c(
-    TransformLog1p = "log1p",
-    TransformLog1pSlow = "log1p_slow",
-    TransformExpm1 = "expm1",
-    TransformExpm1Slow = "expm1_slow",
-    TransformSquare = NULL,
-    TransformPow = "^",
-    TransformPowSlow = "pow_slow",
-    TransformMin = "min_scalar",
-    TransformMinByRow = "min_by_row",
-    TransformMinByCol = "min_by_col",
-    TransformBinarize = "binarize",
-    TransformRound = "round",
-    SCTransformPearson = NULL,
-    SCTransformPearsonTranspose = NULL,
-    SCTransformPearsonSlow = NULL,
-    SCTransformPearsonTransposeSlow = "sctransform_pearson",
-    TransformScaleShift = NULL
-)

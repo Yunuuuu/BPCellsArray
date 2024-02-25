@@ -1,6 +1,7 @@
 ###########################################################
 mould_BPCells("BPCellsDelayedConvert", "ConvertMatrixType",
-    delete = "matrix", contains = "BPCellsDelayedUnaryOp"
+    # BPCellsDelayedUnaryOp: `seed` slot
+    remove = "matrix", contains = "BPCellsDelayedUnaryOp"
 )
 
 methods::setMethod("to_DelayedArray", "ConvertMatrixType", function(object) {

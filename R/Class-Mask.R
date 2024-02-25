@@ -1,12 +1,14 @@
 methods::setClass("BPCellsDelayedMask", contains = "VIRTUAL")
 
 mould_BPCells("BPCellsDelayedMaskNaryIsoOp", "MatrixMask",
-    delete = c("matrix", "mask"),
+    remove = c("matrix", "mask"),
+    # BPCellsDelayedNaryIsoOp: `seeds` slot
     contains = c("BPCellsDelayedMask", "BPCellsDelayedNaryIsoOp")
 )
 
 mould_BPCells("BPCellsDelayedMaskUnaryIsoOp", "MatrixMask",
-    delete = "matrix",
+    remove = "matrix",
+    # BPCellsDelayedUnaryIsoOp: `seed` slot
     contains = c("BPCellsDelayedMask", "BPCellsDelayedUnaryIsoOp")
 )
 

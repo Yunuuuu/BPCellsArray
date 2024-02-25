@@ -2,7 +2,8 @@
 # TransformScaleShift
 mould_BPCells("BPCellsDelayedTransformeScaleShift",
     "TransformScaleShift",
-    delete = "matrix",
+    remove = "matrix",
+    # BPCellsDelayedTransformed: `seed` slot
     contains = "BPCellsDelayedTransformed"
 )
 

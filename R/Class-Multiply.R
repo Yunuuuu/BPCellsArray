@@ -1,7 +1,8 @@
 ############################################################
 # MatrixMultiply
 mould_BPCells("BPCellsDelayedMultiply", "MatrixMultiply",
-    delete = c("left", "right"),
+    remove = c("left", "right"),
+    # BPCellsDelayedNaryOp: `seeds` slot
     contains = "BPCellsDelayedNaryOp"
 )
 

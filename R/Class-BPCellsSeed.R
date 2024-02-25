@@ -14,7 +14,7 @@
 #' - [summarization][BPCells-Summarization]: row/col summarization.
 #' - [Arithmetic][BPCells-Arithmetic]: Binary Arithmetic operators.
 #' - [binarize][BPCells-binarize]: Convert matrix elements to zeros and ones.
-#' @include utils.R Class-Delayed.R
+#' @include utils-BPCells.R
 #' @aliases IterableMatrix
 #' @name BPCellsSeed-class
 NULL
@@ -27,9 +27,6 @@ NULL
 #     "BPCellsConvertSeed", "BPCellsRankTransformSeed",
 #     "BPCellsRenameDimsSeed", "BPCellsSubsetSeed", "BPCellsTransformedSeed"
 # )
-is_BPCellsSeed <- function(seed) {
-    methods::is(seed, "BPCellsDelayedOp") || methods::is(seed, "IterableMatrix")
-}
 
 ###########################################################
 # Seed Contract

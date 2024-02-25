@@ -1,76 +1,93 @@
+# No need to mould `RowBindMatrices` Class
+mould_BPCells("BPCellsDelayedAbind", "ColBindMatrices",
+    remove = "matrix_list",
+    # DelayedAbind: `along` slot
+    # BPCellsDelayedNaryOp: `seeds` slot
+    contains = c("DelayedAbind", "BPCellsDelayedNaryOp")
+)
+
+### list_methods("DelayedAbind")
+### Seed contract
+### here: we override the `DelayedAbind` methods
+methods::setMethod(
+    "dim", "BPCellsDelayedAbind",
+    call_BPCells_method(x = , Op = "x")
+)
+
+methods::setMethod(
+    "dimnames", "BPCellsDelayedAbind",
+    call_BPCells_method(x = , Op = "x")
+)
+
+methods::setMethod("is_sparse", "BPCellsDelayedAbind", function(x) TRUE)
+methods::setMethod(
+    "extract_array", "BPCellsDelayedAbind",
+    call_BPCells_method(x = , index = , Op = "x")
+)
+
+methods::setMethod(
+    "OLD_extract_sparse_array", "BPCellsDelayedAbind",
+    call_BPCells_method(x = , index = , Op = "x")
+)
+
 ############################################################
+to_DelayedAbind <- function(object, along) {
+    object <- migrate_slots(
+        Object = object,
+        rename = c(matrix_list = "seeds"),
+        Class = "BPCellsDelayedAbind"
+    )
+    object@along <- along
+    object@seeds <- lapply(object@seeds, to_DelayedArray)
+    object
+}
+
 # Class `ColBindMatrices`
-mould_BPCells("BPCellsDelayedColBind", "ColBindMatrices",
-    rename = c(matrix_list = "seeds"),
-    contains = "BPCellsDelayedNaryOp"
-)
-
 methods::setMethod("to_DelayedArray", "ColBindMatrices", function(object) {
-    object <- rename_slot(
-        Object = object, matrix_list = "seeds",
-        Class = "BPCellsDelayedColBind"
-    )
-    object@seeds <- lapply(object@seeds, to_DelayedArray)
-    object
+    to_DelayedAbind(object, 2L)
 })
 
-methods::setMethod("to_BPCells", "BPCellsDelayedColBind", function(object) {
-    object@seeds <- lapply(object@seeds, to_BPCells)
-    rename_slot(
-        Object = object,
-        seeds = "matrix_list", Class = "ColBindMatrices"
-    )
-})
-
-summary.BPCellsDelayedColBind <- function(object) {
-    sprintf(
-        "Concatenate %s of %d matrix objects (threads=%d)",
-        if (object@transpose) "rows" else "cols",
-        length(object@seeds),
-        object@threads
-    )
-}
-
-methods::setMethod(
-    "summary", "BPCellsDelayedColBind",
-    summary.BPCellsDelayedColBind
-)
-
-############################################################
 # Class `RowBindMatrices`
-mould_BPCells("BPCellsDelayedRowBind", "RowBindMatrices",
-    rename = c(matrix_list = "seeds"),
-    contains = "BPCellsDelayedNaryOp"
-)
-
 methods::setMethod("to_DelayedArray", "RowBindMatrices", function(object) {
-    object <- rename_slot(
-        Object = object, matrix_list = "seeds",
-        Class = "BPCellsDelayedRowBind"
-    )
-    object@seeds <- lapply(object@seeds, to_DelayedArray)
-    object
+    to_DelayedAbind(object, 1L)
 })
 
-methods::setMethod("to_BPCells", "BPCellsDelayedRowBind", function(object) {
+methods::setMethod("to_BPCells", "BPCellsDelayedAbind", function(object) {
     object@seeds <- lapply(object@seeds, to_BPCells)
-    rename_slot(
-        Object = object,
-        seeds = "matrix_list", Class = "RowBindMatrices"
-    )
+    if (object@along == 1L) {
+        migrate_slots(
+            Object = object,
+            remove = "along",
+            rename = c(seeds = "matrix_list"),
+            Class = "RowBindMatrices"
+        )
+    } else {
+        migrate_slots(
+            Object = object,
+            remove = "along",
+            rename = c(seeds = "matrix_list"),
+            Class = "ColBindMatrices"
+        )
+    }
 })
 
-summary.BPCellsDelayedRowBind <- function(object) {
+summary.BPCellsDelayedAbind <- function(object) {
+    if (object@along == 1L) {
+        along <- if (object@transpose) "cols" else "rows"
+    } else {
+        along <- if (object@transpose) "rows" else "cols"
+    }
     sprintf(
         "Concatenate %s of %d matrix objects (threads=%d)",
-        if (object@transpose) "cols" else "rows",
+        along,
         length(object@seeds),
         object@threads
     )
 }
+
 methods::setMethod(
-    "summary", "BPCellsDelayedRowBind",
-    summary.BPCellsDelayedRowBind
+    "summary", "BPCellsDelayedAbind",
+    summary.BPCellsDelayedAbind
 )
 
 ##############################################################
@@ -89,24 +106,15 @@ methods::setGeneric("set_threads", function(object, ...) {
     standardGeneric("set_threads")
 })
 
-.set_threads_internal <- function(object, threads = 0L) {
-    threads <- as.integer(max(0L, threads, na.rm = TRUE))
-    object@threads <- threads
-    object
-}
-
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
-    "set_threads", "BPCellsDelayedColBind",
-    .set_threads_internal
-)
-
-#' @export
-#' @rdname internal-methods
-methods::setMethod(
-    "set_threads", "BPCellsDelayedRowBind",
-    .set_threads_internal
+    "set_threads", "BPCellsDelayedAbind",
+    function(object, threads = 0L) {
+        threads <- as.integer(max(0L, threads, na.rm = TRUE))
+        object@threads <- threads
+        object
+    }
 )
 
 #' @export
@@ -123,7 +131,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod("set_threads", "ANY", function(object, ...) {
     cli::cli_abort(
-        "{.arg object@seed} must be a {.cls BPCellsDelayedColBind} or a {.cls BPCellsDelayedRowBind} object"
+        "{.arg object@seed} must be a {.cls BPCellsDelayedAbind} object"
     )
 })
 

@@ -26,7 +26,6 @@ BPCellsMatrix <- BPCellsArray
 methods::setClass("BPCellsArray", contains = "DelayedArray")
 
 #' @export
-#' @include Class-BPCellsSeed.R
 #' @rdname BPCellsMatrix-class
 methods::setClass("BPCellsMatrix", contains = "DelayedMatrix")
 
@@ -37,8 +36,8 @@ methods::setMethod("matrixClass", "BPCellsArray", function(x) {
     "BPCellsMatrix"
 })
 
-methods::setValidity("BPCellsArray", validate_BPCellsDelayed_seed)
-methods::setValidity("BPCellsMatrix", validate_BPCellsDelayed_seed)
+methods::setValidity("BPCellsArray", validate_seed)
+methods::setValidity("BPCellsMatrix", validate_seed)
 
 #' Since BPCells only support 2-dim matrix, `new_BPCellsArray` will always
 #' return a `BPCellsMatrix` object.
@@ -53,13 +52,18 @@ new_BPCellsArray <- function(seed) {
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("DelayedArray", "IterableMatrix", new_BPCellsArray)
+
+#' @include Class-Delayed.R
 methods::setMethod("DelayedArray", "BPCellsDelayedOp", new_BPCellsArray)
 
 ########################################################
 # hepler function to set method for `BPCellsArray`
 set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = NULL, Arrays = "object") {
     body <- lapply(rlang::syms(Arrays), function(Array) {
-        substitute(nm <- to_BPCells(nm@seed), list(nm = Array))
+        substitute(
+            BPCells_mat <- to_BPCells(BPCells_mat@seed), # nolint
+            list(BPCells_mat = Array)
+        )
     })
     new_method(rlang::pairlist2(...),
         body = body, method = method,
@@ -77,7 +81,7 @@ set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = N
 
     cat("\n")
     cat("Queued Operations:\n")
-    DelayedArray::showtree(object)
+    DelayedArray::showtree(object@seed)
 }
 
 #' @importFrom methods show
@@ -99,8 +103,8 @@ methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
 #' @noRd
 NULL
 
-# we prevent aperm to degrade into `DelayedArray` Class
 ### S3/S4 combo for aperm.BPCellsMatrix
+# list_methods("DelayedAperm")
 aperm.BPCellsMatrix <- call_DelayedArray_method(
     a = , perm = , ... = , type = "S3"
 )
@@ -159,7 +163,7 @@ NULL
 methods::setMethod(
     "t", "BPCellsMatrix",
     set_BPCellsArray_method(
-        x = , after = expression(DelayedArray(object)),
+        x = , after = expression(DelayedArray(to_DelayedArray(object))),
         Arrays = "x"
     )
 )

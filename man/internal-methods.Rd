@@ -3,9 +3,8 @@
 %   R/Class-Dir.R, R/Class-HDF5.R, R/Class-Mask.R, R/Class-RankTransform.R,
 %   R/Method-Arith.R, R/Method-Compare.R, R/Method-Math.R, R/Method-Subassign.R,
 %   R/Method-axis.R, R/Method-internal.R, R/Method-pmin.R
-\name{set_threads,BPCellsDelayedColBind-method}
-\alias{set_threads,BPCellsDelayedColBind-method}
-\alias{set_threads,BPCellsDelayedRowBind-method}
+\name{set_threads,BPCellsDelayedAbind-method}
+\alias{set_threads,BPCellsDelayedAbind-method}
 \alias{set_threads,ANY-method}
 \alias{rbind2,ANY,BPCellsMatrix-method}
 \alias{rbind2,BPCellsMatrix,ANY-method}
@@ -38,9 +37,7 @@
 \alias{pmin2,numeric,BPCellsMatrix-method}
 \title{House of internal methods}
 \usage{
-\S4method{set_threads}{BPCellsDelayedColBind}(object, threads = 0L)
-
-\S4method{set_threads}{BPCellsDelayedRowBind}(object, threads = 0L)
+\S4method{set_threads}{BPCellsDelayedAbind}(object, threads = 0L)
 
 \S4method{set_threads}{ANY}(object, ...)
 

@@ -1,10 +1,25 @@
 ############################################################
 # RenameDims
+#' @importClassesFrom DelayedArray DelayedSetDimnames
 mould_BPCells("BPCellsDelayedRenameDims", "RenameDims",
-    delete = "matrix",
-    contains = "BPCellsDelayedUnaryIsoOp"
+    remove = "matrix",
+    # BPCellsDelayedUnaryIsoOp: `seed` slot
+    # both class provide `dimnames` slot
+    contains = c("DelayedSetDimnames", "BPCellsDelayedUnaryIsoOp")
 )
 
+### list_methods("DelayedSetDimnames")
+### Seed contract
+### here: we override the `DelayedSetDimnames` methods
+#' @importFrom DelayedArray is_noop
+methods::setMethod("is_noop", "BPCellsDelayedRenameDims", function(x) FALSE)
+
+methods::setMethod(
+    "dimnames", "BPCellsDelayedRenameDims",
+    call_BPCells_method(x = , Op = "x")
+)
+
+############################################################
 methods::setMethod("to_DelayedArray", "RenameDims", function(object) {
     to_DelayedUnaryOp(object, Class = "BPCellsDelayedRenameDims")
 })
@@ -22,9 +37,6 @@ methods::setMethod(
     "summary", "BPCellsDelayedRenameDims",
     summary.BPCellsDelayedRenameDims
 )
-
-#' @importFrom DelayedArray is_noop
-methods::setMethod("is_noop", "BPCellsDelayedRenameDims", function(x) FALSE)
 
 ################    BPCellsMatrix Methods    ##################
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))
@@ -71,7 +83,6 @@ methods::setMethod(
 )
 
 set_dimnames <- function(x, axis, value, arg = rlang::caller_arg(value), call = rlang::caller_env()) {
-
     dnms <- dimnames(x)
     if (axis == 1L) {
         axis_nm <- "'rownames'" # nolint

@@ -1,5 +1,6 @@
 mould_BPCells("BPCellsDelayedTransformed", "TransformedMatrix",
-    delete = "matrix",
+    remove = "matrix",
+    # BPCellsDelayedUnaryIsoOp: `seed` slot
     contains = "BPCellsDelayedUnaryIsoOp"
 )
 
