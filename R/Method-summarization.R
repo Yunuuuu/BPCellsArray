@@ -1,7 +1,5 @@
 #' BPCellsMatrix row/col summarization
 #'
-#' @param x A [BPCellsMatrix][BPCellsMatrix-class] or
-#' [BPcellsSeed][BPCellsSeed-class]object.
 #' @name BPCells-Summarization
 NULL
 
@@ -13,7 +11,7 @@ NULL
 #' - `matrix_stats`: A list of
 #'    - `row_stats`: matrix of n_stats x n_rows
 #'    - `col_stats`: matrix of n_stats x n_cols
-#' @param object A [BPCellsMatrix] object.
+#' @inheritParams convert_mode
 #' @export
 #' @rdname BPCells-Summarization
 methods::setGeneric("matrix_stats", function(object, ...) {
@@ -29,6 +27,7 @@ methods::setMethod("matrix_stats", "BPCellsMatrix", function(object, ...) {
 
 #######################################################################
 # Sums
+#' @inheritParams BPCells-Math
 #' @importMethodsFrom BPCells rowSums
 #' @return
 #' - `rowSums()`: vector of row sums

@@ -51,8 +51,8 @@ used to transpose the underlying storage order.}
 \item{offset}{A bool, whether or not to add offset such that the rank of a 0
 value is 0. Default: \code{TRUE}.}
 
-\item{x, object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
+\item{x, object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects
+can be converted into \link{BPCellsSeed} object.}
 
 \item{rows, cols}{Ignored currently.}
 
@@ -63,15 +63,11 @@ value is 0. Default: \code{TRUE}.}
 \item{preserveShape}{Always be \code{TRUE}, cannot be changed.}
 }
 \value{
-A \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{object}.
+A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Rank values are default offset such that the rank of a 0 value is 0. If you
 want to get the same result of regular matrix \code{rowRanks(matrix, ties.method = "average")}/\code{colRanks(matrix, ties.method = "average")}, set \code{offset=FALSE}.
-}
-\note{
-Ties are always handled by averaging ranks.
 }
 \seealso{
 \link[BPCells:rank_transform]{rank_transform}

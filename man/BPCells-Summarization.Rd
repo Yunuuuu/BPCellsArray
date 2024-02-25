@@ -43,7 +43,7 @@ matrix_stats(object, ...)
 \S4method{colSds}{BPCellsMatrix}(x)
 }
 \arguments{
-\item{object}{A \link{BPCellsMatrix} object.}
+\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
 \item{...}{
   Arguments passed on to \code{\link[BPCells:matrix_stats]{BPCells::matrix_stats}}
@@ -53,8 +53,7 @@ matrix_stats(object, ...)
     \item{\code{threads}}{Number of threads to use during execution}
   }}
 
-\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} or
-\link[=BPCellsSeed-class]{BPcellsSeed}object.}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object}
 }
 \value{
 \itemize{

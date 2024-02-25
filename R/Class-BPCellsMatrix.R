@@ -3,16 +3,26 @@
 #' The `BPCellsMatrix` class just inherits from the
 #' [DelayedMatrix][DelayedArray::DelayedMatrix] class.
 #'
-#' @slot seed A [BPCellsSeed][BPCellsSeed-class] object.
+#' @seealso
+#' - [bind][BPCells-bind]: Combine two Objects by Columns or Rows.
+#' - [%*%][BPCells-Multiplication]: Matrix Multiplication.
+#' - [crossprod][BPCells-crossprod]: Matrix Crossproduct.
+#' - [summarization][BPCells-Summarization]: row/col summarization.
+#' - [Arith][BPCells-Arithmetic]: Binary Arithmetic operators.
+#' - [Math][BPCells-Math]: Math operators.
+#' - [Compare][BPCells-Compare]: Compare matrix.
+#' - [pmin2/pmax2][pmin2]: Maxima and Minima.
+#' - [DelayedArray-utils]: Common operations on DelayedArray objects
 #' @aliases BPCellsMatrix-methods
 #' @inherit BPCellsSeed-class seealso
 #' @name BPCellsMatrix-class
 NULL
 
-#' @param x
-#'  - `BPCellsArray` and `BPCellsMatrix`: Details see [BPCellsSeed] for
-#'    supported object.
-#'  - `matrixClass`: A string.
+
+#' @return 
+#'  - `BPCellsArray` and `BPCellsMatrix`: A `BPCellsMatrix` object, since
+#'    `BPCells` can only support 2-dim array.
+#' @param x,object A [BPCellsMatrix][BPCellsMatrix-class] object
 #' @export
 #' @rdname BPCellsMatrix-class
 BPCellsArray <- function(x) DelayedArray(BPCellsSeed(x))
@@ -29,6 +39,8 @@ methods::setClass("BPCellsArray", contains = "DelayedArray")
 #' @rdname BPCellsMatrix-class
 methods::setClass("BPCellsMatrix", contains = "DelayedMatrix")
 
+#' @return 
+#'  - `matrixClass`: A string, always be `"BPCellsMatrix"`.
 #' @importFrom DelayedArray matrixClass
 #' @export
 #' @rdname BPCellsMatrix-class
@@ -47,29 +59,17 @@ new_BPCellsArray <- function(seed) {
     new_DelayedArray(seed, Class = "BPCellsArray")
 }
 
-#' @param seed A `IterableMatrix` or `BPCellsDelayedOp` object.
+#' @param seed A [IterableMatrix][BPCellsSeed-class] or
+#' [BPCellsDelayedOp][BPCellsSeed-class] object. 
 #' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("DelayedArray", "IterableMatrix", new_BPCellsArray)
 
 #' @include Class-Delayed.R
+#' @export
+#' @rdname BPCellsMatrix-class
 methods::setMethod("DelayedArray", "BPCellsDelayedOp", new_BPCellsArray)
-
-########################################################
-# hepler function to set method for `BPCellsArray`
-set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = NULL, Arrays = "object") {
-    body <- lapply(rlang::syms(Arrays), function(Array) {
-        substitute(
-            BPCells_mat <- to_BPCells(BPCells_mat@seed), # nolint
-            list(BPCells_mat = Array)
-        )
-    })
-    new_method(rlang::pairlist2(...),
-        body = body, method = method,
-        before = before, after = after
-    )
-}
 
 ###################################################################
 .show_internal <- function(object) {
@@ -89,6 +89,10 @@ set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = N
 #' @order 1
 #' @rdname BPCellsMatrix-class
 methods::setMethod("show", "BPCellsArray", .show_internal)
+
+#' @export
+#' @order 2
+#' @rdname BPCellsMatrix-class
 methods::setMethod("show", "BPCellsMatrix", .show_internal)
 
 ###########################################################
@@ -116,6 +120,7 @@ methods::setMethod(
 )
 
 # S3/S4 combo for as.array.BPCellsMatrix
+#' @inheritParams BPCellsSeed-class
 #' @exportS3Method base::as.array
 #' @rdname BPCellsMatrix-class
 as.array.BPCellsMatrix <- function(x, drop = FALSE) {
@@ -124,10 +129,14 @@ as.array.BPCellsMatrix <- function(x, drop = FALSE) {
     if (drop) drop(mat) else mat
 }
 
+#' @return 
+#'  - `as.array`: A dense matrix or an atomic vector.
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("as.array", "BPCellsMatrix", as.array.BPCellsMatrix)
 
+#' @return 
+#'  - `as.matrix`: A dense matrix.
 #' @exportS3Method base::as.matrix
 #' @rdname BPCellsMatrix-class
 as.matrix.BPCellsMatrix <- function(x) {
@@ -155,7 +164,7 @@ NULL
 
 #######################################################
 #' @return
-#' - `t`: A [BPCellsMatrix] object.
+#' - `t`: A `BPCellsMatrix` object.
 #' @importMethodsFrom BPCells t
 #' @export
 #' @aliases t
@@ -168,6 +177,7 @@ methods::setMethod(
     )
 )
 
+#' @importFrom methods Ops
 methods::setMethod(
     "Ops", c("BPCellsArray", "vector"),
     call_DelayedArray_method(e1 = , e2 = )

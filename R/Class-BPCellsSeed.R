@@ -1,19 +1,6 @@
 #' Seed Contract methods for `IterableMatrix`
 #'
-#' @param x,object A `IterableMatrix` object.
-#' @param value
-#'  - `dimnames<-`: A list of dimnames or `NULL`.
-#'  - `[<-`: A matrix which can be coerced into
-#'     [dgCMatrix][Matrix::dgCMatrix-class].
-#'  - `pmin_scalar`: Single positive numeric value.
-#' @param ... Not used currently.
-#' @seealso
-#' - [bind][BPCells-bind]: Combine two Objects by Columns or Rows.
-#' - [%*%][BPCells-Multiplication]: Matrix Multiplication.
-#' - [crossprod][BPCells-crossprod]: Matrix Crossproduct.
-#' - [summarization][BPCells-Summarization]: row/col summarization.
-#' - [Arithmetic][BPCells-Arithmetic]: Binary Arithmetic operators.
-#' - [binarize][BPCells-binarize]: Convert matrix elements to zeros and ones.
+#' @param x A `IterableMatrix` object.
 #' @include utils-BPCells.R
 #' @aliases IterableMatrix
 #' @name BPCellsSeed-class
@@ -64,6 +51,8 @@ as_matrix_IterableMatrix <- function(x) {
 }
 
 # S3/S4 combo for as.array.IterableMatrix
+#' @param drop A bool, if `TRUE`, any extents of length one will be removed and
+#'  return an atomic vector.
 #' @exportS3Method base::as.array
 #' @rdname BPCellsSeed-class
 as.array.IterableMatrix <- function(x, drop = FALSE) {

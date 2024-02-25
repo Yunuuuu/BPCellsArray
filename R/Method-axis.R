@@ -1,7 +1,7 @@
 #' Transpose the storage axis for a `BPCellsSeed` or `BPCellsMatrix` object
 #'
 #' @inherit BPCells::transpose_storage_order details
-#' @param object A [BPCellsMatrix] object.
+#' @inheritParams convert_mode
 #' @inheritDotParams BPCells::transpose_storage_order -matrix
 #' @return
 #'  - `transpose_axis`: A [BPCellsMatrix] object with storage axis flipped.

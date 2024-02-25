@@ -22,7 +22,7 @@ storage_axis(object)
 \S4method{storage_axis}{IterableMatrix}(object)
 }
 \arguments{
-\item{object}{A \link{BPCellsMatrix} object.}
+\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
 \item{...}{
   Arguments passed on to \code{\link[BPCells:transpose_storage_order]{BPCells::transpose_storage_order}}

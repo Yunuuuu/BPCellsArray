@@ -7,11 +7,6 @@ summary.MatrixH5 <- function(object) {
 }
 methods::setMethod("summary", "MatrixH5", summary.MatrixH5)
 
-#' @importFrom DelayedArray path
-#' @export
-#' @rdname internal-methods
-methods::setMethod("path", "MatrixH5", function(object, ...) object@path)
-
 #' Read/write sparse matrices from (or into) HDF5 file
 #'
 #' @description
@@ -30,14 +25,14 @@ readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L) {
 }
 
 #' @inherit BPCells::write_matrix_hdf5 details
-#' @inheritParams writeBPCellsDirArray
+#' @inheritParams BPCellsDir-IO
 #' @inheritParams BPCells::open_matrix_hdf5
 #' @param gzip Gzip compression level. Default is 0 (no gzip compression). This
 #' is recommended when both compression and compatibility with outside programs
 #' is required. Using `compress=TRUE` is recommended as it is >10x faster with
 #' often similar compression levels. So `gzip` will always be zero when
 #' `compress` is `TRUE`.
-#' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @inherit BPCellsDir-IO return
 #' @export
 #' @aliases writeBPCellsHDF5Array
 #' @rdname BPCellsHDF5-IO
@@ -67,11 +62,16 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsHDF5-IO
-methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)
-
-#' @export
-#' @rdname BPCellsHDF5-IO
 methods::setMethod(
     "writeBPCellsHDF5Array", "BPCellsMatrix",
     set_BPCellsArray_method(x = , ... = )
 )
+
+#' @export
+#' @rdname BPCellsHDF5-IO
+methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)
+
+#' @importFrom DelayedArray path
+#' @export
+#' @rdname BPCellsHDF5-IO
+methods::setMethod("path", "MatrixH5", function(object, ...) object@path)

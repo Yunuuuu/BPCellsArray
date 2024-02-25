@@ -41,8 +41,12 @@ methods::setMethod(
 ################    BPCellsMatrix Methods    ##################
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 
+#' @param value
+#'  - `dimnames<-`: A list of dimnames or `NULL`.
+#'  - `[<-`: A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
+#'    converted into [BPCellsSeed] object.
 #' @return
-#' - `dimnames<-`: A [BPCellsMatrix][BPCellsMatrix] object.
+#' - `dimnames<-`: A `BPCellsMatrix` object.
 #' @importMethodsFrom BPCells dimnames<-
 #' @export
 #' @aliases dimnames<-
@@ -57,7 +61,7 @@ methods::setMethod(
 )
 
 #' @return
-#' - `rownames<-`: A [BPCellsMatrix][BPCellsMatrix] object.
+#' - `rownames<-`: A `BPCellsMatrix` object.
 #' @importFrom BiocGenerics rownames<-
 #' @export
 #' @aliases rownames<-
@@ -70,7 +74,7 @@ methods::setMethod(
 )
 
 #' @return
-#' - `colnames<-`: A [BPCellsMatrix][BPCellsMatrix] object.
+#' - `colnames<-`: A `BPCellsMatrix` object.
 #' @importFrom BiocGenerics colnames<-
 #' @export
 #' @aliases colnames<-

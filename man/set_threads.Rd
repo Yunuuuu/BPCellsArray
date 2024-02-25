@@ -10,15 +10,17 @@ set_threads(object, ...)
 \S4method{set_threads}{BPCellsMatrix}(object, threads = 0L)
 }
 \arguments{
-\item{object}{A \code{BPCellsMatrix} object with a seed slot of
-\code{BPCellsDelayedColBind}, or \code{BPCellsDelayedRowBind} object.}
+\item{object}{A \link{BPCellsMatrix} object with a seed slot of
+\code{BPCellsDelayedAbind} object, usually derived from \link[=BPCells-bind]{bind}
+operators.}
 
 \item{...}{Additional arguments to specific methods.}
 
-\item{threads}{Number of threads to use for execution.}
+\item{threads}{Set the number of threads to use for sparse-dense multiply and
+\link[BPCells:matrix_stats]{matrix_stats}.}
 }
 \value{
-A \code{BPCellsMatrix} object.
+A \link{BPCellsMatrix} object.
 }
 \description{
 Set number of threads to use for sparse-dense multiply and matrix_stats.

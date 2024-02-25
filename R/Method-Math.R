@@ -1,4 +1,13 @@
 # Math methods
+#' Math operators for BPCellsMatrix
+#' @param x A [BPCellsMatrix][BPCellsMatrix-class] object
+#' @inherit BPCellsDir-IO return
+#' @note Methods listed here are supported by `BPCells`, other
+#' [Math][methods::Math] or [Math2][methods::Math2] operators will use the
+#' methods defined in [DelayedArray][DelayedArray-utils].
+#' @name BPCells-Math
+NULL
+
 ####################################################################
 # TransformExpm1Slow
 methods::setClass("BPCellsTransformExpm1Slow",
@@ -158,4 +167,20 @@ methods::setMethod(
         after = expression(DelayedArray(to_DelayedArray(object))),
         Arrays = "x"
     )
+)
+
+#' @importFrom methods Math
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "Math", "BPCellsArray",
+    call_DelayedArray_method(x = )
+)
+
+#' @importFrom methods Math2
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "Math2", "BPCellsArray",
+    call_DelayedArray_method(x = )
 )

@@ -1,15 +1,37 @@
 ################    BPCellsMatrix Methods    ##################
 #' @return
-#' - `[<-`: A [BPCellsMatrix] object.
+#' - `[<-`: A `BPCellsMatrix` object.
 #' @export
-#' @order 3
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "ANY"),
     function(x, i, j, ..., value) {
-        value <- coerce_dgCMatrix(value)
+        value <- BPCellsSeed(value)
         methods::callGeneric()
     }
+)
+
+#' @inheritParams BPCellsMatrix-class
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[<-", c("BPCellsMatrix", "ANY", "ANY", "BPCellsMatrix"),
+    set_BPCellsArray_method(
+        x = , i = , j = , ... = , value = ,
+        after = expression(DelayedArray(to_DelayedArray(object))),
+        Arrays = c("x", "value")
+    )
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[<-", c("BPCellsMatrix", "ANY", "ANY", "IterableMatrix"),
+    set_BPCellsArray_method(
+        x = , i = , j = , ... = , value = ,
+        after = expression(DelayedArray(to_DelayedArray(object))),
+        Arrays = "x"
+    )
 )
 
 #' @export
@@ -54,15 +76,4 @@ methods::setMethod(
         }
         DelayedArray(to_DelayedArray(methods::callGeneric()))
     }
-)
-
-#' @export
-#' @rdname internal-methods
-methods::setMethod(
-    "[<-", c("BPCellsMatrix", "ANY", "ANY", "IterableMatrix"),
-    set_BPCellsArray_method(
-        x = , i = , j = , ... = , value = ,
-        after = expression(DelayedArray(to_DelayedArray(object))),
-        Arrays = "x"
-    )
 )

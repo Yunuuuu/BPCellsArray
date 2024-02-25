@@ -47,13 +47,11 @@ methods::setMethod(
 #' arguments conformable. If both are vectors of the same length, it will return
 #' the inner product (as a matrix).
 #'
-#' @param x,y One of `x` or `y` must be [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object, and the another must be a matrix
-#' which can be coerced into [dgCMatrix][Matrix::dgCMatrix-class].
+#' @param x,y One of `x` or `y` must be [BPCellsMatrix][BPCellsMatrix-class]
+#' object, and the another must be a [BPCellsMatrix][BPCellsMatrix-class] object
+#' or  any objects can be converted into [BPCellsSeed] object.
 #' @return A dense matrix if one of `x` or `y` is a regular matrix or atomic
-#' vector. Otherwise, a [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `x` or
-#' `y`.
+#' vector. Otherwise, a [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @importMethodsFrom BPCells %*%
 #' @seealso
 #'  - [crossprod][BPCells-crossprod]
@@ -86,11 +84,10 @@ methods::setMethod(
     }
 )
 
-#' @importClassesFrom Matrix dgCMatrix
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
+    "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
         y <- DelayedArray(BPCellsSeed(y))
         methods::callGeneric()
     }
@@ -99,7 +96,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
+    "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
         x <- DelayedArray(BPCellsSeed(x))
         methods::callGeneric()
     }

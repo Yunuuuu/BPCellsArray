@@ -25,8 +25,7 @@ storage_mode(object)
 \S4method{storage_mode}{matrix}(object)
 }
 \arguments{
-\item{object}{A \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
+\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
 \item{...}{Additional parameters passed into specific methods.}
 
@@ -38,9 +37,8 @@ and \code{double} mode.}
 }
 \value{
 \itemize{
-\item \code{convert_mode}: A \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object with storage mode converted into
-the specified.
+\item \code{convert_mode}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object with storage
+mode converted into the specified.
 }
 
 \itemize{

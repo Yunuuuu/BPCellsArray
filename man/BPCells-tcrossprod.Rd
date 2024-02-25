@@ -4,19 +4,15 @@
 \alias{BPCells-tcrossprod}
 \alias{tcrossprod}
 \alias{tcrossprod,BPCellsMatrix,BPCellsMatrix-method}
-\alias{tcrossprod,BPCellsMatrix,dgCMatrix-method}
-\alias{tcrossprod,dgCMatrix,BPCellsMatrix-method}
 \alias{tcrossprod,BPCellsMatrix,ANY-method}
 \alias{tcrossprod,ANY,BPCellsMatrix-method}
 \alias{tcrossprod,BPCellsMatrix,matrix-method}
 \alias{tcrossprod,matrix,BPCellsMatrix-method}
+\alias{tcrossprod,BPCellsMatrix,numeric-method}
+\alias{tcrossprod,numeric,BPCellsMatrix-method}
 \title{Matrix Products of Transpose}
 \usage{
 \S4method{tcrossprod}{BPCellsMatrix,BPCellsMatrix}(x, y)
-
-\S4method{tcrossprod}{BPCellsMatrix,dgCMatrix}(x, y)
-
-\S4method{tcrossprod}{dgCMatrix,BPCellsMatrix}(x, y)
 
 \S4method{tcrossprod}{BPCellsMatrix,ANY}(x, y)
 
@@ -25,17 +21,19 @@
 \S4method{tcrossprod}{BPCellsMatrix,matrix}(x, y)
 
 \S4method{tcrossprod}{matrix,BPCellsMatrix}(x, y)
+
+\S4method{tcrossprod}{BPCellsMatrix,numeric}(x, y)
+
+\S4method{tcrossprod}{numeric,BPCellsMatrix}(x, y)
 }
 \arguments{
-\item{x, y}{One of \code{x} or \code{y} must be \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another must be a matrix
-which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
+\item{x, y}{One of \code{x} or \code{y} must be \link[=BPCellsMatrix-class]{BPCellsMatrix}
+object, and the another must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object
+or  any objects can be converted into \link{BPCellsSeed} object.}
 }
 \value{
 A dense matrix if one of \code{x} or \code{y} is a regular matrix or atomic
-vector. Otherwise, a \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{x} or
-\code{y}.
+vector. Otherwise, a \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Given matrices x and y as arguments, return a matrix product of Transpose.

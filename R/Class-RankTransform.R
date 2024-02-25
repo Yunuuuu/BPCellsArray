@@ -1,20 +1,3 @@
-#' Delayed BPCells MatrixRankTransform
-#'
-#' The `BPCellsRankTransformArray` class provides a
-#' [DelayedArray][DelayedArray::DelayedArray] backend for `MatrixRankTransform`
-#' object in BPCells.
-#'
-#' @note Usually, you shouldn't use this class directly, instead, you should use
-#' [rank_transform] function to create a `BPCellsRankTransformMatrix`.
-#'
-#' @param x A `MatrixRankTransform` object.
-#' @seealso
-#' - [BPCellsSeed]
-#' - [convert_matrix_type][BPCells::convert_matrix_type]
-#' @name BPCellsRankTransform
-#' @noRd
-NULL
-
 mould_BPCells("BPCellsDelayedRankTransform",
     "MatrixRankTransform",
     remove = "matrix",
@@ -54,10 +37,9 @@ methods::setMethod(
 #' want to get the same result of regular matrix `rowRanks(matrix, ties.method =
 #' "average")`/`colRanks(matrix, ties.method = "average")`, set `offset=FALSE`.
 #'
-#' @param x,object A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @param x,object A [BPCellsMatrix][BPCellsMatrix-class] object or any objects
+#' can be converted into [BPCellsSeed] object.
 #' @inheritDotParams BPCells::transpose_storage_order -matrix
-#' @note Ties are always handled by averaging ranks.
 #' @export
 #' @name rank_transform
 methods::setGeneric(
@@ -75,8 +57,7 @@ methods::setGeneric(
 #' @param ties.method Always be "average", cannot be changed.
 #' @param useNames Always be `TRUE`, cannot be changed.
 #' @param preserveShape Always be `TRUE`, cannot be changed.
-#' @return A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
+#' @inherit BPCellsDir-IO return
 #' @seealso [rank_transform][BPCells::rank_transform]
 #' @importFrom DelayedArray DelayedArray
 #' @export

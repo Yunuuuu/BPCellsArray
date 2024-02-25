@@ -1,11 +1,11 @@
 #' Build seed object for `BPCellsMatrix`
 #'
-#' @param x A `IterableMatrix` object from `BPCells`, a matrix-like object which
-#' can be coerced into dgCMatrix object.
+#' @param x A `IterableMatrix` object from `BPCells` or a matrix-like object
+#' which can be coerced into dgCMatrix object.
 #' @return A `IterableMatrix` object or a `BPCellsDelayedOp` object, both can be
-#' directly used as the seed of [BPCellsMatrix] object.
+#'  directly used as the seed of [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @name BPCellsSeed
-#' @seealso [BPCellsSeed-class][BPCellsSeed-class]
+#' @seealso [BPCellsSeed][BPCellsSeed-class] contract
 NULL
 
 ############################################################
@@ -57,3 +57,17 @@ methods::setMethod("BPCellsSeed", "ANY", function(x) {
     x <- coerce_dgCMatrix(x)
     methods::callGeneric()
 })
+
+# helper function to coerce object into `dgCMatrix` object, which can be used by
+# `BPCells`
+coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    tryCatch(
+        methods::as(x, "dgCMatrix"),
+        error = function(cnd) {
+            cli::cli_abort(
+                "{.arg {arg}} must be a matrix-like object which can be coerced into {.cls dgCMatrix}",
+                call = call
+            )
+        }
+    )
+}

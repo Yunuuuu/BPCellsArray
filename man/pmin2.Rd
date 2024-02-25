@@ -8,15 +8,9 @@
 \alias{pmin_by_row,BPCellsMatrix-method}
 \alias{pmin_scalar}
 \alias{pmin_scalar,BPCellsMatrix-method}
-\alias{pmin2,BPCellsMatrix,vector-method}
-\alias{pmin2,vector,BPCellsMatrix-method}
-\alias{pmin2,BPCellsMatrix,DelayedArray-method}
-\alias{pmin2,DelayedArray,BPCellsMatrix-method}
-\alias{pmax2,BPCellsMatrix,vector-method}
+\alias{pmin2,BPCellsMatrix,numeric-method}
 \alias{pmax2}
-\alias{pmax2,vector,BPCellsMatrix-method}
-\alias{pmax2,BPCellsMatrix,DelayedArray-method}
-\alias{pmax2,DelayedArray,BPCellsMatrix-method}
+\alias{pmin2,numeric,BPCellsMatrix-method}
 \title{Maxima and Minima}
 \usage{
 pmin_by_col(object, values)
@@ -31,24 +25,19 @@ pmin_scalar(object, value)
 
 \S4method{pmin_scalar}{BPCellsMatrix}(object, value)
 
-\S4method{pmin2}{BPCellsMatrix,vector}(e1, e2)
+\S4method{pmin2}{BPCellsMatrix,numeric}(e1, e2)
 
-\S4method{pmin2}{vector,BPCellsMatrix}(e1, e2)
-
-\S4method{pmin2}{BPCellsMatrix,DelayedArray}(e1, e2)
-
-\S4method{pmin2}{DelayedArray,BPCellsMatrix}(e1, e2)
-
-\S4method{pmax2}{BPCellsMatrix,vector}(e1, e2)
-
-\S4method{pmax2}{vector,BPCellsMatrix}(e1, e2)
-
-\S4method{pmax2}{BPCellsMatrix,DelayedArray}(e1, e2)
-
-\S4method{pmax2}{DelayedArray,BPCellsMatrix}(e1, e2)
+\S4method{pmin2}{numeric,BPCellsMatrix}(e1, e2)
 }
 \arguments{
-\item{values}{A positive atomic numeric.}
+\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
+
+\item{values}{An atomic positive numeric.}
+
+\item{value}{A single positive numeric value}
+
+\item{e1, e2}{One of \code{x} or \code{y} must be \link[=BPCellsMatrix-class]{BPCellsMatrix}
+object, and the another must be a scalar or of length \code{nrow(e1)/nrow(e2)}.}
 }
 \value{
 \itemize{
@@ -65,4 +54,9 @@ pmin_scalar(object, value)
 }
 \description{
 Maxima and Minima
+}
+\note{
+For \code{pmin2} Methods listed here are supported by \code{BPCells}, other
+\code{pmin2} methods and \code{pmax2} function will use the methods defined in
+\link[=DelayedArray-utils]{DelayedArray}.
 }

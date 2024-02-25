@@ -4,13 +4,16 @@
 \alias{BPCellsHDF5-IO}
 \alias{readBPCellsHDF5Matrix}
 \alias{writeBPCellsHDF5Array}
-\alias{writeBPCellsHDF5Array,ANY-method}
 \alias{writeBPCellsHDF5Array,BPCellsMatrix-method}
+\alias{writeBPCellsHDF5Array,ANY-method}
+\alias{path,MatrixH5-method}
 \title{Read/write sparse matrices from (or into) HDF5 file}
 \usage{
 readBPCellsHDF5Matrix(path, group, buffer_size = 8192L)
 
 writeBPCellsHDF5Array(x, ...)
+
+\S4method{writeBPCellsHDF5Array}{BPCellsMatrix}(x, ...)
 
 \S4method{writeBPCellsHDF5Array}{ANY}(
   x,
@@ -23,7 +26,7 @@ writeBPCellsHDF5Array(x, ...)
   gzip = 0L
 )
 
-\S4method{writeBPCellsHDF5Array}{BPCellsMatrix}(x, ...)
+\S4method{path}{MatrixH5}(object, ...)
 }
 \arguments{
 \item{path}{A string path of the \code{HDF5} file to read or save data into.}
@@ -34,10 +37,13 @@ to an existing hdf5 file this group must not already be in use}
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
 
-\item{x}{A \code{IterableMatrix} object from \code{BPCells}, a matrix-like object which
-can be coerced into dgCMatrix object.}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
+converted into \link{BPCellsSeed} object.}
 
-\item{...}{Additional arguments passed into specific methods.}
+\item{...}{\itemize{
+\item Generic function: Additional arguments passed into specific methods.
+\item BPCellsMatrix Method: Additional arguments passed into \code{ANY} method.
+}}
 
 \item{bitpacking}{A bool, whether or not to compress the data using
 Bitpacking Compression.}
@@ -52,6 +58,8 @@ is recommended when both compression and compatibility with outside programs
 is required. Using \code{compress=TRUE} is recommended as it is >10x faster with
 often similar compression levels. So \code{gzip} will always be zero when
 \code{compress} is \code{TRUE}.}
+
+\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

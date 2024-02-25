@@ -76,51 +76,42 @@ methods::setGeneric(
     function(object, mask, ...) standardGeneric("mask_matrix")
 )
 
-#' @param object A [BPCellsSeed] or [BPCellsMatrix] object.
-#' @param mask Mask matrix, A [BPCellsSeed] or [BPCellsMatrix] object.
-#' Additionally, a matrix-like object which can be coerced into
-#' [dgCMatrix][Matrix::dgCMatrix-class].
+#' @inheritParams convert_mode
+#' @param mask A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can
+#' be converted into [BPCellsSeed] object.
 #' @param invert A bool, indicates whether revert the mask.
-#' @return A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `object`.
+#' @inherit BPCellsDir-IO return
 #' @seealso [mask_matrix][BPCells::mask_matrix]
 #' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname mask_matrix
 methods::setMethod(
     "mask_matrix", c(object = "BPCellsMatrix", mask = "BPCellsMatrix"),
-    function(object, mask, invert = FALSE) {
-        object <- BPCells:::mask_matrix(
-            mat = to_BPCells(object@seed),
-            mask = to_BPCells(mask@seed),
-            invert = invert
-        )
-        DelayedArray(to_DelayedArray(object))
-    }
-)
-
-#' @export
-#' @rdname mask_matrix
-methods::setMethod(
-    "mask_matrix", c(object = "BPCellsMatrix", mask = "dgCMatrix"),
-    function(object, mask, invert = FALSE) {
-        object <- BPCells:::mask_matrix(
-            mat = to_BPCells(object@seed),
-            mask = BPCellsSeed(mask@seed),
-            invert = invert
-        )
-        DelayedArray(to_DelayedArray(object))
-    }
+    set_BPCellsArray_method(
+        object = , mask = , invert = FALSE,
+        method = quote(
+            BPCells:::mask_matrix(mat = object, mask = mask, invert = invert)
+        ),
+        after = expression(DelayedArray(to_DelayedArray(object))),
+        Arrays = list("object", "mask")
+    )
 )
 
 #' @export
 #' @rdname mask_matrix
 methods::setMethod(
     "mask_matrix", c(object = "BPCellsMatrix", mask = "ANY"),
-    function(object, mask, invert = FALSE) {
-        mask <- coerce_dgCMatrix(mask)
-        methods::callGeneric()
-    }
+    set_BPCellsArray_method(
+        object = , mask = , invert = FALSE,
+        method = quote(
+            BPCells:::mask_matrix(
+                mat = object,
+                mask = to_BPCells(BPCellsSeed(mask)), 
+                invert = invert
+            )
+        ),
+        after = expression(DelayedArray(to_DelayedArray(object)))
+    )
 )
 
 #' @inheritParams mask_matrix

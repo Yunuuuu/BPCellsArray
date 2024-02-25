@@ -6,18 +6,14 @@ summary.MatrixDir <- function(object) {
 }
 methods::setMethod("summary", "MatrixDir", summary.MatrixDir)
 
-#' @importFrom DelayedArray path
-#' @export
-#' @rdname internal-methods
-methods::setMethod("path", "MatrixDir", function(object, ...) object@dir)
-
 #' Read/write sparse matrices from (or into) directory on disk
 #'
 #' @description
 #' - `readBPCellsDirMatrix`: read a sparce matrices from a directory on disk
 #' - `writeBPCellsDirArray`: Write a sparce matrices into a directory on disk
-#' @param path A string path of Directory to read or save the data into. For
-#' `writeBPCellsDirArray`, if `NULL`, will use a temporary directory.
+#' @param path A string path of directory to read or save the data into. For
+#' `writeBPCellsDirArray`, this can be `NULL`, and the internal will use a
+#' temporary directory.
 #' @inheritParams BPCells::open_matrix_dir
 #' @export
 #' @name BPCellsDir-IO
@@ -33,8 +29,11 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L) {
 #' Write a sparce matrices into a directory on disk
 #'
 #' @inherit BPCells::write_matrix_dir details
-#' @inheritParams BPCellsSeed
-#' @param ... Additional arguments passed into specific methods.
+#' @param x A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
+#' converted into [BPCellsSeed] object.
+#' @param ... 
+#'  - Generic function: Additional arguments passed into specific methods.
+#'  - BPCellsMatrix Method: Additional arguments passed into `ANY` method.
 #' @param bitpacking A bool, whether or not to compress the data using
 #' Bitpacking Compression.
 #' @param overwrite A bool, If `TRUE`, write to a temp dir then overwrite
@@ -67,11 +66,17 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsDir-IO
-methods::setMethod("writeBPCellsDirArray", "ANY", .writeBPCellsDirArray)
-
-#' @export
-#' @rdname BPCellsDir-IO
 methods::setMethod(
     "writeBPCellsDirArray", "BPCellsMatrix",
     set_BPCellsArray_method(x = , ... = )
 )
+
+#' @export
+#' @rdname BPCellsDir-IO
+methods::setMethod("writeBPCellsDirArray", "ANY", .writeBPCellsDirArray)
+
+#' @inheritParams convert_mode
+#' @importFrom DelayedArray path
+#' @export
+#' @rdname BPCellsDir-IO
+methods::setMethod("path", "MatrixDir", function(object) object@dir)

@@ -23,6 +23,9 @@ methods::setClass("BPCellsDelayedOp", contains = c("DelayedOp", "VIRTUAL"))
 # methods::setReplaceMethod("path", "BPCellsDelayedOp")
 # methods::setMethod("seed", "BPCellsDelayedOp", function(x) TRUE)
 # methods::setReplaceMethod("seed", "BPCellsDelayedOp")
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod("type", "BPCellsDelayedOp", function(x) {
     switch(storage_mode(x),
         uint32_t = "integer",

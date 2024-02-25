@@ -17,11 +17,25 @@ pow_slow(e1, e2)
 
 \S4method{pow_slow}{BPCellsMatrix}(e1, e2)
 }
+\arguments{
+\item{e1, e2}{One of \code{x} or \code{y} must be \link[=BPCellsMatrix-class]{BPCellsMatrix}
+object, and the another can be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object
+or any objects can be converted into \link{BPCellsSeed} object.}
+}
 \value{
-A \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{e1} /
-\code{e2}.
+A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Arithmetic operators for BPCellsMatrix
+}
+\section{Arithmetic operators}{
+
+\itemize{
+\item \code{BPCells}: \code{+}, \code{-}, \code{*}, \code{/}, \code{^}
+\item \code{DelayedArray}: \code{\%\%}, - \code{\%/\%}
+}
+}
+
+\seealso{
+\link{BPCellsMatrix}
 }

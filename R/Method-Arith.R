@@ -54,15 +54,20 @@ methods::setMethod(
 ###################################################################
 # Arith
 #' Arithmetic operators for BPCellsMatrix
-#' @inheritParams BPCells-binarize
-#' @return A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of `e1` /
-#' `e2`.
+#' @param e1,e2 One of `x` or `y` must be [BPCellsMatrix][BPCellsMatrix-class]
+#' object, and the another can be a [BPCellsMatrix][BPCellsMatrix-class] object
+#' or any objects can be converted into [BPCellsSeed] object.
+#' @inherit BPCellsDir-IO return
+#' @section Arithmetic operators:
+#' * `BPCells`: `+`, `-`, `*`, `/`, `^`
+#' * `DelayedArray`: `%%`, - `%/%`
+#' @seealso [BPCellsMatrix]
 #' @name BPCells-Arithmetic
 #' @aliases BPCells-Arith
 NULL
 
 # ######################################################################
+#' @importFrom methods Arith
 #' @export
 #' @rdname BPCells-Arithmetic
 methods::setMethod(
@@ -85,6 +90,7 @@ methods::setMethod(
     )
 )
 
+#' @inheritParams BPCells-Arithmetic
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
@@ -144,7 +150,6 @@ methods::setGeneric("pow_slow", function(e1, e2) {
     standardGeneric("pow_slow")
 })
 
-#' @inheritParams BPCells-binarize
 #' @export
 #' @rdname BPCells-Arithmetic
 methods::setMethod(

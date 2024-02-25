@@ -17,14 +17,14 @@ methods::setMethod(
     function(x) "TransformMinByCol"
 )
 
+#' @inheritParams convert_mode
+#' @param values An atomic positive numeric.
 #' @export
 #' @rdname pmin2
 methods::setGeneric("pmin_by_col", function(object, values) {
     standardGeneric("pmin_by_col")
 })
 
-#' @param values A positive atomic numeric.
-#' @inheritParams pmin2
 #' @return
 #' - `pmin_by_col`: Take the minimum with a per-col constant
 #' @export
@@ -93,6 +93,7 @@ methods::setGeneric("pmin_scalar", function(object, value) {
     standardGeneric("pmin_scalar")
 })
 
+#' @param value A single positive numeric value
 #' @return
 #' - `pmin_scalar`: Take minumum with a global constant
 #' @export
@@ -122,42 +123,48 @@ methods::setMethod(
     }
 }
 
+#' @param e1,e2 One of `x` or `y` must be [BPCellsMatrix][BPCellsMatrix-class]
+#' object, and the another must be a scalar or of length `nrow(e1)/nrow(e2)`.
 #' @importFrom DelayedArray pmin2
+#' @note For `pmin2` Methods listed here are supported by `BPCells`, other
+#' `pmin2` methods and `pmax2` function will use the methods defined in
+#' [DelayedArray][DelayedArray-utils].
 #' @export
-#' @rdname internal-methods
+#' @aliases pmax2
+#' @rdname pmin2
 methods::setMethod("pmin2", c("BPCellsMatrix", "numeric"), function(e1, e2) {
     .pmin2_internal(e1, e2)
 })
 
 #' @export
-#' @rdname internal-methods
+#' @rdname pmin2
 methods::setMethod("pmin2", c("numeric", "BPCellsMatrix"), function(e1, e2) {
     .pmin2_internal(e2, e1)
 })
 
 #' @export
-#' @rdname pmin2
+#' @rdname internal-methods
 methods::setMethod(
     "pmin2", c("BPCellsMatrix", "vector"),
     call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
-#' @rdname pmin2
+#' @rdname internal-methods
 methods::setMethod(
     "pmin2", c("vector", "BPCellsMatrix"),
     call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
-#' @rdname pmin2
+#' @rdname internal-methods
 methods::setMethod(
     "pmin2", c("BPCellsMatrix", "DelayedArray"),
     call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
-#' @rdname pmin2
+#' @rdname internal-methods
 methods::setMethod(
     "pmin2", c("DelayedArray", "BPCellsMatrix"),
     call_DelayedArray_method(e1 = , e2 = )
@@ -166,29 +173,28 @@ methods::setMethod(
 ######################################################################
 #' @importFrom DelayedArray pmax2
 #' @export
-#' @rdname pmin2
-#' @aliases pmax2
+#' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("BPCellsMatrix", "vector"),
     call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
-#' @rdname pmin2
+#' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("vector", "BPCellsMatrix"),
     call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
-#' @rdname pmin2
+#' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("BPCellsMatrix", "DelayedArray"),
     call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
-#' @rdname pmin2
+#' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("DelayedArray", "BPCellsMatrix"),
     call_DelayedArray_method(e1 = , e2 = )

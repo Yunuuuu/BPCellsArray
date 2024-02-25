@@ -85,10 +85,10 @@ methods::setMethod(
 )
 
 ################    BPCellsMatrix Methods    ##################
-#' @inheritParams BPCellsSeed-class
+#' @param i,j Row and Column index.
+#' @param ... Not used currently.
 #' @return
-#' - `[`: A [BPCellsDelayedSubset] object.
-#' @order 2
+#' - `[`: A `BPCellsMatrix` object or an atomic vector.
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod(

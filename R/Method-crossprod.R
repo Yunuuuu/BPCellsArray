@@ -23,24 +23,8 @@ methods::setMethod(
 #' @export
 #' @rdname BPCells-crossprod
 methods::setMethod(
-    "crossprod", c(x = "BPCellsMatrix", y = "dgCMatrix"), function(x, y) {
-        t(x) %*% y
-    }
-)
-
-#' @export
-#' @rdname BPCells-crossprod
-methods::setMethod(
-    "crossprod", c(x = "dgCMatrix", y = "BPCellsMatrix"), function(x, y) {
-        t(x) %*% y
-    }
-)
-
-#' @export
-#' @rdname BPCells-crossprod
-methods::setMethod(
     "crossprod", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
-        t(x) %*% coerce_dgCMatrix(y)
+        t(x) %*% BPCellsSeed(y)
     }
 )
 
@@ -48,10 +32,11 @@ methods::setMethod(
 #' @rdname BPCells-crossprod
 methods::setMethod(
     "crossprod", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
-        t(coerce_dgCMatrix(x)) %*% y
+        t(BPCellsSeed(x)) %*% y
     }
 )
 
+#################################################################
 #' @export
 #' @rdname BPCells-crossprod
 methods::setMethod(
@@ -65,5 +50,21 @@ methods::setMethod(
 methods::setMethod(
     "crossprod", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
         t(x) %*% y
+    }
+)
+
+#' @export
+#' @rdname BPCells-crossprod
+methods::setMethod(
+    "crossprod", c(x = "BPCellsMatrix", y = "numeric"), function(x, y) {
+        t(x) %*% y
+    }
+)
+
+#' @export
+#' @rdname BPCells-crossprod
+methods::setMethod(
+    "crossprod", c(x = "numeric", y = "BPCellsMatrix"), function(x, y) {
+        matrix(x, nrow = 1L) %*% y
     }
 )

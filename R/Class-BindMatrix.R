@@ -95,27 +95,18 @@ methods::setMethod(
 #'
 #' Set number of threads to use for sparse-dense multiply and matrix_stats.
 #'
-#' @param object A `BPCellsMatrix` object with a seed slot of
-#' `BPCellsDelayedColBind`, or `BPCellsDelayedRowBind` object.
-#' @param threads Number of threads to use for execution.
+#' @param object A [BPCellsMatrix] object with a seed slot of
+#' `BPCellsDelayedAbind` object, usually derived from [bind][BPCells-bind]
+#' operators.
+#' @param threads Set the number of threads to use for sparse-dense multiply and
+#' [matrix_stats][BPCells::matrix_stats].
 #' @param ... Additional arguments to specific methods.
-#' @return A `BPCellsMatrix` object.
+#' @return A [BPCellsMatrix] object.
 #' @export
 #' @name set_threads
 methods::setGeneric("set_threads", function(object, ...) {
     standardGeneric("set_threads")
 })
-
-#' @export
-#' @rdname internal-methods
-methods::setMethod(
-    "set_threads", "BPCellsDelayedAbind",
-    function(object, threads = 0L) {
-        threads <- as.integer(max(0L, threads, na.rm = TRUE))
-        object@threads <- threads
-        object
-    }
-)
 
 #' @export
 #' @rdname set_threads
@@ -124,6 +115,18 @@ methods::setMethod(
     function(object, threads = 0L) {
         object <- object@seed
         DelayedArray(methods::callGeneric())
+    }
+)
+
+#' @inheritParams set_threads
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "set_threads", "BPCellsDelayedAbind",
+    function(object, threads = 0L) {
+        threads <- as.integer(max(0L, threads, na.rm = TRUE))
+        object@threads <- threads
+        object
     }
 )
 
@@ -143,23 +146,20 @@ methods::setMethod("set_threads", "ANY", function(object, ...) {
 #'
 #' @param x,y A [BPCellsMatrix][BPCellsMatrix-class] or
 #' [BPCellsSeed][BPCellsSeed-class] object.
+#' @inheritParams convert_mode
 #' @param ...
 #'  - `rbind2` and `cbind2`: Not used currently.
 #'  - `rbind`, `arbind`, `cbind`, and `acbind`: A list of
-#'    [BPCellsMatrix][BPCellsMatrix-class] or [BPCellsSeed][BPCellsSeed-class]
-#'    object.
-#' @param threads Set the number of threads to use for sparse-dense multiply and
-#' [matrix_stats][BPCells::matrix_stats].
+#'    [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @inheritParams set_threads
 #' @seealso
 #' [convert_mode]
 #' @return
 #' If `mode` is specified, the mode of all specified object will be converted.
 #' - `cbind2`, `acbind`, `cbind`, `bindCOLS`: A
-#'   [BPCellsMatrix][BPCellsMatrix-class] or [BPCellsSeed][BPCellsSeed-class]
-#'   object combined by columns.
+#'   [BPCellsMatrix][BPCellsMatrix-class] object combined by columns.
 #' - `rbind2`, `arbind`, `rbind`, `bindROWS`: A
-#'   [BPCellsMatrix][BPCellsMatrix-class] or [BPCellsSeed][BPCellsSeed-class]
-#'   object combined by rows.
+#'   [BPCellsMatrix][BPCellsMatrix-class] object combined by rows.
 #' @aliases rbind2 cbind2 rbind cbind arbind acbind bindROWS bindCOLS
 #' @name BPCells-bind
 NULL
@@ -330,6 +330,14 @@ methods::setMethod(
 )
 
 #################################################################
+compatible_storage_mode <- function(list) {
+    actual_modes <- vapply(
+        list, storage_mode, character(1L),
+        USE.NAMES = FALSE
+    )
+    BPCells_MODE[max(match(actual_modes, BPCells_MODE))]
+}
+
 combine_matrices <- function(.fn, mode, matrices, ...) {
     fn <- methods::getMethod(.fn,
         c("IterableMatrix", "IterableMatrix"),

@@ -19,16 +19,25 @@ methods::setMethod(
 
 #' Write a sparce matrices into memory with BPCells format
 #'
-#' @inheritParams writeBPCellsDirArray
-#' @inheritParams BPCells::write_matrix_memory
-#' @param ... For `BPCellsMatrix` method: additional parameters passed to `ANY`
-#'   methods.
-#' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @name BPCellsMem-IO
+NULL
+
 #' @export
-#' @name writeBPCellsMemArray
+#' @rdname BPCellsMem-IO
 methods::setGeneric(
     "writeBPCellsMemArray",
     function(x, ...) standardGeneric("writeBPCellsMemArray")
+)
+
+#' @inherit BPCells::write_matrix_memory details
+#' @inheritParams writeBPCellsDirArray
+#' @inheritParams BPCells::write_matrix_memory
+#' @inherit BPCellsDir-IO return
+#' @export
+#' @rdname BPCellsMem-IO
+methods::setMethod(
+    "writeBPCellsMemArray", "BPCellsMatrix",
+    set_BPCellsArray_method(x = , ... = )
 )
 
 .writeBPCellsMemArray <- function(x, compress = TRUE) {
@@ -40,12 +49,5 @@ methods::setGeneric(
 }
 
 #' @export
-#' @rdname writeBPCellsMemArray
+#' @rdname BPCellsMem-IO
 methods::setMethod("writeBPCellsMemArray", "ANY", .writeBPCellsMemArray)
-
-#' @export
-#' @rdname writeBPCellsMemArray
-methods::setMethod(
-    "writeBPCellsMemArray", "BPCellsMatrix",
-    set_BPCellsArray_method(x = , ... = )
-)

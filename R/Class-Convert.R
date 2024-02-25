@@ -32,16 +32,14 @@ methods::setMethod(
 #####################   BPCellsConvertMatrix   #######################
 #' Convert the storage type of a BPCellsArray object
 #'
-#' @param object A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @param object A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @param ... Additional parameters passed into specific methods.
 #' @name convert_mode
 NULL
 
 #' @return
-#'  - `convert_mode`: A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object with storage mode converted into
-#' the specified.
+#'  - `convert_mode`: A [BPCellsMatrix][BPCellsMatrix-class] object with storage
+#' mode converted into the specified.
 #' @export
 #' @rdname convert_mode
 methods::setGeneric(

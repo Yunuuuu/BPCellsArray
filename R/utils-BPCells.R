@@ -52,29 +52,6 @@ validate_seed <- function(object) {
     TRUE
 }
 
-##########################################################
-# helper function to coerce object into `dgCMatrix` object, which can be used by
-# `BPCells`
-coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    tryCatch(
-        methods::as(x, "dgCMatrix"),
-        error = function(cnd) {
-            cli::cli_abort(
-                "{.arg {arg}} must be a matrix-like object which can be coerced into {.cls dgCMatrix}",
-                call = call
-            )
-        }
-    )
-}
-
-compatible_storage_mode <- function(list) {
-    actual_modes <- vapply(
-        list, storage_mode, character(1L),
-        USE.NAMES = FALSE
-    )
-    BPCells_MODE[max(match(actual_modes, BPCells_MODE))]
-}
-
 ##################################################################
 # helper function to create a `BPCellsDelayedOp` class from BPCells Class.
 #' @param mould Tha Class name from `BPCells`
@@ -177,7 +154,7 @@ call_DelayedArray_method <- function(..., type = "S4") {
 # should just used for `BPCellsDelayedOp` method
 call_BPCells_method <- function(..., before = NULL, after = NULL, Op = "object", inform = FALSE) {
     Op <- rlang::sym(Op)
-    body <- list(rlang::expr(!!Op <- to_BPCells(!!Op))) # nolint
+    body <- list(substitute(Op <- to_BPCells(Op), list(Op = Op)))
     if (inform) {
         body <- c(
             list(quote(cli::cli_inform("Using {.pkg BPCells} method"))), body
@@ -189,6 +166,21 @@ call_BPCells_method <- function(..., before = NULL, after = NULL, Op = "object",
     )
 }
 
+# hepler function to set method for `BPCellsArray`
+set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = NULL, Arrays = "object") {
+    body <- lapply(rlang::syms(Arrays), function(Array) {
+        substitute(
+            BPCells_mat <- to_BPCells(BPCells_mat@seed), # nolint
+            list(BPCells_mat = Array)
+        )
+    })
+    new_method(rlang::pairlist2(...),
+        body = body, method = method,
+        before = before, after = after
+    )
+}
+
+########################################################
 #' @include utils.R
 #' @noRd
 new_method <- function(args, body, method = NULL, before = NULL, after = NULL) {
@@ -196,7 +188,7 @@ new_method <- function(args, body, method = NULL, before = NULL, after = NULL) {
     if (is.null(after)) {
         after <- list(method)
     } else {
-        after <- c(list(rlang::expr(object <- !!method)), after)
+        after <- c(list(rlang::expr(object <- !!method)), after) # nolint
     }
     new_function(args, body = body, before = before, after = after)
 }

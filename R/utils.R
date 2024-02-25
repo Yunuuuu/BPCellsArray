@@ -32,28 +32,6 @@ imap <- function(.x, .f, ...) {
     .mapply(.f, list(.x, names(.x) %||% seq_along(.x)), list(...))
 }
 
-c_msg <- function(..., sep = " ") {
-    paste0(..., collapse = sep)
-}
-
-rebind <- function(sym, value, ns) {
-    if (rlang::is_string(ns)) {
-        Recall(sym, value, getNamespace(ns))
-        pkg <- paste0("package:", ns)
-        if (pkg %in% search()) {
-            Recall(sym, value, as.environment(pkg))
-        }
-    } else if (is.environment(ns)) {
-        if (bindingIsLocked(sym, ns)) {
-            unlockBinding(sym, ns)
-            on.exit(lockBinding(sym, ns))
-        }
-        assign(sym, value, ns)
-    } else {
-        stop("ns must be a string or environment")
-    }
-}
-
 matrix_to_integer <- function(matrix) { # a numeric matrix
     if (is.integer(matrix)) return(matrix) # styler: off
     if (all(matrix <= .Machine$integer.max)) {

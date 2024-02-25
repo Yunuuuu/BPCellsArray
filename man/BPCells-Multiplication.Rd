@@ -3,8 +3,8 @@
 \name{BPCells-Multiplication}
 \alias{BPCells-Multiplication}
 \alias{\%*\%,BPCellsMatrix,BPCellsMatrix-method}
-\alias{\%*\%,BPCellsMatrix,dgCMatrix-method}
-\alias{\%*\%,dgCMatrix,BPCellsMatrix-method}
+\alias{\%*\%,BPCellsMatrix,ANY-method}
+\alias{\%*\%,ANY,BPCellsMatrix-method}
 \alias{\%*\%,BPCellsMatrix,matrix-method}
 \alias{\%*\%,matrix,BPCellsMatrix-method}
 \alias{\%*\%,BPCellsMatrix,numeric-method}
@@ -13,9 +13,9 @@
 \usage{
 \S4method{\%*\%}{BPCellsMatrix,BPCellsMatrix}(x, y)
 
-\S4method{\%*\%}{BPCellsMatrix,dgCMatrix}(x, y)
+\S4method{\%*\%}{BPCellsMatrix,ANY}(x, y)
 
-\S4method{\%*\%}{dgCMatrix,BPCellsMatrix}(x, y)
+\S4method{\%*\%}{ANY,BPCellsMatrix}(x, y)
 
 \S4method{\%*\%}{BPCellsMatrix,matrix}(x, y)
 
@@ -26,15 +26,13 @@
 \S4method{\%*\%}{numeric,BPCellsMatrix}(x, y)
 }
 \arguments{
-\item{x, y}{One of \code{x} or \code{y} must be \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another must be a matrix
-which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix}.}
+\item{x, y}{One of \code{x} or \code{y} must be \link[=BPCellsMatrix-class]{BPCellsMatrix}
+object, and the another must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object
+or  any objects can be converted into \link{BPCellsSeed} object.}
 }
 \value{
 A dense matrix if one of \code{x} or \code{y} is a regular matrix or atomic
-vector. Otherwise, a \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{x} or
-\code{y}.
+vector. Otherwise, a \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Multiplies two matrices, if they are conformable. If one argument is a

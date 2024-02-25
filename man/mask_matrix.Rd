@@ -3,7 +3,6 @@
 \name{mask_matrix}
 \alias{mask_matrix}
 \alias{mask_matrix,BPCellsMatrix,BPCellsMatrix-method}
-\alias{mask_matrix,BPCellsMatrix,dgCMatrix-method}
 \alias{mask_matrix,BPCellsMatrix,ANY-method}
 \title{Mask matrix entries to zero}
 \usage{
@@ -11,24 +10,20 @@ mask_matrix(object, mask, ...)
 
 \S4method{mask_matrix}{BPCellsMatrix,BPCellsMatrix}(object, mask, invert = FALSE)
 
-\S4method{mask_matrix}{BPCellsMatrix,dgCMatrix}(object, mask, invert = FALSE)
-
 \S4method{mask_matrix}{BPCellsMatrix,ANY}(object, mask, invert = FALSE)
 }
 \arguments{
-\item{object}{A \link{BPCellsSeed} or \link{BPCellsMatrix} object.}
+\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{mask}{Mask matrix, A \link{BPCellsSeed} or \link{BPCellsMatrix} object.
-Additionally, a matrix-like object which can be coerced into
-\link[Matrix:dgCMatrix-class]{dgCMatrix}.}
+\item{mask}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can
+be converted into \link{BPCellsSeed} object.}
 
 \item{...}{Additional parameters passed into specific methods.}
 
 \item{invert}{A bool, indicates whether revert the mask.}
 }
 \value{
-A \link[=BPCellsSeed-class]{BPCellsSeed} or
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object depends on the class of \code{object}.
+A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Set matrix entries to zero given a mask matrix of the same dimensions.

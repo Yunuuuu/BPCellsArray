@@ -72,18 +72,13 @@ methods::setMethod(
     }
 )
 
-methods::setMethod("SpectraSVD", "BPCellsMatrix", function(x, ...) {
-    x <- x@seed
-    methods::callGeneric()
-})
-
 methods::setMethod(
-    "SpectraSVD", "IterableMatrix",
+    "SpectraSVD", "BPCellsMatrix",
     function(x, k, nu, nv, center, scale, ncv, tol, maxitr, threads) {
         arg <- list(tol = tol, maxitr = maxitr)
         if (!is.null(ncv)) arg <- c(list(ncv = ncv), arg)
         out <- BPCells::svds(
-            A = x, k = k, nu = nu, nv = nv,
+            A = to_BPCells(x@seed), k = k, nu = nu, nv = nv,
             opts = arg, threads = threads
         )
         out[c("d", "u", "v")]

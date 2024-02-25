@@ -19,16 +19,16 @@ BPCellsSeed(x)
 \S4method{BPCellsSeed}{ANY}(x)
 }
 \arguments{
-\item{x}{A \code{IterableMatrix} object from \code{BPCells}, a matrix-like object which
-can be coerced into dgCMatrix object.}
+\item{x}{A \code{IterableMatrix} object from \code{BPCells} or a matrix-like object
+which can be coerced into dgCMatrix object.}
 }
 \value{
 A \code{IterableMatrix} object or a \code{BPCellsDelayedOp} object, both can be
-directly used as the seed of \link{BPCellsMatrix} object.
+directly used as the seed of \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 }
 \description{
 Build seed object for \code{BPCellsMatrix}
 }
 \seealso{
-\linkS4class{BPCellsSeed}
+\link[=BPCellsSeed-class]{BPCellsSeed} contract
 }

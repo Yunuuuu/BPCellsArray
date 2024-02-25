@@ -15,24 +15,22 @@ methods::setMethod(
 )
 
 #########################################################################
+#' @inherit BPCellsDir-IO return
 #' @inherit BPCells::binarize
-#' @aliases binarize
-#' @return A [BPCellsSeed][BPCellsSeed-class] or
-#' [BPCellsMatrix][BPCellsMatrix-class] object depends on the class of
-#' `object` or `e1` (`e2`).
-#' @name BPCells-binarize
+#' @name BPCells-Compare
 NULL
 
-#' @param object A [BPCellsMatrix] object.
+#' @inheritParams convert_mode
 #' @export
-#' @rdname BPCells-binarize
+#' @rdname BPCells-Compare
+#' @aliases binarize
 methods::setGeneric("binarize", function(object, ...) {
     standardGeneric("binarize")
 })
 
 #' @inheritDotParams BPCells::binarize -mat
 #' @export
-#' @rdname BPCells-binarize
+#' @rdname BPCells-Compare
 methods::setMethod(
     "binarize", "BPCellsMatrix",
     set_BPCellsArray_method(
@@ -50,9 +48,12 @@ methods::setMethod("binarize", "ANY", function(object, ...) {
 
 #########################################################################
 # binary operations ---------------------------------------------
-#' @inheritParams BPCells-binarize
+#' @note Methods listed here are supported by `BPCells`, other
+#' [Compare][methods::Compare] operators will use the methods defined in
+#' [DelayedArray][DelayedArray-utils].
+#' @inheritParams BPCells-Arithmetic
 #' @export
-#' @rdname BPCells-binarize
+#' @rdname BPCells-Compare
 methods::setMethod(
     "<", c(e1 = "numeric", e2 = "BPCellsMatrix"),
     function(e1, e2) {
@@ -61,7 +62,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCells-binarize
+#' @rdname BPCells-Compare
 methods::setMethod(
     ">", c(e1 = "BPCellsMatrix", e2 = "numeric"),
     function(e1, e2) {
@@ -70,7 +71,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCells-binarize
+#' @rdname BPCells-Compare
 methods::setMethod(
     "<=", c(e1 = "numeric", e2 = "BPCellsMatrix"),
     function(e1, e2) {
@@ -79,7 +80,7 @@ methods::setMethod(
 )
 
 #' @export
-#' @rdname BPCells-binarize
+#' @rdname BPCells-Compare
 methods::setMethod(
     ">=", c(e1 = "BPCellsMatrix", e2 = "numeric"),
     function(e1, e2) {
@@ -88,68 +89,17 @@ methods::setMethod(
 )
 
 ##################################################################
+#' @importFrom methods Compare
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
-    "<", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    function(e1, e2) {
-        cli::cli_abort(
-            "Cannot compare {.cls BPCellsMatrix} smaller than a number"
-        )
-    }
+    "Compare", c(e1 = "BPCellsMatrix", e2 = "ANY"),
+    call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
-    ">", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    function(e1, e2) {
-        cli::cli_abort(
-            "Cannot compare {.cls BPCellsMatrix} smaller than a number"
-        )
-    }
-)
-
-#' @export
-#' @rdname internal-methods
-methods::setMethod(
-    "<=", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    function(e1, e2) {
-        cli::cli_abort(
-            "Cannot compare {.cls BPCellsMatrix} smaller than a number"
-        )
-    }
-)
-
-#' @export
-#' @rdname internal-methods
-methods::setMethod(
-    ">=", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    function(e1, e2) {
-        cli::cli_abort(
-            "Cannot compare {.cls BPCellsMatrix} smaller than a number"
-        )
-    }
-)
-
-#' @export
-#' @rdname internal-methods
-methods::setMethod(
-    "==", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    function(e1, e2) {
-        cli::cli_abort(
-            "Cannot compare {.cls BPCellsMatrix} equal with a number"
-        )
-    }
-)
-
-#' @export
-#' @rdname internal-methods
-methods::setMethod(
-    "==", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    function(e1, e2) {
-        cli::cli_abort(
-            "Cannot compare {.cls BPCellsMatrix} equal with a number"
-        )
-    }
+    "Compare", c(e1 = "ANY", e2 = "BPCellsMatrix"),
+    call_DelayedArray_method(e1 = , e2 = )
 )
