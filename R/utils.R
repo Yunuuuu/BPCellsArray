@@ -18,7 +18,7 @@ rename <- function(x, replace) {
 }
 
 c_msg <- function(..., sep = " ") {
-    paste0(..., collapse = sep)
+    paste(..., sep = sep)
 }
 
 obj_s4_friendly <- function(object) {

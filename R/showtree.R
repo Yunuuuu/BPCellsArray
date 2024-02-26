@@ -1,11 +1,21 @@
 ###########################################################
-### - - - - - - - - - - - - - - - - - - - -
-# On-disk Matrix
 #' @inheritParams convert_mode
 #' @importFrom DelayedArray path
-methods::setMethod("path", "MatrixDir", function(object, ...) object@dir)
+methods::setMethod("path", "BPCellsMatrix", function(object, ...) {
+    object <- object@seed
+    methods::callGeneric()
+})
 
 #' @importFrom DelayedArray path<-
+methods::setReplaceMethod("path", "BPCellsMatrix", function(object, ..., value) {
+    object <- object@seed
+    methods::callGeneric()
+})
+
+### - - - - - - - - - - - - - - - - - - - -
+# On-disk Matrix
+methods::setMethod("path", "MatrixDir", function(object, ...) object@dir)
+
 methods::setReplaceMethod("path", "MatrixDir", function(object, ..., value) {
     object@dir <- value
     object
@@ -99,9 +109,21 @@ methods::setReplaceMethod(
 )
 
 ############################################################
+#' @importFrom DelayedArray seed
+methods::setMethod("seed", "BPCellsMatrix", function(x) seed(x@seed))
+
+#' @importFrom DelayedArray seed<-
+methods::setReplaceMethod("seed", "BPCellsMatrix", function(x, value) {
+    seed <- x@seed
+    if (is_BPCellsMemory(seed) || is_BPCellsDisk(seed)) {
+        x@seed <- DelayedArray:::.normalize_seed_replacement_value(value, seed)
+        return(x)
+    }
+    methods::callGeneric(x = seed, value = value)
+})
+
 ### - - - - - - - - - - - - - - - - - - - -
 # On-disk and on-Memory Matrix or Unary Matrix
-#' @importFrom DelayedArray seed
 methods::setMethod("seed", "IterableMatrix", function(x) {
     if (is_BPCellsUnary(x)) seed(x@matrix) else x
 })
@@ -164,9 +186,11 @@ methods::setReplaceMethod("seed", "RowBindMatrices", function(x, value) {
 })
 
 #####################################################
+#' @importFrom DelayedArray nseed
+methods::setMethod("nseed", "BPCellsMatrix", function(x) nseed(x@seed))
+
 ### - - - - - - - - - - - - - - - - - - - -
 # On-disk and on-Memory Matrix or Unary Matrix
-#' @importFrom DelayedArray nseed
 methods::setMethod("nseed", "IterableMatrix", function(x) {
     if (is_BPCellsUnary(x)) nseed(x@matrix) else 1L
 })
