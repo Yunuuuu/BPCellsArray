@@ -108,6 +108,11 @@ as.array.BPCellsDelayedOp <- function(x, drop = FALSE) {
 #' @rdname BPCellsSeed-class
 methods::setMethod("as.array", "BPCellsDelayedOp", as.array.BPCellsDelayedOp)
 
+#' @export
+methods::setAs("BPCellsDelayedOp", "dgCMatrix", function(from) {
+    methods::as(to_BPCells(seed), "dgCMatrix")
+})
+
 ### list_methods("DelayedOp")
 ### Seed contract
 ### here: we override the `DelayedOp` methods
