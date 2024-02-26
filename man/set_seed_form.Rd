@@ -16,7 +16,7 @@ set_seed_form(x, ...)
 \S4method{set_seed_form}{BPCellsMatrix}(x, seed_form = NULL)
 }
 \arguments{
-\item{x}{See return section}
+\item{x}{See \code{Value} section}
 
 \item{...}{Additional argumentds passed into specific methods.}
 

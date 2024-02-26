@@ -33,7 +33,7 @@ methods::setGeneric("set_seed_form", function(x, ...) {
     standardGeneric("set_seed_form")
 })
 
-#' @param x See return section
+#' @param x See `Value` section
 #' @export
 #' @rdname set_seed_form
 methods::setMethod("set_seed_form", "missing", function(x) {
@@ -43,7 +43,7 @@ methods::setMethod("set_seed_form", "missing", function(x) {
 #' @export
 #' @rdname set_seed_form
 methods::setMethod("set_seed_form", "character", function(x) {
-    .validate_seed_form(x)
+    x <- match_seed_form(x)
     old <- GlobalOptions$SeedForm
     GlobalOptions$SeedForm <- x
     invisible(old)
