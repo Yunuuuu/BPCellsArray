@@ -15,15 +15,14 @@ methods::setMethod("summary", "MatrixH5", summary.MatrixH5)
 #' @param path A string path of the `HDF5` file to read or save data into.
 #' @export
 #' @name BPCellsHDF5-IO
-readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L, delayed = NULL) {
+readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L, seed_form = NULL) {
     assert_string(path, empty_ok = FALSE)
-    assert_bool(delayed, null_ok = TRUE)
-    delayed <- delayed %||% GlobalOptions$DelayedBPCells
+    seed_form <- match_seed_form(seed_form)
     obj <- BPCells::open_matrix_hdf5(
         path = path, group = group,
         buffer_size = as.integer(buffer_size)
     )
-    with_delayed(delayed, DelayedArray(obj))
+    with_seed_form(seed_form, DelayedArray(obj))
 }
 
 #' @inherit BPCells::write_matrix_hdf5 details
@@ -43,11 +42,10 @@ methods::setGeneric(
     function(x, ...) standardGeneric("writeBPCellsHDF5Array")
 )
 
-.writeBPCellsHDF5Array <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, delayed = NULL) {
+.writeBPCellsHDF5Array <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, seed_form = NULL) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
-    assert_bool(delayed, null_ok = TRUE)
-    delayed <- delayed %||% GlobalOptions$DelayedBPCells
+    seed_form <- match_seed_form(seed_form)
     if (bitpacking) {
         gzip <- 0L
     } else {
@@ -61,14 +59,14 @@ methods::setGeneric(
         chunk_size = as.integer(chunk_size),
         overwrite = overwrite, gzip_level = gzip
     )
-    with_delayed(delayed, DelayedArray(obj))
+    with_seed_form(seed_form, DelayedArray(obj))
 }
 
 #' @export
 #' @rdname BPCellsHDF5-IO
 methods::setMethod("writeBPCellsHDF5Array", "BPCellsMatrix", function(x, ...) {
-    delayed <- x@delayed
-    .writeBPCellsHDF5Array(x = x, ..., delayed = delayed)
+    seed_form <- x@SeedForm
+    .writeBPCellsHDF5Array(x = x, ..., seed_form = seed_form)
 })
 
 #' @export

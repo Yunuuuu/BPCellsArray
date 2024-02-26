@@ -4,6 +4,7 @@
 #' [DelayedMatrix][DelayedArray::DelayedMatrix] class.
 #'
 #' @seealso
+#' - [set_seed_form]: Manage the seed form.
 #' - [bind][BPCells-bind]: Combine two Objects by Columns or Rows.
 #' - [%*%][BPCells-Multiplication]: Matrix Multiplication.
 #' - [crossprod][BPCells-crossprod]: Matrix Crossproduct.
@@ -19,40 +20,37 @@
 NULL
 
 
-#' @param delayed A bool value. If `TRUE`, will convert `IterableMatrix` into a
-#'   parallel [DelayedOp][DelayedArray::DelayedOp-class] object
-#'   (`BPCellsDelayedOp`), if `FALSE`, will use the `IterableMatrix` object as
-#'   the seed directly. see [set_delayed] for details.
+#' @inheritParams set_seed_form
 #' @return
 #'  - `BPCellsArray` and `BPCellsMatrix`: A `BPCellsMatrix` object, since
 #'    `BPCells` can only support 2-dim array.
 #' @param x,object A [BPCellsMatrix][BPCellsMatrix-class] object
 #' @export
 #' @rdname BPCellsMatrix-class
-BPCellsArray <- function(x, delayed = NULL) {
-    assert_bool(delayed, null_ok = TRUE)
-    delayed <- delayed %||% GlobalOptions$DelayedBPCells
-    with_delayed(delayed, DelayedArray(BPCellsSeed(x)))
+BPCellsArray <- function(x, seed_form = NULL) {
+    seed_form <- match_seed_form(seed_form)
+    with_seed_form(seed_form, DelayedArray(BPCellsSeed(x)))
 }
 
 #' @export
 #' @rdname BPCellsMatrix-class
 BPCellsMatrix <- BPCellsArray
 
+#' @include Seed-management.R
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setClass("BPCellsArray",
     contains = "DelayedArray",
-    slots = list(delayed = "logical"),
-    prototype = list(delayed = GlobalOptions$DelayedBPCells)
+    slots = list(SeedForm = "character"),
+    prototype = list(SeedForm = GlobalOptions$SeedForm)
 )
 
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setClass("BPCellsMatrix",
     contains = "DelayedMatrix",
-    slots = list(delayed = "logical"),
-    prototype = list(delayed = GlobalOptions$DelayedBPCells)
+    slots = list(SeedForm = "character"),
+    prototype = list(SeedForm = GlobalOptions$SeedForm)
 )
 
 #' @return
@@ -64,21 +62,9 @@ methods::setMethod("matrixClass", "BPCellsArray", function(x) {
     "BPCellsMatrix"
 })
 
-.validate_delayed <- function(delayed, arg = rlang::caller_arg(delayed)) {
-    msg <- "{.arg {arg}} must be a single bool value"
-    if (length(delayed) != 1L) {
-        cli::cli_abort(
-            c(msg, i = "You have provided a length {length(delayed)}")
-        )
-    } else if (is.na(delayed)) {
-        cli::cli_abort(c(msg, i = "{.code NA} is not allowed"))
-    }
-    return(TRUE)
-}
-
 .validate_BPCellsArray <- function(object) {
     .validate_seed(object@seed, arg = "@seed")
-    .validate_delayed(object@delayed, arg = "@delayed")
+    .validate_seed_form(object@SeedForm, arg = "@SeedForm")
 }
 
 methods::setValidity("BPCellsArray", .validate_BPCellsArray)
@@ -93,13 +79,13 @@ methods::setValidity("BPCellsMatrix", .validate_BPCellsArray)
 #' @rdname BPCellsMatrix-class
 methods::setMethod("DelayedArray", "IterableMatrix", function(seed) {
     # DelayedArray can only accept one argument,
-    # so we always use with_delayed with `DelayedArray` to
-    # control the delayed behaviour and just assign the delayed
-    # value into the `BPCellsArray` object after creating `BPCellsArray` object
-    delayed <- GlobalOptions$DelayedBPCells
-    if (delayed) seed <- to_DelayedArray(seed) # styler: off
+    # so we always use `with_seed_form` with `DelayedArray` function and just
+    # assign the `seed_form` value into the `BPCellsArray` object after creating
+    # `BPCellsArray` object
+    seed_form <- GlobalOptions$SeedForm
+    if (seed_form == "DelayedArray") seed <- to_DelayedArray(seed) # styler: off
     object <- DelayedArray::new_DelayedArray(seed, Class = "BPCellsArray")
-    object@delayed <- delayed
+    object@SeedForm <- seed_form
     object
 })
 
@@ -108,19 +94,30 @@ methods::setMethod("DelayedArray", "IterableMatrix", function(seed) {
 #' @rdname BPCellsMatrix-class
 methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
     object <- DelayedArray::new_DelayedArray(seed, Class = "BPCellsArray")
-    object@delayed <- TRUE
+    object@SeedForm <- "DelayedArray"
     object
+})
+
+##############################################################
+#' @param seed_form A string, "BPCells" or "DelayedArray", if `NULL`, will use
+#' the default value (use `set_seed_form()` with missing argument to check).
+#' @export
+#' @rdname set_seed_form
+methods::setMethod("set_seed_form", "BPCellsMatrix", function(x, seed_form = NULL) {
+    seed_form <- match_seed_form(seed_form)
+    if (x@SeedForm == seed_form) {
+        msg <- "{.arg x@seed} is already in {.pkg {seed_form}} format"
+        cli::cli_inform(c_msg(msg, "nothing to do", sep = ", "))
+        return(x)
+    }
+    with_seed_form(seed_form, DelayedArray(to_BPCells(x@seed)))
 })
 
 ###################################################################
 .show_internal <- function(object) {
     methods::callNextMethod()
-    delayed <- object@delayed
     cat("\n")
-    cat(sprintf(
-        "Seed form: %s\n",
-        if (delayed) "DelayedArray" else "BPCells"
-    ))
+    cat(sprintf("Seed form: %s\n", object@SeedForm))
     cat(sprintf("Storage Data type: %s\n", storage_mode(object)))
     cat(sprintf("Storage axis: %s major\n", storage_axis(object)))
 
@@ -151,12 +148,14 @@ array_call_DelayedArray_method <- function(..., Array = "object", type = "S4") {
     )
     Array <- rlang::sym(Array)
     # extract whether should be delayed
-    delayed <- list(substitute(delayed <- Array@delayed, list(Array = Array)))
+    seed_form <- list(substitute(seed_form <- Array@SeedForm, list(Array = Array)))
 
     # for some method, it will return DelayedArray directly although
     # @seed is compatible with `BPCellsMatrix`.
     # here we just re-creating a BPCellsMatrix object when it could be.
-    after <- expression(object <- with_delayed(delayed, DelayedArray(object)))
+    after <- expression(
+        object <- with_seed_form(seed_form, DelayedArray(object))
+    )
     after <- c(after, expression(
         # we check if object is a `BPCellsMatrix` object, if not, we warn it
         if (!(methods::is(object, "BPCellsMatrix") ||
@@ -169,7 +168,7 @@ array_call_DelayedArray_method <- function(..., Array = "object", type = "S4") {
         object
     ))
     new_method(rlang::pairlist2(...),
-        before = delayed,
+        before = seed_form,
         method = method, after = after
     )
 }
@@ -182,16 +181,16 @@ array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = 
     method <- method %||% quote(methods::callGeneric())
     Arrays <- rlang::syms(Arrays)
     # extract whether should be delayed, always respect the first Array
-    delayed <- substitute(delayed <- Array@delayed, list(Array = Arrays[[1L]]))
+    seed_form <- substitute(seed_form <- Array@SeedForm, list(Array = Arrays[[1L]]))
     before <- c(
-        before, list(delayed),
+        before, list(seed_form),
         # transform all Arrays into BPCells object
         lapply(Arrays, function(Array) {
             substitute(Array <- to_BPCells(Array@seed), list(Array = Array))
         })
     )
     # then transform IterableMatrix into BPCellsMatrix
-    back <- quote(with_delayed(delayed, DelayedArray(object))) # nolint
+    back <- quote(with_seed_form(seed_form, DelayedArray(object))) # nolint
     if (!is.null(after)) {
         after <- c(list(substitute(object <- back, list(back = back))), after)
     } else {

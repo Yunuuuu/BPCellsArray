@@ -8,7 +8,7 @@
 \alias{writeBPCellsDirArray,ANY-method}
 \title{Read/write sparse matrices from (or into) directory on disk}
 \usage{
-readBPCellsDirMatrix(path, buffer_size = 8192L, delayed = NULL)
+readBPCellsDirMatrix(path, buffer_size = 8192L, seed_form = NULL)
 
 writeBPCellsDirArray(x, ...)
 
@@ -20,7 +20,7 @@ writeBPCellsDirArray(x, ...)
   bitpacking = TRUE,
   buffer_size = 8192L,
   overwrite = FALSE,
-  delayed = NULL
+  seed_form = NULL
 )
 }
 \arguments{
@@ -31,10 +31,8 @@ temporary directory.}
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
 
-\item{delayed}{A bool value. If \code{TRUE}, will convert \code{IterableMatrix} into a
-parallel \link[DelayedArray:DelayedOp-class]{DelayedOp} object
-(\code{BPCellsDelayedOp}), if \code{FALSE}, will use the \code{IterableMatrix} object as
-the seed directly. see \link{set_delayed} for details.}
+\item{seed_form}{A string, "BPCells" or "DelayedArray", if \code{NULL}, will use
+the default value (use \code{set_seed_form()} with missing argument to check).}
 
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
 converted into \link{BPCellsSeed} object.}

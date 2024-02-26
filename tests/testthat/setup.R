@@ -4,8 +4,14 @@ if (!dir.exists(tmpdir)) dir.create(tmpdir)
 tmpdir <- normalizePath(tmpdir, mustWork = TRUE)
 
 test_BPCellsArray <- function(obj, actual_path, ...) {
-    with_delayed(FALSE, common_test(obj = obj, actual_path = actual_path, ...))
-    with_delayed(TRUE, common_test(obj = obj, actual_path = actual_path, ...))
+    with_seed_form(
+        "BPCells",
+        common_test(obj = obj, actual_path = actual_path, ...)
+    )
+    with_seed_form(
+        "DelayedArray",
+        common_test(obj = obj, actual_path = actual_path, ...)
+    )
 }
 
 common_test <- function(

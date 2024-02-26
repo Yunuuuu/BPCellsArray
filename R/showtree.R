@@ -323,7 +323,7 @@ abort_nary_path <- function(call = rlang::caller_env()) {
 no_DelayedArray <- function(object) {
     if (methods::is(object, "BPCellsMatrix") ||
         methods::is(object, "BPCellsArray")) {
-        if (!object@delayed) {
+        if (!object@SeedForm) {
             return(TRUE)
         }
     } else if (methods::is(object, "IterableMatrix")) {

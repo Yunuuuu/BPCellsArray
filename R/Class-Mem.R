@@ -29,14 +29,13 @@ methods::setGeneric(
     function(x, ...) standardGeneric("writeBPCellsMemArray")
 )
 
-.writeBPCellsMemArray <- function(x, compress = TRUE, delayed = NULL) {
-    assert_bool(delayed, null_ok = TRUE)
-    delayed <- delayed %||% GlobalOptions$DelayedBPCells
+.writeBPCellsMemArray <- function(x, compress = TRUE, seed_form = NULL) {
+    seed_form <- match_seed_form(seed_form)
     obj <- BPCells::write_matrix_memory(
         mat = BPCellsSeed(x),
         compress = compress
     )
-    with_delayed(delayed = delayed, DelayedArray(obj))
+    with_seed_form(seed_form = seed_form, DelayedArray(obj))
 }
 
 #' @inherit BPCells::write_matrix_memory details
@@ -46,8 +45,8 @@ methods::setGeneric(
 #' @export
 #' @rdname BPCellsMem-IO
 methods::setMethod("writeBPCellsMemArray", "BPCellsMatrix", function(x, ...) {
-    delayed <- x@delayed
-    .writeBPCellsMemArray(x = x, ..., delayed = delayed)
+    seed_form <- x@SeedForm
+    .writeBPCellsMemArray(x = x, ..., seed_form = seed_form)
 })
 
 #' @export

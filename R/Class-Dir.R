@@ -17,15 +17,14 @@ methods::setMethod("summary", "MatrixDir", summary.MatrixDir)
 #' @inheritParams BPCells::open_matrix_dir
 #' @export
 #' @name BPCellsDir-IO
-readBPCellsDirMatrix <- function(path, buffer_size = 8192L, delayed = NULL) {
+readBPCellsDirMatrix <- function(path, buffer_size = 8192L, seed_form = NULL) {
     assert_string(path, empty_ok = FALSE)
-    assert_bool(delayed, null_ok = TRUE)
-    delayed <- delayed %||% GlobalOptions$DelayedBPCells
+    seed_form <- match_seed_form(seed_form)
     obj <- BPCells::open_matrix_dir(
         dir = path,
         buffer_size = as.integer(buffer_size)
     )
-    with_delayed(delayed, DelayedArray(obj))
+    with_seed_form(seed_form, DelayedArray(obj))
 }
 
 #' Write a sparce matrices into a directory on disk
@@ -55,11 +54,10 @@ methods::setGeneric(
     x, path = NULL, bitpacking = TRUE,
     buffer_size = 8192L,
     overwrite = FALSE,
-    delayed = NULL) {
+    seed_form = NULL) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
-    assert_bool(delayed, null_ok = TRUE)
-    delayed <- delayed %||% GlobalOptions$DelayedBPCells
+    seed_form <- match_seed_form(seed_form)
     path <- path %||% tempfile("BPCellsDirArray")
     obj <- BPCells::write_matrix_dir(
         mat = BPCellsSeed(x),
@@ -67,14 +65,14 @@ methods::setGeneric(
         buffer_size = as.integer(buffer_size),
         overwrite = overwrite
     )
-    with_delayed(delayed, DelayedArray(obj))
+    with_seed_form(seed_form, DelayedArray(obj))
 }
 
 #' @export
 #' @rdname BPCellsDir-IO
 methods::setMethod("writeBPCellsDirArray", "BPCellsMatrix", function(x, ...) {
-    delayed <- x@delayed
-    .writeBPCellsDirArray(x = x, ..., delayed = delayed)
+    seed_form <- x@SeedForm
+    .writeBPCellsDirArray(x = x, ..., seed_form = seed_form)
 })
 
 #' @export

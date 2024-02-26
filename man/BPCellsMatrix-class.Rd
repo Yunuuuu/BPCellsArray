@@ -33,9 +33,9 @@
 
 \S4method{show}{BPCellsMatrix}(object)
 
-BPCellsArray(x, delayed = NULL)
+BPCellsArray(x, seed_form = NULL)
 
-BPCellsMatrix(x, delayed = NULL)
+BPCellsMatrix(x, seed_form = NULL)
 
 \S4method{matrixClass}{BPCellsArray}(x)
 
@@ -66,10 +66,8 @@ BPCellsMatrix(x, delayed = NULL)
 \arguments{
 \item{x, object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object}
 
-\item{delayed}{A bool value. If \code{TRUE}, will convert \code{IterableMatrix} into a
-parallel \link[DelayedArray:DelayedOp-class]{DelayedOp} object
-(\code{BPCellsDelayedOp}), if \code{FALSE}, will use the \code{IterableMatrix} object as
-the seed directly. see \link{set_delayed} for details.}
+\item{seed_form}{A string, "BPCells" or "DelayedArray", if \code{NULL}, will use
+the default value (use \code{set_seed_form()} with missing argument to check).}
 
 \item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} or
 \link[=BPCellsSeed-class]{BPCellsDelayedOp} object.}
@@ -135,6 +133,7 @@ The \code{BPCellsMatrix} class just inherits from the
 }
 \seealso{
 \itemize{
+\item \link{set_seed_form}: Manage the seed form.
 \item \link[=BPCells-bind]{bind}: Combine two Objects by Columns or Rows.
 \item \link[=BPCells-Multiplication]{\%*\%}: Matrix Multiplication.
 \item \link[=BPCells-crossprod]{crossprod}: Matrix Crossproduct.

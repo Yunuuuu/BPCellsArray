@@ -12,11 +12,6 @@
 # parallel `DelayedOp` class easily.
 
 ###################################################################
-# Global options control whether use `to_DelayedArray` to convert
-# BPCells matrix into a `DelayedOp` object
-GlobalOptions <- new.env(parent = emptyenv())
-GlobalOptions$DelayedBPCells <- FALSE
-
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # the `@<-` method for `IterableMatrix` object will check slot class
 # So we must change with `@seed` or `@seeds` slots when running `to_BPCells` or

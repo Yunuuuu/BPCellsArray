@@ -37,7 +37,7 @@ methods::setMethod(
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "matrix"),
     function(x, i, j, ..., value) {
-        delayed <- x@delayed
+        seed_form <- x@SeedForm
         x <- to_BPCells(x@seed)
         x_mode <- storage_mode(x)
         value_mode <- storage_mode(value)
@@ -58,7 +58,7 @@ methods::setMethod(
         } else {
             value <- BPCells::convert_matrix_type(matrix = value, type = x_mode)
         }
-        with_delayed(delayed, DelayedArray(methods::callGeneric()))
+        with_seed_form(seed_form, DelayedArray(methods::callGeneric()))
     }
 )
 
@@ -67,13 +67,13 @@ methods::setMethod(
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "dgCMatrix"),
     function(x, i, j, ..., value) {
-        delayed <- x@delayed
+        seed_form <- x@SeedForm
         x <- to_BPCells(x@seed)
         if (x@transpose) {
             value <- t(BPCellsSeed(t(value)))
         } else {
             value <- BPCellsSeed(value)
         }
-        with_delayed(delayed, DelayedArray(methods::callGeneric()))
+        with_seed_form(seed_form, DelayedArray(methods::callGeneric()))
     }
 )

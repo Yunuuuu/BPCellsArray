@@ -323,6 +323,8 @@ identical(path(assay(sce, "counts")), path(assay(sce, "logcounts")))
 
 ``` r
 dec_sce <- scran::modelGeneVar(sce)
+#> Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
+#> collapsing to unique 'x' values
 set.seed(1L)
 scater::runPCA(sce,
     subset_row = scran::getTopHVGs(dec_sce, n = 2000L),
