@@ -37,6 +37,8 @@ methods::setMethod(
     "summary", "BPCellsDelayedRenameDims",
     summary.BPCellsDelayedRenameDims
 )
+summary.RenameDims <- summary.BPCellsDelayedRenameDims
+methods::setMethod("summary", "RenameDims", summary.BPCellsDelayedRenameDims)
 
 ################    BPCellsMatrix Methods    ##################
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))

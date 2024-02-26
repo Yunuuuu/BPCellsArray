@@ -25,7 +25,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedTransformed", function(object) {
 
 #########################################################
 summary.BPCellsDelayedTransformed <- function(object) {
-    cls <- gsub("^BPCellsDelayedTransforme", "", class(object)[1L])
+    cls <- gsub("^(BPCellsDelayed)?Transform", "", class(object)[1L])
     sprintf(
         "Transform by %s",
         switch(cls,
@@ -41,5 +41,10 @@ summary.BPCellsDelayedTransformed <- function(object) {
 
 methods::setMethod(
     "summary", "BPCellsDelayedTransformed",
+    summary.BPCellsDelayedTransformed
+)
+summary.TransformedMatrix <- summary.BPCellsDelayedTransformed
+methods::setMethod(
+    "summary", "TransformedMatrix",
     summary.BPCellsDelayedTransformed
 )

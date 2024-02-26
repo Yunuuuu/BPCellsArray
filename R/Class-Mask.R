@@ -56,6 +56,9 @@ summary.BPCellsDelayedMask <- function(object) {
 }
 methods::setMethod("summary", "BPCellsDelayedMask", summary.BPCellsDelayedMask)
 
+summary.MatrixMask <- summary.BPCellsDelayedMask
+methods::setMethod("summary", "MatrixMask", summary.BPCellsDelayedMask)
+
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################

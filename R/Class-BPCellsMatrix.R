@@ -122,7 +122,7 @@ methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
     delayed <- object@delayed
     cat("\n")
     cat(sprintf(
-        "`@seed` stored in %s format\n",
+        "Seed form: %s\n",
         if (delayed) "DelayedArray" else "BPCells"
     ))
     cat(sprintf("Storage Data type: %s\n", storage_mode(object)))

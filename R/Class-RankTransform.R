@@ -27,6 +27,12 @@ methods::setMethod(
     summary.BPCellsDelayedRankTransform
 )
 
+summary.MatrixRankTransform <- summary.BPCellsDelayedRankTransform
+methods::setMethod(
+    "summary", "MatrixRankTransform",
+    summary.BPCellsDelayedRankTransform
+)
+
 ###################################################################
 ###########################  Methods  #############################
 ###################################################################

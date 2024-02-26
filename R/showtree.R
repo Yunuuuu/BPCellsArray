@@ -221,6 +221,20 @@ abort_nary_path <- function(call = rlang::caller_env()) {
 .ELBOW <- rawToChar(as.raw(c(0xe2, 0x94, 0x94)))
 .HBAR <- rawToChar(as.raw(c(0xe2, 0x94, 0x80)))
 
+.node_as_one_line_summary <- function(x, show.node.dim = TRUE) {
+    if (is_BPCellsMemory(x) || is_BPCellsDisk(x)) {
+        ans <- sprintf("[seed] %s", summary(x))
+    } else {
+        ans <- summary(x)
+    }
+    if (show.node.dim) {
+        dim_in1string <- paste0(dim(x), collapse = "x")
+        sparse <- if (is_sparse(x)) ", sparse" else ""
+        ans <- sprintf("%s %s%s: %s", dim_in1string, type(x), sparse, ans)
+    }
+    ans
+}
+
 ### 'last.child' can be NA, TRUE, or FALSE. NA means 'x' is the root of the
 ### tree.
 .rec_showtree <- function(x, indent = "", last.child = NA, prefix = "", show.node.dim = TRUE) {
@@ -235,10 +249,7 @@ abort_nary_path <- function(call = rlang::caller_env()) {
             ## 3-char Tprefix
             Tprefix <- paste0(if (last.child) .ELBOW else .TEE, .HBAR, " ")
         }
-        x_as1line <- DelayedArray:::.node_as_one_line_summary(
-            x,
-            show.node.dim = show.node.dim
-        )
+        x_as1line <- .node_as_one_line_summary(x, show.node.dim = show.node.dim)
         cat(indent, Tprefix, prefix, x_as1line, "\n", sep = "")
     }
     ## Display children.

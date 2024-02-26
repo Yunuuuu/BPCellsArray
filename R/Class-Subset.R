@@ -83,6 +83,9 @@ methods::setMethod(
     "summary", "BPCellsDelayedSubset",
     summary.BPCellsDelayedSubset
 )
+summary.MatrixSubset <- summary.BPCellsDelayedSubset
+methods::setMethod("summary", "MatrixSubset", summary.BPCellsDelayedSubset)
+
 
 ################    BPCellsMatrix Methods    ##################
 #' @param i,j Row and Column index.

@@ -26,6 +26,16 @@ methods::setMethod(
     summary.BPCellsDelayedConvert
 )
 
+summary.ConvertMatrixType <- function(object) {
+    sprintf(
+        "Convert type from %s to %s",
+        storage_mode(object@matrix),
+        storage_mode(object)
+    )
+}
+
+methods::setMethod("summary", "ConvertMatrixType", summary.ConvertMatrixType)
+
 
 ###################################################################
 ###########################  Methods  #############################

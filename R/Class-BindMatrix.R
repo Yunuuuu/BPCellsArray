@@ -90,6 +90,25 @@ methods::setMethod(
     summary.BPCellsDelayedAbind
 )
 
+summary.RowBindMatrices <- function(object) {
+    sprintf(
+        "Concatenate %s of %d matrix objects (threads=%d)",
+        if (object@transpose) "cols" else "rows",
+        length(object@matrix_list),
+        object@threads
+    )
+}
+methods::setMethod("summary", "RowBindMatrices", summary.RowBindMatrices)
+summary.ColBindMatrices <- function(object) {
+    sprintf(
+        "Concatenate %s of %d matrix objects (threads=%d)",
+        if (object@transpose) "rows" else "cols",
+        length(object@matrix_list),
+        object@threads
+    )
+}
+methods::setMethod("summary", "ColBindMatrices", summary.ColBindMatrices)
+
 ##############################################################
 #' Set matrix op thread count
 #'

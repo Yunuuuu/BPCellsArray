@@ -37,6 +37,8 @@ methods::setMethod(
     "summary", "BPCellsDelayedMultiply",
     summary.BPCellsDelayedMultiply
 )
+summary.MatrixMultiply <- summary.BPCellsDelayedMultiply
+methods::setMethod("summary", "MatrixMultiply", summary.BPCellsDelayedMultiply)
 
 ##############################################################
 #' Matrix Multiplication
