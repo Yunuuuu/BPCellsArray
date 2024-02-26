@@ -227,22 +227,6 @@ methods::setMethod(
     array_call_DelayedArray_method(a = , perm = , ... = , Array = "a")
 )
 
-# S3/S4 combo for as.array.BPCellsMatrix
-#' @inheritParams BPCellsSeed-class
-#' @exportS3Method base::as.array
-#' @rdname BPCellsMatrix-class
-as.array.BPCellsMatrix <- function(x, drop = FALSE) {
-    assert_bool(drop)
-    mat <- as.matrix(x)
-    if (drop) drop(mat) else mat
-}
-
-#' @return
-#'  - `as.array`: A dense matrix or an atomic vector.
-#' @export
-#' @rdname BPCellsMatrix-class
-methods::setMethod("as.array", "BPCellsMatrix", as.array.BPCellsMatrix)
-
 #' @return
 #'  - `as.matrix`: A dense matrix.
 #' @exportS3Method base::as.matrix
@@ -254,6 +238,18 @@ as.matrix.BPCellsMatrix <- function(x) {
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("as.matrix", "BPCellsMatrix", as.matrix.BPCellsMatrix)
+
+# S3/S4 combo for as.array.BPCellsMatrix
+#' @inheritParams BPCellsSeed-class
+#' @exportS3Method base::as.array
+#' @rdname BPCellsMatrix-class
+as.array.BPCellsMatrix <- as.array.BPCellsDelayedOp
+
+#' @return
+#'  - `as.array`: A dense matrix or an atomic vector.
+#' @export
+#' @rdname BPCellsMatrix-class
+methods::setMethod("as.array", "BPCellsMatrix", as.array.BPCellsMatrix)
 
 ##########################################################
 ### Seed contract

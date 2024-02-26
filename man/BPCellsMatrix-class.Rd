@@ -13,10 +13,10 @@
 \alias{matrixClass,BPCellsArray-method}
 \alias{DelayedArray,IterableMatrix-method}
 \alias{DelayedArray,BPCellsDelayedOp-method}
-\alias{as.array.BPCellsMatrix}
-\alias{as.array,BPCellsMatrix-method}
 \alias{as.matrix.BPCellsMatrix}
 \alias{as.matrix,BPCellsMatrix-method}
+\alias{as.array.BPCellsMatrix}
+\alias{as.array,BPCellsMatrix-method}
 \alias{t,BPCellsMatrix-method}
 \alias{t}
 \alias{dimnames<-,BPCellsMatrix,ListOrNULL-method}
@@ -43,13 +43,13 @@ BPCellsMatrix(x, seed_form = NULL)
 
 \S4method{DelayedArray}{BPCellsDelayedOp}(seed)
 
-\method{as.array}{BPCellsMatrix}(x, drop = FALSE)
-
-\S4method{as.array}{BPCellsMatrix}(x, drop = FALSE)
-
 \method{as.matrix}{BPCellsMatrix}(x)
 
 \S4method{as.matrix}{BPCellsMatrix}(x)
+
+\method{as.array}{BPCellsMatrix}(x, drop = FALSE)
+
+\S4method{as.array}{BPCellsMatrix}(x, drop = FALSE)
 
 \S4method{t}{BPCellsMatrix}(x)
 
@@ -96,11 +96,11 @@ converted into \link{BPCellsSeed} object.
 }
 
 \itemize{
-\item \code{as.array}: A dense matrix or an atomic vector.
+\item \code{as.matrix}: A dense matrix.
 }
 
 \itemize{
-\item \code{as.matrix}: A dense matrix.
+\item \code{as.array}: A dense matrix or an atomic vector.
 }
 
 \itemize{

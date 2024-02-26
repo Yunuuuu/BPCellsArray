@@ -80,6 +80,34 @@ delayedop_call_BPCells_method <- function(..., before = NULL, after = NULL, Arra
 #' @importClassesFrom DelayedArray DelayedOp
 methods::setClass("BPCellsDelayedOp", contains = c("DelayedOp", "VIRTUAL"))
 
+# S3/S4 combo for as.matrix.BPCellsDelayedOp
+#' @exportS3Method base::as.matrix
+#' @rdname BPCellsSeed-class
+as.matrix.BPCellsDelayedOp <- function(x, drop = FALSE) {
+    as_matrix_IterableMatrix(to_BPCells(x))
+}
+
+#' @return
+#'  - `as.matrix`: A dense matrix or an atomic vector.
+#' @export
+#' @rdname BPCellsSeed-class
+methods::setMethod("as.matrix", "BPCellsDelayedOp", as.matrix.BPCellsDelayedOp)
+
+# S3/S4 combo for as.array.BPCellsDelayedOp
+#' @exportS3Method base::as.array
+#' @rdname BPCellsSeed-class
+as.array.BPCellsDelayedOp <- function(x, drop = FALSE) {
+    assert_bool(drop)
+    mat <- as.matrix(x)
+    if (drop) drop(mat) else mat
+}
+
+#' @return
+#'  - `as.array`: A dense matrix or an atomic vector.
+#' @export
+#' @rdname BPCellsSeed-class
+methods::setMethod("as.array", "BPCellsDelayedOp", as.array.BPCellsDelayedOp)
+
 ### list_methods("DelayedOp")
 ### Seed contract
 ### here: we override the `DelayedOp` methods
