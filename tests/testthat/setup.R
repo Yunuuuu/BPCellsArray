@@ -190,10 +190,12 @@ common_test <- function(
         {
             obj <- BPCellsArray(obj)
             testthat::expect_s4_class(obj, "BPCellsMatrix")
-            dimnames(obj) <- list(
+            nms <- list(
                 paste0("G", seq_len(nrow(obj))),
                 paste0("C", seq_len(ncol(obj)))
             )
+            dimnames(obj) <- nms
+            testthat::expect_identical(dimnames(obj), nms)
             testthat::expect_s4_class(obj, "BPCellsMatrix")
         }
     )
