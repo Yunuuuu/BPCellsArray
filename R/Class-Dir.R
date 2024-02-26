@@ -17,13 +17,15 @@ methods::setMethod("summary", "MatrixDir", summary.MatrixDir)
 #' @inheritParams BPCells::open_matrix_dir
 #' @export
 #' @name BPCellsDir-IO
-readBPCellsDirMatrix <- function(path, buffer_size = 8192L) {
+readBPCellsDirMatrix <- function(path, buffer_size = 8192L, delayed = NULL) {
     assert_string(path, empty_ok = FALSE)
+    assert_bool(delayed, null_ok = TRUE)
+    delayed <- delayed %||% GlobalOptions$DelayedBPCells
     obj <- BPCells::open_matrix_dir(
         dir = path,
         buffer_size = as.integer(buffer_size)
     )
-    DelayedArray(obj)
+    with_delayed(delayed, DelayedArray(obj))
 }
 
 #' Write a sparce matrices into a directory on disk
@@ -31,7 +33,7 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L) {
 #' @inherit BPCells::write_matrix_dir details
 #' @param x A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
 #' converted into [BPCellsSeed] object.
-#' @param ... 
+#' @param ...
 #'  - Generic function: Additional arguments passed into specific methods.
 #'  - BPCellsMatrix Method: Additional arguments passed into `ANY` method.
 #' @param bitpacking A bool, whether or not to compress the data using
@@ -39,6 +41,7 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L) {
 #' @param overwrite A bool, If `TRUE`, write to a temp dir then overwrite
 #' existing data.
 #' @inheritParams BPCells::write_matrix_dir
+#' @inheritParams BPCellsMatrix-class
 #' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @export
 #' @aliases writeBPCellsDirArray
@@ -51,9 +54,12 @@ methods::setGeneric(
 .writeBPCellsDirArray <- function(
     x, path = NULL, bitpacking = TRUE,
     buffer_size = 8192L,
-    overwrite = FALSE) {
+    overwrite = FALSE,
+    delayed = NULL) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
+    assert_bool(delayed, null_ok = TRUE)
+    delayed <- delayed %||% GlobalOptions$DelayedBPCells
     path <- path %||% tempfile("BPCellsDirArray")
     obj <- BPCells::write_matrix_dir(
         mat = BPCellsSeed(x),
@@ -61,7 +67,7 @@ methods::setGeneric(
         buffer_size = as.integer(buffer_size),
         overwrite = overwrite
     )
-    DelayedArray(obj)
+    with_delayed(delayed, DelayedArray(obj))
 }
 
 #' @export

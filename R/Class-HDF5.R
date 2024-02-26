@@ -15,13 +15,15 @@ methods::setMethod("summary", "MatrixH5", summary.MatrixH5)
 #' @param path A string path of the `HDF5` file to read or save data into.
 #' @export
 #' @name BPCellsHDF5-IO
-readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L) {
+readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L, delayed = NULL) {
     assert_string(path, empty_ok = FALSE)
+    assert_bool(delayed, null_ok = TRUE)
+    delayed <- delayed %||% GlobalOptions$DelayedBPCells
     obj <- BPCells::open_matrix_hdf5(
         path = path, group = group,
         buffer_size = as.integer(buffer_size)
     )
-    DelayedArray(obj)
+    with_delayed(delayed, DelayedArray(obj))
 }
 
 #' @inherit BPCells::write_matrix_hdf5 details
@@ -41,9 +43,11 @@ methods::setGeneric(
     function(x, ...) standardGeneric("writeBPCellsHDF5Array")
 )
 
-.writeBPCellsHDF5Array <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L) {
+.writeBPCellsHDF5Array <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, delayed = NULL) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
+    assert_bool(delayed, null_ok = TRUE)
+    delayed <- delayed %||% GlobalOptions$DelayedBPCells
     if (bitpacking) {
         gzip <- 0L
     } else {
@@ -57,7 +61,7 @@ methods::setGeneric(
         chunk_size = as.integer(chunk_size),
         overwrite = overwrite, gzip_level = gzip
     )
-    DelayedArray(obj)
+    with_delayed(delayed, DelayedArray(obj))
 }
 
 #' @export

@@ -88,7 +88,7 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
-        y <- DelayedArray(BPCellsSeed(y))
+        y <- with_delayed(FALSE, DelayedArray(BPCellsSeed(y)))
         methods::callGeneric()
     }
 )
@@ -97,7 +97,7 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
-        x <- DelayedArray(BPCellsSeed(x))
+        x <- with_delayed(y@delayed, DelayedArray(BPCellsSeed(x)))
         methods::callGeneric()
     }
 )

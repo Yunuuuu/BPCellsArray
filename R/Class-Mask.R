@@ -108,7 +108,7 @@ methods::setMethod(
         method = quote(
             BPCells:::mask_matrix(
                 mat = object,
-                mask = to_BPCells(BPCellsSeed(mask)),
+                mask = BPCellsSeed(mask),
                 invert = invert
             )
         ),

@@ -8,7 +8,7 @@
 \alias{writeBPCellsHDF5Array,ANY-method}
 \title{Read/write sparse matrices from (or into) HDF5 file}
 \usage{
-readBPCellsHDF5Matrix(path, group, buffer_size = 8192L)
+readBPCellsHDF5Matrix(path, group, buffer_size = 8192L, delayed = NULL)
 
 writeBPCellsHDF5Array(x, ...)
 
@@ -22,7 +22,8 @@ writeBPCellsHDF5Array(x, ...)
   buffer_size = 8192L,
   chunk_size = 1024L,
   overwrite = FALSE,
-  gzip = 0L
+  gzip = 0L,
+  delayed = NULL
 )
 }
 \arguments{
@@ -33,6 +34,11 @@ to an existing hdf5 file this group must not already be in use}
 
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
+
+\item{delayed}{A bool value. If \code{TRUE}, will convert \code{IterableMatrix} into a
+parallel \link[DelayedArray:DelayedOp-class]{DelayedOp} object
+(\code{BPCellsDelayedOp}), if \code{FALSE}, will use the \code{IterableMatrix} object as
+the seed directly. see \link{set_delayed} for details.}
 
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
 converted into \link{BPCellsSeed} object.}

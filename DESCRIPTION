@@ -42,10 +42,10 @@ RoxygenNote: 7.3.0
 Collate: 
     'utils.R'
     'utils-BPCells.R'
-    'Class-BPCellsSeed.R'
-    'BPCellsSeed.R'
     'Class-Delayed.R'
     'Class-BPCellsMatrix.R'
+    'Class-BPCellsSeed.R'
+    'BPCellsSeed.R'
     'Class-BindMatrix.R'
     'Class-Convert.R'
     'Class-Dir.R'

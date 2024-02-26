@@ -66,7 +66,7 @@ methods::setMethod(
     "t", "BPCellsDelayedOp",
     call_BPCells_method(
         x = ,
-        after = expression(to_DelayedArray(object, delayed = TRUE)),
+        after = expression(to_DelayedArray(object)),
         Op = "x"
     )
 )

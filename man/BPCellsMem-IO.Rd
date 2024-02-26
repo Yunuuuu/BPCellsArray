@@ -11,7 +11,7 @@ writeBPCellsMemArray(x, ...)
 
 \S4method{writeBPCellsMemArray}{BPCellsMatrix}(x, ...)
 
-\S4method{writeBPCellsMemArray}{ANY}(x, compress = TRUE)
+\S4method{writeBPCellsMemArray}{ANY}(x, compress = TRUE, delayed = NULL)
 }
 \arguments{
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
@@ -23,6 +23,11 @@ converted into \link{BPCellsSeed} object.}
 }}
 
 \item{compress}{Whether or not to compress the data.}
+
+\item{delayed}{A bool value. If \code{TRUE}, will convert \code{IterableMatrix} into a
+parallel \link[DelayedArray:DelayedOp-class]{DelayedOp} object
+(\code{BPCellsDelayedOp}), if \code{FALSE}, will use the \code{IterableMatrix} object as
+the seed directly. see \link{set_delayed} for details.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

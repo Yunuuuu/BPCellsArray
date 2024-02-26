@@ -40,12 +40,14 @@ methods::setMethod(
     set_BPCellsArray_method(x = , ... = )
 )
 
-.writeBPCellsMemArray <- function(x, compress = TRUE) {
+.writeBPCellsMemArray <- function(x, compress = TRUE, delayed = NULL) {
+    assert_bool(delayed, null_ok = TRUE)
+    delayed <- delayed %||% GlobalOptions$DelayedBPCells
     obj <- BPCells::write_matrix_memory(
         mat = BPCellsSeed(x),
         compress = compress
     )
-    DelayedArray(obj)
+    with_delayed(delayed = delayed, DelayedArray(obj))
 }
 
 #' @export

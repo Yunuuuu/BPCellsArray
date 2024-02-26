@@ -3,6 +3,9 @@
 \name{BPCellsSeed}
 \alias{BPCellsSeed}
 \alias{BPCellsSeed,IterableMatrix-method}
+\alias{BPCellsSeed,BPCellsArray-method}
+\alias{BPCellsSeed,BPCellsMatrix-method}
+\alias{BPCellsSeed,BPCellsDelayedOp-method}
 \alias{BPCellsSeed,matrix-method}
 \alias{BPCellsSeed,dgCMatrix-method}
 \alias{BPCellsSeed,ANY-method}
@@ -11,6 +14,12 @@
 BPCellsSeed(x)
 
 \S4method{BPCellsSeed}{IterableMatrix}(x)
+
+\S4method{BPCellsSeed}{BPCellsArray}(x)
+
+\S4method{BPCellsSeed}{BPCellsMatrix}(x)
+
+\S4method{BPCellsSeed}{BPCellsDelayedOp}(x)
 
 \S4method{BPCellsSeed}{matrix}(x)
 
@@ -23,8 +32,7 @@ BPCellsSeed(x)
 which can be coerced into dgCMatrix object.}
 }
 \value{
-A \code{IterableMatrix} object or a \code{BPCellsDelayedOp} object, both can be
-directly used as the seed of \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
+A \code{IterableMatrix} object.
 }
 \description{
 Build seed object for \code{BPCellsMatrix}

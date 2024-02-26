@@ -97,14 +97,12 @@ NULL
 #' @rdname BPCellsMatrix-class
 methods::setMethod("DelayedArray", "IterableMatrix", function(seed) {
     # DelayedArray can only accept one argument,
-    # so we always use with_delayed with DelayedArray to
+    # so we always use with_delayed with `DelayedArray` to
     # control the delayed behaviour and just assign the delayed
     # value into the `BPCellsArray` object after creating `BPCellsArray` object
     delayed <- GlobalOptions$DelayedBPCells
-    object <- new_DelayedArray(
-        to_DelayedArray(seed, delayed = delayed),
-        Class = "BPCellsArray"
-    )
+    if (delayed) seed <- to_DelayedArray(seed) # styler: off
+    object <- new_DelayedArray(seed, Class = "BPCellsArray")
     object@delayed <- delayed
     object
 })

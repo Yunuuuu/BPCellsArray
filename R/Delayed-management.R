@@ -64,7 +64,7 @@ methods::setMethod("set_delayed", "BPCellsMatrix", function(x, delayed = NULL) {
         cli::cli_inform(c_msg(msg, "nothing to do", sep = ", "))
         return(x)
     }
-    with_delayed(delayed, DelayedArray(x@seed))
+    with_delayed(delayed, DelayedArray(to_BPCells(x@seed)))
 })
 
 with_delayed <- function(delayed, code, envir = parent.frame()) {

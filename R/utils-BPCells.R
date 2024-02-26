@@ -71,7 +71,7 @@ SUPPORTED_BPCELLS_MATRIX <- c(
         )
     } else {
         cli::cli_abort(
-            "{.arg {arg}} must be a {.cls BPCellsDelayedOp} or {.cls IterableMatrix} object"
+            "{.arg {arg}} must be a {.cls BPCellsDelayedOp} or a {.cls IterableMatrix} object"
         )
     }
     TRUE
@@ -187,35 +187,14 @@ methods::setMethod("to_BPCells", "DelayedOp", function(object) {
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # to_DelayedArray
 # Function used to translate `BPCells` class into `BPCellsDelayed` class
-# This function only used for `BPCells` object, so it's safe to regard `object`
-# in generic function as a `IterableMatrix` object
 #' @keywords internal
 #' @noRd
-methods::setGeneric("to_DelayedArray",
-    signature = c("object"), function(object, ..., delayed = NULL) {
-        delayed <- delayed %||% GlobalOptions$DelayedBPCells
-        if (delayed) {
-            with_delayed(TRUE, standardGeneric("to_DelayedArray"))
-        } else {
-            to_DelayedArray_return_IterableMatrix(object)
-        }
-    }
-)
-
-to_DelayedArray_return_IterableMatrix <- function(object) {
-    for (ii in SUPPORTED_BPCELLS_MATRIX) {
-        if (methods::is(object, ii)) return(object) # styler: off
-    }
-    cli::cli_abort(
-        "{.cls {obj_s4_friendly(object)}} is not supported at the moment"
-    )
-}
+methods::setGeneric("to_DelayedArray", signature = "object", function(object) {
+    standardGeneric("to_DelayedArray")
+})
 
 # only used by on-disk and on-memory BPCells Matrix
-methods::setMethod(
-    "to_DelayedArray", "IterableMatrix",
-    to_DelayedArray_return_IterableMatrix
-)
+methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
 
 # used by c(
 #    "BPCellsConvert", "BPCellsRankTransform",

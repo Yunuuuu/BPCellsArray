@@ -2,8 +2,7 @@
 #'
 #' @param x A `IterableMatrix` object from `BPCells` or a matrix-like object
 #' which can be coerced into dgCMatrix object.
-#' @return A `IterableMatrix` object or a `BPCellsDelayedOp` object, both can be
-#'  directly used as the seed of [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @return A `IterableMatrix` object.
 #' @name BPCellsSeed
 #' @seealso [BPCellsSeed][BPCellsSeed-class] contract
 NULL
@@ -19,8 +18,26 @@ methods::setGeneric("BPCellsSeed", function(x) {
 #' @include Class-BPCellsSeed.R
 #' @export
 #' @rdname BPCellsSeed
-methods::setMethod("BPCellsSeed", "IterableMatrix", function(x) {
-    to_DelayedArray(x)
+methods::setMethod("BPCellsSeed", "IterableMatrix", function(x) x)
+
+#' @include Class-BPCellsMatrix.R
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "BPCellsArray", function(x) {
+    to_BPCells(x@seed)
+})
+
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "BPCellsMatrix", function(x) {
+    to_BPCells(x@seed)
+})
+
+#' @include Class-Delayed.R
+#' @export
+#' @rdname BPCellsSeed
+methods::setMethod("BPCellsSeed", "BPCellsDelayedOp", function(x) {
+    to_BPCells(x)
 })
 
 ##############################################################

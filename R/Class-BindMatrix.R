@@ -38,7 +38,7 @@ to_DelayedAbind <- function(object, along) {
         Class = "BPCellsDelayedAbind"
     )
     object@along <- along
-    object@seeds <- lapply(object@seeds, to_DelayedArray, delayed = TRUE)
+    object@seeds <- lapply(object@seeds, to_DelayedArray)
     object
 }
 
@@ -113,8 +113,9 @@ methods::setGeneric("set_threads", function(object, ...) {
 methods::setMethod(
     "set_threads", "BPCellsMatrix",
     function(object, threads = 0L) {
+        delayed <- object@delayed
         object <- object@seed
-        DelayedArray(methods::callGeneric())
+        with_delayed(delayed, DelayedArray(methods::callGeneric()))
     }
 )
 
