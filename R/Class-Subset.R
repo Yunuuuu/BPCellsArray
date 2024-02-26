@@ -10,7 +10,7 @@ mould_BPCells("BPCellsDelayedSubset", "MatrixSubset",
 
 ### list_methods("DelayedSubset")
 ### Seed contract
-### here: we override the `DelayedSetDimnames` methods
+### here: we override the `DelayedSubset` methods
 methods::setMethod(
     "dim", "BPCellsDelayedSubset",
     delayedop_call_BPCells_method(x = , Array = "x")
