@@ -88,29 +88,3 @@ coerce_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller
         }
     )
 }
-
-#############################################################
-### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# to_DelayedArray
-# Function used to translate `BPCells` class into `BPCellsDelayed` class
-#' @keywords internal
-#' @noRd
-methods::setGeneric("to_DelayedArray", signature = "object", function(object) {
-    standardGeneric("to_DelayedArray")
-})
-
-# only used by on-disk and on-memory BPCells Matrix
-methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
-
-# used by c(
-#    "BPCellsConvert", "BPCellsRankTransform",
-#    "BPCellsRenameDims", "BPCellsSubset", "BPCellsTransformed"
-# )
-to_DelayedUnaryOp <- function(object, Class) {
-    object <- migrate_slots(
-        Object = object,
-        rename = c(matrix = "seed"), Class = Class
-    )
-    object@seed <- to_DelayedArray(object@seed)
-    object
-}
