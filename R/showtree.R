@@ -8,8 +8,10 @@ methods::setMethod("path", "BPCellsMatrix", function(object, ...) {
 
 #' @importFrom DelayedArray path<-
 methods::setReplaceMethod("path", "BPCellsMatrix", function(object, ..., value) {
-    object <- object@seed
-    methods::callGeneric()
+    seed <- object@seed
+    path(object = seed, ...) <- value
+    object@seed <- seed
+    object
 })
 
 ### - - - - - - - - - - - - - - - - - - - -
@@ -38,8 +40,8 @@ methods::setReplaceMethod("path", "MatrixH5", function(object, ..., value) {
 }
 
 .path_replace_unary <- function(object, ..., value) {
-    path(x@matrix) <- value
-    x
+    path(object = object@matrix, ...) <- value
+    object
 }
 
 methods::setMethod("path", "ConvertMatrixType", .path_unary)
