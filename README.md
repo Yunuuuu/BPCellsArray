@@ -202,12 +202,12 @@ assay(sce, "counts")
 #> Gene_2999       217      1774       369   .       173      1415
 #> Gene_3000      3014       215      1219   .       137       300
 #> 
-#> `@seed` stored in BPCells format
+#> Seed form: BPCells
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
 #> Queued Operations:
-#> 3000x2000 double, sparse: [seed] MatrixDir object
+#> 3000x2000 double, sparse: [seed] Load compressed matrix from directory
 ```
 
 You can coerce it into a dense matrix or `dgCMatrix` to get the actual
@@ -228,13 +228,13 @@ assay(sce, "counts")[1:10, 1:10]
 #> Gene_0009      464      494       21   .      135      167
 #> Gene_0010       52      142        1   .      454      157
 #> 
-#> `@seed` stored in BPCells format
+#> Seed form: BPCells
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
 #> Queued Operations:
-#> 10x10 double, sparse: [seed] MatrixSubset object
-#> └─ 3000x2000 double, sparse: [seed] MatrixDir object
+#> 10x10 double, sparse: Subset matrix
+#> └─ 3000x2000 double, sparse: [seed] Load compressed matrix from directory
 as.matrix(assay(sce, "counts")[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
 #> Gene_0001        0        0        0        0       51        0       16
@@ -303,15 +303,15 @@ assay(sce, "logcounts")
 #> Gene_2999   7.744385  10.867509   8.500775   .  7.485524 10.469749
 #> Gene_3000  11.534041   7.828500  10.222001   .  7.151042  8.235757
 #> 
-#> `@seed` stored in BPCells format
+#> Seed form: BPCells
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
 #> Queued Operations:
-#> 3000x2000 double, sparse: [seed] TransformScaleShift object
-#> └─ 3000x2000 double, sparse: [seed] TransformLog1pSlow object
-#>    └─ 3000x2000 double, sparse: [seed] TransformScaleShift object
-#>       └─ 3000x2000 double, sparse: [seed] MatrixDir object
+#> 3000x2000 double, sparse: Transform by scale and (or) shift
+#> └─ 3000x2000 double, sparse: Transform by log1p_slow
+#>    └─ 3000x2000 double, sparse: Transform by scale and (or) shift
+#>       └─ 3000x2000 double, sparse: [seed] Load compressed matrix from directory
 ```
 
 Both `count` and `logcounts` share the same disk path.
