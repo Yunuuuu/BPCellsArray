@@ -67,7 +67,7 @@ methods::setMethod(
 #' @rdname BPCells-Math
 methods::setMethod(
     "expm1", "BPCellsMatrix",
-    array_call_BPCells_method(x = , Arrays = "x")
+    array_call_BPCells_method(x = )
 )
 
 ####################################################################
@@ -166,7 +166,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Math", "BPCellsArray",
-    array_call_DelayedArray_method(x = , Array = "x")
+    array_call_DelayedArray_method(x = )
 )
 
 #' @importFrom methods Math2
@@ -174,5 +174,5 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Math2", "BPCellsArray",
-    array_call_DelayedArray_method(x = , Array = "x")
+    array_call_DelayedArray_method(x = )
 )

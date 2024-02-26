@@ -141,14 +141,18 @@ methods::setMethod("show", "BPCellsMatrix", .show_internal)
 ##############################################################
 # helper function to re-dispath `DelayedArray` method
 # should just used for `BPCellsMatrix` method
-array_call_DelayedArray_method <- function(..., Array = "object", type = "S4") {
+array_call_DelayedArray_method <- function(..., Array = NULL, type = "S4") {
     method <- switch(type,
         S4 = quote(methods::callNextMethod()),
         S3 = quote(NextMethod())
     )
-    Array <- rlang::sym(Array)
+    args <- rlang::pairlist2(...)
+    Array <- rlang::sym(Array %||% names(args)[[1L]])
     # extract whether should be delayed
-    seed_form <- list(substitute(seed_form <- Array@SeedForm, list(Array = Array)))
+    seed_form <- list(substitute(
+        seed_form <- Array@SeedForm,
+        list(Array = Array)
+    ))
 
     # for some method, it will return DelayedArray directly although
     # @seed is compatible with `BPCellsMatrix`.
@@ -167,7 +171,7 @@ array_call_DelayedArray_method <- function(..., Array = "object", type = "S4") {
         },
         object
     ))
-    new_method(rlang::pairlist2(...),
+    new_method(args,
         before = seed_form,
         method = method, after = after
     )
@@ -179,9 +183,10 @@ array_call_DelayedArray_method <- function(..., Array = "object", type = "S4") {
 # 2. method
 # 3. body - DelayedArray - after
 #' @include utils.R
-array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = NULL, after = NULL, Arrays = "object") {
+array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = NULL, after = NULL, Arrays = NULL) {
     method <- method %||% quote(methods::callGeneric())
-    Arrays <- rlang::syms(Arrays)
+    args <- rlang::pairlist2(...)
+    Arrays <- rlang::syms(Arrays %||% names(args)[[1L]])
     # extract seed_form, always respect the first Array
     seed_form <- substitute(
         seed_form <- Array@SeedForm,
@@ -202,7 +207,7 @@ array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = 
         after <- back
     }
     after <- c(body, after)
-    new_method(rlang::pairlist2(...),
+    new_method(args,
         before = before,
         method = method, after = after
     )
@@ -224,7 +229,7 @@ aperm.BPCellsMatrix <- array_call_DelayedArray_method(
 #' @importFrom BiocGenerics aperm
 methods::setMethod(
     "aperm", "BPCellsMatrix",
-    array_call_DelayedArray_method(a = , perm = , ... = , Array = "a")
+    array_call_DelayedArray_method(a = , perm = , ... = )
 )
 
 #' @return
@@ -275,13 +280,13 @@ NULL
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
     "t", "BPCellsMatrix",
-    array_call_BPCells_method(x = , Arrays = "x")
+    array_call_BPCells_method(x = )
 )
 
 #' @importFrom methods Ops
 methods::setMethod(
     "Ops", c("BPCellsArray", "vector"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )
 
 methods::setMethod(
@@ -291,5 +296,5 @@ methods::setMethod(
 
 methods::setMethod(
     "Ops", c("BPCellsArray", "BPCellsArray"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )

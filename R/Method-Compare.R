@@ -93,7 +93,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Compare", c(e1 = "BPCellsMatrix", e2 = "ANY"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export

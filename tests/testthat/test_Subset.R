@@ -6,6 +6,6 @@ mat <- mat[1:100L, 1:20]
 
 test_BPCellsArray(
     obj, path,
-    mat = mat, 
+    mat = mat,
     name = "Subset"
 )

@@ -40,12 +40,12 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L, seed_form = NULL) {
 #' @param overwrite A bool, If `TRUE`, write to a temp dir then overwrite
 #' existing data.
 #' @param seed_form A string, `"BPCells"` or `"DelayedArray"`, if `NULL`, will
-#' use the default value. 
+#' use the default value.
 #'  - For `readBPCells*`: use `set_seed_form()` with missing argument to check
 #'    the default value.
-#'  - For `writeBPCells*`: 
+#'  - For `writeBPCells*`:
 #'      * For `BPCellsMatrix` method: the default value will be extracted from
-#'        `x` directly. 
+#'        `x` directly.
 #'      * For `ANY` method: use `set_seed_form()` with missing argument to check
 #'        the default value.
 #' @inheritParams BPCells::write_matrix_dir

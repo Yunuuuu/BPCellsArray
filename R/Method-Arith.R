@@ -72,7 +72,7 @@ NULL
 #' @rdname BPCells-Arithmetic
 methods::setMethod(
     "Arith", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    array_call_BPCells_method(e1 = , e2 = , Arrays = "e1")
+    array_call_BPCells_method(e1 = , e2 = )
 )
 
 #' @export
@@ -104,7 +104,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "%%", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
@@ -118,7 +118,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "%/%", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )
 
 #######################################################################

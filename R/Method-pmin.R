@@ -143,7 +143,7 @@ methods::setMethod("pmin2", c("numeric", "BPCellsMatrix"), function(e1, e2) {
 #' @rdname internal-methods
 methods::setMethod(
     "pmin2", c("BPCellsMatrix", "vector"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
@@ -157,7 +157,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "pmin2", c("BPCellsMatrix", "DelayedArray"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
@@ -173,7 +173,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("BPCellsMatrix", "vector"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export
@@ -187,7 +187,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("BPCellsMatrix", "DelayedArray"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = )
 )
 
 #' @export

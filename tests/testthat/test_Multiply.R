@@ -11,6 +11,6 @@ mat <- mat1 %*% mat2
 
 test_BPCellsArray(
     obj, path,
-    mat = mat, 
+    mat = mat,
     name = "Multiply"
 )

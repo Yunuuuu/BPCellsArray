@@ -7,7 +7,7 @@ obj <- BPCells::write_matrix_hdf5(
 
 test_BPCellsArray(
     obj, path,
-    mat = mat, 
+    mat = mat,
     name = "HDF5"
 )
 

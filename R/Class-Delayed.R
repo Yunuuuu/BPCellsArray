@@ -63,13 +63,14 @@ to_DelayedUnaryOp <- function(object, Class) {
 # helper function to re-dispath `BPCells` method
 # should used for `BPCellsDelayedOp` object
 # This will not convert the final object into `BPCellsMatrix`
-#' @include utils-BPCells.R
-delayedop_call_BPCells_method <- function(..., before = NULL, after = NULL, Array = "object") {
-    Array <- rlang::sym(Array)
+#' @include utils-BPCells.R utils.R
+delayedop_call_BPCells_method <- function(..., before = NULL, after = NULL, Array = NULL) {
+    args <- rlang::pairlist2(...)
+    Array <- rlang::sym(Array %||% names(args)[[1L]])
     before <- c(before, list(
         substitute(Array <- to_BPCells(Array), list(Array = Array))
     ))
-    new_method(rlang::pairlist2(...),
+    new_method(args,
         before = before,
         method = quote(methods::callGeneric()),
         after = after
@@ -125,7 +126,7 @@ methods::setAs("BPCellsDelayedOp", "dgCMatrix", function(from) {
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "type", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @export
@@ -136,35 +137,35 @@ methods::setMethod("is_sparse", "BPCellsDelayedOp", function(x) TRUE)
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_sparse_array", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @importMethodsFrom BPCells t
@@ -184,7 +185,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "chunkdim", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -209,7 +210,7 @@ methods::setMethod(
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "chunkdim", "BPCellsDelayedUnaryOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -225,14 +226,14 @@ methods::setClass("BPCellsDelayedUnaryIsoOp",
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedUnaryIsoOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedUnaryIsoOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @export
@@ -243,14 +244,14 @@ methods::setMethod("is_sparse", "BPCellsDelayedUnaryIsoOp", function(x) TRUE)
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedUnaryIsoOp",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedUnaryIsoOp",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -274,14 +275,14 @@ methods::setClass("BPCellsDelayedNaryIsoOp",
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedNaryIsoOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedNaryIsoOp",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @export
@@ -292,12 +293,12 @@ methods::setMethod("is_sparse", "BPCellsDelayedNaryIsoOp", function(x) TRUE)
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedNaryIsoOp",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedNaryIsoOp",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )

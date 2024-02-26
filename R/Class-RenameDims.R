@@ -20,7 +20,7 @@ methods::setMethod("is_noop", "BPCellsDelayedRenameDims", function(x) FALSE)
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedRenameDims",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 ############################################################
@@ -59,7 +59,7 @@ methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
     "dimnames<-", c(x = "BPCellsMatrix", value = "ListOrNULL"),
-    array_call_BPCells_method(x = , value = , Arrays = "x")
+    array_call_BPCells_method(x = , value = )
 )
 
 #' @return

@@ -10,4 +10,3 @@ library(testthat)
 library(BPCellsArray)
 
 test_check("BPCellsArray")
-

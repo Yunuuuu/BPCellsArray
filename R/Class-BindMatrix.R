@@ -13,14 +13,14 @@ mould_BPCells("BPCellsDelayedAbind", "ColBindMatrices",
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedAbind",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedAbind",
-    delayedop_call_BPCells_method(x = , Array = "x")
+    delayedop_call_BPCells_method(x = )
 )
 
 #' @export
@@ -31,14 +31,14 @@ methods::setMethod("is_sparse", "BPCellsDelayedAbind", function(x) TRUE)
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedAbind",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedAbind",
-    delayedop_call_BPCells_method(x = , index = , Array = "x")
+    delayedop_call_BPCells_method(x = , index = )
 )
 
 ############################################################

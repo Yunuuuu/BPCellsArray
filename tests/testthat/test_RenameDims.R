@@ -12,6 +12,6 @@ dimnames(mat) <- list(
 
 test_BPCellsArray(
     obj, path,
-    mat = mat, 
+    mat = mat,
     name = "RenameDims"
 )
