@@ -114,12 +114,11 @@ methods::setMethod("seed", "BPCellsMatrix", function(x) seed(x@seed))
 
 #' @importFrom DelayedArray seed<-
 methods::setReplaceMethod("seed", "BPCellsMatrix", function(x, value) {
-    seed <- x@seed
-    if (is_BPCellsMemory(seed) || is_BPCellsDisk(seed)) {
-        x@seed <- DelayedArray:::.normalize_seed_replacement_value(value, seed)
-        return(x)
-    }
-    methods::callGeneric(x = seed, value = value)
+    x@seed <- methods::callGeneric(x = x@seed, value = value)
+    # No need to use `DelayedArray`, the `@SeedForm` won't change
+    # and we have ensure the class of `value` is the same with `@seed`
+    # with_seed_form(x@SeedForm, DelayedArray(seed))
+    x
 })
 
 ### - - - - - - - - - - - - - - - - - - - -
@@ -130,12 +129,12 @@ methods::setMethod("seed", "IterableMatrix", function(x) {
 
 #' @importFrom DelayedArray seed<-
 methods::setReplaceMethod("seed", "IterableMatrix", function(x, value) {
-    if (is_BPCellsUnary(x)) {
-        seed(x@matrix) <- value
+    if (is_BPCellsMemory(x) || is_BPCellsDisk(x)) {
+        DelayedArray:::.normalize_seed_replacement_value(value, x)
     } else {
-        seed(x) <- value
+        x@matrix <- methods::callGeneric(x = x@matrix, value = value)
+        x
     }
-    x
 })
 
 ### - - - - - - - - - - - - - - - - - - - -
