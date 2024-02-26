@@ -84,12 +84,8 @@ methods::setMethod("matrixClass", "BPCellsArray", function(x) {
 methods::setValidity("BPCellsArray", .validate_BPCellsArray)
 methods::setValidity("BPCellsMatrix", .validate_BPCellsArray)
 
-#' Since BPCells only support 2-dim matrix, `new_BPCellsArray` will always
-#' return a `BPCellsMatrix` object.
-#' @importFrom DelayedArray new_DelayedArray
-#' @noRd
-NULL
-
+# Since BPCells only support 2-dim matrix, `DelayedArray` will always
+# return a `BPCellsMatrix` object.
 #' @param seed A [IterableMatrix][BPCellsSeed-class] or
 #' [BPCellsDelayedOp][BPCellsSeed-class] object.
 #' @importFrom DelayedArray DelayedArray
@@ -102,7 +98,7 @@ methods::setMethod("DelayedArray", "IterableMatrix", function(seed) {
     # value into the `BPCellsArray` object after creating `BPCellsArray` object
     delayed <- GlobalOptions$DelayedBPCells
     if (delayed) seed <- to_DelayedArray(seed) # styler: off
-    object <- new_DelayedArray(seed, Class = "BPCellsArray")
+    object <- DelayedArray::new_DelayedArray(seed, Class = "BPCellsArray")
     object@delayed <- delayed
     object
 })
@@ -111,7 +107,7 @@ methods::setMethod("DelayedArray", "IterableMatrix", function(seed) {
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
-    object <- new_DelayedArray(seed, Class = "BPCellsArray")
+    object <- DelayedArray::new_DelayedArray(seed, Class = "BPCellsArray")
     object@delayed <- TRUE
     object
 })
@@ -145,6 +141,69 @@ methods::setMethod("show", "BPCellsArray", .show_internal)
 #' @rdname BPCellsMatrix-class
 methods::setMethod("show", "BPCellsMatrix", .show_internal)
 
+##############################################################
+# helper function to re-dispath `DelayedArray` method
+# should just used for `BPCellsMatrix` method
+array_call_DelayedArray_method <- function(..., Array = "object", type = "S4") {
+    method <- switch(type,
+        S4 = quote(methods::callNextMethod()),
+        S3 = quote(NextMethod())
+    )
+    Array <- rlang::sym(Array)
+    # extract whether should be delayed
+    delayed <- list(substitute(delayed <- Array@delayed, list(Array = Array)))
+
+    # for some method, it will return DelayedArray directly although
+    # @seed is compatible with `BPCellsMatrix`.
+    # here we just re-creating a BPCellsMatrix object when it could be.
+    after <- expression(object <- with_delayed(delayed, DelayedArray(object)))
+    after <- c(after, expression(
+        # we check if object is a `BPCellsMatrix` object, if not, we warn it
+        if (!(methods::is(object, "BPCellsMatrix") ||
+            methods::is(object, "BPCellsArray"))) {
+            cli::cli_warn(c(
+                sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
+                i = "Subsequent operation won't use {.pkg BPCells} methods"
+            ))
+        },
+        object
+    ))
+    new_method(rlang::pairlist2(...),
+        before = delayed,
+        method = method, after = after
+    )
+}
+
+# hepler function to call BPCells method for `BPCellsArray`
+# running order
+# (before - delayed - to_BPCells) - method - (body - DelayedArray - after)
+#' @include utils.R
+array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = NULL, after = NULL, Arrays = "object") {
+    method <- method %||% quote(methods::callGeneric())
+    Arrays <- rlang::syms(Arrays)
+    # extract whether should be delayed, always respect the first Array
+    delayed <- substitute(delayed <- Array@delayed, list(Array = Arrays[[1L]]))
+    before <- c(
+        before, list(delayed),
+        # transform all Arrays into BPCells object
+        lapply(Arrays, function(Array) {
+            substitute(Array <- to_BPCells(Array@seed), list(Array = Array))
+        })
+    )
+    # then transform IterableMatrix into BPCellsMatrix
+    back <- quote(with_delayed(delayed, DelayedArray(object))) # nolint
+    if (!is.null(after)) {
+        after <- c(list(substitute(object <- back, list(back = back))), after)
+    } else {
+        after <- back
+    }
+    after <- c(body, after)
+    new_method(rlang::pairlist2(...),
+        before = before,
+        method = method, after = after
+    )
+}
+
 ###########################################################
 #' @export
 methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
@@ -158,14 +217,14 @@ NULL
 
 ### S3/S4 combo for aperm.BPCellsMatrix
 # list_methods("DelayedAperm")
-aperm.BPCellsMatrix <- call_DelayedArray_method(
+aperm.BPCellsMatrix <- array_call_DelayedArray_method(
     a = , perm = , ... = , type = "S3", Array = "a"
 )
 
 #' @importFrom BiocGenerics aperm
 methods::setMethod(
     "aperm", "BPCellsMatrix",
-    call_DelayedArray_method(a = , perm = , ... = , Array = "a")
+    array_call_DelayedArray_method(a = , perm = , ... = , Array = "a")
 )
 
 # S3/S4 combo for as.array.BPCellsMatrix
@@ -220,25 +279,21 @@ NULL
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
     "t", "BPCellsMatrix",
-    set_BPCellsArray_method(
-        x = , before = expression(delayed <- x@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
-        Arrays = "x"
-    )
+    array_call_BPCells_method(x = , Arrays = "x")
 )
 
 #' @importFrom methods Ops
 methods::setMethod(
     "Ops", c("BPCellsArray", "vector"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )
 
 methods::setMethod(
     "Ops", c("vector", "BPCellsArray"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
 )
 
 methods::setMethod(
     "Ops", c("BPCellsArray", "BPCellsArray"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )

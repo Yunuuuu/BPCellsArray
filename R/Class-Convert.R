@@ -70,16 +70,12 @@ methods::setGeneric(
 #' @rdname convert_mode
 methods::setMethod(
     "convert_mode", "BPCellsMatrix",
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         object = , mode = ,
         method = quote(BPCells::convert_matrix_type(
             matrix = object, type = mode
         )),
-        before = expression(
-            mode <- match.arg(mode, BPCells_MODE),
-            delayed <- object@delayed
-        ),
-        after = expression(with_delayed(delayed, DelayedArray(object)))
+        before = expression(mode <- match.arg(mode, BPCells_MODE))
     )
 )
 
@@ -110,7 +106,7 @@ methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
 #' @rdname convert_mode
 methods::setMethod(
     "storage_mode", "BPCellsDelayedOp",
-    call_BPCells_method(object = )
+    delayedop_call_BPCells_method(object = )
 )
 
 #' @export

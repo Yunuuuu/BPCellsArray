@@ -17,10 +17,9 @@ methods::setMethod(
     "transpose_axis", "BPCellsMatrix",
     # `transpose_storage_order` always return a `MatrixDir` object
     # It's not necessary to use `to_DelayedArray` to convert it
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         object = , ... = ,
-        method = quote(BPCells::transpose_storage_order(matrix = object, ...)),
-        after = expression(DelayedArray(object))
+        method = quote(BPCells::transpose_storage_order(matrix = object, ...))
     )
 )
 
@@ -42,16 +41,16 @@ methods::setGeneric("storage_axis", function(object) {
 
 #' @export
 #' @rdname transpose_axis
-methods::setMethod(
-    "storage_axis", "BPCellsMatrix",
-    set_BPCellsArray_method(object = )
-)
+methods::setMethod("storage_axis", "BPCellsMatrix", function(object) {
+    object <- object@seed
+    methods::callGeneric()
+})
 
 #' @export
 #' @rdname transpose_axis
 methods::setMethod(
     "storage_axis", "BPCellsDelayedOp",
-    call_BPCells_method(object = )
+    delayedop_call_BPCells_method(object = )
 )
 
 #' @export

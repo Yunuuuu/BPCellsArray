@@ -13,30 +13,30 @@ mould_BPCells("BPCellsDelayedSubset", "MatrixSubset",
 ### here: we override the `DelayedSetDimnames` methods
 methods::setMethod(
     "dim", "BPCellsDelayedSubset",
-    call_BPCells_method(x = , Op = "x")
+    delayedop_call_BPCells_method(x = , Array = "x")
 )
 
 methods::setMethod(
     "dimnames", "BPCellsDelayedSubset",
-    call_BPCells_method(x = , Op = "x")
+    delayedop_call_BPCells_method(x = , Array = "x")
 )
 
 methods::setMethod("is_sparse", "BPCellsDelayedSubset", function(x) TRUE)
 methods::setMethod(
     "extract_array", "BPCellsDelayedSubset",
-    call_BPCells_method(x = , index = , Op = "x")
+    delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedSubset",
-    call_BPCells_method(x = , index = , Op = "x")
+    delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
 #' @importFrom DelayedArray is_noop
 methods::setMethod("is_noop", "BPCellsDelayedSubset", function(x) FALSE)
 methods::setMethod(
     "chunkdim", "BPCellsDelayedSubset",
-    call_BPCells_method(x = , Op = "x")
+    delayedop_call_BPCells_method(x = , Array = "x")
 )
 
 #############################################################
@@ -96,13 +96,9 @@ methods::setMethod("summary", "MatrixSubset", summary.BPCellsDelayedSubset)
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
     "[", "BPCellsMatrix",
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         x = , i = , j = , ... = , drop = TRUE,
-        before = expression(delayed <- x@delayed),
-        after = expression(
-            ans <- with_delayed(delayed, DelayedArray(object)),
-            if (drop) drop(ans) else ans
-        ),
+        body = expression(if (drop) drop(object) else object),
         Arrays = "x"
     )
 )

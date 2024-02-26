@@ -66,10 +66,10 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsHDF5-IO
-methods::setMethod(
-    "writeBPCellsHDF5Array", "BPCellsMatrix",
-    set_BPCellsArray_method(x = , ... = )
-)
+methods::setMethod("writeBPCellsHDF5Array", "BPCellsMatrix", function(x, ...) {
+    delayed <- x@delayed
+    .writeBPCellsHDF5Array(x = x, ..., delayed = delayed)
+})
 
 #' @export
 #' @rdname BPCellsHDF5-IO

@@ -33,11 +33,9 @@ methods::setGeneric("binarize", function(object, ...) {
 #' @rdname BPCells-Compare
 methods::setMethod(
     "binarize", "BPCellsMatrix",
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         object = , ... = ,
-        method = quote(BPCells::binarize(mat = object, ...)),
-        before = expression(delayed <- object@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
+        method = quote(BPCells::binarize(mat = object, ...))
     )
 )
 
@@ -95,12 +93,12 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Compare", c(e1 = "BPCellsMatrix", e2 = "ANY"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "Compare", c(e1 = "ANY", e2 = "BPCellsMatrix"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
 )

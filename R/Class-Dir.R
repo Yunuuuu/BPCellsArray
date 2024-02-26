@@ -72,10 +72,10 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsDir-IO
-methods::setMethod(
-    "writeBPCellsDirArray", "BPCellsMatrix",
-    set_BPCellsArray_method(x = , ... = )
-)
+methods::setMethod("writeBPCellsDirArray", "BPCellsMatrix", function(x, ...) {
+    delayed <- x@delayed
+    .writeBPCellsDirArray(x = x, ..., delayed = delayed)
+})
 
 #' @export
 #' @rdname BPCellsDir-IO

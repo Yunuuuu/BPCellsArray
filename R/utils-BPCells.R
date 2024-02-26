@@ -162,116 +162,13 @@ migrate_slots <- function(Object, ..., remove = NULL, new = NULL, rename = NULL,
     rlang::inject(S4Vectors::new2(Class = Class, !!!slots, check = FALSE))
 }
 
-#######################################################################
-# the `@<-` method for `IterableMatrix` object will check slot class
-# So we must run `to_BPCells` or `to_DelayedArray` with `@seed` or `@seeds`
-# slots.
-
-### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# to_BPCells
-# Function used to translate `BPCellsDelayed` class into BPCells operations
-# Always return a `IterableMatrix` object
-#' @keywords internal
-#' @noRd
-methods::setGeneric("to_BPCells", function(object, ...) {
-    standardGeneric("to_BPCells")
-})
-
-methods::setMethod("to_BPCells", "IterableMatrix", function(object) object)
-methods::setMethod("to_BPCells", "DelayedOp", function(object) {
-    cli::cli_abort(
-        "You cannot mix {.pkg BPCells} method with {.pkg DelayedArray} method"
-    )
-})
-
-### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# to_DelayedArray
-# Function used to translate `BPCells` class into `BPCellsDelayed` class
-#' @keywords internal
-#' @noRd
-methods::setGeneric("to_DelayedArray", signature = "object", function(object) {
-    standardGeneric("to_DelayedArray")
-})
-
-# only used by on-disk and on-memory BPCells Matrix
-methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
-
-# used by c(
-#    "BPCellsConvert", "BPCellsRankTransform",
-#    "BPCellsRenameDims", "BPCellsSubset", "BPCellsTransformed"
-# )
-to_DelayedUnaryOp <- function(object, Class) {
-    object <- migrate_slots(
-        Object = object,
-        rename = c(matrix = "seed"), Class = Class
-    )
-    object@seed <- to_DelayedArray(object@seed)
-    object
-}
-
-##############################################################
-# helper function to re-dispath `DelayedArray` method
-# should just used for `BPCellsMatrix` method
-call_DelayedArray_method <- function(..., type = "S4", Array = "object") {
-    method <- switch(type,
-        S4 = quote(methods::callNextMethod()),
-        S3 = quote(NextMethod())
-    )
-    Array <- rlang::sym(Array)
-    body <- list(substitute(delayed <- Array@delayed, list(Array = Array)))
-    new_method(rlang::pairlist2(...),
-        method = method, body = body,
-        after = expression(
-            # for some method, it will return DelayedArray directly although
-            # @seed is compatible with `BPCellsMatrix`.
-            # here we just re-creating a BPCellsMatrix object when it could be.
-            object <- with_delayed(delayed, DelayedArray(object@seed)),
-            if (!(methods::is(object, "BPCellsMatrix") ||
-                methods::is(object, "BPCellsArray"))) {
-                cli::cli_warn(c(
-                    sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
-                    i = "Subsequent operation won't use {.pkg BPCells} methods"
-                ))
-            },
-            object
-        )
-    )
-}
-
-# helper function to re-dispath `BPCells` method
-# should just used for `BPCellsDelayedOp` method
-call_BPCells_method <- function(..., before = NULL, after = NULL, Op = "object") {
-    Op <- rlang::sym(Op)
-    body <- list(substitute(Op <- to_BPCells(Op), list(Op = Op)))
-    new_method(rlang::pairlist2(...),
-        body = body, method = quote(methods::callGeneric()),
-        before = before, after = after
-    )
-}
-
-# hepler function to set method for `BPCellsArray`
-set_BPCellsArray_method <- function(..., method = NULL, before = NULL, after = NULL, Arrays = "object") {
-    method <- method %||% quote(methods::callGeneric())
-    body <- lapply(rlang::syms(Arrays), function(Array) {
-        substitute(
-            BPCells_mat <- to_BPCells(BPCells_mat@seed), # nolint
-            list(BPCells_mat = Array)
-        )
-    })
-    new_method(rlang::pairlist2(...),
-        body = body, method = method,
-        before = before, after = after
-    )
-}
-
 ########################################################
-#' @include utils.R
-#' @noRd
-new_method <- function(args, body, method, before = NULL, after = NULL) {
+# running order: before + method + after
+new_method <- function(args, method, before = NULL, after = NULL) {
     if (!is.null(after)) {
         method <- substitute(object <- method, list(method = method)) # nolint
     }
-    body <- c(body, list(method))
+    body <- list(method)
     if (!is.null(before)) body <- c(before, body)
     if (!is.null(after)) body <- c(body, after)
     body <- as.call(c(as.name("{"), body))

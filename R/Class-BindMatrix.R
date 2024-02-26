@@ -11,23 +11,23 @@ mould_BPCells("BPCellsDelayedAbind", "ColBindMatrices",
 ### here: we override the `DelayedAbind` methods
 methods::setMethod(
     "dim", "BPCellsDelayedAbind",
-    call_BPCells_method(x = , Op = "x")
+    delayedop_call_BPCells_method(x = , Array = "x")
 )
 
 methods::setMethod(
     "dimnames", "BPCellsDelayedAbind",
-    call_BPCells_method(x = , Op = "x")
+    delayedop_call_BPCells_method(x = , Array = "x")
 )
 
 methods::setMethod("is_sparse", "BPCellsDelayedAbind", function(x) TRUE)
 methods::setMethod(
     "extract_array", "BPCellsDelayedAbind",
-    call_BPCells_method(x = , index = , Op = "x")
+    delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedAbind",
-    call_BPCells_method(x = , index = , Op = "x")
+    delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
 ############################################################

@@ -13,7 +13,7 @@
 \alias{cbind2,ANY,BPCellsMatrix-method}
 \alias{cbind2,BPCellsMatrix,ANY-method}
 \alias{convert_mode,ANY-method}
-\alias{mask_matrix,ANY,ANY-method}
+\alias{mask_matrix,ANY-method}
 \alias{rank_transform,ANY-method}
 \alias{/,numeric,BPCellsMatrix-method}
 \alias{\%\%,numeric,BPCellsMatrix-method}
@@ -60,7 +60,7 @@
 
 \S4method{convert_mode}{ANY}(object, mode)
 
-\S4method{mask_matrix}{ANY,ANY}(object, mask, invert = FALSE)
+\S4method{mask_matrix}{ANY}(object, mask, invert = FALSE)
 
 \S4method{rank_transform}{ANY}(object, axis = NULL, offset = TRUE, ...)
 

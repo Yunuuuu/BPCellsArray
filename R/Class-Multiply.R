@@ -60,6 +60,23 @@ methods::setMethod("summary", "MatrixMultiply", summary.BPCellsDelayedMultiply)
 #' @name BPCells-Multiplication
 NULL
 
+.multiply_BPCells <- function(x, y) {
+    if (x@transpose != y@transpose) {
+        if (x@transpose) {
+            cli::cli_warn(
+                "{.arg x} is transposed but {.arg y} not, transposing the storage axis for {.arg x}" # nolint
+            )
+            x <- BPCells::transpose_storage_order(x)
+        } else {
+            cli::cli_warn(
+                "{.arg y} is transposed but {.arg x} not, transposing the storage axis for {.arg y}" # nolint
+            )
+            y <- BPCells::transpose_storage_order(y)
+        }
+    }
+    x %*% y
+}
+
 #' @include Class-BPCellsMatrix.R
 #' @importMethodsFrom BPCells %*%
 #' @export
@@ -69,20 +86,7 @@ methods::setMethod(
         delayed <- x@delayed
         x <- to_BPCells(x@seed)
         y <- to_BPCells(y@seed)
-        if (x@transpose != y@transpose) {
-            if (x@transpose) {
-                cli::cli_warn(
-                    "{.arg x} is transposed but {.arg y} not, transposing the storage axis for {.arg x}" # nolint
-                )
-                x <- BPCells::transpose_storage_order(x)
-            } else {
-                cli::cli_warn(
-                    "{.arg y} is transposed but {.arg x} not, transposing the storage axis for {.arg y}" # nolint
-                )
-                y <- BPCells::transpose_storage_order(y)
-            }
-        }
-        with_delayed(delayed, DelayedArray(methods::callGeneric()))
+        with_delayed(delayed, DelayedArray(.multiply_BPCells(x, y)))
     }
 )
 
@@ -90,8 +94,10 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
-        y <- with_delayed(FALSE, DelayedArray(BPCellsSeed(y)))
-        methods::callGeneric()
+        delayed <- x@delayed
+        x <- to_BPCells(x@seed)
+        y <- BPCellsSeed(y)
+        with_delayed(delayed, DelayedArray(.multiply_BPCells(x, y)))
     }
 )
 
@@ -99,8 +105,10 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
-        x <- with_delayed(y@delayed, DelayedArray(BPCellsSeed(x)))
-        methods::callGeneric()
+        delayed <- y@delayed
+        x <- BPCellsSeed(x)
+        y <- to_BPCells(y@seed)
+        with_delayed(delayed, DelayedArray(.multiply_BPCells(x, y)))
     }
 )
 

@@ -33,10 +33,8 @@ methods::setGeneric("expm1_slow", function(x) {
 #' @rdname BPCells-Math
 methods::setMethod(
     "expm1_slow", "BPCellsMatrix",
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         x = , method = quote(BPCells::expm1_slow(x)),
-        before = expression(delayed <- x@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
@@ -69,12 +67,7 @@ methods::setMethod(
 #' @rdname BPCells-Math
 methods::setMethod(
     "expm1", "BPCellsMatrix",
-    set_BPCellsArray_method(
-        x = ,
-        before = expression(delayed <- x@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
-        Arrays = "x"
-    )
+    array_call_BPCells_method(x = , Arrays = "x")
 )
 
 ####################################################################
@@ -101,10 +94,8 @@ methods::setMethod(
 #' @rdname BPCells-Math
 methods::setMethod(
     "log1p", "BPCellsMatrix",
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         x = , method = quote(BPCells::log1p_slow(x)),
-        before = expression(delayed <- x@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
@@ -135,10 +126,8 @@ methods::setGeneric("log1p_single", function(x) {
 #' @rdname BPCells-Math
 methods::setMethod(
     "log1p_single", "BPCellsMatrix",
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         x = , method = quote(log1p(x)),
-        before = expression(delayed <- x@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
@@ -166,10 +155,8 @@ methods::setMethod(
 #' @rdname BPCells-Math
 methods::setMethod(
     "round", "BPCellsMatrix",
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         x = , digits = 0,
-        before = expression(delayed <- x@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
@@ -179,7 +166,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Math", "BPCellsArray",
-    call_DelayedArray_method(x = , Array = "x")
+    array_call_DelayedArray_method(x = , Array = "x")
 )
 
 #' @importFrom methods Math2
@@ -187,5 +174,5 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Math2", "BPCellsArray",
-    call_DelayedArray_method(x = , Array = "x")
+    array_call_DelayedArray_method(x = , Array = "x")
 )

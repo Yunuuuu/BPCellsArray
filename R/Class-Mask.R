@@ -90,23 +90,8 @@ methods::setGeneric(
 #' @export
 #' @rdname mask_matrix
 methods::setMethod(
-    "mask_matrix", c(object = "BPCellsMatrix", mask = "BPCellsMatrix"),
-    set_BPCellsArray_method(
-        object = , mask = , invert = FALSE,
-        method = quote(
-            BPCells:::mask_matrix(mat = object, mask = mask, invert = invert)
-        ),
-        before = expression(delayed <- object@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
-        Arrays = list("object", "mask")
-    )
-)
-
-#' @export
-#' @rdname mask_matrix
-methods::setMethod(
     "mask_matrix", c(object = "BPCellsMatrix", mask = "ANY"),
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         object = , mask = , invert = FALSE,
         method = quote(
             BPCells:::mask_matrix(
@@ -114,9 +99,7 @@ methods::setMethod(
                 mask = BPCellsSeed(mask),
                 invert = invert
             )
-        ),
-        before = expression(delayed <- object@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object)))
+        )
     )
 )
 

@@ -72,24 +72,14 @@ NULL
 #' @rdname BPCells-Arithmetic
 methods::setMethod(
     "Arith", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    set_BPCellsArray_method(
-        e1 = , e2 = ,
-        before = expression(delayed <- e1@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
-        Arrays = "e1"
-    )
+    array_call_BPCells_method(e1 = , e2 = , Arrays = "e1")
 )
 
 #' @export
 #' @rdname BPCells-Arithmetic
 methods::setMethod(
     "Arith", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    set_BPCellsArray_method(
-        e1 = , e2 = ,
-        before = expression(delayed <- e2@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
-        Arrays = "e2"
-    )
+    array_call_BPCells_method(e1 = , e2 = , Arrays = "e2")
 )
 
 #' @inheritParams BPCells-Arithmetic
@@ -107,28 +97,28 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "%%", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%%", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%/%", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%/%", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    call_DelayedArray_method(e1 = , e2 = , Array = "e1")
+    array_call_DelayedArray_method(e1 = , e2 = , Array = "e1")
 )
 
 #######################################################################
@@ -156,11 +146,9 @@ methods::setGeneric("pow_slow", function(e1, e2) {
 #' @rdname BPCells-Arithmetic
 methods::setMethod(
     "pow_slow", "BPCellsMatrix",
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         e1 = , e2 = ,
         method = quote(BPCells::pow_slow(x = e1, exponent = e2)),
-        before = expression(delayed <- e1@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "e1"
     )
 )

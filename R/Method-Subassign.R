@@ -16,10 +16,8 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "BPCellsMatrix"),
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         x = , i = , j = , ... = , value = ,
-        before = expression(delayed <- x@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = c("x", "value")
     )
 )
@@ -28,10 +26,8 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "IterableMatrix"),
-    set_BPCellsArray_method(
+    array_call_BPCells_method(
         x = , i = , j = , ... = , value = ,
-        before = expression(delayed <- x@delayed),
-        after = expression(with_delayed(delayed, DelayedArray(object))),
         Arrays = "x"
     )
 )
