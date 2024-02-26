@@ -44,10 +44,13 @@ methods::setGeneric(
 #' @inherit BPCellsDir-IO return
 #' @export
 #' @rdname BPCellsMem-IO
-methods::setMethod("writeBPCellsMemArray", "BPCellsMatrix", function(x, ...) {
-    seed_form <- x@SeedForm
-    .writeBPCellsMemArray(x = x, ..., seed_form = seed_form)
-})
+methods::setMethod(
+    "writeBPCellsMemArray", "BPCellsMatrix",
+    function(x, ..., seed_form = NULL) {
+        seed_form <- seed_form %||% x@SeedForm
+        .writeBPCellsMemArray(x = x, ..., seed_form = seed_form)
+    }
+)
 
 #' @export
 #' @rdname BPCellsMem-IO

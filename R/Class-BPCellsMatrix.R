@@ -99,8 +99,8 @@ methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
 })
 
 ##############################################################
-#' @param seed_form A string, "BPCells" or "DelayedArray", if `NULL`, will use
-#' the default value (use `set_seed_form()` with missing argument to check).
+#' @param seed_form A string, `"BPCells"` or `"DelayedArray"`, if `NULL`, will
+#' use the default value (use `set_seed_form()` with missing argument to check).
 #' @export
 #' @rdname set_seed_form
 methods::setMethod("set_seed_form", "BPCellsMatrix", function(x, seed_form = NULL) {

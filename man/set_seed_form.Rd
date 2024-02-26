@@ -20,8 +20,8 @@ set_seed_form(x, ...)
 
 \item{...}{Additional argumentds passed into specific methods.}
 
-\item{seed_form}{A string, "BPCells" or "DelayedArray", if \code{NULL}, will use
-the default value (use \code{set_seed_form()} with missing argument to check).}
+\item{seed_form}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
+use the default value (use \code{set_seed_form()} with missing argument to check).}
 }
 \value{
 \itemize{

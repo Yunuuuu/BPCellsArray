@@ -64,10 +64,13 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsHDF5-IO
-methods::setMethod("writeBPCellsHDF5Array", "BPCellsMatrix", function(x, ...) {
-    seed_form <- x@SeedForm
-    .writeBPCellsHDF5Array(x = x, ..., seed_form = seed_form)
-})
+methods::setMethod(
+    "writeBPCellsHDF5Array", "BPCellsMatrix",
+    function(x, ..., seed_form = NULL) {
+        seed_form <- seed_form %||% x@SeedForm
+        .writeBPCellsHDF5Array(x = x, ..., seed_form = seed_form)
+    }
+)
 
 #' @export
 #' @rdname BPCellsHDF5-IO

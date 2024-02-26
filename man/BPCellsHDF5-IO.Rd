@@ -12,7 +12,7 @@ readBPCellsHDF5Matrix(path, group, buffer_size = 8192L, seed_form = NULL)
 
 writeBPCellsHDF5Array(x, ...)
 
-\S4method{writeBPCellsHDF5Array}{BPCellsMatrix}(x, ...)
+\S4method{writeBPCellsHDF5Array}{BPCellsMatrix}(x, ..., seed_form = NULL)
 
 \S4method{writeBPCellsHDF5Array}{ANY}(
   x,
@@ -35,8 +35,19 @@ to an existing hdf5 file this group must not already be in use}
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
 
-\item{seed_form}{A string, "BPCells" or "DelayedArray", if \code{NULL}, will use
-the default value (use \code{set_seed_form()} with missing argument to check).}
+\item{seed_form}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
+use the default value.
+\itemize{
+\item For \verb{readBPCells*}: use \code{set_seed_form()} with missing argument to check
+the default value.
+\item For \verb{writeBPCells*}:
+\itemize{
+\item For \code{BPCellsMatrix} method: the default value will be extracted from
+\code{x} directly.
+\item For \code{ANY} method: use \code{set_seed_form()} with missing argument to check
+the default value.
+}
+}}
 
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
 converted into \link{BPCellsSeed} object.}

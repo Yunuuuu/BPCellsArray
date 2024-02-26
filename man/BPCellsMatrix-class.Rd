@@ -66,8 +66,8 @@ BPCellsMatrix(x, seed_form = NULL)
 \arguments{
 \item{x, object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object}
 
-\item{seed_form}{A string, "BPCells" or "DelayedArray", if \code{NULL}, will use
-the default value (use \code{set_seed_form()} with missing argument to check).}
+\item{seed_form}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
+use the default value (use \code{set_seed_form()} with missing argument to check).}
 
 \item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} or
 \link[=BPCellsSeed-class]{BPCellsDelayedOp} object.}

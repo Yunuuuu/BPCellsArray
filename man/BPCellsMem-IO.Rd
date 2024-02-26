@@ -9,7 +9,7 @@
 \usage{
 writeBPCellsMemArray(x, ...)
 
-\S4method{writeBPCellsMemArray}{BPCellsMatrix}(x, ...)
+\S4method{writeBPCellsMemArray}{BPCellsMatrix}(x, ..., seed_form = NULL)
 
 \S4method{writeBPCellsMemArray}{ANY}(x, compress = TRUE, seed_form = NULL)
 }
@@ -22,10 +22,21 @@ converted into \link{BPCellsSeed} object.}
 \item BPCellsMatrix Method: Additional arguments passed into \code{ANY} method.
 }}
 
-\item{compress}{Whether or not to compress the data.}
+\item{seed_form}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
+use the default value.
+\itemize{
+\item For \verb{readBPCells*}: use \code{set_seed_form()} with missing argument to check
+the default value.
+\item For \verb{writeBPCells*}:
+\itemize{
+\item For \code{BPCellsMatrix} method: the default value will be extracted from
+\code{x} directly.
+\item For \code{ANY} method: use \code{set_seed_form()} with missing argument to check
+the default value.
+}
+}}
 
-\item{seed_form}{A string, "BPCells" or "DelayedArray", if \code{NULL}, will use
-the default value (use \code{set_seed_form()} with missing argument to check).}
+\item{compress}{Whether or not to compress the data.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

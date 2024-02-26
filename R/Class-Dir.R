@@ -39,6 +39,15 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L, seed_form = NULL) {
 #' Bitpacking Compression.
 #' @param overwrite A bool, If `TRUE`, write to a temp dir then overwrite
 #' existing data.
+#' @param seed_form A string, `"BPCells"` or `"DelayedArray"`, if `NULL`, will
+#' use the default value. 
+#'  - For `readBPCells*`: use `set_seed_form()` with missing argument to check
+#'    the default value.
+#'  - For `writeBPCells*`: 
+#'      * For `BPCellsMatrix` method: the default value will be extracted from
+#'        `x` directly. 
+#'      * For `ANY` method: use `set_seed_form()` with missing argument to check
+#'        the default value.
 #' @inheritParams BPCells::write_matrix_dir
 #' @inheritParams BPCellsMatrix-class
 #' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
@@ -70,10 +79,13 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsDir-IO
-methods::setMethod("writeBPCellsDirArray", "BPCellsMatrix", function(x, ...) {
-    seed_form <- x@SeedForm
-    .writeBPCellsDirArray(x = x, ..., seed_form = seed_form)
-})
+methods::setMethod(
+    "writeBPCellsDirArray", "BPCellsMatrix",
+    function(x, ..., seed_form = NULL) {
+        seed_form <- seed_form %||% x@SeedForm
+        .writeBPCellsDirArray(x = x, ..., seed_form = seed_form)
+    }
+)
 
 #' @export
 #' @rdname BPCellsDir-IO
