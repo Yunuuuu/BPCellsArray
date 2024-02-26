@@ -11,29 +11,44 @@ mould_BPCells("BPCellsDelayedSubset", "MatrixSubset",
 ### list_methods("DelayedSubset")
 ### Seed contract
 ### here: we override the `DelayedSubset` methods
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedSubset",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedSubset",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod("is_sparse", "BPCellsDelayedSubset", function(x) TRUE)
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedSubset",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedSubset",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
 #' @importFrom DelayedArray is_noop
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod("is_noop", "BPCellsDelayedSubset", function(x) FALSE)
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "chunkdim", "BPCellsDelayedSubset",
     delayedop_call_BPCells_method(x = , Array = "x")

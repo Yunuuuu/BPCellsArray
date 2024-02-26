@@ -27,6 +27,7 @@ methods::setGeneric("to_BPCells", function(object, ...) {
 
 methods::setMethod("to_BPCells", "IterableMatrix", function(object) object)
 
+#' @importClassesFrom DelayedArray DelayedOp
 methods::setMethod("to_BPCells", "DelayedOp", function(object) {
     cli::cli_abort(
         "You cannot mix {.pkg BPCells} method with {.pkg DelayedArray} method"
@@ -94,30 +95,48 @@ methods::setMethod(
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod("is_sparse", "BPCellsDelayedOp", function(x) TRUE)
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_sparse_array", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
 #' @importMethodsFrom BPCells t
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "t", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(
@@ -126,6 +145,10 @@ methods::setMethod(
         Array = "x"
     )
 )
+
+#' @importFrom DelayedArray chunkdim
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "chunkdim", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , Array = "x")
@@ -149,6 +172,8 @@ methods::setMethod(
 
 ### list_methods("DelayedUnaryOp")
 ### Seed contract
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "chunkdim", "BPCellsDelayedUnaryOp",
     delayedop_call_BPCells_method(x = , Array = "x")
@@ -163,22 +188,33 @@ methods::setClass("BPCellsDelayedUnaryIsoOp",
 ### list_methods("DelayedUnaryIsoOp")
 ### Seed contract
 ### here: we override the `DelayedNaryIsoOp` methods
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedUnaryIsoOp",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedUnaryIsoOp",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod("is_sparse", "BPCellsDelayedUnaryIsoOp", function(x) TRUE)
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedUnaryIsoOp",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedUnaryIsoOp",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
@@ -201,22 +237,33 @@ methods::setClass("BPCellsDelayedNaryIsoOp",
 ### list_methods("DelayedNaryIsoOp")
 ### Seed contract
 ### here: we override the `DelayedNaryIsoOp` methods
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedNaryIsoOp",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedNaryIsoOp",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod("is_sparse", "BPCellsDelayedNaryIsoOp", function(x) TRUE)
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedNaryIsoOp",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedNaryIsoOp",
     delayedop_call_BPCells_method(x = , index = , Array = "x")

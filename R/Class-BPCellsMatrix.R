@@ -175,13 +175,18 @@ array_call_DelayedArray_method <- function(..., Array = "object", type = "S4") {
 
 # hepler function to call BPCells method for `BPCellsArray`
 # running order
-# (before - delayed - to_BPCells) - method - (body - DelayedArray - after)
+# 1. before - extract seed_form - to_BPCells
+# 2. method
+# 3. body - DelayedArray - after
 #' @include utils.R
 array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = NULL, after = NULL, Arrays = "object") {
     method <- method %||% quote(methods::callGeneric())
     Arrays <- rlang::syms(Arrays)
-    # extract whether should be delayed, always respect the first Array
-    seed_form <- substitute(seed_form <- Array@SeedForm, list(Array = Arrays[[1L]]))
+    # extract seed_form, always respect the first Array
+    seed_form <- substitute(
+        seed_form <- Array@SeedForm,
+        list(Array = Arrays[[1L]])
+    )
     before <- c(
         before, list(seed_form),
         # transform all Arrays into BPCells object
@@ -210,10 +215,6 @@ methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
 })
 
 # Default drop use `as.array` and `aperm` methods
-#' @importMethodsFrom DelayedArray drop
-#' @noRd
-NULL
-
 ### S3/S4 combo for aperm.BPCellsMatrix
 # list_methods("DelayedAperm")
 aperm.BPCellsMatrix <- array_call_DelayedArray_method(

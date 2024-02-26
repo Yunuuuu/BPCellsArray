@@ -12,8 +12,12 @@ mould_BPCells("BPCellsDelayedRenameDims", "RenameDims",
 ### Seed contract
 ### here: we override the `DelayedSetDimnames` methods
 #' @importFrom DelayedArray is_noop
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod("is_noop", "BPCellsDelayedRenameDims", function(x) FALSE)
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedRenameDims",
     delayedop_call_BPCells_method(x = , Array = "x")

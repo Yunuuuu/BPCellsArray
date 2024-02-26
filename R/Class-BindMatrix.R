@@ -9,22 +9,33 @@ mould_BPCells("BPCellsDelayedAbind", "ColBindMatrices",
 ### list_methods("DelayedAbind")
 ### Seed contract
 ### here: we override the `DelayedAbind` methods
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dim", "BPCellsDelayedAbind",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedAbind",
     delayedop_call_BPCells_method(x = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod("is_sparse", "BPCellsDelayedAbind", function(x) TRUE)
+
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedAbind",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
 )
 
+#' @export
+#' @rdname BPCellsSeed-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedAbind",
     delayedop_call_BPCells_method(x = , index = , Array = "x")
