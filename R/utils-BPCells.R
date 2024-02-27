@@ -46,13 +46,13 @@ SUPPORTED_BPCELLS_MATRIX <- c(
     "PackedMatrixMemBase", "UnpackedMatrixMemBase",
     # On-disk matrix
     "MatrixDir", "MatrixH5",
-    # Unary operations
+    # Unary operations - BPCellsDelayedUnaryOp
     "ConvertMatrixType",
     "MatrixRankTransform",
     "RenameDims",
     "MatrixSubset",
     "TransformedMatrix",
-    # Nary operations
+    # Nary operations - BPCellsDelayedNaryOp
     "MatrixMask",
     "MatrixMultiply",
     "RowBindMatrices", "ColBindMatrices"
@@ -96,6 +96,8 @@ is_BPCellsUnary <- function(seed) {
 }
 
 is_BPCellsNary <- function(seed) {
+    # actually, we regard `MatrixMask` as NaryOp only if `@mask` slot is
+    # in Disk (is_BPCellsInDisk return `TRUE`)
     methods::is(seed, "MatrixMask") ||
         methods::is(seed, "MatrixMultiply") ||
         methods::is(seed, "RowBindMatrices") ||
@@ -110,7 +112,7 @@ is_BPCellsInDisk <- function(seed) {
     } else if (is_BPCellsUnary(seed)) {
         Recall(seed@matrix)
     } else if (methods::is(seed, "MatrixMask")) {
-        Recall(seed@mask) || Recall(seed@matrix)
+        Recall(seed@matrix) || Recall(seed@mask)
     } else if (methods::is(seed, "MatrixMultiply")) {
         # MatrixMultiply
         Recall(seed@left) || Recall(seed@right)
@@ -147,16 +149,16 @@ is_BPCellsMatrixMultiplyUnary <- function(seed) {
 mould_BPCells <- function(myClass, mould, ..., remove = NULL, new = NULL, rename = NULL) {
     slots <- methods::getSlots(BPCells_class(mould))
     if (!is.null(remove)) slots <- slots[!names(slots) %in% remove]
-    if (!is.null(new)) slots <- c(slots, new)
     if (!is.null(rename)) slots <- rename(slots, rename)
+    if (!is.null(new)) slots <- c(slots, new)
     methods::setClass(myClass, ..., slots = slots)
 }
 
 migrate_slots <- function(Object, ..., remove = NULL, new = NULL, rename = NULL, Class) {
-    slots <- methods::slotNames(Object)
-    if (!is.null(remove)) slots <- setdiff(slots, remove)
-    names(slots) <- slots
-    slots <- lapply(slots, methods::slot, object = Object)
+    slot_nms <- methods::slotNames(Object)
+    if (!is.null(remove)) slot_nms <- setdiff(slot_nms, remove)
+    names(slot_nms) <- slot_nms
+    slots <- lapply(slot_nms, methods::slot, object = Object)
     if (!is.null(rename)) slots <- rename(slots, rename)
     if (!is.null(new)) slots <- c(slots, new)
     rlang::inject(S4Vectors::new2(Class = Class, !!!slots, check = FALSE))

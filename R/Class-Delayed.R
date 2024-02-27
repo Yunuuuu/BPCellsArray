@@ -13,9 +13,15 @@
 
 ###################################################################
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# the `@<-` method for `IterableMatrix` object will check slot class
-# So we must change with `@seed` or `@seeds` slots when running `to_BPCells` or
-# `to_DelayedArray`
+# the `@<-` function will check slot class. For `IterableMatrix` object,
+# we `@matrix` must be a `IterableMatrix` object, but for `DelayedOp` object
+# `@seed` is a signature "ANY"
+# So when define `to_BPCells`, we must run `to_BPCells` firstly with `@seed`
+# before rename "seed" slot into "matrix" slot, when define `to_DelayedArray`,
+# we must firstly rename "matrix" slot into "seed" slot, then using
+# `to_DelayedArray` to transform it
+
+### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # to_BPCells
 # Function used to translate `BPCellsDelayed` class into BPCells operations
 # Always return a `IterableMatrix` object
@@ -47,8 +53,9 @@ methods::setGeneric("to_DelayedArray", signature = "object", function(object) {
 methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
 
 # used by c(
-#    "BPCellsConvert", "BPCellsRankTransform",
-#    "BPCellsRenameDims", "BPCellsSubset", "BPCellsTransformed"
+#    "BPCellsDelayedConvert", "BPCellsDelayedRankTransform",
+#    "BPCellsDelayedRenameDims", "BPCellsDelayedSubset",
+#    "BPCellsDelayedTransformed"
 # )
 to_DelayedUnaryOp <- function(object, Class) {
     object <- migrate_slots(
@@ -62,7 +69,8 @@ to_DelayedUnaryOp <- function(object, Class) {
 #######################################################################
 # helper function to re-dispath `BPCells` method
 # should used for `BPCellsDelayedOp` object
-# This will not convert the final object into `BPCellsMatrix`
+# This will not convert the final object into `DelayedArray` object so should be
+# used for function return another class, usually the seed contract methods
 #' @include utils-BPCells.R utils.R
 delayedop_call_BPCells_method <- function(..., before = NULL, after = NULL, Array = NULL) {
     args <- rlang::pairlist2(...)
@@ -174,9 +182,7 @@ methods::setMethod(
 methods::setMethod(
     "t", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(
-        x = ,
-        after = expression(to_DelayedArray(object)),
-        Array = "x"
+        x = , after = expression(to_DelayedArray(object))
     )
 )
 
