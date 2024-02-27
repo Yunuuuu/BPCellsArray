@@ -26,10 +26,7 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "IterableMatrix"),
-    array_call_BPCells_method(
-        x = , i = , j = , ... = , value = ,
-        Arrays = "x"
-    )
+    array_call_BPCells_method(x = , i = , j = , ... = , value = )
 )
 
 #' @export

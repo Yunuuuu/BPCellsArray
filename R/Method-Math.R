@@ -34,8 +34,7 @@ methods::setGeneric("expm1_slow", function(x) {
 methods::setMethod(
     "expm1_slow", "BPCellsMatrix",
     array_call_BPCells_method(
-        x = , method = quote(BPCells::expm1_slow(x)),
-        Arrays = "x"
+        x = , method = quote(BPCells::expm1_slow(x))
     )
 )
 
@@ -95,8 +94,7 @@ methods::setMethod(
 methods::setMethod(
     "log1p", "BPCellsMatrix",
     array_call_BPCells_method(
-        x = , method = quote(BPCells::log1p_slow(x)),
-        Arrays = "x"
+        x = , method = quote(BPCells::log1p_slow(x))
     )
 )
 
@@ -126,10 +124,7 @@ methods::setGeneric("log1p_single", function(x) {
 #' @rdname BPCells-Math
 methods::setMethod(
     "log1p_single", "BPCellsMatrix",
-    array_call_BPCells_method(
-        x = , method = quote(log1p(x)),
-        Arrays = "x"
-    )
+    array_call_BPCells_method(x = , method = quote(log1p(x)))
 )
 
 ####################################################################
@@ -155,10 +150,7 @@ methods::setMethod(
 #' @rdname BPCells-Math
 methods::setMethod(
     "round", "BPCellsMatrix",
-    array_call_BPCells_method(
-        x = , digits = 0,
-        Arrays = "x"
-    )
+    array_call_BPCells_method(x = , digits = 0)
 )
 
 #' @importFrom methods Math

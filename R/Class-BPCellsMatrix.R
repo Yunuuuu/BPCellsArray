@@ -223,7 +223,7 @@ methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
 ### S3/S4 combo for aperm.BPCellsMatrix
 # list_methods("DelayedAperm")
 aperm.BPCellsMatrix <- array_call_DelayedArray_method(
-    a = , perm = , ... = , type = "S3", Array = "a"
+    a = , perm = , ... = , type = "S3"
 )
 
 #' @importFrom BiocGenerics aperm

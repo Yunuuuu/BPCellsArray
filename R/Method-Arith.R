@@ -148,7 +148,6 @@ methods::setMethod(
     "pow_slow", "BPCellsMatrix",
     array_call_BPCells_method(
         e1 = , e2 = ,
-        method = quote(BPCells::pow_slow(x = e1, exponent = e2)),
-        Arrays = "e1"
+        method = quote(BPCells::pow_slow(x = e1, exponent = e2))
     )
 )
