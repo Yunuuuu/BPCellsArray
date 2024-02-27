@@ -4,15 +4,12 @@
 \alias{BPCellsDir-IO}
 \alias{readBPCellsDirMatrix}
 \alias{writeBPCellsDirArray}
-\alias{writeBPCellsDirArray,BPCellsMatrix-method}
 \alias{writeBPCellsDirArray,ANY-method}
 \title{Read/write sparse matrices from (or into) directory on disk}
 \usage{
-readBPCellsDirMatrix(path, buffer_size = 8192L, seed_form = NULL)
+readBPCellsDirMatrix(path, buffer_size = 8192L, seedform = NULL)
 
 writeBPCellsDirArray(x, ...)
-
-\S4method{writeBPCellsDirArray}{BPCellsMatrix}(x, ..., seed_form = NULL)
 
 \S4method{writeBPCellsDirArray}{ANY}(
   x,
@@ -20,38 +17,34 @@ writeBPCellsDirArray(x, ...)
   bitpacking = TRUE,
   buffer_size = 8192L,
   overwrite = FALSE,
-  seed_form = NULL
+  seedform = NULL
 )
 }
 \arguments{
 \item{path}{A string path of directory to read or save the data into. For
-\code{writeBPCellsDirArray}, this can be \code{NULL}, and the internal will use a
-temporary directory.}
+\code{writeBPCellsDirArray}, this can be \code{NULL} means using a temporary directory.}
 
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
 
-\item{seed_form}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
+\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
 use the default value.
 \itemize{
-\item For \verb{readBPCells*}: use \code{set_seed_form()} with missing argument to check
-the default value.
+\item For \verb{readBPCells*}: (use \code{seedform()} to check) to check the default
+value.
 \item For \verb{writeBPCells*}:
 \itemize{
-\item For \code{BPCellsMatrix} method: the default value will be extracted from
-\code{x} directly.
-\item For \code{ANY} method: use \code{set_seed_form()} with missing argument to check
-the default value.
+\item For \code{BPCellsMatrix} object: the default value will be extracted from
+\code{x} directly (use \code{seedform(x)} to check).
+\item For other object: the default value will be extracted from global
+option (use \code{seedform()} to check).
 }
 }}
 
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
 converted into \link{BPCellsSeed} object.}
 
-\item{...}{\itemize{
-\item Generic function: Additional arguments passed into specific methods.
-\item BPCellsMatrix Method: Additional arguments passed into \code{ANY} method.
-}}
+\item{...}{Additional arguments passed into specific methods.}
 
 \item{bitpacking}{A bool, whether or not to compress the data using
 Bitpacking Compression.}

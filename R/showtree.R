@@ -119,7 +119,7 @@ methods::setReplaceMethod("seed", "BPCellsMatrix", function(x, value) {
     x@seed <- methods::callGeneric(x = x@seed, value = value)
     # No need to use `DelayedArray`, the `@SeedForm` won't change
     # and we have ensure the class of `value` is the same with `@seed`
-    # with_seed_form(x@SeedForm, DelayedArray(seed))
+    # with_seedform(x@SeedForm, DelayedArray(seed))
     x
 })
 
@@ -263,9 +263,7 @@ abort_nary_path <- function(call = rlang::caller_env()) {
 ### 'last.child' can be NA, TRUE, or FALSE. NA means 'x' is the root of the
 ### tree.
 .rec_showtree <- function(x, indent = "", last.child = NA, prefix = "", show.node.dim = TRUE) {
-    if (methods::is(x, "IterableMatrix") ||
-        methods::is(x, "BPCellsMatrix") ||
-        methods::is(x, "BPCellsArray")) {
+    if (methods::is(x, "IterableMatrix") || is_BPCellsArray(x)) {
         ## Display summary line.
         if (is.na(last.child)) {
             ## No Tprefix.
@@ -286,8 +284,7 @@ abort_nary_path <- function(call = rlang::caller_env()) {
             strrep(" ", 2 + nchar(prefix))
         )
     }
-    if (methods::is(x, "BPCellsMatrix") ||
-        methods::is(x, "BPCellsArray")) {
+    if (is_BPCellsArray(x)) {
         Recall(x = x@seed, indent = indent, last.child = TRUE)
     } else if (is_BPCellsUnary(x)) {
         Recall(x = x@matrix, indent = indent, last.child = TRUE)
@@ -322,8 +319,7 @@ abort_nary_path <- function(call = rlang::caller_env()) {
 }
 
 no_DelayedArray <- function(object) {
-    if (methods::is(object, "BPCellsMatrix") ||
-        methods::is(object, "BPCellsArray")) {
+    if (is_BPCellsArray(object)) {
         if (object@SeedForm == "BPCells") {
             return(TRUE)
         }
@@ -355,8 +351,7 @@ showtree <- function(object, show.node.dim = TRUE) {
 }
 
 .seedApply <- function(x, FUN, ...) {
-    if (methods::is(x, "BPCellsMatrix") ||
-        methods::is(x, "BPCellsArray")) {
+    if (is_BPCellsArray(x)) {
         Recall(x = x@seed, FUN = FUN, ...)
     } else if (is_BPCellsMemory(x) || is_BPCellsDisk(x)) {
         list(FUN(x, ...))

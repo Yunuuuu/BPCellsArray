@@ -29,29 +29,22 @@ methods::setGeneric(
     function(x, ...) standardGeneric("writeBPCellsMemArray")
 )
 
-.writeBPCellsMemArray <- function(x, compress = TRUE, seed_form = NULL) {
-    seed_form <- match_seed_form(seed_form)
-    obj <- BPCells::write_matrix_memory(
-        mat = BPCellsSeed(x),
-        compress = compress
-    )
-    with_seed_form(seed_form = seed_form, DelayedArray(obj))
+.writeBPCellsMemArray <- function(x, compress = TRUE, seedform = NULL) {
+    lst <- extract_seed_and_seedform(x, seedform)
+    obj <- BPCells::write_matrix_memory(mat = lst$seed, compress = compress)
+    with_seedform(seedform = lst$seedform, DelayedArray(obj))
 }
 
+#' @inheritParams BPCellsDir-IO
 #' @inherit BPCells::write_matrix_memory details
-#' @inheritParams writeBPCellsDirArray
 #' @inheritParams BPCells::write_matrix_memory
+#' @param seedform A string, `"BPCells"` or `"DelayedArray"`, if `NULL`, will
+#'  use the default value.
+#'  - For `BPCellsMatrix` object: the default value will be extracted from
+#'    `x` directly (use `seedform(x)` to check).
+#'  - For other object: the default value will be extracted from global
+#'    option (use `seedform()` to check).
 #' @inherit BPCellsDir-IO return
-#' @export
-#' @rdname BPCellsMem-IO
-methods::setMethod(
-    "writeBPCellsMemArray", "BPCellsMatrix",
-    function(x, ..., seed_form = NULL) {
-        seed_form <- seed_form %||% x@SeedForm
-        .writeBPCellsMemArray(x = x, ..., seed_form = seed_form)
-    }
-)
-
 #' @export
 #' @rdname BPCellsMem-IO
 methods::setMethod("writeBPCellsMemArray", "ANY", .writeBPCellsMemArray)

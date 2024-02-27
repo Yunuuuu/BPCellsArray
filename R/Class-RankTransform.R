@@ -73,7 +73,7 @@ methods::setMethod(
     "rank_transform", "BPCellsMatrix",
     function(object, axis = NULL, offset = TRUE, ...) {
         assert_bool(offset)
-        seed_form <- object@SeedForm
+        seedform <- object@SeedForm
         object <- to_BPCells(object@seed)
         main_axis <- storage_axis(object)
         if (is.null(axis)) {
@@ -113,7 +113,7 @@ methods::setMethod(
                 seed <- t(t(seed) + rank_offsets)
             }
         }
-        with_seed_form(seed_form, DelayedArray(seed))
+        with_seedform(seedform, DelayedArray(seed))
     }
 )
 

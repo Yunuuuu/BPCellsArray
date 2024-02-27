@@ -15,25 +15,16 @@ methods::setMethod("summary", "MatrixH5", summary.MatrixH5)
 #' @param path A string path of the `HDF5` file to read or save data into.
 #' @export
 #' @name BPCellsHDF5-IO
-readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L, seed_form = NULL) {
+readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L, seedform = NULL) {
     assert_string(path, empty_ok = FALSE)
-    seed_form <- match_seed_form(seed_form)
+    seedform <- match_seedform(seedform)
     obj <- BPCells::open_matrix_hdf5(
         path = path, group = group,
         buffer_size = as.integer(buffer_size)
     )
-    with_seed_form(seed_form, DelayedArray(obj))
+    with_seedform(seedform, DelayedArray(obj))
 }
 
-#' @inherit BPCells::write_matrix_hdf5 details
-#' @inheritParams BPCellsDir-IO
-#' @inheritParams BPCells::open_matrix_hdf5
-#' @param gzip Gzip compression level. Default is 0 (no gzip compression). This
-#' is recommended when both compression and compatibility with outside programs
-#' is required. Using `compress=TRUE` is recommended as it is >10x faster with
-#' often similar compression levels. So `gzip` will always be zero when
-#' `compress` is `TRUE`.
-#' @inherit BPCellsDir-IO return
 #' @export
 #' @aliases writeBPCellsHDF5Array
 #' @rdname BPCellsHDF5-IO
@@ -42,36 +33,35 @@ methods::setGeneric(
     function(x, ...) standardGeneric("writeBPCellsHDF5Array")
 )
 
-.writeBPCellsHDF5Array <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, seed_form = NULL) {
+.writeBPCellsHDF5Array <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, seedform = NULL) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
-    seed_form <- match_seed_form(seed_form)
+    lst <- extract_seed_and_seedform(x, seedform)
     if (bitpacking) {
         gzip <- 0L
     } else {
         gzip <- as.integer(gzip)
     }
     obj <- BPCells::write_matrix_hdf5(
-        mat = BPCellsSeed(x),
+        mat = lst$seed,
         path = path, group = group,
         compress = bitpacking,
         buffer_size = as.integer(buffer_size),
         chunk_size = as.integer(chunk_size),
         overwrite = overwrite, gzip_level = gzip
     )
-    with_seed_form(seed_form, DelayedArray(obj))
+    with_seedform(lst$seedform, DelayedArray(obj))
 }
 
-#' @export
-#' @rdname BPCellsHDF5-IO
-methods::setMethod(
-    "writeBPCellsHDF5Array", "BPCellsMatrix",
-    function(x, ..., seed_form = NULL) {
-        seed_form <- seed_form %||% x@SeedForm
-        .writeBPCellsHDF5Array(x = x, ..., seed_form = seed_form)
-    }
-)
-
+#' @inherit BPCells::write_matrix_hdf5 details
+#' @inherit BPCellsDir-IO return
+#' @inheritParams BPCellsDir-IO
+#' @inheritParams BPCells::open_matrix_hdf5
+#' @param gzip Gzip compression level. Default is 0 (no gzip compression). This
+#' is recommended when both compression and compatibility with outside programs
+#' is required. Using `compress=TRUE` is recommended as it is >10x faster with
+#' often similar compression levels. So `gzip` will always be zero when
+#' `compress` is `TRUE`.
 #' @export
 #' @rdname BPCellsHDF5-IO
 methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)

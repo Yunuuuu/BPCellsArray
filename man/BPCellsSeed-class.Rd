@@ -50,7 +50,7 @@
 \alias{OLD_extract_sparse_array,BPCellsDelayedSubset-method}
 \alias{is_noop,BPCellsDelayedSubset-method}
 \alias{chunkdim,BPCellsDelayedSubset-method}
-\title{Seed Contract methods for \code{IterableMatrix}}
+\title{Seed Contract methods for \code{IterableMatrix} and \code{BPCellsDelayedOp} object}
 \usage{
 \method{as.matrix}{BPCellsDelayedOp}(x, drop = FALSE)
 
@@ -199,5 +199,5 @@ differentiate 32-bit and 64-bit real number. See
 }
 }
 \description{
-Seed Contract methods for \code{IterableMatrix}
+Seed Contract methods for \code{IterableMatrix} and \code{BPCellsDelayedOp} object
 }

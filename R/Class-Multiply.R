@@ -83,10 +83,10 @@ NULL
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
-        seed_form <- x@SeedForm
+        seedform <- x@SeedForm
         x <- to_BPCells(x@seed)
         y <- to_BPCells(y@seed)
-        with_seed_form(seed_form, DelayedArray(.multiply_BPCells(x, y)))
+        with_seedform(seedform, DelayedArray(.multiply_BPCells(x, y)))
     }
 )
 
@@ -94,10 +94,10 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
-        seed_form <- x@SeedForm
+        seedform <- x@SeedForm
         x <- to_BPCells(x@seed)
         y <- BPCellsSeed(y)
-        with_seed_form(seed_form, DelayedArray(.multiply_BPCells(x, y)))
+        with_seedform(seedform, DelayedArray(.multiply_BPCells(x, y)))
     }
 )
 
@@ -105,10 +105,10 @@ methods::setMethod(
 #' @rdname BPCells-Multiplication
 methods::setMethod(
     "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
-        seed_form <- y@SeedForm
+        seedform <- y@SeedForm
         x <- BPCellsSeed(x)
         y <- to_BPCells(y@seed)
-        with_seed_form(seed_form, DelayedArray(.multiply_BPCells(x, y)))
+        with_seedform(seedform, DelayedArray(.multiply_BPCells(x, y)))
     }
 )
 

@@ -33,9 +33,9 @@
 
 \S4method{show}{BPCellsMatrix}(object)
 
-BPCellsArray(x, seed_form = NULL)
+BPCellsArray(x, seedform = NULL)
 
-BPCellsMatrix(x, seed_form = NULL)
+BPCellsMatrix(x, seedform = NULL)
 
 \S4method{matrixClass}{BPCellsArray}(x)
 
@@ -64,10 +64,23 @@ BPCellsMatrix(x, seed_form = NULL)
 \S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ...) <- value
 }
 \arguments{
-\item{x, object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object}
+\item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{seed_form}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
-use the default value (use \code{set_seed_form()} with missing argument to check).}
+\item{x}{\itemize{
+\item For \code{BPCellsArray} and \code{BPCellsMatrix}: A
+\link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
+converted into \link{BPCellsSeed} object.
+\item For other function: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object
+}}
+
+\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
+use the the default \code{seedform}:
+\itemize{
+\item For \code{BPCellsMatrix} object: the default value will be extracted from
+\code{x} directly (use \code{seedform(x)} to check).
+\item For other object: the default value will be extracted from global
+option (use \code{seedform()} to check).
+}}
 
 \item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} or
 \link[=BPCellsSeed-class]{BPCellsDelayedOp} object.}
@@ -133,7 +146,7 @@ The \code{BPCellsMatrix} class just inherits from the
 }
 \seealso{
 \itemize{
-\item \link{set_seed_form}: Manage the seed form.
+\item \link{seedform}: Manage the seed form.
 \item \link[=BPCells-bind]{bind}: Combine two Objects by Columns or Rows.
 \item \link[=BPCells-Multiplication]{\%*\%}: Matrix Multiplication.
 \item \link[=BPCells-crossprod]{crossprod}: Matrix Crossproduct.

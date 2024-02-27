@@ -4,15 +4,12 @@
 \alias{BPCellsHDF5-IO}
 \alias{readBPCellsHDF5Matrix}
 \alias{writeBPCellsHDF5Array}
-\alias{writeBPCellsHDF5Array,BPCellsMatrix-method}
 \alias{writeBPCellsHDF5Array,ANY-method}
 \title{Read/write sparse matrices from (or into) HDF5 file}
 \usage{
-readBPCellsHDF5Matrix(path, group, buffer_size = 8192L, seed_form = NULL)
+readBPCellsHDF5Matrix(path, group, buffer_size = 8192L, seedform = NULL)
 
 writeBPCellsHDF5Array(x, ...)
-
-\S4method{writeBPCellsHDF5Array}{BPCellsMatrix}(x, ..., seed_form = NULL)
 
 \S4method{writeBPCellsHDF5Array}{ANY}(
   x,
@@ -23,7 +20,7 @@ writeBPCellsHDF5Array(x, ...)
   chunk_size = 1024L,
   overwrite = FALSE,
   gzip = 0L,
-  seed_form = NULL
+  seedform = NULL
 )
 }
 \arguments{
@@ -35,27 +32,24 @@ to an existing hdf5 file this group must not already be in use}
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
 
-\item{seed_form}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
+\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
 use the default value.
 \itemize{
-\item For \verb{readBPCells*}: use \code{set_seed_form()} with missing argument to check
-the default value.
+\item For \verb{readBPCells*}: (use \code{seedform()} to check) to check the default
+value.
 \item For \verb{writeBPCells*}:
 \itemize{
-\item For \code{BPCellsMatrix} method: the default value will be extracted from
-\code{x} directly.
-\item For \code{ANY} method: use \code{set_seed_form()} with missing argument to check
-the default value.
+\item For \code{BPCellsMatrix} object: the default value will be extracted from
+\code{x} directly (use \code{seedform(x)} to check).
+\item For other object: the default value will be extracted from global
+option (use \code{seedform()} to check).
 }
 }}
 
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
 converted into \link{BPCellsSeed} object.}
 
-\item{...}{\itemize{
-\item Generic function: Additional arguments passed into specific methods.
-\item BPCellsMatrix Method: Additional arguments passed into \code{ANY} method.
-}}
+\item{...}{Additional arguments passed into specific methods.}
 
 \item{bitpacking}{A bool, whether or not to compress the data using
 Bitpacking Compression.}

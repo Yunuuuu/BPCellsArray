@@ -3,8 +3,6 @@
 \name{BPCellsSeed}
 \alias{BPCellsSeed}
 \alias{BPCellsSeed,IterableMatrix-method}
-\alias{BPCellsSeed,BPCellsArray-method}
-\alias{BPCellsSeed,BPCellsMatrix-method}
 \alias{BPCellsSeed,BPCellsDelayedOp-method}
 \alias{BPCellsSeed,matrix-method}
 \alias{BPCellsSeed,dgCMatrix-method}
@@ -14,10 +12,6 @@
 BPCellsSeed(x)
 
 \S4method{BPCellsSeed}{IterableMatrix}(x)
-
-\S4method{BPCellsSeed}{BPCellsArray}(x)
-
-\S4method{BPCellsSeed}{BPCellsMatrix}(x)
 
 \S4method{BPCellsSeed}{BPCellsDelayedOp}(x)
 

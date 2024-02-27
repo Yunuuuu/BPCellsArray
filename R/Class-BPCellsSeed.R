@@ -1,4 +1,4 @@
-#' Seed Contract methods for `IterableMatrix`
+#' Seed Contract methods for `IterableMatrix` and `BPCellsDelayedOp` object
 #'
 #' @param x A `IterableMatrix` or `BPCellsDelayedOp` object.
 #' @include utils-BPCells.R
