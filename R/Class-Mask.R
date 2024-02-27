@@ -46,7 +46,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedMaskNaryIsoOp", function(object)
 })
 
 methods::setMethod("to_BPCells", "BPCellsDelayedMaskUnaryIsoOp", function(object) {
-    methods::callNextMethod(object = object, Class = "MatrixMask")
+    to_BPCellsUnaryOp(object = object, Class = "MatrixMask")
 })
 
 summary.BPCellsDelayedMask <- function(object) {

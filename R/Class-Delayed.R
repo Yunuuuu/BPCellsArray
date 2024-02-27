@@ -27,7 +27,7 @@
 # Always return a `IterableMatrix` object
 #' @keywords internal
 #' @noRd
-methods::setGeneric("to_BPCells", function(object, ...) {
+methods::setGeneric("to_BPCells", function(object) {
     standardGeneric("to_BPCells")
 })
 
@@ -39,6 +39,13 @@ methods::setMethod("to_BPCells", "DelayedOp", function(object) {
         "You cannot mix {.pkg BPCells} method with {.pkg DelayedArray} method"
     )
 })
+to_BPCellsUnaryOp <- function(object, Class) {
+    object@seed <- to_BPCells(object@seed)
+    migrate_slots(
+        Object = object,
+        rename = c(seed = "matrix"), Class = Class
+    )
+}
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # to_DelayedArray
@@ -198,16 +205,6 @@ methods::setMethod(
 #' @importClassesFrom DelayedArray DelayedUnaryOp
 methods::setClass("BPCellsDelayedUnaryOp",
     contains = c("DelayedUnaryOp", "BPCellsDelayedOp", "VIRTUAL")
-)
-methods::setMethod(
-    "to_BPCells", "BPCellsDelayedUnaryOp",
-    function(object, Class) {
-        object@seed <- to_BPCells(object@seed)
-        migrate_slots(
-            Object = object,
-            rename = c(seed = "matrix"), Class = Class
-        )
-    }
 )
 
 ### list_methods("DelayedUnaryOp")

@@ -10,7 +10,7 @@ methods::setMethod("to_DelayedArray", "ConvertMatrixType", function(object) {
 })
 
 methods::setMethod("to_BPCells", "BPCellsDelayedConvert", function(object) {
-    methods::callNextMethod(object = object, Class = "ConvertMatrixType")
+    to_BPCellsUnaryOp(object = object, Class = "ConvertMatrixType")
 })
 
 summary.BPCellsDelayedConvert <- function(object) {

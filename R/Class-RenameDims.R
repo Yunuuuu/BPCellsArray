@@ -29,7 +29,7 @@ methods::setMethod("to_DelayedArray", "RenameDims", function(object) {
 })
 
 methods::setMethod("to_BPCells", "BPCellsDelayedRenameDims", function(object) {
-    methods::callNextMethod(object = object, Class = "RenameDims")
+    to_BPCellsUnaryOp(object = object, Class = "RenameDims")
 })
 
 #############################################################

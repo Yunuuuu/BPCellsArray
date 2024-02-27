@@ -14,7 +14,7 @@ methods::setMethod("to_DelayedArray", "MatrixRankTransform", function(object) {
 methods::setMethod(
     "to_BPCells", "BPCellsDelayedRankTransform",
     function(object) {
-        methods::callNextMethod(object = object, Class = "MatrixRankTransform")
+        to_BPCellsUnaryOp(object = object, Class = "MatrixRankTransform")
     }
 )
 

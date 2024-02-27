@@ -17,10 +17,7 @@ methods::setGeneric("BPCellsTransformedClass", function(x) {
 })
 
 methods::setMethod("to_BPCells", "BPCellsDelayedTransformed", function(object) {
-    methods::callNextMethod(
-        object = object,
-        Class = BPCellsTransformedClass(object)
-    )
+    to_BPCellsUnaryOp(object = object, Class = BPCellsTransformedClass(object))
 })
 
 #########################################################
