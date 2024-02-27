@@ -10,17 +10,8 @@ NULL
 
 ####################################################################
 # TransformExpm1Slow
-methods::setClass("BPCellsTransformExpm1Slow",
+methods::setClass("BPCellsDelayedTransformExpm1Slow",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformExpm1Slow",
-    function(x) "BPCellsTransformExpm1Slow"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformExpm1Slow",
-    function(x) "TransformExpm1Slow"
 )
 
 #' @export
@@ -33,9 +24,7 @@ methods::setGeneric("expm1_slow", function(x) {
 #' @rdname BPCells-Math
 methods::setMethod(
     "expm1_slow", "BPCellsMatrix",
-    array_call_BPCells_method(
-        x = , method = quote(BPCells::expm1_slow(x))
-    )
+    array_call_BPCells_method(x = , method = quote(BPCells::expm1_slow(x)))
 )
 
 #' @export
@@ -46,17 +35,8 @@ methods::setMethod("expm1_slow", "ANY", function(x) {
 
 ####################################################################
 # TransformExpm1
-methods::setClass("BPCellsTransformExpm1",
+methods::setClass("BPCellsDelayedTransformExpm1",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformExpm1",
-    function(x) "BPCellsTransformExpm1"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformExpm1",
-    function(x) "TransformExpm1"
 )
 
 #' @return
@@ -71,17 +51,8 @@ methods::setMethod(
 
 ####################################################################
 # TransformLog1pSlow
-methods::setClass("BPCellsTransformLog1p",
+methods::setClass("BPCellsDelayedTransformLog1pSlow",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformLog1pSlow",
-    function(x) "BPCellsTransformLog1p"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformLog1p",
-    function(x) "TransformLog1pSlow"
 )
 
 #' @return
@@ -93,24 +64,13 @@ methods::setMethod(
 #' @rdname BPCells-Math
 methods::setMethod(
     "log1p", "BPCellsMatrix",
-    array_call_BPCells_method(
-        x = , method = quote(BPCells::log1p_slow(x))
-    )
+    array_call_BPCells_method(x = , method = quote(BPCells::log1p_slow(x)))
 )
 
 ####################################################################
 # TransformLog1p
-methods::setClass("BPCellsTransformLog1pSingle",
+methods::setClass("BPCellsDelayedTransformLog1p",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformLog1p",
-    function(x) "BPCellsTransformLog1pSingle"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformLog1pSingle",
-    function(x) "TransformLog1p"
 )
 
 #' @export
@@ -129,17 +89,8 @@ methods::setMethod(
 
 ####################################################################
 # TransformRound
-methods::setClass("BPCellsTransformRound",
+methods::setClass("BPCellsDelayedTransformRound",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformRound",
-    function(x) "BPCellsTransformRound"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformRound",
-    function(x) "TransformRound"
 )
 
 #' @param digits Integer indicating the number of decimal places

@@ -4,17 +4,8 @@ NULL
 
 ####################################################################
 # TransformMinByCol
-methods::setClass("BPCellsTransformMinByCol",
+methods::setClass("BPCellsDelayedTransformMinByCol",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformMinByCol",
-    function(x) "BPCellsTransformMinByCol"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformMinByCol",
-    function(x) "TransformMinByCol"
 )
 
 #' @inheritParams convert_mode
@@ -39,17 +30,8 @@ methods::setMethod(
 
 ####################################################################
 # TransformMinByRow
-methods::setClass("BPCellsTransformMinByRow",
+methods::setClass("BPCellsDelayedTransformMinByRow",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformMinByRow",
-    function(x) "BPCellsTransformMinByRow"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformMinByRow",
-    function(x) "TransformMinByRow"
 )
 
 #' @export
@@ -72,17 +54,8 @@ methods::setMethod(
 
 ####################################################################
 # TransformMin
-methods::setClass("BPCellsTransformMin",
+methods::setClass("BPCellsDelayedTransformMin",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformMin",
-    function(x) "BPCellsTransformMin"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformMin",
-    function(x) "TransformMin"
 )
 
 #' @export

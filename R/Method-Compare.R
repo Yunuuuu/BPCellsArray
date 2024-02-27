@@ -1,17 +1,7 @@
 ####################################################################
 # TransformBinarize
-methods::setClass("BPCellsTransformBinarize",
+methods::setClass("BPCellsDelayedTransformBinarize",
     contains = "BPCellsDelayedTransformed"
-)
-
-methods::setMethod(
-    "DelayedTransformedClass", "TransformBinarize",
-    function(x) "BPCellsTransformBinarize"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformBinarize",
-    function(x) "TransformBinarize"
 )
 
 #########################################################################

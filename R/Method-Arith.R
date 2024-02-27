@@ -1,52 +1,22 @@
 ####################################################################
 # TransformScaleShift
-mould_BPCells("BPCellsDelayedTransformeScaleShift",
+mould_BPCells("BPCellsDelayedTransformScaleShift",
     "TransformScaleShift",
     remove = "matrix",
     # BPCellsDelayedTransformed: `seed` slot
     contains = "BPCellsDelayedTransformed"
 )
 
-methods::setMethod(
-    "DelayedTransformedClass", "TransformScaleShift",
-    function(x) "BPCellsDelayedTransformeScaleShift"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsDelayedTransformeScaleShift",
-    function(x) "TransformScaleShift"
-)
-
 ####################################################################
 # TransformPow
-methods::setClass("BPCellsTransformPow",
+methods::setClass("BPCellsDelayedTransformPow",
     contains = "BPCellsDelayedTransformed"
-)
-
-methods::setMethod(
-    "DelayedTransformedClass", "TransformPow",
-    function(x) "BPCellsTransformPow"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformPow",
-    function(x) "TransformPow"
 )
 
 ####################################################################
 # TransformSquare
-methods::setClass("BPCellsTransformSquare",
+methods::setClass("BPCellsDelayedTransformSquare",
     contains = "BPCellsDelayedTransformed"
-)
-
-methods::setMethod(
-    "DelayedTransformedClass", "TransformSquare",
-    function(x) "BPCellsTransformSquare"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformSquare",
-    function(x) "TransformSquare"
 )
 
 ###################################################################
@@ -123,17 +93,8 @@ methods::setMethod(
 
 #######################################################################
 # TransformPowSlow
-methods::setClass("BPCellsTransformPowSlow",
+methods::setClass("BPCellsDelayedTransformPowSlow",
     contains = "BPCellsDelayedTransformed"
-)
-methods::setMethod(
-    "DelayedTransformedClass", "TransformPowSlow",
-    function(x) "BPCellsTransformPowSlow"
-)
-
-methods::setMethod(
-    "BPCellsTransformedClass", "BPCellsTransformPowSlow",
-    function(x) "TransformPowSlow"
 )
 
 #' @export

@@ -4,34 +4,36 @@ mould_BPCells("BPCellsDelayedTransformed", "TransformedMatrix",
     contains = "BPCellsDelayedUnaryIsoOp"
 )
 
-methods::setGeneric("DelayedTransformedClass", function(x) {
-    standardGeneric("DelayedTransformedClass")
-})
-
 methods::setMethod("to_DelayedArray", "TransformedMatrix", function(object) {
-    to_DelayedUnaryOp(object, Class = DelayedTransformedClass(object))
-})
-
-methods::setGeneric("BPCellsTransformedClass", function(x) {
-    standardGeneric("BPCellsTransformedClass")
+    to_DelayedUnaryOp(object,
+        Class = paste0("BPCellsDelayed", class(object)[[1L]])
+    )
 })
 
 methods::setMethod("to_BPCells", "BPCellsDelayedTransformed", function(object) {
-    to_BPCellsUnaryOp(object = object, Class = BPCellsTransformedClass(object))
+    to_BPCellsUnaryOp(
+        object = object,
+        Class = sub("^BPCellsDelayed", "", class(object)[[1L]])
+    )
 })
 
 #########################################################
 summary.BPCellsDelayedTransformed <- function(object) {
-    cls <- gsub("^(BPCellsDelayed)?Transform", "", class(object)[1L])
+    cls <- sub("^(BPCellsDelayed)?Transform", "", class(object)[[1L]])
     sprintf(
         "Transform by %s",
         switch(cls,
+            Log1p = "`log1p` (single-precision)",
+            Log1pSlow = "`log1p` (double-precision)",
             ScaleShift = "scale and (or) shift",
-            Expm1Slow = "expm1_slow",
-            Min = "pmin_scalar",
+            Expm1Slow = "`expm1` (slow version)",
+            Square = ,
+            Pow = "`^`",
+            PowSlow = "`^` (slow version)",
+            Min = "`pmin_scalar`",
             MinByCol = ,
-            MinByRow = paste0("p", snakeize(cls)),
-            snakeize(cls)
+            MinByRow = paste0("`p", snakeize(cls), "`"),
+            sprintf("`%s`", snakeize(cls))
         )
     )
 }
