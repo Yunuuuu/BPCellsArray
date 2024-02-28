@@ -126,6 +126,9 @@ is_BPCellsInDisk <- function(seed) {
 
 is_BPCellsInMemory <- function(seed) !is_BPCellsInDisk(seed)
 
+# regard `IterableMatrix` as array
+is_array <- function(x) methods::is(x, "IterableMatrix") || is.array(x)
+
 # not used currently
 is_BPCellsMatrixMaskUnary <- function(seed) {
     methods::is(seed, "MatrixMask") && is_BPCellsInDisk(seed@mask)

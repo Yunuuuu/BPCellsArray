@@ -5,20 +5,19 @@
 \alias{seedApply}
 \title{Visualize and access the leaves of a tree of delayed operations}
 \usage{
-showtree(object, show.node.dim = TRUE)
+showtree(x, show.node.dim = TRUE)
 
 seedApply(x, FUN, ...)
 }
 \arguments{
+\item{x}{Typically a \link[DelayedArray:DelayedArray-class]{DelayedArray} object but
+can also be a \link[DelayedArray:DelayedOp-class]{DelayedOp} object or a list
+where each element is a \link[DelayedArray:DelayedArray-class]{DelayedArray} or
+\link[DelayedArray:DelayedOp-class]{DelayedOp} object.}
+
 \item{show.node.dim}{
     \code{TRUE} or \code{FALSE}. If \code{TRUE} (the default), the nodes
     dimensions and data type are displayed.
-  }
-
-\item{x, object}{
-    Typically a \link[DelayedArray]{DelayedArray} object but can also be a \link[DelayedArray]{DelayedOp}
-    object or a list where each element is a \link[DelayedArray]{DelayedArray} or
-    \link[DelayedArray]{DelayedOp} object.
   }
 
 \item{FUN}{

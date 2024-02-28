@@ -260,64 +260,6 @@ abort_nary_path <- function(call = rlang::caller_env()) {
     ans
 }
 
-### 'last.child' can be NA, TRUE, or FALSE. NA means 'x' is the root of the
-### tree.
-.rec_showtree <- function(x, indent = "", last.child = NA, prefix = "", show.node.dim = TRUE) {
-    if (methods::is(x, "IterableMatrix") || is_BPCellsArray(x)) {
-        ## Display summary line.
-        if (is.na(last.child)) {
-            ## No Tprefix.
-            Tprefix <- ""
-        } else {
-            ## 3-char Tprefix
-            Tprefix <- paste0(if (last.child) .ELBOW else .TEE, .HBAR, " ")
-        }
-        x_as1line <- .node_as_one_line_summary(x, show.node.dim = show.node.dim)
-        cat(indent, Tprefix, prefix, x_as1line, "\n", sep = "")
-    }
-    ## Display children.
-    if (!is.na(last.child)) {
-        ## Increase indent by 3 chars.
-        indent <- paste0(
-            indent,
-            if (last.child) " " else .VBAR,
-            strrep(" ", 2 + nchar(prefix))
-        )
-    }
-    if (is_BPCellsArray(x)) {
-        Recall(x = x@seed, indent = indent, last.child = TRUE)
-    } else if (is_BPCellsUnary(x)) {
-        Recall(x = x@matrix, indent = indent, last.child = TRUE)
-    } else if (is_BPCellsNary(x)) {
-        if (methods::is(x, "MatrixMask")) {
-            if (is_BPCellsInDisk(x@mask)) {
-                return(Recall(x@matrix, indent = indent, last.child = TRUE))
-            } else {
-                # regard `MatrixMask` as Nary
-                seeds <- list(matrix = x@matrix, mask = x@mask)
-            }
-        } else if (methods::is(x, "MatrixMultiply")) {
-            seeds <- list(left = x@left, right = x@right)
-        } else {
-            seeds <- x@matrix_list
-        }
-        nchildren <- length(seeds)
-        nms <- names(seeds)
-        if (is.null(nms)) {
-            nms <- rep_len("", nchildren)
-        } else {
-            nms <- sprintf("%s: ", nms)
-        }
-        for (i in seq_len(nchildren)) {
-            Recall(
-                x = seeds[[i]], indent = indent,
-                last.child = (i == nchildren),
-                prefix = nms[[i]]
-            )
-        }
-    }
-}
-
 no_DelayedArray <- function(object) {
     if (is_BPCellsArray(object)) {
         if (object@SeedForm == "BPCells") {
@@ -329,6 +271,102 @@ no_DelayedArray <- function(object) {
     return(FALSE)
 }
 
+.rec_showtree <- function(x, indent = "", last.child = NA, prefix = "", show.node.dim = TRUE) {
+    if (is.list(x) && !is_array(x)) {
+        nchildren <- length(x)
+        nms <- names(x)
+        if (is.null(nms)) {
+            nms <- rep_len("", nchildren)
+        } else {
+            nms <- sprintf("%s: ", nms)
+        }
+        for (i in seq_len(nchildren)) {
+            Recall(
+                x = x[[i]], indent = indent,
+                last.child = (i == nchildren),
+                prefix = nms[[i]]
+            )
+        }
+    } else if (no_DelayedArray(x)) {
+        .rec_show_BPCells(
+            x = x, indent = indent,
+            last.child = last.child, prefix = prefix,
+            show.node.dim = show.node.dim
+        )
+    } else {
+        DelayedArray:::.rec_showtree(
+            x = x, indent = indent,
+            last.child = last.child, prefix = prefix,
+            show.node.dim = show.node.dim
+        )
+    }
+}
+
+### 'last.child' can be NA, TRUE, or FALSE. NA means 'x' is the root of the
+### tree.
+#' @param x A `IterableMatrix` or `BPCellsMatrix` object with `@@SeedForm` equal
+#' to "BPCells".
+#' @noRd
+.rec_show_BPCells <- function(x, indent = "", last.child = NA, prefix = "", show.node.dim = TRUE) {
+    ## Display summary line.
+    if (is.na(last.child)) {
+        ## No Tprefix.
+        Tprefix <- ""
+    } else {
+        ## 3-char Tprefix
+        Tprefix <- paste0(if (last.child) .ELBOW else .TEE, .HBAR, " ")
+    }
+    x_as1line <- .node_as_one_line_summary(x, show.node.dim = show.node.dim)
+    cat(indent, Tprefix, prefix, x_as1line, "\n", sep = "")
+    # if no children, return
+    if (is_BPCellsMemory(x) || is_BPCellsDisk(x)) return(NULL) # styler: off
+    ## Display children.
+    if (!is.na(last.child)) {
+        ## Increase indent by 3 chars.
+        indent <- paste0(
+            indent,
+            if (last.child) " " else .VBAR,
+            strrep(" ", 2 + nchar(prefix))
+        )
+    }
+    if (is_BPCellsArray(x)) {
+        Recall(
+            x = x@seed, indent = indent, last.child = TRUE,
+            prefix = prefix, show.node.dim = show.node.dim
+        )
+    } else if (is_BPCellsUnary(x)) {
+        Recall(
+            x = x@matrix, indent = indent, last.child = TRUE,
+            prefix = prefix, show.node.dim = show.node.dim
+        )
+    } else if (is_BPCellsNary(x)) {
+        if (methods::is(x, "MatrixMask")) {
+            if (is_BPCellsInDisk(x@mask)) {
+                # regard `MatrixMask` as Nary
+                seeds <- list(matrix = x@matrix, mask = x@mask)
+            } else {
+                return(Recall(x@matrix,
+                    indent = indent, last.child = TRUE,
+                    prefix = prefix, show.node.dim = show.node.dim
+                ))
+            }
+        } else if (methods::is(x, "MatrixMultiply")) {
+            seeds <- list(left = x@left, right = x@right)
+        } else {
+            seeds <- x@matrix_list
+        }
+        # A list of seeds
+        .rec_showtree(
+            x = seeds, indent = indent, last.child = FALSE,
+            prefix = prefix, show.node.dim = show.node.dim
+        )
+    } else if (methods::is(x, "IterableMatrix")) {
+        cli::cli_abort(
+            "{.cls {obj_s4_friendly(x)}} is not supported at the moment"
+        )
+    }
+}
+
 #' Visualize and access the leaves of a tree of delayed operations
 #'
 #' `showtree` can be used to visualize the tree of delayed operations carried by
@@ -336,44 +374,20 @@ no_DelayedArray <- function(object) {
 #'
 #' Use `seedApply` to apply a function to the seeds of a `DelayedArray` object.
 #'
+#' @param x Typically a [DelayedArray][DelayedArray::DelayedArray] object but
+#' can also be a [DelayedOp][DelayedArray::DelayedOp-class] object or a list
+#' where each element is a [DelayedArray][DelayedArray::DelayedArray] or
+#' [DelayedOp][DelayedArray::DelayedOp-class] object.
 #' @inheritParams DelayedArray::showtree
 #' @return
 #'  - `showtree`: return the input invisiblely
 #' @export
-showtree <- function(object, show.node.dim = TRUE) {
+showtree <- function(x, show.node.dim = TRUE) {
     assert_bool(show.node.dim)
-    if (no_DelayedArray(object)) {
-        .rec_showtree(x = object, show.node.dim = show.node.dim)
-    } else {
-        DelayedArray::showtree(object, show.node.dim = show.node.dim)
-    }
-    invisible(object)
+    .rec_showtree(x = x, show.node.dim = show.node.dim)
+    invisible(x)
 }
 
-.seedApply <- function(x, FUN, ...) {
-    if (is_BPCellsArray(x)) {
-        Recall(x = x@seed, FUN = FUN, ...)
-    } else if (is_BPCellsMemory(x) || is_BPCellsDisk(x)) {
-        list(FUN(x, ...))
-    } else if (is_BPCellsUnary(x)) {
-        Recall(x = x@matrix, FUN = FUN, ...)
-    } else {
-        if (methods::is(x, "MatrixMask")) {
-            if (is_BPCellsInDisk(x@mask)) {
-                return(Recall(x = x@matrix, FUN = FUN, ...))
-            } else {
-                # regard `MatrixMask` as Nary
-                x <- list(matrix = x@matrix, mask = x@mask)
-            }
-        } else if (methods::is(x, "MatrixMultiply")) {
-            x <- list(left = x@left, right = x@right)
-        } else {
-            x <- x@matrix_list
-        }
-        ans <- lapply(x, .seedApply, FUN, ...)
-        unlist(ans, recursive = FALSE, use.names = FALSE)
-    }
-}
 
 #' @inheritParams DelayedArray::seedApply
 #' @return
@@ -381,9 +395,35 @@ showtree <- function(object, show.node.dim = TRUE) {
 #' @rdname showtree
 #' @export
 seedApply <- function(x, FUN, ...) {
-    if (no_DelayedArray(x)) {
-        .seedApply(x = x, FUN = FUN, ...)
+    if (is_BPCellsMemory(x) || is_BPCellsDisk(x)) {
+        return(list(FUN(x, ...)))
+    } else if (is.list(x) && !is_array(x)) {
+        ans <- lapply(x, FUN = seedApply, FUN, ...)
+        return(unlist(ans, recursive = FALSE, use.names = FALSE))
+    } else if (is_BPCellsArray(x)) {
+        x <- x@seed
+    } else if (is_BPCellsUnary(x)) {
+        x <- x@matrix
+    } else if (is_BPCellsNary(x)) {
+        # For Nary operations
+        if (methods::is(x, "MatrixMask")) {
+            if (is_BPCellsInDisk(x@mask)) {
+                # regard `MatrixMask` as Nary
+                x <- list(matrix = x@matrix, mask = x@mask)
+            } else {
+                x <- x@matrix
+            }
+        } else if (methods::is(x, "MatrixMultiply")) {
+            x <- list(left = x@left, right = x@right)
+        } else {
+            x <- x@matrix_list
+        }
+    } else if (methods::is(x, "IterableMatrix")) {
+        cli::cli_abort(
+            "{.cls {obj_s4_friendly(x)}} is not supported at the moment"
+        )
     } else {
-        DelayedArray::seedApply(x = x, FUN = FUN, ...)
+        return(DelayedArray::seedApply(x = x, FUN = FUN, ...))
     }
+    Recall(x = x, FUN = FUN, ...)
 }
