@@ -50,6 +50,7 @@ methods::setMethod("seedform", "character", function(x) {
 
 with_seedform <- function(seedform, code, envir = parent.frame()) {
     old <- get_seedform()
+    set_seedform(seedform)
     on.exit(set_seedform(old))
     eval(substitute(code), envir = envir)
 }
@@ -66,6 +67,7 @@ match_seedform <- function(seedform, default = get_seedform()) {
 # BPCells matrix into a `DelayedOp` object
 GlobalOptions <- new.env(parent = emptyenv())
 AllowedSeedForm <- c("BPCells", "DelayedArray")
+# set Global default `seedform`
 set_seedform("BPCells")
 
 # helper function used to extract the `IterableMatrix` and seedform from the
