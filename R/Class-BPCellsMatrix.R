@@ -15,7 +15,6 @@
 #' - [pmin2/pmax2][pmin2]: Maxima and Minima.
 #' - [DelayedArray-utils]: Common operations on DelayedArray objects
 #' @aliases BPCellsMatrix-methods
-#' @inherit BPCellsSeed-class seealso
 #' @name BPCellsMatrix-class
 NULL
 
@@ -37,7 +36,7 @@ NULL
 #' @export
 #' @rdname BPCellsMatrix-class
 BPCellsArray <- function(x, seedform = NULL) {
-    lst <- extract_seed_and_seedform(x, seedform)
+    lst <- extract_IterableMatrix_and_seedform(x, seedform)
     with_seedform(lst$seedform, DelayedArray(lst$seed))
 }
 
@@ -85,8 +84,7 @@ methods::setValidity("BPCellsMatrix", .validate_BPCellsArray)
 
 # Since BPCells only support 2-dim matrix, `DelayedArray` will always
 # return a `BPCellsMatrix` object.
-#' @param seed A [IterableMatrix][BPCellsSeed-class] or
-#' [BPCellsDelayedOp][BPCellsSeed-class] object.
+#' @param seed A [IterableMatrix][BPCellsSeed-class] object.
 #' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname BPCellsMatrix-class
@@ -102,13 +100,23 @@ methods::setMethod("DelayedArray", "IterableMatrix", function(seed) {
     object
 })
 
+# Although `BPCellsDelayedOp` shouldn't be touched by users (Just like the
+# ?DelayedOp object) we also define it here for crazy usage. since we don't
+# `setValidity` for `@seed` or `@seeds` slot of `BPCellsDelayedOp` object, they
+# may contain `IterableMatrix` object not converted into a `BPCellsDelayedOp`
+# object which should have be. so we choose to re-transform it into
+# `IterableMatrix` and then transform it back.
+# methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
+#     object <- DelayedArray::new_DelayedArray(seed, Class = "BPCellsArray")
+#     object@SeedForm <- "DelayedArray"
+#     object
+# })
+#' @param seed A [BPCellsDelayedOp][BPCellsDelayedOp-class] object.
 #' @include Class-Delayed.R
 #' @export
-#' @rdname BPCellsMatrix-class
+#' @rdname internal-methods
 methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
-    object <- DelayedArray::new_DelayedArray(seed, Class = "BPCellsArray")
-    object@SeedForm <- "DelayedArray"
-    object
+    with_seedform("DelayedArray", DelayedArray(to_BPCells(seed)))
 })
 
 ##############################################################
@@ -181,9 +189,7 @@ array_call_DelayedArray_method <- function(..., Array = NULL, type = "S4") {
     # for some method, it will return DelayedArray directly although
     # @seed is compatible with `BPCellsMatrix`.
     # here we just re-creating a BPCellsMatrix object when it could be.
-    after <- expression(
-        object <- with_seedform(seedform, DelayedArray(object))
-    )
+    after <- expression(object <- with_seedform(seedform, DelayedArray(object)))
     after <- c(after, expression(
         # we check if object is a `BPCellsMatrix` object, if not, we warn it
         if (!is_BPCellsArray(object)) {

@@ -163,16 +163,3 @@ migrate_slots <- function(Object, ..., remove = NULL, new = NULL, rename = NULL,
     if (!is.null(new)) slots <- c(slots, new)
     rlang::inject(S4Vectors::new2(Class = Class, !!!slots, check = FALSE))
 }
-
-########################################################
-# running order: before + method + after
-new_method <- function(args, method, before = NULL, after = NULL) {
-    if (!is.null(after)) {
-        method <- substitute(object <- method, list(method = method)) # nolint
-    }
-    body <- list(method)
-    if (!is.null(before)) body <- c(before, body)
-    if (!is.null(after)) body <- c(body, after)
-    body <- as.call(c(as.name("{"), body))
-    rlang::new_function(args, body = body)
-}

@@ -30,7 +30,7 @@ methods::setGeneric(
 )
 
 .writeBPCellsMemArray <- function(x, compress = TRUE, seedform = NULL) {
-    lst <- extract_seed_and_seedform(x, seedform)
+    lst <- extract_IterableMatrix_and_seedform(x, seedform)
     obj <- BPCells::write_matrix_memory(mat = lst$seed, compress = compress)
     with_seedform(seedform = lst$seedform, DelayedArray(obj))
 }
@@ -45,6 +45,7 @@ methods::setGeneric(
 #'  - For other object: the default value will be extracted from global
 #'    option (use `seedform()` to check).
 #' @inherit BPCellsDir-IO return
+#' @inherit BPCellsSeed seealso
 #' @export
 #' @rdname BPCellsMem-IO
 methods::setMethod("writeBPCellsMemArray", "ANY", .writeBPCellsMemArray)

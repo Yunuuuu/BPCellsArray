@@ -11,8 +11,8 @@ set_threads(object, ...)
 }
 \arguments{
 \item{object}{A \link{BPCellsMatrix} object with a seed slot of
-\code{BPCellsDelayedAbind} object, usually derived from \link[=BPCells-bind]{bind}
-operators.}
+\link[=BPCellsDelayedOp-class]{BPCellsDelayedAbind} object, usually derived from
+\link[=BPCells-bind]{bind} operators.}
 
 \item{...}{Additional arguments to specific methods.}
 

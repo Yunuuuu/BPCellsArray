@@ -48,6 +48,7 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L, seedform = NULL) {
 #' @inheritParams BPCells::write_matrix_dir
 #' @inheritParams BPCellsMatrix-class
 #' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @inherit BPCellsSeed seealso
 #' @export
 #' @aliases writeBPCellsDirArray
 #' @rdname BPCellsDir-IO
@@ -63,7 +64,7 @@ methods::setGeneric(
     seedform = NULL) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
-    lst <- extract_seed_and_seedform(x, seedform)
+    lst <- extract_IterableMatrix_and_seedform(x, seedform)
     path <- path %||% tempfile("BPCellsDirArray")
     obj <- BPCells::write_matrix_dir(
         mat = lst$seed,

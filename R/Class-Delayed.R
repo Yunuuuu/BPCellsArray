@@ -7,9 +7,10 @@
 # other block-processed methods) for DelayedArray objects try to take advantage
 # of the backend-specific methods whenever it can.
 
-# Here, we difine a new `DelayedOp` class to provide parallel class with
-# `DelayedArray`, so that `BPCells` delayed operations can transform into
-# parallel `DelayedOp` class easily.
+# Here, we difine a new `DelayedOp` class (`BPCellsDelayedOp`) to provide
+# parallel class with `DelayedArray`, so that `BPCells` delayed operations can
+# transform into a similar parallel `DelayedOp` class.
+# DelayedArray for `BPCellsDelayedOp` object always return a `BPCellsMatrix`
 
 ###################################################################
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -31,6 +32,7 @@ methods::setGeneric("to_BPCells", function(object) {
     standardGeneric("to_BPCells")
 })
 
+# used by on-disk and on-memory IterableMatrix
 methods::setMethod("to_BPCells", "IterableMatrix", function(object) object)
 
 #' @importClassesFrom DelayedArray DelayedOp
@@ -56,7 +58,7 @@ methods::setGeneric("to_DelayedArray", signature = "object", function(object) {
     standardGeneric("to_DelayedArray")
 })
 
-# only used by on-disk and on-memory BPCells Matrix
+# only used by on-disk and on-memory IterableMatrix
 methods::setMethod("to_DelayedArray", "IterableMatrix", function(object) object)
 
 # used by c(
@@ -78,7 +80,7 @@ to_DelayedUnaryOp <- function(object, Class) {
 # should used for `BPCellsDelayedOp` object
 # This will not convert the final object into `DelayedArray` object so should be
 # used for function return another class, usually the seed contract methods
-#' @include utils-BPCells.R utils.R
+#' @include utils.R utils-BPCells.R
 delayedop_call_BPCells_method <- function(..., before = NULL, after = NULL, Array = NULL) {
     args <- rlang::pairlist2(...)
     Array <- rlang::sym(Array %||% names(args)[[1L]])
@@ -93,35 +95,39 @@ delayedop_call_BPCells_method <- function(..., before = NULL, after = NULL, Arra
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#' BPCellsDelayedOp objects
+#'
+#' Provide a parallel [DelayedOp][DelayedArray::DelayedOp] object
+#' @note Just like [DelayedOp][DelayedArray::DelayedOp] object, this is not
+#' intented used by users directly.
 #' @importClassesFrom DelayedArray DelayedOp
 methods::setClass("BPCellsDelayedOp", contains = c("DelayedOp", "VIRTUAL"))
 
 # S3/S4 combo for as.matrix.BPCellsDelayedOp
+#' @param x A `BPCellsDelayedOp` object.
+#' @inheritParams BPCellsSeed-class
+#' @inherit BPCellsSeed-class return
 #' @exportS3Method base::as.matrix
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 as.matrix.BPCellsDelayedOp <- function(x, drop = FALSE) {
     as_matrix_IterableMatrix(to_BPCells(x))
 }
 
-#' @return
-#'  - `as.matrix`: A dense matrix or an atomic vector.
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod("as.matrix", "BPCellsDelayedOp", as.matrix.BPCellsDelayedOp)
 
 # S3/S4 combo for as.array.BPCellsDelayedOp
 #' @exportS3Method base::as.array
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 as.array.BPCellsDelayedOp <- function(x, drop = FALSE) {
     assert_bool(drop)
     mat <- as.matrix(x)
     if (drop) drop(mat) else mat
 }
 
-#' @return
-#'  - `as.array`: A dense matrix or an atomic vector.
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod("as.array", "BPCellsDelayedOp", as.array.BPCellsDelayedOp)
 
 #' @export
@@ -132,52 +138,48 @@ methods::setAs("BPCellsDelayedOp", "dgCMatrix", function(from) {
 ### list_methods("DelayedOp")
 ### Seed contract
 ### here: we override the `DelayedOp` methods
-# methods::setMethod("path", "BPCellsDelayedOp", function(x) TRUE)
-# methods::setReplaceMethod("path", "BPCellsDelayedOp")
-# methods::setMethod("seed", "BPCellsDelayedOp", function(x) TRUE)
-# methods::setReplaceMethod("seed", "BPCellsDelayedOp")
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "type", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod("is_sparse", "BPCellsDelayedOp", function(x) TRUE)
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "extract_sparse_array", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "dim", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = )
@@ -185,7 +187,7 @@ methods::setMethod(
 
 #' @importMethodsFrom BPCells t
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "t", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(
@@ -195,7 +197,7 @@ methods::setMethod(
 
 #' @importFrom DelayedArray chunkdim
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "chunkdim", "BPCellsDelayedOp",
     delayedop_call_BPCells_method(x = )
@@ -210,7 +212,7 @@ methods::setClass("BPCellsDelayedUnaryOp",
 ### list_methods("DelayedUnaryOp")
 ### Seed contract
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "chunkdim", "BPCellsDelayedUnaryOp",
     delayedop_call_BPCells_method(x = )
@@ -226,32 +228,32 @@ methods::setClass("BPCellsDelayedUnaryIsoOp",
 ### Seed contract
 ### here: we override the `DelayedNaryIsoOp` methods
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "dim", "BPCellsDelayedUnaryIsoOp",
     delayedop_call_BPCells_method(x = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedUnaryIsoOp",
     delayedop_call_BPCells_method(x = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod("is_sparse", "BPCellsDelayedUnaryIsoOp", function(x) TRUE)
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedUnaryIsoOp",
     delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedUnaryIsoOp",
     delayedop_call_BPCells_method(x = , index = )
@@ -275,32 +277,32 @@ methods::setClass("BPCellsDelayedNaryIsoOp",
 ### Seed contract
 ### here: we override the `DelayedNaryIsoOp` methods
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "dim", "BPCellsDelayedNaryIsoOp",
     delayedop_call_BPCells_method(x = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedNaryIsoOp",
     delayedop_call_BPCells_method(x = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod("is_sparse", "BPCellsDelayedNaryIsoOp", function(x) TRUE)
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedNaryIsoOp",
     delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedNaryIsoOp",
     delayedop_call_BPCells_method(x = , index = )

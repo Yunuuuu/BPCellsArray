@@ -36,7 +36,7 @@ methods::setGeneric(
 .writeBPCellsHDF5Array <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, seedform = NULL) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
-    lst <- extract_seed_and_seedform(x, seedform)
+    lst <- extract_IterableMatrix_and_seedform(x, seedform)
     if (bitpacking) {
         gzip <- 0L
     } else {
@@ -62,6 +62,7 @@ methods::setGeneric(
 #' is required. Using `compress=TRUE` is recommended as it is >10x faster with
 #' often similar compression levels. So `gzip` will always be zero when
 #' `compress` is `TRUE`.
+#' @inherit BPCellsSeed seealso
 #' @export
 #' @rdname BPCellsHDF5-IO
 methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)

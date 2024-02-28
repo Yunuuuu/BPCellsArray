@@ -3,17 +3,14 @@
 \name{BPCellsSeed}
 \alias{BPCellsSeed}
 \alias{BPCellsSeed,IterableMatrix-method}
-\alias{BPCellsSeed,BPCellsDelayedOp-method}
 \alias{BPCellsSeed,matrix-method}
 \alias{BPCellsSeed,dgCMatrix-method}
 \alias{BPCellsSeed,ANY-method}
-\title{Build seed object for \code{BPCellsMatrix}}
+\title{Transform into \code{IterableMatrix}}
 \usage{
 BPCellsSeed(x)
 
 \S4method{BPCellsSeed}{IterableMatrix}(x)
-
-\S4method{BPCellsSeed}{BPCellsDelayedOp}(x)
 
 \S4method{BPCellsSeed}{matrix}(x)
 
@@ -29,8 +26,13 @@ which can be coerced into dgCMatrix object.}
 A \code{IterableMatrix} object.
 }
 \description{
-Build seed object for \code{BPCellsMatrix}
+Transform into \code{IterableMatrix}
 }
 \seealso{
-\link[=BPCellsSeed-class]{BPCellsSeed} contract
+\itemize{
+\item \link{BPCellsSeed}
+\item \link{BPCellsDir-IO}
+\item \link{BPCellsHDF5-IO}
+\item \link{BPCellsMem-IO}
+}
 }

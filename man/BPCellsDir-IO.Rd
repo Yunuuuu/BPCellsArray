@@ -87,3 +87,11 @@ as it can only be applied to the indexes of each entry but not the values.
 There will still be some space savings, but far less than for counts matrices.
 }
 }
+\seealso{
+\itemize{
+\item \link{BPCellsSeed}
+\item \link{BPCellsDir-IO}
+\item \link{BPCellsHDF5-IO}
+\item \link{BPCellsMem-IO}
+}
+}

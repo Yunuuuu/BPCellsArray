@@ -59,6 +59,19 @@ matrix_to_double <- function(matrix) { # a numeric matrix
     matrix
 }
 
+########################################################
+# running order: before + method + after
+new_method <- function(args, method, before = NULL, after = NULL) {
+    if (!is.null(after)) {
+        method <- substitute(object <- method, list(method = method)) # nolint
+    }
+    body <- list(method)
+    if (!is.null(before)) body <- c(before, body)
+    if (!is.null(after)) body <- c(body, after)
+    body <- as.call(c(as.name("{"), body))
+    rlang::new_function(args, body = body)
+}
+
 # Use chartr() for safety since toupper() fails to convert i to I in Turkish
 # locale
 lower_ascii <- "abcdefghijklmnopqrstuvwxyz"

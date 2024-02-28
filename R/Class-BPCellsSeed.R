@@ -1,7 +1,6 @@
-#' Seed Contract methods for `IterableMatrix` and `BPCellsDelayedOp` object
+#' `IterableMatrix` object methods
 #'
-#' @param x A `IterableMatrix` or `BPCellsDelayedOp` object.
-#' @include utils-BPCells.R
+#' @param x A `IterableMatrix` object.
 #' @aliases IterableMatrix
 #' @name BPCellsSeed-class
 NULL
@@ -108,6 +107,8 @@ methods::setMethod(
     }
 )
 
+#' @return
+#' - `is_sparse`: Always return `TRUE`.
 #' @export
 #' @rdname BPCellsSeed-class
 methods::setMethod("is_sparse", "IterableMatrix", function(x) TRUE)

@@ -10,32 +10,32 @@ mould_BPCells("BPCellsDelayedAbind", "ColBindMatrices",
 ### Seed contract
 ### here: we override the `DelayedAbind` methods
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "dim", "BPCellsDelayedAbind",
     delayedop_call_BPCells_method(x = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "dimnames", "BPCellsDelayedAbind",
     delayedop_call_BPCells_method(x = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod("is_sparse", "BPCellsDelayedAbind", function(x) TRUE)
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "extract_array", "BPCellsDelayedAbind",
     delayedop_call_BPCells_method(x = , index = )
 )
 
 #' @export
-#' @rdname BPCellsSeed-class
+#' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedAbind",
     delayedop_call_BPCells_method(x = , index = )
@@ -126,8 +126,8 @@ methods::setMethod("summary", "ColBindMatrices", summary.ColBindMatrices)
 #' Set number of threads to use for sparse-dense multiply and matrix_stats.
 #'
 #' @param object A [BPCellsMatrix] object with a seed slot of
-#' `BPCellsDelayedAbind` object, usually derived from [bind][BPCells-bind]
-#' operators.
+#' [BPCellsDelayedAbind][BPCellsDelayedOp-class] object, usually derived from
+#' [bind][BPCells-bind] operators.
 #' @param threads Set the number of threads to use for sparse-dense multiply and
 #' [matrix_stats][BPCells::matrix_stats].
 #' @param ... Additional arguments to specific methods.
@@ -183,7 +183,7 @@ methods::setMethod("set_threads", "ANY", function(object, ...) {
 #' Combine two Objects by Columns or Rows
 #'
 #' @param x,y A [BPCellsMatrix][BPCellsMatrix-class] or
-#' [BPCellsSeed][BPCellsSeed-class] object.
+#' [BPCellsSeed][BPCellsDelayedOp-class] object.
 #' @inheritParams convert_mode
 #' @param ...
 #'  - `rbind2` and `cbind2`: Not used currently.

@@ -62,7 +62,7 @@
 }
 \arguments{
 \item{x, y}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} or
-\link[=BPCellsSeed-class]{BPCellsSeed} object.}
+\link[=BPCellsDelayedOp-class]{BPCellsSeed} object.}
 
 \item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
 32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real

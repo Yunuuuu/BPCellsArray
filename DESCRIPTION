@@ -40,13 +40,13 @@ Suggests:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.0
 Collate: 
+    'BPCellsSeed.R'
     'utils.R'
     'utils-BPCells.R'
     'Class-Delayed.R'
-    'Class-BPCellsSeed.R'
-    'BPCellsSeed.R'
     'Seed-management.R'
     'Class-BPCellsMatrix.R'
+    'Class-BPCellsSeed.R'
     'Class-BindMatrix.R'
     'Class-Convert.R'
     'Class-Dir.R'

@@ -58,5 +58,6 @@ when \code{seedform=BPCells}. Nonetheless, BPCellsArray provides its own
 \link{seedApply} and \link{showtree} functions for both methods. Overall, executing
 operations with \code{seedform=BPCells} is expected to be faster due to the
 absence of the need to convert between \code{IterableMatrix} and
-\code{BPCellsDelayedOp} objects. \code{seedform=BPCells} is also the default method.
+\link[=BPCellsDelayedOp-class]{BPCellsDelayedOp} object. \code{seedform=BPCells} is also
+the default method.
 }

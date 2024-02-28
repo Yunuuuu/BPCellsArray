@@ -15,7 +15,8 @@
 #' [seedApply] and [showtree] functions for both methods. Overall, executing
 #' operations with `seedform=BPCells` is expected to be faster due to the
 #' absence of the need to convert between `IterableMatrix` and
-#' `BPCellsDelayedOp` objects. `seedform=BPCells` is also the default method.
+#' [BPCellsDelayedOp][BPCellsDelayedOp-class] object. `seedform=BPCells` is also
+#' the default method.
 #'
 #' @param ... Additional argumentds passed into specific methods.
 #' @return
@@ -67,15 +68,21 @@ GlobalOptions <- new.env(parent = emptyenv())
 AllowedSeedForm <- c("BPCells", "DelayedArray")
 set_seedform("BPCells")
 
-# helper function used by other funcionts ---------------------------
-extract_seed_and_seedform <- function(x, seedform) {
+# helper function used to extract the `IterableMatrix` and seedform from the
+# user input, although user shouldn't provide `BPCellsDelayedOp` directly,
+# but we also deal with it, and always use 
+extract_IterableMatrix_and_seedform <- function(x, seedform) {
     if (is_BPCellsArray(x)) {
-        seed <- to_BPCells(x@seed) # nolint
-        seedform <- match_seedform(seedform, x@SeedForm) # nolint
+        seed <- to_BPCells(x@seed)
+        default <- x@SeedForm
+    } else if (methods::is(x, "BPCellsDelayedOp")) {
+        seed <- to_BPCells(x)
+        default <- "DelayedArray"
     } else {
         seed <- BPCellsSeed(x)
-        seedform <- match_seedform(seedform)
+        default <- get_seedform()
     }
+    seedform <- match_seedform(seedform, default)
     list(seed = seed, seedform = seedform)
 }
 

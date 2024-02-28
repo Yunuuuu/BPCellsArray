@@ -12,7 +12,6 @@
 \alias{BPCellsArray-class}
 \alias{matrixClass,BPCellsArray-method}
 \alias{DelayedArray,IterableMatrix-method}
-\alias{DelayedArray,BPCellsDelayedOp-method}
 \alias{as.matrix.BPCellsMatrix}
 \alias{as.matrix,BPCellsMatrix-method}
 \alias{as.array.BPCellsMatrix}
@@ -40,8 +39,6 @@ BPCellsMatrix(x, seedform = NULL)
 \S4method{matrixClass}{BPCellsArray}(x)
 
 \S4method{DelayedArray}{IterableMatrix}(seed)
-
-\S4method{DelayedArray}{BPCellsDelayedOp}(seed)
 
 \method{as.matrix}{BPCellsMatrix}(x)
 
@@ -82,8 +79,7 @@ use the the default \code{seedform}:
 option (use \code{seedform()} to check).
 }}
 
-\item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} or
-\link[=BPCellsSeed-class]{BPCellsDelayedOp} object.}
+\item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} object.}
 
 \item{drop}{A bool, if \code{TRUE}, any extents of length one will be removed and
 return an atomic vector.}
