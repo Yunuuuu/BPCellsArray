@@ -72,7 +72,8 @@ set_seedform("BPCells")
 
 # helper function used to extract the `IterableMatrix` and seedform from the
 # user input, although user shouldn't provide `BPCellsDelayedOp` directly,
-# but we also deal with it, and always use 
+# but we also deal with it, and always use "DelayedArray" as the default
+# `seedform`
 extract_IterableMatrix_and_seedform <- function(x, seedform) {
     if (is_BPCellsArray(x)) {
         seed <- to_BPCells(x@seed)
