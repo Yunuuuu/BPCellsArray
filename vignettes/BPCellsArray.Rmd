@@ -102,39 +102,42 @@ format(object.size(assay(sce, "counts")), "MB")
 What we need to do is transform the counts matrix into a `BPCellsDirMatrix`
 object. 
 ```{r}
-assay(sce, "counts") <- writeBPCellsDirArray(
-    assay(sce, "counts"),
-    path = path
-)
-format(object.size(assay(sce, "counts")), "MB")
+counts_mat <- assay(sce, "counts")
+bitpacking_mat <- writeBPCellsDirArray(counts_mat, path = path)
+format(object.size(bitpacking_mat), "MB")
 ```
 
 The path store the data can be obtained by `path` function.
 ```{r}
-identical(path(assay(sce, "counts")), path)
+identical(path(bitpacking_mat), path)
 ```
 
 We can inspect the assay info by print it. Attention the class name. 
 ```{r}
-assay(sce, "counts")
+bitpacking_mat
 ```
 
 You can coerce it into a dense matrix or `dgCMatrix` to get the actual value.
 ```{r}
-assay(sce, "counts")[1:10, 1:10]
-as.matrix(assay(sce, "counts")[1:10, 1:10])
-as(assay(sce, "counts")[1:10, 1:10], "dgCMatrix")
+bitpacking_mat[1:10, 1:10]
+as.matrix(bitpacking_mat[1:10, 1:10])
+as(bitpacking_mat[1:10, 1:10], "dgCMatrix")
 ```
 
-Of cause, you can do the operations directly on the `SingleCellExperiment` object.
+All `DelayedArray` methods can be used, especially, the block-processing
+statistical methods. You can check
+[DelayedMatrixStats](https://github.com/PeteHaitch/DelayedMatrixStats) pacakge
+for more supported matrix statisticals.
 ```{r}
-identical(assay(sce[1:10, 1:10]), assay(sce, "counts")[1:10, 1:10])
+identical(rowMins(bitpacking_mat), rowMins(counts_mat, useNames = TRUE))
+identical(rowMaxs(bitpacking_mat), rowMaxs(counts_mat, useNames = TRUE))
 ```
 
 Again, no real work is performed on the matrix until the result needs to be
 returned as an R object or written to disk. Attention the `Queued Operations`
 information. 
 ```{r}
+assay(sce, "counts") <- bitpacking_mat
 sce <- scuttle::logNormCounts(sce)
 assay(sce, "logcounts")
 ```

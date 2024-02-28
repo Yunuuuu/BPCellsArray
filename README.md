@@ -166,28 +166,26 @@ What we need to do is transform the counts matrix into a
 `BPCellsDirMatrix` object.
 
 ``` r
-assay(sce, "counts") <- writeBPCellsDirArray(
-    assay(sce, "counts"),
-    path = path
-)
+counts_mat <- assay(sce, "counts")
+bitpacking_mat <- writeBPCellsDirArray(counts_mat, path = path)
 #> Warning: Matrix compression performs poorly with non-integers.
 #> • Consider calling convert_matrix_type if a compressed integer matrix is intended.
 #> This message is displayed once every 8 hours.
-format(object.size(assay(sce, "counts")), "MB")
+format(object.size(bitpacking_mat), "MB")
 #> [1] "0.3 Mb"
 ```
 
 The path store the data can be obtained by `path` function.
 
 ``` r
-identical(path(assay(sce, "counts")), path)
+identical(path(bitpacking_mat), path)
 #> [1] TRUE
 ```
 
 We can inspect the assay info by print it. Attention the class name.
 
 ``` r
-assay(sce, "counts")
+bitpacking_mat
 #> <3000 x 2000> sparse BPCellsMatrix object of type "double":
 #>            Cell_001  Cell_002  Cell_003 ... Cell_1999 Cell_2000
 #> Gene_0001         0         0         0   .         0         0
@@ -214,7 +212,7 @@ You can coerce it into a dense matrix or `dgCMatrix` to get the actual
 value.
 
 ``` r
-assay(sce, "counts")[1:10, 1:10]
+bitpacking_mat[1:10, 1:10]
 #> <10 x 10> sparse BPCellsMatrix object of type "double":
 #>           Cell_001 Cell_002 Cell_003 ... Cell_009 Cell_010
 #> Gene_0001        0        0        0   .        0        0
@@ -235,7 +233,7 @@ assay(sce, "counts")[1:10, 1:10]
 #> Queued Operations:
 #> 10x10 double, sparse: Subset matrix
 #> └─ 3000x2000 double, sparse: [seed] Load compressed matrix from directory
-as.matrix(assay(sce, "counts")[1:10, 1:10])
+as.matrix(bitpacking_mat[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
 #> Gene_0001        0        0        0        0       51        0       16
 #> Gene_0002      188       61        0        2       15       33      129
@@ -258,7 +256,7 @@ as.matrix(assay(sce, "counts")[1:10, 1:10])
 #> Gene_0008      244      146       74
 #> Gene_0009     1578      135      167
 #> Gene_0010      335      454      157
-as(assay(sce, "counts")[1:10, 1:10], "dgCMatrix")
+as(bitpacking_mat[1:10, 1:10], "dgCMatrix")
 #> 10 x 10 sparse Matrix of class "dgCMatrix"
 #>   [[ suppressing 10 column names 'Cell_001', 'Cell_002', 'Cell_003' ... ]]
 #>                                                     
@@ -274,11 +272,15 @@ as(assay(sce, "counts")[1:10, 1:10], "dgCMatrix")
 #> Gene_0010  52 142    1  14    8 353  58  335 454 157
 ```
 
-Of cause, you can do the operations directly on the
-`SingleCellExperiment` object.
+All `DelayedArray` methods can be used, especially, the block-processing
+statistical methods. You can check
+[DelayedMatrixStats](https://github.com/PeteHaitch/DelayedMatrixStats)
+pacakge for more supported matrix statisticals.
 
 ``` r
-identical(assay(sce[1:10, 1:10]), assay(sce, "counts")[1:10, 1:10])
+identical(rowMins(bitpacking_mat), rowMins(counts_mat, useNames = TRUE))
+#> [1] TRUE
+identical(rowMaxs(bitpacking_mat), rowMaxs(counts_mat, useNames = TRUE))
 #> [1] TRUE
 ```
 
@@ -287,6 +289,7 @@ be returned as an R object or written to disk. Attention the `Queued
 Operations` information.
 
 ``` r
+assay(sce, "counts") <- bitpacking_mat
 sce <- scuttle::logNormCounts(sce)
 assay(sce, "logcounts")
 #> <3000 x 2000> sparse BPCellsMatrix object of type "double":
@@ -309,7 +312,7 @@ assay(sce, "logcounts")
 #> 
 #> Queued Operations:
 #> 3000x2000 double, sparse: Transform by scale and (or) shift
-#> └─ 3000x2000 double, sparse: Transform by log1p_slow
+#> └─ 3000x2000 double, sparse: Transform by `log1p` (double-precision)
 #>    └─ 3000x2000 double, sparse: Transform by scale and (or) shift
 #>       └─ 3000x2000 double, sparse: [seed] Load compressed matrix from directory
 ```
