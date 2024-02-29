@@ -29,9 +29,9 @@
 \alias{Math2,BPCellsArray-method}
 \alias{rank_transform,ANY-method}
 \alias{[<-,BPCellsMatrix,ANY,ANY,BPCellsMatrix-method}
+\alias{[<-,BPCellsMatrix,ANY,ANY,dgCMatrix-method}
 \alias{[<-,BPCellsMatrix,ANY,ANY,IterableMatrix-method}
 \alias{[<-,BPCellsMatrix,ANY,ANY,matrix-method}
-\alias{[<-,BPCellsMatrix,ANY,ANY,dgCMatrix-method}
 \alias{transpose_axis,ANY-method}
 \alias{internal-methods}
 \alias{pmin2,BPCellsMatrix,vector-method}
@@ -94,11 +94,11 @@
 
 \S4method{[}{BPCellsMatrix,ANY,ANY,BPCellsMatrix}(x, i, j, ...) <- value
 
+\S4method{[}{BPCellsMatrix,ANY,ANY,dgCMatrix}(x, i, j, ...) <- value
+
 \S4method{[}{BPCellsMatrix,ANY,ANY,IterableMatrix}(x, i, j, ...) <- value
 
 \S4method{[}{BPCellsMatrix,ANY,ANY,matrix}(x, i, j, ...) <- value
-
-\S4method{[}{BPCellsMatrix,ANY,ANY,dgCMatrix}(x, i, j, ...) <- value
 
 \S4method{transpose_axis}{ANY}(object, mode)
 

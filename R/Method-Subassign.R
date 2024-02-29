@@ -7,6 +7,7 @@ methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "ANY"),
     function(x, i, j, ..., value) {
         value <- BPCellsSeed(value)
+        # Recall `x = BPCellsMatrix` and `value = IterableMatrix` method
         methods::callGeneric()
     }
 )
@@ -16,19 +17,47 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "BPCellsMatrix"),
-    array_call_BPCells_method(
-        x = , i = , j = , ... = , value = ,
-        Arrays = c("x", "value")
-    )
+    function(x, i, j, ..., value) {
+        value <- value@seed
+        # Recall `x = BPCellsMatrix` and `value = IterableMatrix` method
+        methods::callGeneric()
+    }
+)
+
+#' @export
+#' @rdname internal-methods
+methods::setMethod(
+    "[<-", c("BPCellsMatrix", "ANY", "ANY", "dgCMatrix"),
+    function(x, i, j, ..., value) {
+        if (x@transpose) {
+            value <- t(BPCellsSeed(t(value)))
+        } else {
+            value <- BPCellsSeed(value)
+        }
+        # Recall `x = BPCellsMatrix` and `value = IterableMatrix` method
+        methods::callGeneric()
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "IterableMatrix"),
-    array_call_BPCells_method(x = , i = , j = , ... = , value = )
+    function(x, i, j, ..., value) {
+        seedform <- x@SeedForm
+        x <- to_BPCells(x@seed)
+        x_mode <- storage_mode(x)
+        value_mode <- storage_mode(value)
+        if (x_mode != value_mode) {
+            cli::cli_warn("Convert {.arg value} into {.field uint32_t} mode")
+            value <- BPCells::convert_matrix_type(matrix = value, type = x_mode)
+        }
+        # Recall `x = IterableMatrix` and `value = IterableMatrix` method
+        with_seedform(seedform, DelayedArray(methods::callGeneric()))
+    }
 )
 
+# respect matrix storage.mode
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
@@ -55,22 +84,7 @@ methods::setMethod(
         } else {
             value <- BPCells::convert_matrix_type(matrix = value, type = x_mode)
         }
-        with_seedform(seedform, DelayedArray(methods::callGeneric()))
-    }
-)
-
-#' @export
-#' @rdname internal-methods
-methods::setMethod(
-    "[<-", c("BPCellsMatrix", "ANY", "ANY", "dgCMatrix"),
-    function(x, i, j, ..., value) {
-        seedform <- x@SeedForm
-        x <- to_BPCells(x@seed)
-        if (x@transpose) {
-            value <- t(BPCellsSeed(t(value)))
-        } else {
-            value <- BPCellsSeed(value)
-        }
+        # Recall `x = IterableMatrix` and `value = IterableMatrix` method
         with_seedform(seedform, DelayedArray(methods::callGeneric()))
     }
 )
