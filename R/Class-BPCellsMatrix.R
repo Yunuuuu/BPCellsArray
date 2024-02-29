@@ -301,6 +301,8 @@ methods::setMethod("as.array", "BPCellsMatrix", as.array.BPCellsMatrix)
 NULL
 
 #######################################################
+# override methods of DelayedArray
+# list_methods("DelayedArray")
 #' @return
 #' - `t`: A `BPCellsMatrix` object.
 #' @importMethodsFrom BPCells t
@@ -311,6 +313,21 @@ methods::setMethod(
     "t", "BPCellsMatrix",
     array_call_BPCells_method(x = )
 )
+
+#' @param value
+#'  - `type<-`: See the mode argument in [convert_mode].
+#'  - `dimnames<-`: A list of dimnames or `NULL`.
+#'  - `[<-`: A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
+#'    converted into [BPCellsSeed] object.
+#' @return 
+#' - `type<-`: A `BPCellsMatrix` object with storage mode converted into the
+#'   specified.
+#' @export
+#' @importFrom DelayedArray type<-
+#' @rdname BPCellsMatrix-class
+methods::setMethod("type<-", "BPCellsMatrix", function(x, value) {
+    convert_mode(x, mode = value)
+})
 
 #' @importFrom methods Ops
 methods::setMethod(

@@ -47,10 +47,6 @@ methods::setMethod("summary", "RenameDims", summary.BPCellsDelayedRenameDims)
 ################    BPCellsMatrix Methods    ##################
 methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 
-#' @param value
-#'  - `dimnames<-`: A list of dimnames or `NULL`.
-#'  - `[<-`: A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
-#'    converted into [BPCellsSeed] object.
 #' @return
 #' - `dimnames<-`: A `BPCellsMatrix` object.
 #' @importMethodsFrom BPCells dimnames<-

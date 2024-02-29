@@ -18,6 +18,7 @@
 \alias{as.array,BPCellsMatrix-method}
 \alias{t,BPCellsMatrix-method}
 \alias{t}
+\alias{type<-,BPCellsMatrix-method}
 \alias{dimnames<-,BPCellsMatrix,ListOrNULL-method}
 \alias{dimnames<-}
 \alias{rownames<-,BPCellsMatrix-method}
@@ -49,6 +50,8 @@ BPCellsMatrix(x, seedform = NULL)
 \S4method{as.array}{BPCellsMatrix}(x, drop = FALSE)
 
 \S4method{t}{BPCellsMatrix}(x)
+
+\S4method{type}{BPCellsMatrix}(x) <- value
 
 \S4method{dimnames}{BPCellsMatrix,ListOrNULL}(x) <- value
 
@@ -85,6 +88,7 @@ option (use \code{seedform()} to check).
 return an atomic vector.}
 
 \item{value}{\itemize{
+\item \verb{type<-}: See the mode argument in \link{convert_mode}.
 \item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
 \item \verb{[<-}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
 converted into \link{BPCellsSeed} object.
@@ -114,6 +118,11 @@ converted into \link{BPCellsSeed} object.
 
 \itemize{
 \item \code{t}: A \code{BPCellsMatrix} object.
+}
+
+\itemize{
+\item \verb{type<-}: A \code{BPCellsMatrix} object with storage mode converted into the
+specified.
 }
 
 \itemize{

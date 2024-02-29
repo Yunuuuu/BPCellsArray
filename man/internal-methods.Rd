@@ -24,6 +24,7 @@
 \alias{convert_mode,ANY-method}
 \alias{mask_matrix,ANY-method}
 \alias{expm1_slow,ANY-method}
+\alias{log,BPCellsMatrix-method}
 \alias{Math,BPCellsArray-method}
 \alias{Math2,BPCellsArray-method}
 \alias{rank_transform,ANY-method}
@@ -82,6 +83,8 @@
 \S4method{mask_matrix}{ANY}(object, mask, invert = FALSE)
 
 \S4method{expm1_slow}{ANY}(x)
+
+\S4method{log}{BPCellsMatrix}(x)
 
 \S4method{Math}{BPCellsArray}(x)
 

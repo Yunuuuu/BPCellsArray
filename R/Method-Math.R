@@ -104,6 +104,11 @@ methods::setMethod(
     array_call_BPCells_method(x = , digits = 0)
 )
 
+# override methods of DelayedArray
+#' @export
+#' @rdname internal-methods
+methods::setMethod("log", "BPCellsMatrix", array_call_DelayedArray_method(x = ))
+
 #' @importFrom methods Math
 #' @export
 #' @rdname internal-methods
