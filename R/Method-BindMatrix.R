@@ -66,20 +66,16 @@ methods::setMethod("to_DelayedArray", "RowBindMatrices", function(object) {
 methods::setMethod("to_BPCells", "BPCellsDelayedAbind", function(object) {
     object@seeds <- lapply(object@seeds, to_BPCells)
     if (object@along == 1L) {
-        migrate_slots(
-            Object = object,
-            remove = "along",
-            rename = c(seeds = "matrix_list"),
-            Class = "RowBindMatrices"
-        )
+        Class <- "RowBindMatrices"
     } else {
-        migrate_slots(
-            Object = object,
-            remove = "along",
-            rename = c(seeds = "matrix_list"),
-            Class = "ColBindMatrices"
-        )
+        Class <- "ColBindMatrices"
     }
+    migrate_slots(
+        Object = object,
+        remove = "along",
+        rename = c(seeds = "matrix_list"),
+        Class = Class
+    )
 })
 
 summary.BPCellsDelayedAbind <- function(object) {
