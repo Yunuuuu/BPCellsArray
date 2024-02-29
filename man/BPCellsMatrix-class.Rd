@@ -19,6 +19,10 @@
 \alias{t,BPCellsMatrix-method}
 \alias{t}
 \alias{type<-,BPCellsMatrix-method}
+\alias{is.na,BPCellsMatrix-method}
+\alias{is.finite,BPCellsMatrix-method}
+\alias{is.infinite,BPCellsMatrix-method}
+\alias{is.nan,BPCellsMatrix-method}
 \alias{dimnames<-,BPCellsMatrix,ListOrNULL-method}
 \alias{dimnames<-}
 \alias{rownames<-,BPCellsMatrix-method}
@@ -52,6 +56,14 @@ BPCellsMatrix(x, seedform = NULL)
 \S4method{t}{BPCellsMatrix}(x)
 
 \S4method{type}{BPCellsMatrix}(x) <- value
+
+\S4method{is.na}{BPCellsMatrix}(x)
+
+\S4method{is.finite}{BPCellsMatrix}(x)
+
+\S4method{is.infinite}{BPCellsMatrix}(x)
+
+\S4method{is.nan}{BPCellsMatrix}(x)
 
 \S4method{dimnames}{BPCellsMatrix,ListOrNULL}(x) <- value
 

@@ -187,19 +187,23 @@ array_call_DelayedArray_method <- function(..., Array = NULL, type = "S4") {
     ))
 
     # for some method, it will return DelayedArray directly although
-    # @seed is compatible with `BPCellsMatrix`.
+    # `@seed` is compatible with `BPCellsMatrix`.
     # here we just re-creating a BPCellsMatrix object when it could be.
-    after <- expression(object <- with_seedform(seedform, DelayedArray(object)))
-    after <- c(after, expression(
-        # we check if object is a `BPCellsMatrix` object, if not, we warn it
-        if (!is_BPCellsArray(object)) {
+    after <- expression(
+        seed <- object@seed,
+        # we check if object can be converted into a `BPCellsMatrix` object, if
+        # not, we warn it
+        if (methods::is(seed, "BPCellsDelayedOp") ||
+            methods::is(seed, "IterableMatrix")) {
+            object <- with_seedform(seedform, DelayedArray(seed))
+        } else {
             cli::cli_warn(c(
                 sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
                 i = "Subsequent operation won't use {.pkg BPCells} methods"
             ))
         },
         object
-    ))
+    )
     new_method(args,
         before = seedform,
         method = method, after = after
@@ -319,7 +323,7 @@ methods::setMethod(
 #'  - `dimnames<-`: A list of dimnames or `NULL`.
 #'  - `[<-`: A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
 #'    converted into [BPCellsSeed] object.
-#' @return 
+#' @return
 #' - `type<-`: A `BPCellsMatrix` object with storage mode converted into the
 #'   specified.
 #' @export
@@ -328,6 +332,34 @@ methods::setMethod(
 methods::setMethod("type<-", "BPCellsMatrix", function(x, value) {
     convert_mode(x, mode = value)
 })
+
+#' @export
+#' @rdname BPCellsMatrix-class
+methods::setMethod(
+    "is.na", "BPCellsMatrix",
+    array_call_DelayedArray_method(x = )
+)
+
+#' @export
+#' @rdname BPCellsMatrix-class
+methods::setMethod(
+    "is.finite", "BPCellsMatrix",
+    array_call_DelayedArray_method(x = )
+)
+
+#' @export
+#' @rdname BPCellsMatrix-class
+methods::setMethod(
+    "is.infinite", "BPCellsMatrix",
+    array_call_DelayedArray_method(x = )
+)
+
+#' @export
+#' @rdname BPCellsMatrix-class
+methods::setMethod(
+    "is.nan", "BPCellsMatrix",
+    array_call_DelayedArray_method(x = )
+)
 
 #' @importFrom methods Ops
 methods::setMethod(
