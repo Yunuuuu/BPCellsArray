@@ -90,8 +90,7 @@ methods::setMethod(
                     i = c_msg(
                         "transposing the storage axis of",
                         "{.arg object} into {axis}"
-                    ),
-                    INCOMPATIBLE_STORAGE_AXIS_INFO
+                    )
                 ))
                 object <- BPCells::transpose_storage_order(matrix = object, ...)
             }
