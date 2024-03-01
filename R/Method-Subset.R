@@ -113,6 +113,6 @@ methods::setMethod(
     "[", "BPCellsMatrix",
     array_call_BPCells_method(
         x = , i = , j = , ... = , drop = TRUE,
-        body = expression(if (drop) drop(object) else object)
+        after2 = expression(if (drop) drop(object) else object)
     )
 )

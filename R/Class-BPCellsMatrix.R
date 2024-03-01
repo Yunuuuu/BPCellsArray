@@ -210,9 +210,9 @@ array_call_DelayedArray_method <- function(..., Array = NULL, type = "S4") {
 
 # hepler function to call BPCells method for `BPCellsArray`
 # running order
-# 1. before - (?convert: extract seedform) - to_BPCells
+# 1. before - (?convert: extract seedform) - to_BPCells - before2
 # 2. method
-# 3. body - (?convert: DelayedArray) - after
+# 3. after - (?convert: DelayedArray) - after2
 #' @param Arrays The argument names which should be a BPCellsMatrix and
 #' converted into `IterableMatrix`. The `seedform` will be extracted from the
 #' first one.
@@ -220,7 +220,7 @@ array_call_DelayedArray_method <- function(..., Array = NULL, type = "S4") {
 #' BPCellsMatrix.
 #' @include utils.R
 #' @noRd
-array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = NULL, after = NULL, Arrays = NULL, convert = TRUE) {
+array_call_BPCells_method <- function(..., before = NULL, before2 = NULL, method = NULL, after = NULL, after2 = NULL, Arrays = NULL, convert = TRUE) {
     method <- method %||% quote(methods::callGeneric())
     args <- rlang::pairlist2(...)
     Arrays <- rlang::syms(Arrays %||% names(args)[[1L]])
@@ -231,12 +231,12 @@ array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = 
         )
         # transform IterableMatrix into BPCellsMatrix
         converted <- quote(with_seedform(seedform, DelayedArray(object)))
-        if (is.null(after)) {
-            after <- list(converted)
+        if (is.null(after2)) {
+            after2 <- list(converted)
         } else {
-            after <- c(list(
+            after2 <- c(list(
                 substitute(object <- converted, list(converted = converted))
-            ), after)
+            ), after2)
         }
     } else {
         seedform <- NULL
@@ -246,12 +246,13 @@ array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = 
         # transform all Arrays into BPCells object
         lapply(Arrays, function(Array) {
             substitute(Array <- to_BPCells(Array@seed), list(Array = Array))
-        })
+        }), before2
     )
-    after <- c(body, after)
+    after <- c(after, after2)
     new_method(args,
         before = before,
-        method = method, after = after
+        method = method,
+        after = after
     )
 }
 
