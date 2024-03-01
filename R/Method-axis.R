@@ -25,9 +25,17 @@ methods::setMethod(
 #' @inheritParams transpose_axis
 #' @export
 #' @rdname internal-methods
-methods::setMethod("transpose_axis", "ANY", function(object, mode) {
+methods::setMethod("transpose_axis", "ANY", function(object, ...) {
     cli::cli_abort("{.arg object} must be a {.cls BPCellsMatrix} object")
 })
+
+INCOMPATIBLE_STORAGE_AXIS_INFO <- c(
+    i = "you can check the storage axis with {.fn storage_axis}",
+    i = c_msg(
+        "you can transpose the storage axis manually with",
+        "{.fn transpose_axis} to specify the new storage path"
+    )
+)
 
 ###########################################################
 #' @return

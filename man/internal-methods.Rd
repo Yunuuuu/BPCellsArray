@@ -100,7 +100,7 @@
 
 \S4method{[}{BPCellsMatrix,ANY,ANY,matrix}(x, i, j, ...) <- value
 
-\S4method{transpose_axis}{ANY}(object, mode)
+\S4method{transpose_axis}{ANY}(object, ...)
 
 \S4method{pmin2}{BPCellsMatrix,vector}(e1, e2)
 

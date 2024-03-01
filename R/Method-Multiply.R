@@ -64,12 +64,22 @@ NULL
     if (x@transpose != y@transpose) {
         if (x@transpose) {
             cli::cli_warn(
-                "{.arg x} is transposed but {.arg y} not, transposing the storage axis for {.arg x}" # nolint
+                "!" = c_msg(
+                    "{.arg x} is transposed but {.arg y} is not",
+                    "transposing the storage axis for {.arg x}",
+                    sep = ", "
+                ),
+                INCOMPATIBLE_STORAGE_AXIS_INFO
             )
             x <- BPCells::transpose_storage_order(x)
         } else {
             cli::cli_warn(
-                "{.arg y} is transposed but {.arg x} not, transposing the storage axis for {.arg y}" # nolint
+                "!" = c_msg(
+                    "{.arg y} is transposed but {.arg x} is not",
+                    "transposing the storage axis for {.arg y}",
+                    sep = ", "
+                ),
+                INCOMPATIBLE_STORAGE_AXIS_INFO
             )
             y <- BPCells::transpose_storage_order(y)
         }
@@ -129,7 +139,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "matrix", y = "BPCellsMatrix"), 
+    "%*%", c(x = "matrix", y = "BPCellsMatrix"),
     array_call_BPCells_method(
         x = , y = ,
         before = expression(x <- matrix_to_double(x)),
@@ -140,7 +150,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "numeric"), 
+    "%*%", c(x = "BPCellsMatrix", y = "numeric"),
     array_call_BPCells_method(
         x = , y = ,
         before = expression(y <- matrix_to_double(y)),
@@ -151,7 +161,7 @@ methods::setMethod(
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "numeric", y = "BPCellsMatrix"), 
+    "%*%", c(x = "numeric", y = "BPCellsMatrix"),
     array_call_BPCells_method(
         x = , y = ,
         before = expression(x <- matrix_to_double(x)),

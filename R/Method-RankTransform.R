@@ -83,8 +83,15 @@ methods::setMethod(
             axis <- match.arg(axis, c("row", "col"))
             if (axis != main_axis) {
                 cli::cli_warn(c(
-                    "transposing the storage order for {.arg object}",
-                    i = "{.arg axis} specified is different from the the storage axis of {.arg object} ({.val {main_axis}})" # nolint
+                    "!" = c_msg(
+                        "{.arg axis} specified is different",
+                        "with the storage axis of {.arg object}"
+                    ),
+                    i = c_msg(
+                        "transposing the storage axis of",
+                        "{.arg object} into {axis}"
+                    ),
+                    INCOMPATIBLE_STORAGE_AXIS_INFO
                 ))
                 object <- BPCells::transpose_storage_order(matrix = object, ...)
             }
