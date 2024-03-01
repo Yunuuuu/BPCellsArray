@@ -180,65 +180,74 @@ array_call_DelayedArray_method <- function(..., Array = NULL, type = "S4") {
     )
     args <- rlang::pairlist2(...)
     Array <- rlang::sym(Array %||% names(args)[[1L]])
-    # extract whether should be delayed
-    seedform <- list(substitute(
-        seedform <- Array@SeedForm,
-        list(Array = Array)
-    ))
+    # extract the seedform
+    seedform <- list(
+        substitute(seedform <- Array@SeedForm, list(Array = Array))
+    )
 
-    # for some method, it will return DelayedArray directly although
-    # `@seed` is compatible with `BPCellsMatrix`.
-    # here we just re-creating a BPCellsMatrix object when it could be.
     after <- expression(
-        seed <- object@seed,
-        # we check if object can be converted into a `BPCellsMatrix` object, if
-        # not, we warn it
-        if (methods::is(seed, "BPCellsDelayedOp") ||
-            methods::is(seed, "IterableMatrix")) {
-            object <- with_seedform(seedform, DelayedArray(seed))
-        } else {
-            cli::cli_warn(c(
-                sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
-                i = "Subsequent operation won't use {.pkg BPCells} methods"
-            ))
+        # for some method, it will return `DelayedArray` directly although
+        # `@seed` is compatible with `BPCellsMatrix`.
+        # here we just re-creating a BPCellsMatrix object when it could be.
+        if (!is_BPCellsArray(object)) {
+            seed <- object@seed
+            # we check if object can be converted into a `BPCellsMatrix` object,
+            # if not, we warn it
+            if (methods::is(seed, "BPCellsDelayedOp") ||
+                methods::is(seed, "IterableMatrix")) {
+                object <- with_seedform(seedform, DelayedArray(seed))
+            } else {
+                cli::cli_warn(c(
+                    sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
+                    i = "Subsequent operation won't use {.pkg BPCells} methods"
+                ))
+            }
         },
         object
     )
-    new_method(args,
-        before = seedform,
-        method = method, after = after
-    )
+    new_method(args, before = seedform, method = method, after = after)
 }
 
 # hepler function to call BPCells method for `BPCellsArray`
 # running order
-# 1. before - extract seedform - to_BPCells
+# 1. before - (?convert: extract seedform) - to_BPCells
 # 2. method
-# 3. body - DelayedArray - after
+# 3. body - (?convert: DelayedArray) - after
+#' @param Arrays The argument names which should be a BPCellsMatrix and
+#' converted into `IterableMatrix`. The `seedform` will be extracted from the
+#' first one.
+#' @param convert A bool, whether should final object be converted into
+#' BPCellsMatrix.
 #' @include utils.R
-array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = NULL, after = NULL, Arrays = NULL) {
+#' @noRd
+array_call_BPCells_method <- function(..., before = NULL, method = NULL, body = NULL, after = NULL, Arrays = NULL, convert = TRUE) {
     method <- method %||% quote(methods::callGeneric())
     args <- rlang::pairlist2(...)
     Arrays <- rlang::syms(Arrays %||% names(args)[[1L]])
-    # extract seedform, always respect the first Array
-    seedform <- substitute(
-        seedform <- Array@SeedForm,
-        list(Array = Arrays[[1L]])
-    )
+    if (convert) {
+        # extract seedform, always respect the first Array
+        seedform <- list(
+            substitute(seedform <- Array@SeedForm, list(Array = Arrays[[1L]]))
+        )
+        # transform IterableMatrix into BPCellsMatrix
+        converted <- quote(with_seedform(seedform, DelayedArray(object)))
+        if (is.null(after)) {
+            after <- list(converted)
+        } else {
+            after <- c(list(
+                substitute(object <- converted, list(converted = converted))
+            ), after)
+        }
+    } else {
+        seedform <- NULL
+    }
     before <- c(
-        before, list(seedform),
+        before, seedform,
         # transform all Arrays into BPCells object
         lapply(Arrays, function(Array) {
             substitute(Array <- to_BPCells(Array@seed), list(Array = Array))
         })
     )
-    # then transform IterableMatrix into BPCellsMatrix
-    back <- quote(with_seedform(seedform, DelayedArray(object))) # nolint
-    if (!is.null(after)) {
-        after <- c(list(substitute(object <- back, list(back = back))), after)
-    } else {
-        after <- back
-    }
     after <- c(body, after)
     new_method(args,
         before = before,

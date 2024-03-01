@@ -82,34 +82,35 @@ NULL
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"), function(x, y) {
-        seedform <- x@SeedForm
-        x <- to_BPCells(x@seed)
-        y <- to_BPCells(y@seed)
-        with_seedform(seedform, DelayedArray(.multiply_BPCells(x, y)))
-    }
+    "%*%", c(x = "BPCellsMatrix", y = "BPCellsMatrix"),
+    array_call_BPCells_method(
+        x = , y = ,
+        method = quote(.multiply_BPCells(x, y)),
+        Arrays = c("x", "y")
+    )
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "ANY"), function(x, y) {
-        seedform <- x@SeedForm
-        x <- to_BPCells(x@seed)
-        y <- BPCellsSeed(y)
-        with_seedform(seedform, DelayedArray(.multiply_BPCells(x, y)))
-    }
+    "%*%", c(x = "BPCellsMatrix", y = "ANY"),
+    array_call_BPCells_method(
+        x = , y = ,
+        before = expression(y <- BPCellsSeed(y)),
+        method = quote(.multiply_BPCells(x, y))
+    )
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "ANY", y = "BPCellsMatrix"), function(x, y) {
-        seedform <- y@SeedForm
-        x <- BPCellsSeed(x)
-        y <- to_BPCells(y@seed)
-        with_seedform(seedform, DelayedArray(.multiply_BPCells(x, y)))
-    }
+    "%*%", c(x = "ANY", y = "BPCellsMatrix"),
+    array_call_BPCells_method(
+        x = , y = ,
+        before = expression(x <- BPCellsSeed(x)),
+        method = quote(.multiply_BPCells(x, y)),
+        Arrays = "y"
+    )
 )
 
 #################### Matrix multiplication ########################
@@ -117,39 +118,43 @@ methods::setMethod(
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "matrix"), function(x, y) {
-        x <- to_BPCells(x@seed)
-        y <- matrix_to_double(y)
-        methods::callGeneric()
-    }
+    "%*%", c(x = "BPCellsMatrix", y = "matrix"),
+    array_call_BPCells_method(
+        x = , y = ,
+        before = expression(y <- matrix_to_double(y)),
+        Arrays = "x", convert = FALSE
+    )
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "matrix", y = "BPCellsMatrix"), function(x, y) {
-        y <- to_BPCells(y@seed)
-        x <- matrix_to_double(x)
-        methods::callGeneric()
-    }
+    "%*%", c(x = "matrix", y = "BPCellsMatrix"), 
+    array_call_BPCells_method(
+        x = , y = ,
+        before = expression(x <- matrix_to_double(x)),
+        Arrays = "y", convert = FALSE
+    )
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "BPCellsMatrix", y = "numeric"), function(x, y) {
-        x <- to_BPCells(x@seed)
-        y <- matrix_to_double(y)
-        methods::callGeneric()
-    }
+    "%*%", c(x = "BPCellsMatrix", y = "numeric"), 
+    array_call_BPCells_method(
+        x = , y = ,
+        before = expression(y <- matrix_to_double(y)),
+        Arrays = "x", convert = FALSE
+    )
 )
 
 #' @export
 #' @rdname BPCells-Multiplication
 methods::setMethod(
-    "%*%", c(x = "numeric", y = "BPCellsMatrix"), function(x, y) {
-        y <- to_BPCells(y@seed)
-        x <- matrix_to_double(x)
-        methods::callGeneric()
-    }
+    "%*%", c(x = "numeric", y = "BPCellsMatrix"), 
+    array_call_BPCells_method(
+        x = , y = ,
+        before = expression(x <- matrix_to_double(x)),
+        Arrays = "y", convert = FALSE
+    )
 )
