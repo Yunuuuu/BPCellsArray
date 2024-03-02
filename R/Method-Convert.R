@@ -42,7 +42,7 @@ methods::setMethod("summary", "ConvertMatrixType", summary.ConvertMatrixType)
 ###################################################################
 
 #####################   BPCellsConvertMatrix   #######################
-#' Convert the storage type of a BPCellsArray object
+#' Convert the storage mode of a BPCellsArray object
 #'
 #' @param object A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @param ... Additional parameters passed into specific methods.
@@ -97,10 +97,10 @@ methods::setGeneric(
 
 #' @export
 #' @rdname convert_mode
-methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
-    object <- object@seed
-    methods::callGeneric()
-})
+methods::setMethod(
+    "storage_mode", "BPCellsMatrix",
+    array_call_BPCells_method(object = , convert = FALSE)
+)
 
 #' @export
 #' @rdname convert_mode
@@ -126,3 +126,16 @@ methods::setMethod("storage_mode", "matrix", function(object) {
         cli::cli_abort("{.pkg BPCells} cannot support {.field {x}} mode")
     )
 })
+
+INCOMPATIBLE_STORAGE_MODE_INFO <- function(x, y, x_mode) {
+    c(
+        "!" = c_msg(
+            "Incompatible storage mode between",
+            style_arg(x), "and", style_arg(y)
+        ),
+        i = c_msg(
+            "Convert", style_arg(y), "into",
+            style_field(x_mode), "mode"
+        )
+    )
+}

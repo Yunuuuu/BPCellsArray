@@ -8,7 +8,7 @@
 \alias{storage_mode,BPCellsDelayedOp-method}
 \alias{storage_mode,IterableMatrix-method}
 \alias{storage_mode,matrix-method}
-\title{Convert the storage type of a BPCellsArray object}
+\title{Convert the storage mode of a BPCellsArray object}
 \usage{
 convert_mode(object, ...)
 
@@ -46,7 +46,7 @@ mode converted into the specified.
 }
 }
 \description{
-Convert the storage type of a BPCellsArray object
+Convert the storage mode of a BPCellsArray object
 }
 \seealso{
 \link[BPCells:convert_matrix_type]{convert_matrix_type}
