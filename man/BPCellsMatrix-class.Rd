@@ -29,6 +29,8 @@
 \alias{rownames<-}
 \alias{colnames<-,BPCellsMatrix-method}
 \alias{colnames<-}
+\alias{[<-,BPCellsMatrix,ANY,ANY,BPCellsMatrix-method}
+\alias{[<-,BPCellsMatrix,ANY,ANY,IterableMatrix-method}
 \alias{[<-,BPCellsMatrix,ANY,ANY,ANY-method}
 \alias{[,BPCellsMatrix,ANY,ANY,ANY-method}
 \title{DelayedArray backend of BPCells matrix}
@@ -71,9 +73,13 @@ BPCellsMatrix(x, seedform = NULL)
 
 \S4method{colnames}{BPCellsMatrix}(x) <- value
 
-\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ...) <- value
+\S4method{[}{BPCellsMatrix,ANY,ANY,BPCellsMatrix}(x, i, j, ...) <- value
 
-\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, ..., drop = TRUE)
+\S4method{[}{BPCellsMatrix,ANY,ANY,IterableMatrix}(x, i, j, ...) <- value
+
+\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j) <- value
+
+\S4method{[}{BPCellsMatrix,ANY,ANY,ANY}(x, i, j, drop = TRUE)
 }
 \arguments{
 \item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
@@ -108,7 +114,14 @@ converted into \link{BPCellsSeed} object.
 
 \item{i, j}{Row and Column index.}
 
-\item{...}{Not used currently.}
+\item{...}{
+  Arguments passed on to \code{\link[BPCells:transpose_storage_order]{BPCells::transpose_storage_order}}
+  \describe{
+    \item{\code{outdir}}{Directory to store the output}
+    \item{\code{tmpdir}}{Temporary directory to use for intermediate storage}
+    \item{\code{load_bytes}}{The minimum contiguous load size during the merge sort passes}
+    \item{\code{sort_bytes}}{The amount of memory to allocate for re-sorting chunks of entries}
+  }}
 }
 \value{
 \itemize{

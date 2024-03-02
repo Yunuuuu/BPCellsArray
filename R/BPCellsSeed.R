@@ -54,19 +54,19 @@ methods::setMethod("BPCellsSeed", "dgCMatrix", function(x) {
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "ANY", function(x) {
-    # prepare for message usage
     # catch the argumeent passed into `BPCellsSeed` function
-    arg <- substitute(x, env = sys.frame(-2L)) # nolint
-    # Get current environemnt
-    current_env <- environment()
-    x <- tryCatch(
+    x <- coerce_into_dgCMatrix(x, arg = substitute(x, env = sys.frame(-2L)))
+    methods::callGeneric()
+})
+
+coerce_into_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+    rlang::try_fetch(
         methods::as(x, "dgCMatrix"),
         error = function(cnd) {
             cli::cli_abort(
                 "{.arg {arg}} must be a matrix-like object which can be coerced into {.cls dgCMatrix}",
-                call = current_env
+                call = call
             )
         }
     )
-    methods::callGeneric()
-})
+}
