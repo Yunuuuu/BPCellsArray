@@ -60,7 +60,7 @@ methods::setMethod("summary", "MatrixMultiply", summary.BPCellsDelayedMultiply)
 #' @name BPCells-Multiplication
 NULL
 
-.multiply_BPCells <- function(x, y) {
+.multiply_BPCells <- function(x, y, call = rlang::caller_env()) {
     if (x@transpose != y@transpose) {
         if (x@transpose) {
             cli::cli_warn(c(
@@ -70,7 +70,7 @@ NULL
                     sep = ", "
                 ),
                 INCOMPATIBLE_STORAGE_AXIS_INFO
-            ))
+            ), call = call)
             x <- BPCells::transpose_storage_order(x)
         } else {
             cli::cli_warn(c(
@@ -80,7 +80,7 @@ NULL
                     sep = ", "
                 ),
                 INCOMPATIBLE_STORAGE_AXIS_INFO
-            ))
+            ), call = call)
             y <- BPCells::transpose_storage_order(y)
         }
     }
