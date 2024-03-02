@@ -104,7 +104,6 @@ methods::setMethod("summary", "MatrixSubset", summary.BPCellsDelayedSubset)
 
 ################    BPCellsMatrix Methods    ##################
 #' @param i,j Row and Column index.
-#' @param ... Not used currently.
 #' @return
 #' - `[`: A `BPCellsMatrix` object or an atomic vector.
 #' @export
@@ -112,7 +111,7 @@ methods::setMethod("summary", "MatrixSubset", summary.BPCellsDelayedSubset)
 methods::setMethod(
     "[", "BPCellsMatrix",
     array_call_BPCells_method(
-        x = , i = , j = , ... = , drop = TRUE,
+        x = , i = , j = , drop = TRUE,
         after2 = expression(if (drop) drop(object) else object)
     )
 )
