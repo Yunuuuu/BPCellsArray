@@ -62,12 +62,12 @@ BPCells provide three format:
 
 1.  Directory of files
       - read: `readBPCellsDirMatrix`
-      - write: `writeBPCellsDirArray`
+      - write: `writeBPCellsDirMatrix`
 2.  Hdf5 file
       - read: `readBPCellsHDF5Matrix`
-      - write: `writeBPCellsHDF5Array`
+      - write: `writeBPCellsHDF5Matrix`
 3.  in memory
-      - write: `writeBPCellsMemArray`
+      - write: `writeBPCellsMemMatrix`
 
 Matrices can be stored in a directory on disk, in memory, or in an HDF5
 file. Saving in a directory on disk is a good default for local
@@ -167,7 +167,7 @@ object.
 
 ``` r
 counts_mat <- assay(sce, "counts")
-bitpacking_mat <- writeBPCellsDirArray(counts_mat, path = path)
+bitpacking_mat <- writeBPCellsDirMatrix(counts_mat, path = path)
 #> Warning: Matrix compression performs poorly with non-integers.
 #> • Consider calling convert_matrix_type if a compressed integer matrix is intended.
 #> This message is displayed once every 8 hours.
