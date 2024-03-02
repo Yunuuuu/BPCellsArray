@@ -127,7 +127,8 @@ methods::setMethod("storage_mode", "matrix", function(object) {
     )
 })
 
-INCOMPATIBLE_STORAGE_MODE_INFO <- function(x, y, x_mode) {
+# Generage warning message for usage of cli::cli_warn
+incompatible_mode_msg <- function(x, y, x_mode) {
     c(
         "!" = c_msg(
             "Incompatible storage mode between",
