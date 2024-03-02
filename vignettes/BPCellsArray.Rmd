@@ -99,7 +99,7 @@ format(object.size(assay(sce, "counts")), "MB")
 ```
 
 
-What we need to do is transform the counts matrix into a `BPCellsDirMatrix`
+What we need to do is transform the counts matrix into a `BPCellsMatrix`
 object. 
 ```{r}
 counts_mat <- assay(sce, "counts")
