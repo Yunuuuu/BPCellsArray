@@ -58,7 +58,7 @@ Other non-lazied operations:
 
 ## Matrix Storage Format
 
-BPCells provide three format:
+BPCells provide following formats:
 
 1.  Directory of files
       - read: `readBPCellsDirMatrix`
