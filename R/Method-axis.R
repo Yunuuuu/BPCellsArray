@@ -29,7 +29,7 @@ methods::setMethod("transpose_axis", "ANY", function(object, ...) {
     cli::cli_abort("{.arg object} must be a {.cls BPCellsMatrix} object")
 })
 
-INCOMPATIBLE_STORAGE_AXIS_INFO <- c(
+INCOMPATIBLE_STORAGE_AXIS_MSG <- c(
     i = "you can check the storage axis with {.fn storage_axis}",
     i = c_msg(
         "you can transpose the storage axis manually with",

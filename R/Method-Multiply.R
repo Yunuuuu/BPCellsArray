@@ -69,7 +69,7 @@ NULL
                     "transposing the storage axis for {.arg x}",
                     sep = ", "
                 ),
-                INCOMPATIBLE_STORAGE_AXIS_INFO
+                INCOMPATIBLE_STORAGE_AXIS_MSG
             ), call = call)
             x <- BPCells::transpose_storage_order(x)
         } else {
@@ -79,7 +79,7 @@ NULL
                     "transposing the storage axis for {.arg y}",
                     sep = ", "
                 ),
-                INCOMPATIBLE_STORAGE_AXIS_INFO
+                INCOMPATIBLE_STORAGE_AXIS_MSG
             ), call = call)
             y <- BPCells::transpose_storage_order(y)
         }
