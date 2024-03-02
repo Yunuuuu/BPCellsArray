@@ -2,13 +2,13 @@
 % Please edit documentation in R/IO-Mem.R
 \name{BPCellsMem-IO}
 \alias{BPCellsMem-IO}
-\alias{writeBPCellsMemArray}
-\alias{writeBPCellsMemArray,ANY-method}
+\alias{writeBPCellsMemMatrix}
+\alias{writeBPCellsMemMatrix,ANY-method}
 \title{Write a sparce matrices into memory with BPCells format}
 \usage{
-writeBPCellsMemArray(x, ...)
+writeBPCellsMemMatrix(x, ...)
 
-\S4method{writeBPCellsMemArray}{ANY}(x, compress = TRUE, seedform = NULL)
+\S4method{writeBPCellsMemMatrix}{ANY}(x, compress = TRUE, seedform = NULL)
 }
 \arguments{
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be

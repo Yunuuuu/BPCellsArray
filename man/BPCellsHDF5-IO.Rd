@@ -3,15 +3,15 @@
 \name{BPCellsHDF5-IO}
 \alias{BPCellsHDF5-IO}
 \alias{readBPCellsHDF5Matrix}
-\alias{writeBPCellsHDF5Array}
-\alias{writeBPCellsHDF5Array,ANY-method}
+\alias{writeBPCellsHDF5Matrix}
+\alias{writeBPCellsHDF5Matrix,ANY-method}
 \title{Read/write sparse matrices from (or into) HDF5 file}
 \usage{
 readBPCellsHDF5Matrix(path, group, buffer_size = 8192L, seedform = NULL)
 
-writeBPCellsHDF5Array(x, ...)
+writeBPCellsHDF5Matrix(x, ...)
 
-\S4method{writeBPCellsHDF5Array}{ANY}(
+\S4method{writeBPCellsHDF5Matrix}{ANY}(
   x,
   path,
   group,
@@ -71,7 +71,7 @@ A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 \description{
 \itemize{
 \item \code{readBPCellsHDF5Matrix}: read a sparce matrices from a HDF5 file on disk
-\item \code{writeBPCellsHDF5Array}: Write a sparce matrices into a HDF5 file on disk
+\item \code{writeBPCellsHDF5Matrix}: Write a sparce matrices into a HDF5 file on disk
 }
 }
 \details{

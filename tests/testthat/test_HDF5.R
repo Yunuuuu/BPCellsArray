@@ -11,9 +11,9 @@ test_BPCellsArray(
     name = "HDF5"
 )
 
-testthat::test_that("`writeBPCellsHDF5Array()` works as expected", {
+testthat::test_that("`writeBPCellsHDF5Matrix()` works as expected", {
     testthat::expect_no_error(
-        obj <- writeBPCellsHDF5Array(mat,
+        obj <- writeBPCellsHDF5Matrix(mat,
             path = path,
             "BPCellsArray", overwrite = TRUE
         )

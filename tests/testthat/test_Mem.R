@@ -18,14 +18,14 @@ test_BPCellsArray(
     name = "Mem"
 )
 
-testthat::test_that("`writeBPCellsMemArray()` works as expected", {
+testthat::test_that("`writeBPCellsMemMatrix()` works as expected", {
     testthat::expect_no_error(
-        obj <- writeBPCellsMemArray(sparse_mat, compress = TRUE)
+        obj <- writeBPCellsMemMatrix(sparse_mat, compress = TRUE)
     )
     testthat::expect_error(path(obj))
     testthat::expect_s4_class(obj, "BPCellsMatrix")
     testthat::expect_no_error(
-        obj <- writeBPCellsMemArray(sparse_mat, compress = FALSE)
+        obj <- writeBPCellsMemMatrix(sparse_mat, compress = FALSE)
     )
     testthat::expect_error(path(obj))
     testthat::expect_s4_class(obj, "BPCellsMatrix")

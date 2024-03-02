@@ -10,9 +10,10 @@ methods::setMethod("summary", "MatrixDir", summary.MatrixDir)
 #'
 #' @description
 #' - `readBPCellsDirMatrix`: read a sparce matrices from a directory on disk
-#' - `writeBPCellsDirArray`: Write a sparce matrices into a directory on disk
+#' - `writeBPCellsDirMatrix`: Write a sparce matrices into a directory on disk
 #' @param path A string path of directory to read or save the data into. For
-#' `writeBPCellsDirArray`, this can be `NULL` means using a temporary directory.
+#' `writeBPCellsDirMatrix`, this can be `NULL` means using a temporary
+#' directory.
 #' @inheritParams BPCells::open_matrix_dir
 #' @export
 #' @name BPCellsDir-IO
@@ -50,14 +51,14 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L, seedform = NULL) {
 #' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
 #' @inherit BPCellsSeed seealso
 #' @export
-#' @aliases writeBPCellsDirArray
+#' @aliases writeBPCellsDirMatrix
 #' @rdname BPCellsDir-IO
 methods::setGeneric(
-    "writeBPCellsDirArray",
-    function(x, ...) standardGeneric("writeBPCellsDirArray")
+    "writeBPCellsDirMatrix",
+    function(x, ...) standardGeneric("writeBPCellsDirMatrix")
 )
 
-.writeBPCellsDirArray <- function(
+.writeBPCellsDirMatrix <- function(
     x, path = NULL, bitpacking = TRUE,
     buffer_size = 8192L,
     overwrite = FALSE,
@@ -65,7 +66,7 @@ methods::setGeneric(
     assert_bool(bitpacking)
     assert_bool(overwrite)
     lst <- extract_IterableMatrix_and_seedform(x, seedform)
-    path <- path %||% tempfile("BPCellsDirArray")
+    path <- path %||% tempfile("BPCellsDirMatrix")
     obj <- BPCells::write_matrix_dir(
         mat = lst$seed,
         dir = path, compress = bitpacking,
@@ -77,4 +78,4 @@ methods::setGeneric(
 
 #' @export
 #' @rdname BPCellsDir-IO
-methods::setMethod("writeBPCellsDirArray", "ANY", .writeBPCellsDirArray)
+methods::setMethod("writeBPCellsDirMatrix", "ANY", .writeBPCellsDirMatrix)

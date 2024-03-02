@@ -25,11 +25,11 @@ NULL
 #' @export
 #' @rdname BPCellsMem-IO
 methods::setGeneric(
-    "writeBPCellsMemArray",
-    function(x, ...) standardGeneric("writeBPCellsMemArray")
+    "writeBPCellsMemMatrix",
+    function(x, ...) standardGeneric("writeBPCellsMemMatrix")
 )
 
-.writeBPCellsMemArray <- function(x, compress = TRUE, seedform = NULL) {
+.writeBPCellsMemMatrix <- function(x, compress = TRUE, seedform = NULL) {
     lst <- extract_IterableMatrix_and_seedform(x, seedform)
     obj <- BPCells::write_matrix_memory(mat = lst$seed, compress = compress)
     with_seedform(seedform = lst$seedform, DelayedArray(obj))
@@ -48,4 +48,4 @@ methods::setGeneric(
 #' @inherit BPCellsSeed seealso
 #' @export
 #' @rdname BPCellsMem-IO
-methods::setMethod("writeBPCellsMemArray", "ANY", .writeBPCellsMemArray)
+methods::setMethod("writeBPCellsMemMatrix", "ANY", .writeBPCellsMemMatrix)

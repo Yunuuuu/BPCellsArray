@@ -11,7 +11,7 @@ methods::setMethod("summary", "MatrixH5", summary.MatrixH5)
 #'
 #' @description
 #' - `readBPCellsHDF5Matrix`: read a sparce matrices from a HDF5 file on disk
-#' - `writeBPCellsHDF5Array`: Write a sparce matrices into a HDF5 file on disk
+#' - `writeBPCellsHDF5Matrix`: Write a sparce matrices into a HDF5 file on disk
 #' @param path A string path of the `HDF5` file to read or save data into.
 #' @export
 #' @name BPCellsHDF5-IO
@@ -26,14 +26,14 @@ readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L, seedform = N
 }
 
 #' @export
-#' @aliases writeBPCellsHDF5Array
+#' @aliases writeBPCellsHDF5Matrix
 #' @rdname BPCellsHDF5-IO
 methods::setGeneric(
-    "writeBPCellsHDF5Array",
-    function(x, ...) standardGeneric("writeBPCellsHDF5Array")
+    "writeBPCellsHDF5Matrix",
+    function(x, ...) standardGeneric("writeBPCellsHDF5Matrix")
 )
 
-.writeBPCellsHDF5Array <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, seedform = NULL) {
+.writeBPCellsHDF5Matrix <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, seedform = NULL) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
     lst <- extract_IterableMatrix_and_seedform(x, seedform)
@@ -53,8 +53,7 @@ methods::setGeneric(
     with_seedform(lst$seedform, DelayedArray(obj))
 }
 
-#' @inherit BPCells::write_matrix_hdf5 details
-#' @inherit BPCellsDir-IO return
+
 #' @inheritParams BPCellsDir-IO
 #' @inheritParams BPCells::open_matrix_hdf5
 #' @param gzip Gzip compression level. Default is 0 (no gzip compression). This
@@ -62,7 +61,9 @@ methods::setGeneric(
 #' is required. Using `compress=TRUE` is recommended as it is >10x faster with
 #' often similar compression levels. So `gzip` will always be zero when
 #' `compress` is `TRUE`.
+#' @inherit BPCells::write_matrix_hdf5 details
+#' @inherit BPCellsDir-IO return
 #' @inherit BPCellsSeed seealso
 #' @export
 #' @rdname BPCellsHDF5-IO
-methods::setMethod("writeBPCellsHDF5Array", "ANY", .writeBPCellsHDF5Array)
+methods::setMethod("writeBPCellsHDF5Matrix", "ANY", .writeBPCellsHDF5Matrix)

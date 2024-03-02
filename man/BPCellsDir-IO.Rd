@@ -3,15 +3,15 @@
 \name{BPCellsDir-IO}
 \alias{BPCellsDir-IO}
 \alias{readBPCellsDirMatrix}
-\alias{writeBPCellsDirArray}
-\alias{writeBPCellsDirArray,ANY-method}
+\alias{writeBPCellsDirMatrix}
+\alias{writeBPCellsDirMatrix,ANY-method}
 \title{Read/write sparse matrices from (or into) directory on disk}
 \usage{
 readBPCellsDirMatrix(path, buffer_size = 8192L, seedform = NULL)
 
-writeBPCellsDirArray(x, ...)
+writeBPCellsDirMatrix(x, ...)
 
-\S4method{writeBPCellsDirArray}{ANY}(
+\S4method{writeBPCellsDirMatrix}{ANY}(
   x,
   path = NULL,
   bitpacking = TRUE,
@@ -22,7 +22,8 @@ writeBPCellsDirArray(x, ...)
 }
 \arguments{
 \item{path}{A string path of directory to read or save the data into. For
-\code{writeBPCellsDirArray}, this can be \code{NULL} means using a temporary directory.}
+\code{writeBPCellsDirMatrix}, this can be \code{NULL} means using a temporary
+directory.}
 
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
@@ -58,7 +59,7 @@ A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
 \description{
 \itemize{
 \item \code{readBPCellsDirMatrix}: read a sparce matrices from a directory on disk
-\item \code{writeBPCellsDirArray}: Write a sparce matrices into a directory on disk
+\item \code{writeBPCellsDirMatrix}: Write a sparce matrices into a directory on disk
 }
 }
 \details{

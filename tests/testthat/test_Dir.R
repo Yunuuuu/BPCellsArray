@@ -8,9 +8,9 @@ test_BPCellsArray(
     name = "Dir"
 )
 
-testthat::test_that("`writeBPCellsDirArray()` works as expected", {
+testthat::test_that("`writeBPCellsDirMatrix()` works as expected", {
     testthat::expect_no_error(
-        obj <- writeBPCellsDirArray(mat, path = path, overwrite = TRUE)
+        obj <- writeBPCellsDirMatrix(mat, path = path, overwrite = TRUE)
     )
     testthat::expect_identical(path(obj), path)
     testthat::expect_s4_class(obj, "BPCellsMatrix")
