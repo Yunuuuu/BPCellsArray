@@ -29,6 +29,12 @@ methods::setReplaceMethod("path", "MatrixH5", function(object, ..., value) {
     object
 })
 
+methods::setMethod("path", "10xMatrixH5", function(object, ...) object@path)
+methods::setReplaceMethod("path", "10xMatrixH5", function(object, ..., value) {
+    object@path <- value
+    object
+})
+
 ### - - - - - - - - - - - - - - - - - - - -
 # On-memory Matrix don't have `path` method
 

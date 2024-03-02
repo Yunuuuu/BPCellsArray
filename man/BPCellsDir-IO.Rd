@@ -94,5 +94,6 @@ There will still be some space savings, but far less than for counts matrices.
 \item \link{BPCellsDir-IO}
 \item \link{BPCellsHDF5-IO}
 \item \link{BPCellsMem-IO}
+\item \link{BPCells10xHDF5-IO}
 }
 }

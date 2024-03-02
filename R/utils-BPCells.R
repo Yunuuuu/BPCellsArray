@@ -45,7 +45,7 @@ SUPPORTED_BPCELLS_MATRIX <- c(
     "Iterable_dgCMatrix_wrapper",
     "PackedMatrixMemBase", "UnpackedMatrixMemBase",
     # On-disk matrix
-    "MatrixDir", "MatrixH5",
+    "MatrixDir", "MatrixH5", "10xMatrixH5",
     # Unary operations - BPCellsDelayedUnaryOp
     "ConvertMatrixType",
     "MatrixRankTransform",
@@ -84,7 +84,9 @@ is_BPCellsMemory <- function(seed) {
 }
 
 is_BPCellsDisk <- function(seed) {
-    methods::is(seed, "MatrixDir") || methods::is(seed, "MatrixH5")
+    methods::is(seed, "MatrixDir") ||
+        methods::is(seed, "MatrixH5") ||
+        methods::is(seed, "10xMatrixH5")
 }
 
 is_BPCellsUnary <- function(seed) {
