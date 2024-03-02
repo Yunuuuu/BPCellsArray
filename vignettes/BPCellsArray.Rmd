@@ -69,10 +69,13 @@ BPCells provide three format:
 1. Directory of files
     - read: `readBPCellsDirMatrix`
     - write: `writeBPCellsDirMatrix`
-2. Hdf5 file 
+2. HDF5 file 
     - read: `readBPCellsHDF5Matrix`
     - write: `writeBPCellsHDF5Matrix`
-3. in memory 
+3. 10x HDF5 file 
+    - read: `readBPCells10xHDF5Matrix`
+    - write: `writeBPCells10xHDF5Matrix`
+4. in memory 
     - write: `writeBPCellsMemMatrix`
 
 Matrices can be stored in a directory on disk, in memory, or in an HDF5 file.
