@@ -27,11 +27,12 @@ writeBPCells10xHDF5Matrix(x, ...)
   buffer_size = 16384L,
   chunk_size = 1024L,
   gzip = 0L,
+  overwrite = FALSE,
   seedform = NULL
 )
 }
 \arguments{
-\item{path}{A string path of the \code{HDF5} file to read or save data into.}
+\item{path}{A string path of the 10x \code{HDF5} file to read or save data into.}
 
 \item{feature_type}{Optional selection of feature types to include in output matrix.
 For multiome data, the options are "Gene Expression" and "Peaks". This option is
@@ -73,6 +74,8 @@ to store for each feature}
 \item{chunk_size}{For performance tuning only. The chunk size used for the HDF5 array storage.}
 
 \item{gzip}{Gzip compression level. Default is 0 (no gzip compression).}
+
+\item{overwrite}{A bool, If \code{TRUE}, will overwrite existing data in \code{path}.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

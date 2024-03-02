@@ -41,10 +41,35 @@ methods::setGeneric(
     buffer_size = 16384L,
     chunk_size = 1024L,
     gzip = 0L,
+    overwrite = FALSE,
     seedform = NULL) {
+    assert_string(path, empty_ok = FALSE)
+    assert_bool(overwrite)
+    if (file.exists(path)) {
+        if (overwrite) {
+            if (!file.remove(path)) {
+                cli::cli_abort("Cannot remove file ({.arg path}): {path}")
+            }
+        } else {
+            cli::cli_abort(c(
+                "{.arg path} requested is exist",
+                i = "Try to set {.code overwrite = TRUE}"
+            ))
+        }
+    }
     lst <- extract_IterableMatrix_and_seedform(x, seedform)
+    seed <- lst$seed
+    if (storage_mode(seed) != "uint32_t") {
+        cli::cli_warn(c(
+            "Incompatible storage mode with 10x HDF5 file",
+            i = "Converting {.arg x} into {.field uint32_t} mode"
+        ))
+        seed <- BPCells::convert_matrix_type(
+            matrix = seed, type = "uint32_t"
+        )
+    }
     obj <- BPCells::write_matrix_10x_hdf5(
-        mat = lst$seed,
+        mat = seed,
         path = path,
         barcodes = barcodes,
         feature_ids = feature_ids,
@@ -62,6 +87,7 @@ methods::setGeneric(
 #' @inherit BPCellsDir-IO return
 #' @inheritParams BPCellsDir-IO
 #' @param gzip Gzip compression level. Default is 0 (no gzip compression).
+#' @param overwrite A bool, If `TRUE`, will overwrite existing data in `path`.
 #' @inherit BPCellsSeed seealso
 #' @export
 #' @rdname BPCells10xHDF5-IO
