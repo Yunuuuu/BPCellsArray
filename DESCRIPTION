@@ -48,6 +48,7 @@ Collate:
     'Class-BPCellsMatrix.R'
     'Class-BPCellsSeed.R'
     'Class-Transformed.R'
+    'IO-10xHDF5.R'
     'IO-Dir.R'
     'IO-HDF5.R'
     'IO-Mem.R'

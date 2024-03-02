@@ -9,6 +9,7 @@
 #' - [BPCellsDir-IO]
 #' - [BPCellsHDF5-IO]
 #' - [BPCellsMem-IO]
+#' - [BPCells10xHDF5-IO]
 NULL
 
 ############################################################
