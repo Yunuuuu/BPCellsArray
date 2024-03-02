@@ -383,9 +383,12 @@ combine_matrices <- function(.fn, mode, matrices, ...) {
     } else {
         mode <- match.arg(mode, BPCells_MODE)
     }
+    # we only print message once
+    DO_INFORM <- TRUE
     seeds <- lapply(seeds, function(seed, mode) {
-        if (storage_mode(seed) != mode) {
+        if (DO_INFORM && storage_mode(seed) != mode) {
             cli::cli_inform("Converting into {mode} data type")
+            DO_INFORM <<- FALSE
             BPCells::convert_matrix_type(seed, type = mode)
         } else {
             seed
