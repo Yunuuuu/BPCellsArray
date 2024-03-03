@@ -24,9 +24,8 @@ methods::setClass("BPCellsDelayedTransformSquare",
 ###################################################################
 # Arith
 #' Arithmetic operators for BPCellsMatrix
-#' @param e1,e2 One of `x` or `y` must be [BPCellsMatrix][BPCellsMatrix-class]
-#' object, and the another can be a [BPCellsMatrix][BPCellsMatrix-class] object
-#' or any objects can be converted into [BPCellsSeed] object.
+#' @param e1,e2 One of `x` or `y` must be a `r rd_matrix()`, and the another can
+#' be a `r rd_matrix()` or a `r rd_seed()`.
 #' @inherit BPCellsDir-IO return
 #' @section Arithmetic operators:
 #' * `BPCells`: `+`, `-`, `*`, `/`, `^`

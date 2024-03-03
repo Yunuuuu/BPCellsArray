@@ -44,14 +44,14 @@ methods::setMethod("summary", "ConvertMatrixType", summary.ConvertMatrixType)
 #####################   BPCellsConvertMatrix   #######################
 #' Convert the storage mode of a BPCellsArray object
 #'
-#' @param object A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @param object A `r rd_matrix()`.
 #' @param ... Additional parameters passed into specific methods.
 #' @name convert_mode
 NULL
 
 #' @return
-#'  - `convert_mode`: A [BPCellsMatrix][BPCellsMatrix-class] object with storage
-#' mode converted into the specified.
+#'  - `convert_mode`: A `r rd_matrix()` with storage mode converted into the
+#' specified.
 #' @export
 #' @rdname convert_mode
 methods::setGeneric(

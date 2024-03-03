@@ -30,9 +30,9 @@ seedform(x, ...) <- value
 }
 \value{
 \itemize{
-\item \code{missing}: Get current default \code{seedform} value.
-\item \code{character}: Change the default \code{seedform} value and return the original
-default \code{seedform} value invisiblely.
+\item \code{missing}: Get current global \code{seedform} value.
+\item \code{character}: Change the global \code{seedform} value and return the original
+global \code{seedform} value invisiblely.
 \item \code{BPCellsMatrix}:
 \itemize{
 \item For \code{seedform} method: Get the seedform of \link{BPCellsMatrix} object.
@@ -42,12 +42,13 @@ default \code{seedform} value invisiblely.
 }
 }
 \description{
-\code{BPCellsArray} offers two seed form for using BPCells Matrix as the
-DelayedArray seed:
+\code{BPCellsArray} offers two seed form to use BPCells Matrix as the DelayedArray
+seed:
 \itemize{
 \item \code{BPCells}: use the \code{IterableMatrix} of BPCells as the seed directly.
 \item \code{DelayedArray}: convert \code{IterableMatrix} into a parallel
-\link[DelayedArray:DelayedOp-class]{DelayedOp} object (\code{BPCellsDelayedOp}).
+\link[DelayedArray:DelayedOp-class]{DelayedOp} object
+(See \link[=BPCellsDelayedOp-class]{BPCellsDelayedOp} object).
 }
 
 Both methods are generally effective for most operations. However, choosing
@@ -61,3 +62,10 @@ absence of the need to convert between \code{IterableMatrix} and
 \link[=BPCellsDelayedOp-class]{BPCellsDelayedOp} object. \code{seedform=BPCells} is also
 the default method.
 }
+\section{Default seedform}{
+ All function in \code{BPCellsArray} will use the global
+\code{seedform} value as the default seedform (use \code{seedform()} to check), except
+for \code{BPCellsMatrix} object, in which the default will be extracted from the
+object directly (use \code{seedform(object)} to check).
+}
+

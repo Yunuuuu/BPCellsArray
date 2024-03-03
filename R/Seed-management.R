@@ -1,11 +1,12 @@
 #' BPCellsArray seed management
 #'
 #' @description
-#' `BPCellsArray` offers two seed form for using BPCells Matrix as the
-#' DelayedArray seed:
+#' `BPCellsArray` offers two seed form to use BPCells Matrix as the DelayedArray
+#' seed:
 #' - `BPCells`: use the `IterableMatrix` of BPCells as the seed directly.
 #' - `DelayedArray`: convert `IterableMatrix` into a parallel
-#'   [DelayedOp][DelayedArray::DelayedOp-class] object (`BPCellsDelayedOp`).
+#'   [DelayedOp][DelayedArray::DelayedOp-class] object
+#'   (See [BPCellsDelayedOp][BPCellsDelayedOp-class] object). 
 #'
 #' Both methods are generally effective for most operations. However, choosing
 #' `seedform=DelayedArray` ensures better compatibility with DelayedArray
@@ -18,11 +19,16 @@
 #' [BPCellsDelayedOp][BPCellsDelayedOp-class] object. `seedform=BPCells` is also
 #' the default method.
 #'
+#' @section Default seedform: All function in `BPCellsArray` will use the global
+#' `seedform` value as the default seedform (use `seedform()` to check), except
+#' for `BPCellsMatrix` object, in which the default will be extracted from the
+#' object directly (use `seedform(object)` to check).
+#' 
 #' @param ... Additional argumentds passed into specific methods.
 #' @return
-#' - `missing`: Get current default `seedform` value.
-#' - `character`: Change the default `seedform` value and return the original
-#'    default `seedform` value invisiblely.
+#' - `missing`: Get current global `seedform` value.
+#' - `character`: Change the global `seedform` value and return the original
+#'    global `seedform` value invisiblely.
 #' - `BPCellsMatrix`:
 #'    * For `seedform` method: Get the seedform of [BPCellsMatrix] object.
 #'    * For `seedform<-` method: Change the `seedform` value of a
@@ -60,13 +66,13 @@ get_seedform <- function() GlobalOptions$SeedForm
 set_seedform <- function(seedform) GlobalOptions$SeedForm <- seedform
 
 match_seedform <- function(seedform, default = get_seedform()) {
-    if (is.null(seedform)) default else match.arg(seedform, AllowedSeedForm)
+    if (is.null(seedform)) default else match.arg(seedform, SupportedSeedForm)
 }
 
 # Global options control whether use `to_DelayedArray` to convert
 # BPCells matrix into a `DelayedOp` object
 GlobalOptions <- new.env(parent = emptyenv())
-AllowedSeedForm <- c("BPCells", "DelayedArray")
+SupportedSeedForm <- c("BPCells", "DelayedArray")
 # set Global default `seedform`
 set_seedform("BPCells")
 
@@ -98,7 +104,7 @@ extract_IterableMatrix_and_seedform <- function(x, seedform) {
         cli::cli_abort(
             c(msg, i = "You have provided a length {length(seedform)}")
         )
-    } else if (is.na(seedform) || !any(seedform == AllowedSeedForm)) {
+    } else if (is.na(seedform) || !any(seedform == SupportedSeedForm)) {
         cli::cli_abort(c(msg, i = "{.val {seedform}} is not allowed"))
     }
     TRUE

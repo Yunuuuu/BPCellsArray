@@ -27,28 +27,16 @@ readBPCellsDirMatrix <- function(path, buffer_size = 8192L, seedform = NULL) {
     with_seedform(seedform, DelayedArray(obj))
 }
 
-#' Write a sparce matrices into a directory on disk
-#'
 #' @inherit BPCells::write_matrix_dir details
-#' @param x A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
-#'    converted into [BPCellsSeed] object.
+#' @param x A `r rd_matrix()` or a `r rd_seed()`.
 #' @param ... Additional arguments passed into specific methods.
 #' @param bitpacking A bool, whether or not to compress the data using
 #' Bitpacking Compression.
 #' @param overwrite A bool, If `TRUE`, write to a temp dir then overwrite
 #' existing data.
-#' @param seedform A string, `"BPCells"` or `"DelayedArray"`, if `NULL`, will
-#'  use the default value.
-#'  - For `readBPCells*`: (use `seedform()` to check) to check the default
-#'    value.
-#'  - For `writeBPCells*`:
-#'     - For `BPCellsMatrix` object: the default value will be extracted from
-#'       `x` directly (use `seedform(x)` to check).
-#'     - For other object: the default value will be extracted from global
-#'       option (use `seedform()` to check).
 #' @inheritParams BPCells::write_matrix_dir
 #' @inheritParams BPCellsMatrix-class
-#' @return A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' @return A `r rd_matrix()`.
 #' @inherit BPCellsSeed seealso
 #' @export
 #' @aliases writeBPCellsDirMatrix

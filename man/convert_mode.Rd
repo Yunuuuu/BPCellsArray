@@ -37,8 +37,8 @@ and \code{double} mode.}
 }
 \value{
 \itemize{
-\item \code{convert_mode}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object with storage
-mode converted into the specified.
+\item \code{convert_mode}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object with storage mode converted into the
+specified.
 }
 
 \itemize{

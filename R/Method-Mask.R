@@ -81,8 +81,7 @@ methods::setGeneric(
 )
 
 #' @inheritParams convert_mode
-#' @param mask A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can
-#' be converted into [BPCellsSeed] object.
+#' @param mask A `r rd_matrix()` or a `r rd_seed()`
 #' @param invert A bool, indicates whether revert the mask.
 #' @inherit BPCellsDir-IO return
 #' @seealso [mask_matrix][BPCells::mask_matrix]

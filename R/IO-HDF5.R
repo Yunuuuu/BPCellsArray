@@ -56,11 +56,10 @@ methods::setGeneric(
 
 #' @inheritParams BPCellsDir-IO
 #' @inheritParams BPCells::open_matrix_hdf5
-#' @param gzip Gzip compression level. Default is 0 (no gzip compression). This
-#' is recommended when both compression and compatibility with outside programs
-#' is required. Using `compress=TRUE` is recommended as it is >10x faster with
-#' often similar compression levels. So `gzip` will always be zero when
-#' `compress` is `TRUE`.
+#' @param gzip `r rd_gzip()`. This is recommended when both compression and
+#' compatibility with outside programs is required. Using `compress=TRUE` is
+#' recommended as it is >10x faster with often similar compression levels. So
+#' `gzip` will always be zero when `compress` is `TRUE`.
 #' @inherit BPCells::write_matrix_hdf5 details
 #' @inherit BPCellsDir-IO return
 #' @inherit BPCellsSeed seealso

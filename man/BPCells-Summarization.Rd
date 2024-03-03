@@ -53,7 +53,7 @@ matrix_stats(object, ...)
     \item{\code{threads}}{Number of threads to use during execution}
   }}
 
-\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 }
 \value{
 \itemize{

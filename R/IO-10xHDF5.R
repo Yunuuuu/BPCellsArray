@@ -10,7 +10,7 @@ methods::setMethod("summary", "10xMatrixH5", summary.10xMatrixH5)
 #' - `writeBPCells10xHDF5Matrix`: Write a sparce matrices into a HDF5 file on
 #'   disk
 #' @inheritParams BPCells::open_matrix_10x_hdf5
-#' @param path A string path of the 10x `HDF5` file to read or save data into.
+#' @param path A string path of the `10x HDF5` file to read or save data into.
 #' @export
 #' @name BPCells10xHDF5-IO
 readBPCells10xHDF5Matrix <- function(path, feature_type = NULL, buffer_size = 16384L, seedform = NULL) {
@@ -86,7 +86,7 @@ methods::setGeneric(
 #' @inherit BPCells::write_matrix_10x_hdf5 details
 #' @inherit BPCellsDir-IO return
 #' @inheritParams BPCellsDir-IO
-#' @param gzip Gzip compression level. Default is 0 (no gzip compression).
+#' @param gzip `r rd_gzip()`.
 #' @param overwrite A bool, If `TRUE`, will overwrite existing data in `path`.
 #' @inherit BPCellsSeed seealso
 #' @export

@@ -115,9 +115,8 @@
 \arguments{
 \item{seed}{A \link[=BPCellsDelayedOp-class]{BPCellsDelayedOp} object.}
 
-\item{e1, e2}{One of \code{x} or \code{y} must be \link[=BPCellsMatrix-class]{BPCellsMatrix}
-object, and the another can be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object
-or any objects can be converted into \link{BPCellsSeed} object.}
+\item{e1, e2}{One of \code{x} or \code{y} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another can
+be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
 \item{object}{A \link{BPCellsMatrix} object with a seed slot of
 \link[=BPCellsDelayedOp-class]{BPCellsDelayedAbind} object, usually derived from
@@ -136,8 +135,7 @@ number). R cannot differentiate 32-bit and 64-bit real number, so
 \link[=BPCellsSeed-class]{type} method always return "double" for both \code{float}
 and \code{double} mode.}
 
-\item{mask}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can
-be converted into \link{BPCellsSeed} object.}
+\item{mask}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object}
 
 \item{invert}{A bool, indicates whether revert the mask.}
 
@@ -152,8 +150,7 @@ value is 0. Default: \code{TRUE}.}
 
 \item{i, j}{Row and Column index.}
 
-\item{value}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can
-be converted into \link{BPCellsSeed} object.}
+\item{value}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 }
 \description{
 Following methods are used by package internal, usually for messages purpose.

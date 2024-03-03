@@ -11,21 +11,14 @@ writeBPCellsMemMatrix(x, ...)
 \S4method{writeBPCellsMemMatrix}{ANY}(x, compress = TRUE, seedform = NULL)
 }
 \arguments{
-\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
-converted into \link{BPCellsSeed} object.}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
 \item{...}{Additional arguments passed into specific methods.}
 
 \item{compress}{Whether or not to compress the data.}
 
-\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
-use the default value.
-\itemize{
-\item For \code{BPCellsMatrix} object: the default value will be extracted from
-\code{x} directly (use \code{seedform(x)} to check).
-\item For other object: the default value will be extracted from global
-option (use \code{seedform()} to check).
-}}
+\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
+use the the default \code{seedform}. Details see \link{seedform}.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

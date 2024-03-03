@@ -18,21 +18,14 @@
 #' @name BPCellsMatrix-class
 NULL
 
-#' @param x
-#'  - For `BPCellsArray` and `BPCellsMatrix`: A
-#'    [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
-#'    converted into [BPCellsSeed] object.
-#'  - For other function: A [BPCellsMatrix][BPCellsMatrix-class] object
+#' @param x A `BPCellsMatrix` object. For `BPCellsArray` and `BPCellsMatrix`
+#'    function, a `r rd_seed()` would also be okay.
 #' @param seedform A string, `"BPCells"` or `"DelayedArray"`. If `NULL`, will
-#' use the the default `seedform`:
-#'  - For `BPCellsMatrix` object: the default value will be extracted from
-#'    `x` directly (use `seedform(x)` to check).
-#'  - For other object: the default value will be extracted from global
-#'    option (use `seedform()` to check).
-#' @param object A [BPCellsMatrix][BPCellsMatrix-class] object.
+#' use the the default `seedform`. Details see [seedform].
+#' @param object A `r rd_matrix()`.
 #' @return
-#'  - `BPCellsArray` and `BPCellsMatrix`: A `BPCellsMatrix` object, since
-#'    `BPCells` can only support 2-dim array.
+#'  - `BPCellsArray` and `BPCellsMatrix`: A `r rd_matrix()`, since `BPCells` can
+#'    only support 2-dim array.
 #' @export
 #' @rdname BPCellsMatrix-class
 BPCellsArray <- function(x, seedform = NULL) {
@@ -318,7 +311,7 @@ NULL
 # override methods of DelayedArray
 # list_methods("DelayedArray")
 #' @return
-#' - `t`: A `BPCellsMatrix` object.
+#' - `t`: A `r rd_matrix()`
 #' @importMethodsFrom BPCells t
 #' @export
 #' @aliases t
@@ -331,11 +324,9 @@ methods::setMethod(
 #' @param value
 #'  - `type<-`: See the mode argument in [convert_mode].
 #'  - `dimnames<-`: A list of dimnames or `NULL`.
-#'  - `[<-`: A [BPCellsMatrix][BPCellsMatrix-class] object or any objects can be
-#'    converted into [BPCellsSeed] object.
+#'  - `[<-`: A `r rd_matrix()` or a `r rd_seed()`
 #' @return
-#' - `type<-`: A `BPCellsMatrix` object with storage mode converted into the
-#'   specified.
+#' - `type<-`: A `r rd_matrix()` with storage mode converted into the specified.
 #' @export
 #' @importFrom DelayedArray type<-
 #' @rdname BPCellsMatrix-class

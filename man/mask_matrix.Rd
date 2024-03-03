@@ -12,8 +12,7 @@ mask_matrix(object, mask, ...)
 \arguments{
 \item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{mask}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can
-be converted into \link{BPCellsSeed} object.}
+\item{mask}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object}
 
 \item{...}{Additional parameters passed into specific methods.}
 

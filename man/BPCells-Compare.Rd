@@ -35,9 +35,8 @@ comparison to the threshold is >= (strict_inequality=FALSE)
 or > (strict_inequality=TRUE).}
   }}
 
-\item{e1, e2}{One of \code{x} or \code{y} must be \link[=BPCellsMatrix-class]{BPCellsMatrix}
-object, and the another can be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object
-or any objects can be converted into \link{BPCellsSeed} object.}
+\item{e1, e2}{One of \code{x} or \code{y} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another can
+be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

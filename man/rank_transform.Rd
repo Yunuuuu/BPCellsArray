@@ -51,8 +51,7 @@ used to transpose the underlying storage order.}
 \item{offset}{A bool, whether or not to add offset such that the rank of a 0
 value is 0. Default: \code{TRUE}.}
 
-\item{x, object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects
-can be converted into \link{BPCellsSeed} object.}
+\item{x, object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
 \item{rows, cols}{Ignored currently.}
 

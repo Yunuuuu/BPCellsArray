@@ -38,12 +38,6 @@ methods::setGeneric(
 #' @inheritParams BPCellsDir-IO
 #' @inherit BPCells::write_matrix_memory details
 #' @inheritParams BPCells::write_matrix_memory
-#' @param seedform A string, `"BPCells"` or `"DelayedArray"`, if `NULL`, will
-#'  use the default value.
-#'  - For `BPCellsMatrix` object: the default value will be extracted from
-#'    `x` directly (use `seedform(x)` to check).
-#'  - For other object: the default value will be extracted from global
-#'    option (use `seedform()` to check).
 #' @inherit BPCellsDir-IO return
 #' @inherit BPCellsSeed seealso
 #' @export

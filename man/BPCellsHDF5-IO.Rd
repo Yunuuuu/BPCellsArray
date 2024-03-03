@@ -32,22 +32,10 @@ to an existing hdf5 file this group must not already be in use}
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
 
-\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
-use the default value.
-\itemize{
-\item For \verb{readBPCells*}: (use \code{seedform()} to check) to check the default
-value.
-\item For \verb{writeBPCells*}:
-\itemize{
-\item For \code{BPCellsMatrix} object: the default value will be extracted from
-\code{x} directly (use \code{seedform(x)} to check).
-\item For other object: the default value will be extracted from global
-option (use \code{seedform()} to check).
-}
-}}
+\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
+use the the default \code{seedform}. Details see \link{seedform}.}
 
-\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
-converted into \link{BPCellsSeed} object.}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
 \item{...}{Additional arguments passed into specific methods.}
 
@@ -59,11 +47,10 @@ Bitpacking Compression.}
 \item{overwrite}{A bool, If \code{TRUE}, write to a temp dir then overwrite
 existing data.}
 
-\item{gzip}{Gzip compression level. Default is 0 (no gzip compression). This
-is recommended when both compression and compatibility with outside programs
-is required. Using \code{compress=TRUE} is recommended as it is >10x faster with
-often similar compression levels. So \code{gzip} will always be zero when
-\code{compress} is \code{TRUE}.}
+\item{gzip}{Gzip compression level. Default is 0 (no gzip compression). This is recommended when both compression and
+compatibility with outside programs is required. Using \code{compress=TRUE} is
+recommended as it is >10x faster with often similar compression levels. So
+\code{gzip} will always be zero when \code{compress} is \code{TRUE}.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

@@ -29,7 +29,7 @@ log1p_single(x)
 \S4method{round}{BPCellsMatrix}(x, digits = 0)
 }
 \arguments{
-\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
 \item{digits}{Integer indicating the number of decimal places}
 }

@@ -48,11 +48,10 @@ methods::setMethod("summary", "MatrixMultiply", summary.BPCellsDelayedMultiply)
 #' arguments conformable. If both are vectors of the same length, it will return
 #' the inner product (as a matrix).
 #'
-#' @param x,y One of `x` or `y` must be [BPCellsMatrix][BPCellsMatrix-class]
-#' object, and the another must be a [BPCellsMatrix][BPCellsMatrix-class] object
-#' or  any objects can be converted into [BPCellsSeed] object.
+#' @param x,y One of `x` or `y` must be a `r rd_matrix()`, and the another must
+#' be a `r rd_matrix()` or a `r rd_seed()`.
 #' @return A dense matrix if one of `x` or `y` is a regular matrix or atomic
-#' vector. Otherwise, a [BPCellsMatrix][BPCellsMatrix-class] object.
+#' vector. Otherwise, a `r rd_matrix()`.
 #' @importMethodsFrom BPCells %*%
 #' @seealso
 #'  - [crossprod][BPCells-crossprod]

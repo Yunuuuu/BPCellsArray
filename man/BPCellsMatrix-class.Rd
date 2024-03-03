@@ -84,21 +84,11 @@ BPCellsMatrix(x, seedform = NULL)
 \arguments{
 \item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{x}{\itemize{
-\item For \code{BPCellsArray} and \code{BPCellsMatrix}: A
-\link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
-converted into \link{BPCellsSeed} object.
-\item For other function: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object
-}}
+\item{x}{A \code{BPCellsMatrix} object. For \code{BPCellsArray} and \code{BPCellsMatrix}
+function, a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object would also be okay.}
 
 \item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
-use the the default \code{seedform}:
-\itemize{
-\item For \code{BPCellsMatrix} object: the default value will be extracted from
-\code{x} directly (use \code{seedform(x)} to check).
-\item For other object: the default value will be extracted from global
-option (use \code{seedform()} to check).
-}}
+use the the default \code{seedform}. Details see \link{seedform}.}
 
 \item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} object.}
 
@@ -108,8 +98,7 @@ return an atomic vector.}
 \item{value}{\itemize{
 \item \verb{type<-}: See the mode argument in \link{convert_mode}.
 \item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
-\item \verb{[<-}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
-converted into \link{BPCellsSeed} object.
+\item \verb{[<-}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object
 }}
 
 \item{i, j}{Row and Column index.}
@@ -125,8 +114,8 @@ converted into \link{BPCellsSeed} object.
 }
 \value{
 \itemize{
-\item \code{BPCellsArray} and \code{BPCellsMatrix}: A \code{BPCellsMatrix} object, since
-\code{BPCells} can only support 2-dim array.
+\item \code{BPCellsArray} and \code{BPCellsMatrix}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object, since \code{BPCells} can
+only support 2-dim array.
 }
 
 \itemize{
@@ -142,12 +131,11 @@ converted into \link{BPCellsSeed} object.
 }
 
 \itemize{
-\item \code{t}: A \code{BPCellsMatrix} object.
+\item \code{t}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object
 }
 
 \itemize{
-\item \verb{type<-}: A \code{BPCellsMatrix} object with storage mode converted into the
-specified.
+\item \verb{type<-}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object with storage mode converted into the specified.
 }
 
 \itemize{

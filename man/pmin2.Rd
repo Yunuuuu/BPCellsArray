@@ -36,8 +36,8 @@ pmin_scalar(object, value)
 
 \item{value}{A single positive numeric value}
 
-\item{e1, e2}{One of \code{x} or \code{y} must be \link[=BPCellsMatrix-class]{BPCellsMatrix}
-object, and the another must be a scalar or of length \code{nrow(e1)/nrow(e2)}.}
+\item{e1, e2}{One of \code{x} or \code{y} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another
+must be a scalar or of length \code{nrow(e1)/nrow(e2)}.}
 }
 \value{
 \itemize{

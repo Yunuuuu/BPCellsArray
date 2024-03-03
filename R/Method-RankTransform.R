@@ -44,8 +44,7 @@ methods::setMethod(
 #' want to get the same result of regular matrix `rowRanks(matrix, ties.method =
 #' "average")`/`colRanks(matrix, ties.method = "average")`, set `offset=FALSE`.
 #'
-#' @param x,object A [BPCellsMatrix][BPCellsMatrix-class] object or any objects
-#' can be converted into [BPCellsSeed] object.
+#' @param x,object A `r rd_matrix()` or a `r rd_seed()`.
 #' @inheritDotParams BPCells::transpose_storage_order -matrix
 #' @export
 #' @name rank_transform

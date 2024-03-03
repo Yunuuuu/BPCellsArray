@@ -93,8 +93,8 @@ methods::setMethod(
     }
 }
 
-#' @param e1,e2 One of `x` or `y` must be [BPCellsMatrix][BPCellsMatrix-class]
-#' object, and the another must be a scalar or of length `nrow(e1)/nrow(e2)`.
+#' @param e1,e2 One of `x` or `y` must be a `r rd_matrix()`, and the another
+#' must be a scalar or of length `nrow(e1)/nrow(e2)`.
 #' @importFrom DelayedArray pmin2
 #' @note For `pmin2` Methods listed here are supported by `BPCells`, other
 #' `pmin2` methods and `pmax2` function will use the methods defined in

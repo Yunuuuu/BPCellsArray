@@ -1,7 +1,6 @@
 #' Transform into `IterableMatrix`
 #'
-#' @param x A `IterableMatrix` object from `BPCells` or a matrix-like object
-#' which can be coerced into dgCMatrix object.
+#' @param x A `IterableMatrix` object from `BPCells` or a `r rd_seed()`.
 #' @return A `IterableMatrix` object.
 #' @name BPCellsSeed
 #' @seealso

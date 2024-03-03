@@ -1,6 +1,6 @@
 # Math methods
 #' Math operators for BPCellsMatrix
-#' @param x A [BPCellsMatrix][BPCellsMatrix-class] object
+#' @param x A `r rd_matrix()`.
 #' @inherit BPCellsDir-IO return
 #' @note Methods listed here are supported by `BPCells`, other
 #' [Math][methods::Math] or [Math2][methods::Math2] operators will use the

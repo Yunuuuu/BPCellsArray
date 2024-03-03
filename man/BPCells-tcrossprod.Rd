@@ -27,9 +27,8 @@
 \S4method{tcrossprod}{numeric,BPCellsMatrix}(x, y)
 }
 \arguments{
-\item{x, y}{One of \code{x} or \code{y} must be \link[=BPCellsMatrix-class]{BPCellsMatrix}
-object, and the another must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object
-or  any objects can be converted into \link{BPCellsSeed} object.}
+\item{x, y}{One of \code{x} or \code{y} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another must
+be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 }
 \value{
 A dense matrix if one of \code{x} or \code{y} is a regular matrix or atomic

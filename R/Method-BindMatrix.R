@@ -178,22 +178,20 @@ methods::setMethod("set_threads", "ANY", function(object, ...) {
 
 #' Combine two Objects by Columns or Rows
 #'
-#' @param x,y A [BPCellsMatrix][BPCellsMatrix-class] or
-#' [BPCellsSeed][BPCellsDelayedOp-class] object.
+#' @param x,y A `r rd_matrix()` or [BPCellsSeed][BPCellsDelayedOp-class] object.
 #' @inheritParams convert_mode
 #' @param ...
 #'  - `rbind2` and `cbind2`: Not used currently.
-#'  - `rbind`, `arbind`, `cbind`, and `acbind`: A list of
-#'    [BPCellsMatrix][BPCellsMatrix-class] object.
+#'  - `rbind`, `arbind`, `cbind`, and `acbind`: A list of `r rd_matrix()`.
 #' @inheritParams set_threads
 #' @seealso
 #' [convert_mode]
 #' @return
 #' If `mode` is specified, the mode of all specified object will be converted.
-#' - `cbind2`, `acbind`, `cbind`, `bindCOLS`: A
-#'   [BPCellsMatrix][BPCellsMatrix-class] object combined by columns.
-#' - `rbind2`, `arbind`, `rbind`, `bindROWS`: A
-#'   [BPCellsMatrix][BPCellsMatrix-class] object combined by rows.
+#' - `cbind2`, `acbind`, `cbind`, `bindCOLS`: A `r rd_matrix()` combined by
+#'   columns.
+#' - `rbind2`, `arbind`, `rbind`, `bindROWS`: A `r rd_matrix()` combined by
+#'   rows.
 #' @aliases rbind2 cbind2 rbind cbind arbind acbind bindROWS bindCOLS
 #' @name BPCells-bind
 NULL

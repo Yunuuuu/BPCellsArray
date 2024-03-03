@@ -32,7 +32,7 @@ writeBPCells10xHDF5Matrix(x, ...)
 )
 }
 \arguments{
-\item{path}{A string path of the 10x \code{HDF5} file to read or save data into.}
+\item{path}{A string path of the \verb{10x HDF5} file to read or save data into.}
 
 \item{feature_type}{Optional selection of feature types to include in output matrix.
 For multiome data, the options are "Gene Expression" and "Peaks". This option is
@@ -41,22 +41,10 @@ only compatible with files from cellranger 3.0 and newer.}
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
 
-\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}, if \code{NULL}, will
-use the default value.
-\itemize{
-\item For \verb{readBPCells*}: (use \code{seedform()} to check) to check the default
-value.
-\item For \verb{writeBPCells*}:
-\itemize{
-\item For \code{BPCellsMatrix} object: the default value will be extracted from
-\code{x} directly (use \code{seedform(x)} to check).
-\item For other object: the default value will be extracted from global
-option (use \code{seedform()} to check).
-}
-}}
+\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
+use the the default \code{seedform}. Details see \link{seedform}.}
 
-\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or any objects can be
-converted into \link{BPCellsSeed} object.}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
 \item{...}{Additional arguments passed into specific methods.}
 

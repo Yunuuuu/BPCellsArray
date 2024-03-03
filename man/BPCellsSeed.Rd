@@ -19,8 +19,7 @@ BPCellsSeed(x)
 \S4method{BPCellsSeed}{ANY}(x)
 }
 \arguments{
-\item{x}{A \code{IterableMatrix} object from \code{BPCells} or a matrix-like object
-which can be coerced into dgCMatrix object.}
+\item{x}{A \code{IterableMatrix} object from \code{BPCells} or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 }
 \value{
 A \code{IterableMatrix} object.
