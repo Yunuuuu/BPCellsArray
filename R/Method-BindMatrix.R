@@ -216,7 +216,7 @@ methods::setMethod(
     "rbind2", c(x = "ANY", y = "BPCellsMatrix"),
     function(x, y, ...) {
         cli::cli_abort(c(
-            "Cannot combine {.cls {obj_s4_friendly(x)}} object with a {.cls {obj_s4_friendly(y)}}",
+            "Cannot combine {.cls {fclass(x)}} object with a {.cls {fclass(y)}}",
             i = "{.arg x} must be a {.cls BPCellsMatrix} object"
         ))
     }
@@ -228,7 +228,7 @@ methods::setMethod(
     "rbind2", c(x = "BPCellsMatrix", y = "ANY"),
     function(x, y, ...) {
         cli::cli_abort(c(
-            "Cannot combine {.cls {obj_s4_friendly(x)}} object with a {.cls {obj_s4_friendly(y)}}",
+            "Cannot combine {.cls {fclass(x)}} object with a {.cls {fclass(y)}}",
             i = "{.arg y} must be a {.cls BPCellsMatrix} object"
         ))
     }
@@ -302,7 +302,7 @@ methods::setMethod(
     "cbind2", c(x = "ANY", y = "BPCellsMatrix"),
     function(x, y, ...) {
         cli::cli_abort(c(
-            "Cannot combine {.cls {obj_s4_friendly(x)}} object with a {.cls {obj_s4_friendly(y)}}",
+            "Cannot combine {.cls {fclass(x)}} object with a {.cls {fclass(y)}}",
             i = "{.arg x} must be a {.cls BPCellsMatrix} object"
         ))
     }
@@ -314,7 +314,7 @@ methods::setMethod(
     "cbind2", c(x = "BPCellsMatrix", y = "ANY"),
     function(x, y, ...) {
         cli::cli_abort(c(
-            "Cannot combine {.cls {obj_s4_friendly(x)}} object with a {.cls {obj_s4_friendly(y)}}",
+            "Cannot combine {.cls {fclass(x)}} object with a {.cls {fclass(y)}}",
             i = "{.arg y} must be a {.cls BPCellsMatrix} object"
         ))
     }

@@ -191,7 +191,7 @@ array_call_DelayedArray_method <- function(..., Array = NULL, type = "S4") {
                 object <- with_seedform(seedform, DelayedArray(seed))
             } else {
                 cli::cli_warn(c(
-                    sprintf("{.fn %s} method return a {.cls {obj_s4_friendly(object)}} object", .Generic), # nolint
+                    sprintf("{.fn %s} method return a {.cls {fclass(object)}} object", .Generic), # nolint
                     i = "Subsequent operation won't use {.pkg BPCells} methods"
                 ))
             }

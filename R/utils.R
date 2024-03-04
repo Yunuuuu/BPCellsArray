@@ -21,10 +21,7 @@ c_msg <- function(..., sep = " ") {
     paste(..., sep = sep)
 }
 
-obj_s4_friendly <- function(object) {
-    if (isS4(object)) return(class(object)[1L]) # styler: off
-    obj_type_friendly(object)
-}
+fclass <- function(object) class(object)[1L]
 
 list_methods <- function(class, where = asNamespace("DelayedArray"), ...) {
     fns <- methods::showMethods(...,

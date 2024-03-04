@@ -67,7 +67,7 @@ SUPPORTED_BPCELLS_MATRIX <- c(
             if (methods::is(seed, ii)) return(TRUE) # styler: off
         }
         cli::cli_abort(
-            "{.cls {obj_s4_friendly(seed)}} is not supported at the moment"
+            "{.cls {fclass(seed)}} is not supported at the moment"
         )
     } else {
         cli::cli_abort(
