@@ -6,7 +6,7 @@
 #' - `BPCells`: use the `IterableMatrix` of BPCells as the seed directly.
 #' - `DelayedArray`: convert `IterableMatrix` into a parallel
 #'   [DelayedOp][DelayedArray::DelayedOp-class] object
-#'   (See [BPCellsDelayedOp][BPCellsDelayedOp-class] object). 
+#'   (See [BPCellsDelayedOp][BPCellsDelayedOp-class] object).
 #'
 #' Both methods are generally effective for most operations. However, choosing
 #' `seedform=DelayedArray` ensures better compatibility with DelayedArray
@@ -23,7 +23,7 @@
 #' `seedform` value as the default seedform (use `seedform()` to check), except
 #' for `BPCellsMatrix` object, in which the default will be extracted from the
 #' object directly (use `seedform(object)` to check).
-#' 
+#'
 #' @param ... Additional argumentds passed into specific methods.
 #' @return
 #' - `missing`: Get current global `seedform` value.
@@ -97,8 +97,8 @@ extract_IterableMatrix_and_seedform <- function(x, seedform) {
 
 .validate_seedform <- function(seedform, arg = rlang::caller_arg(seedform)) {
     msg <- c_msg(
-        "{.arg {arg}} must be a single string",
-        "of {.val BPCells} or {.val DelayedArray}"
+        style_arg(arg), "must be a single string of",
+        oxford_comma(style_val(SupportedSeedForm), sep = " ", final = "or")
     )
     if (length(seedform) != 1L) {
         cli::cli_abort(
