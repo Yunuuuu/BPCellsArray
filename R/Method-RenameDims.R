@@ -67,7 +67,7 @@ methods::setMethod(
 methods::setMethod(
     "rownames<-", c(x = "BPCellsMatrix", value = "ANY"),
     function(x, value) {
-        set_dimnames(x, 1L, value)
+        set_axis_names(x, 1L, value)
     }
 )
 
@@ -80,11 +80,11 @@ methods::setMethod(
 methods::setMethod(
     "colnames<-", c(x = "BPCellsMatrix", value = "ANY"),
     function(x, value) {
-        set_dimnames(x, 2L, value)
+        set_axis_names(x, 2L, value)
     }
 )
 
-set_dimnames <- function(x, axis, value, arg = rlang::caller_arg(value), call = rlang::caller_env()) {
+set_axis_names <- function(x, axis, value, arg = rlang::caller_arg(value), call = rlang::caller_env()) {
     dnms <- dimnames(x)
     if (axis == 1L) {
         axis_nm <- "'rownames'" # nolint
