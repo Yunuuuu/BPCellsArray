@@ -368,7 +368,7 @@ no_DelayedArray <- function(object) {
         )
     } else if (methods::is(x, "IterableMatrix")) {
         cli::cli_abort(
-            "{.cls {obj_s4_friendly(x)}} is not supported at the moment"
+            "{.cls {fclass(x)}} is not supported at the moment"
         )
     }
 }
@@ -426,7 +426,7 @@ seedApply <- function(x, FUN, ...) {
         }
     } else if (methods::is(x, "IterableMatrix")) {
         cli::cli_abort(
-            "{.cls {obj_s4_friendly(x)}} is not supported at the moment"
+            "{.cls {fclass(x)}} is not supported at the moment"
         )
     } else {
         return(DelayedArray::seedApply(x = x, FUN = FUN, ...))
