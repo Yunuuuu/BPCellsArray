@@ -1,5 +1,9 @@
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
+pkg_nm <- function() {
+    utils::packageName(topenv(environment()))
+}
+
 recode <- function(x, replace) {
     old_values <- names(replace)
     missing_values <- setdiff(old_values, x)

@@ -51,10 +51,7 @@ methods::setMethod(
     "[<-", c("BPCellsMatrix", "ANY", "ANY", "ANY"),
     function(x, i, j, value) {
         # coerce `value` into `dgCMatrix`
-        value <- coerce_into_dgCMatrix(value,
-            # this will capture the argument passed into `[<-` generic function
-            arg = substitute(value, env = sys.frame(-2L))
-        )
+        value <- coerce_into_dgCMatrix(value)
         # Recall `x = BPCellsMatrix` and `value = dgCMatrix` method
         methods::callGeneric()
     }
@@ -70,7 +67,8 @@ methods::setMethod(
         before2 = expression(
             x_mode <- storage_mode(x),
             if (x@transpose) {
-                value <- t(BPCellsSeed(t(value)))
+                value <- t(value)
+                value <- t(BPCellsSeed(value))
             } else {
                 value <- BPCellsSeed(value)
             },
@@ -99,7 +97,8 @@ methods::setMethod(
             # `value`, since we'll do it special
             value <- methods::as(value, "dgCMatrix"),
             if (x@transpose) {
-                value <- t(BPCellsSeed(t(value)))
+                value <- t(value)
+                value <- t(BPCellsSeed(value))
             } else {
                 value <- BPCellsSeed(value)
             },

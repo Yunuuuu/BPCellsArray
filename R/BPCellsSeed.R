@@ -54,13 +54,27 @@ methods::setMethod("BPCellsSeed", "dgCMatrix", function(x) {
 #' @export
 #' @rdname BPCellsSeed
 methods::setMethod("BPCellsSeed", "ANY", function(x) {
-    # catch the argumeent passed into `BPCellsSeed` function
-    x <- coerce_into_dgCMatrix(x, arg = substitute(x, env = sys.frame(-2L)))
+    x <- coerce_into_dgCMatrix(x)
     methods::callGeneric()
 })
 
-coerce_into_dgCMatrix <- function(x, arg = rlang::caller_arg(x), call = rlang::caller_env()) {
-    rlang::try_fetch(
+# must be used in a Generic method
+coerce_into_dgCMatrix <- function(x, call = rlang::caller_env()) {
+    # n = -1: method function environment
+    # n = -2: Generic function environment
+    # n = -3: the caller environment of Generic function
+    caller_env <- sys.frame(-3L)
+    pkg_env <- topenv(caller_env)
+    if (isNamespace(pkg_env) && getNamespaceName(pkg_env) == pkg_nm()) {
+        # if called from the package internal, we catch the argument
+        # passed into BPCellsSeed
+        arg <- substitute(x, sys.frame(-2L)) # nolint
+    } else {
+        # if called from global environment or other package
+        # catch the argument of method argument directly
+        arg <- substitute(x)
+    }
+    tryCatch(
         methods::as(x, "dgCMatrix"),
         error = function(cnd) {
             cli::cli_abort(
