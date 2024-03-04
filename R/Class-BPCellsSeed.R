@@ -56,8 +56,7 @@ as_matrix_IterableMatrix <- function(x) {
 #' @rdname BPCellsSeed-class
 as.array.IterableMatrix <- function(x, drop = FALSE) {
     assert_bool(drop)
-    # IterableMatrix only support 2-dimention
-    mat <- as_matrix_IterableMatrix(x)
+    mat <- extract_array(x, vector("list", length = length(dim(x))))
     if (drop) drop(mat) else mat
 }
 
@@ -73,6 +72,7 @@ methods::setMethod("as.array", "IterableMatrix", as.array.IterableMatrix)
 #' @rdname BPCellsSeed-class
 methods::setMethod("extract_array", "IterableMatrix", function(x, index) {
     slice <- subset_IterableMatrix(x, index)
+    # `IterableMatrix` only support 2-dimention
     as_matrix_IterableMatrix(slice)
 })
 
