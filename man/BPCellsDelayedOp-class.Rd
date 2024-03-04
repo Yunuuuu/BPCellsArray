@@ -44,9 +44,9 @@
 \alias{chunkdim,BPCellsDelayedSubset-method}
 \title{BPCellsDelayedOp objects}
 \usage{
-\method{as.matrix}{BPCellsDelayedOp}(x, drop = FALSE)
+\method{as.matrix}{BPCellsDelayedOp}(x)
 
-\S4method{as.matrix}{BPCellsDelayedOp}(x, drop = FALSE)
+\S4method{as.matrix}{BPCellsDelayedOp}(x)
 
 \method{as.array}{BPCellsDelayedOp}(x, drop = FALSE)
 
