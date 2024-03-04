@@ -109,7 +109,7 @@ methods::setClass("BPCellsDelayedOp", contains = c("DelayedOp", "VIRTUAL"))
 #' @inherit BPCellsSeed-class return
 #' @exportS3Method base::as.matrix
 #' @rdname BPCellsDelayedOp-class
-as.matrix.BPCellsDelayedOp <- function(x, drop = FALSE) {
+as.matrix.BPCellsDelayedOp <- function(x) {
     as_matrix_IterableMatrix(to_BPCells(x))
 }
 
