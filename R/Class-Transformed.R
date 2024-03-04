@@ -6,20 +6,20 @@ mould_BPCells("BPCellsDelayedTransformed", "TransformedMatrix",
 
 methods::setMethod("to_DelayedArray", "TransformedMatrix", function(object) {
     to_DelayedUnaryOp(object,
-        Class = paste0("BPCellsDelayed", class(object)[[1L]])
+        Class = paste0("BPCellsDelayed", fclass(object))
     )
 })
 
 methods::setMethod("to_BPCells", "BPCellsDelayedTransformed", function(object) {
     to_BPCellsUnaryOp(
         object = object,
-        Class = sub("^BPCellsDelayed", "", class(object)[[1L]])
+        Class = sub("^BPCellsDelayed", "", fclass(object))
     )
 })
 
 #########################################################
 summary.BPCellsDelayedTransformed <- function(object) {
-    cls <- sub("^(BPCellsDelayed)?Transform", "", class(object)[[1L]])
+    cls <- sub("^(BPCellsDelayed)?Transform", "", fclass(object))
     sprintf(
         "Transform by %s",
         switch(cls,
