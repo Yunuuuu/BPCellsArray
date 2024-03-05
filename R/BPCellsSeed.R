@@ -59,7 +59,7 @@ methods::setMethod("BPCellsSeed", "ANY", function(x) {
 })
 
 # must be used in a Generic method
-coerce_into_dgCMatrix <- function(x, call = rlang::caller_env()) {
+coerce_into_dgCMatrix <- function(x) {
     # n = -1: method function environment
     # n = -2: Generic function environment
     # n = -3: the caller environment of Generic function
@@ -68,10 +68,12 @@ coerce_into_dgCMatrix <- function(x, call = rlang::caller_env()) {
     if (isNamespace(pkg_env) && getNamespaceName(pkg_env) == pkg_nm()) {
         # if called from the package internal, we catch the argument
         # passed into BPCellsSeed
+        call <- caller_env
         arg <- substitute(x, sys.frame(-2L)) # nolint
     } else {
         # if called from global environment or other package
         # catch the argument of method argument directly
+        call <- sys.frame(-1L)
         arg <- substitute(x)
     }
     tryCatch(
