@@ -127,7 +127,17 @@ methods::setReplaceMethod("seedform", "BPCellsMatrix", function(x, value) {
         cli::cli_inform(c_msg(msg, "nothing to do", sep = ", "))
         return(x)
     }
-    with_seedform(value, DelayedArray(to_BPCells(x@seed)))
+    with_seedform(value, DelayedArray(x@seed))
+})
+
+#############################################################
+# we won't rely on this function in this package
+# this method is provided here in case of user provide a `BPCellsMatrix`
+# into BPCellsSeed().
+#' @export
+#' @rdname internal-methods
+methods::setMethod("BPCellsSeed", "BPCellsMatrix", function(x) {
+    to_BPCells(x@seed)
 })
 
 ###################################################################

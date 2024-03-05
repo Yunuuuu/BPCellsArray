@@ -5,6 +5,7 @@
 %   R/Method-Subassign.R, R/Method-axis.R, R/Method-internal.R, R/Method-pmin.R
 \name{DelayedArray,BPCellsDelayedOp-method}
 \alias{DelayedArray,BPCellsDelayedOp-method}
+\alias{BPCellsSeed,BPCellsMatrix-method}
 \alias{/,numeric,BPCellsMatrix-method}
 \alias{\%\%,numeric,BPCellsMatrix-method}
 \alias{\%\%,BPCellsMatrix,numeric-method}
@@ -43,6 +44,8 @@
 \title{House of internal methods}
 \usage{
 \S4method{DelayedArray}{BPCellsDelayedOp}(seed)
+
+\S4method{BPCellsSeed}{BPCellsMatrix}(x)
 
 \S4method{/}{numeric,BPCellsMatrix}(e1, e2)
 
@@ -115,6 +118,8 @@
 \arguments{
 \item{seed}{A \link[=BPCellsDelayedOp-class]{BPCellsDelayedOp} object.}
 
+\item{x, y}{See method signature.}
+
 \item{e1, e2}{One of \code{x} or \code{y} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another can
 be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
@@ -126,8 +131,6 @@ be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object w
 \link[BPCells:matrix_stats]{matrix_stats}.}
 
 \item{...}{Additional arguments to specific methods.}
-
-\item{x, y}{See method signature.}
 
 \item{mode}{Storage mode of BPCells matrix, one of \code{uint32_t} (unsigned
 32-bit integer), \code{float} (32-bit real number), or \code{double} (64-bit real
