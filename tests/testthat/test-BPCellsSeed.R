@@ -1,5 +1,18 @@
 m0 <- mock_matrix(30, 20)
 
+testthat::test_that("BPCellsSeed() works well for IterableMatrix", {
+    iterable_mat <- methods::as(methods::as(m0, "dgCMatrix"), "IterableMatrix")
+    m <- BPCellsSeed(iterable_mat)
+    testthat::expect_identical(m, iterable_mat)
+})
+
+testthat::test_that("BPCellsSeed() works well for dgCMatrix", {
+    sparce_m <- methods::as(m0, "dgCMatrix")
+    m <- BPCellsSeed(sparce_m)
+    testthat::expect_s4_class(m, "IterableMatrix")
+    testthat::expect_identical(storage_mode(m), "double")
+})
+
 testthat::test_that("BPCellsSeed() works well for dense matrix", {
     double_m <- m0
     # double dense matrix
@@ -13,19 +26,6 @@ testthat::test_that("BPCellsSeed() works well for dense matrix", {
     m <- BPCellsSeed(integer_m)
     testthat::expect_s4_class(m, "IterableMatrix")
     testthat::expect_identical(storage_mode(m), "uint32_t")
-})
-
-testthat::test_that("BPCellsSeed() works well for dgCMatrix", {
-    sparce_m <- methods::as(m0, "dgCMatrix")
-    m <- BPCellsSeed(sparce_m)
-    testthat::expect_s4_class(m, "IterableMatrix")
-    testthat::expect_identical(storage_mode(m), "double")
-})
-
-testthat::test_that("BPCellsSeed() works well for IterableMatrix", {
-    iterable_mat <- methods::as(methods::as(m0, "dgCMatrix"), "IterableMatrix")
-    m <- BPCellsSeed(iterable_mat)
-    testthat::expect_identical(m, iterable_mat)
 })
 
 cli::test_that_cli("BPCellsSeed() works well for `ANY`", {
@@ -86,3 +86,13 @@ testthat::test_that(
         testthat::expect_identical(storage.mode(dense_mat), "double")
     }
 )
+
+testthat::test_that("`to_DelayedArray()` and `to_BPCells()` works well for `Iterable_dgCMatrix_wrapper` object", {
+    obj <- methods::as(methods::as(m0, "dgCMatrix"), "IterableMatrix")
+    delayedop_obj <- to_DelayedArray(obj)
+    testthat::expect_s4_class(delayedop_obj, "Iterable_dgCMatrix_wrapper")
+    testthat::expect_identical(delayedop_obj, obj)
+    bpcells_obj <- to_BPCells(delayedop_obj)
+    testthat::expect_s4_class(bpcells_obj, "Iterable_dgCMatrix_wrapper")
+    testthat::expect_identical(bpcells_obj, obj)
+})
