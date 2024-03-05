@@ -86,7 +86,7 @@ extract_IterableMatrix_and_seedform <- function(x, seedform) {
         default <- x@SeedForm
     } else if (methods::is(x, "BPCellsDelayedOp")) {
         seed <- to_BPCells(x)
-        default <- "DelayedArray"
+        default <- get_seedform()
     } else {
         seed <- BPCellsSeed(x)
         default <- get_seedform()
