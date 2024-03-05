@@ -5,6 +5,8 @@
 #' @inheritDotParams BPCells::transpose_storage_order -matrix
 #' @return
 #'  - `transpose_axis`: A [BPCellsMatrix] object with storage axis flipped.
+#'    Note: `identical(as.matrix(transpose_axis(object)), as.matrix(object))` is
+#'    `TRUE`.
 #' @export
 #' @name transpose_axis
 methods::setGeneric("transpose_axis", function(object, ...) {

@@ -36,6 +36,8 @@ storage_axis(object)
 \value{
 \itemize{
 \item \code{transpose_axis}: A \link{BPCellsMatrix} object with storage axis flipped.
+Note: \code{identical(as.matrix(transpose_axis(object)), as.matrix(object))} is
+\code{TRUE}.
 }
 
 \itemize{
