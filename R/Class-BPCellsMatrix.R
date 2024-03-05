@@ -94,23 +94,15 @@ methods::setMethod("DelayedArray", "IterableMatrix", function(seed) {
 })
 
 # Although `BPCellsDelayedOp` shouldn't be touched by users (Just like the
-# ?DelayedOp object) we also define it here for crazy usage. since we don't
-# `setValidity` for `@seed` or `@seeds` slot of `BPCellsDelayedOp` object, they
-# may contain `IterableMatrix` object not converted into a `BPCellsDelayedOp`
-# object which should have be. so we choose to re-transform it into
-# `IterableMatrix` and then transform it back.
-# methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
-#     object <- DelayedArray::new_DelayedArray(seed, Class = "BPCellsArray")
-#     object@SeedForm <- "DelayedArray"
-#     object
-# })
+# ?DelayedOp object) we also define it here
 #' @param seed A [BPCellsDelayedOp][BPCellsDelayedOp-class] object.
 #' @include Class-Delayed.R
 #' @export
 #' @rdname internal-methods
-methods::setMethod("DelayedArray", "BPCellsDelayedOp", function(seed) {
-    with_seedform("DelayedArray", DelayedArray(to_BPCells(seed)))
-})
+methods::setMethod(
+    "DelayedArray", "BPCellsDelayedOp",
+    delayedop_call_BPCells_method(seed = )
+)
 
 ##############################################################
 #' @export
