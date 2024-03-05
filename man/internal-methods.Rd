@@ -22,7 +22,7 @@
 \alias{Compare,BPCellsMatrix,ANY-method}
 \alias{Compare,ANY,BPCellsMatrix-method}
 \alias{convert_mode,ANY-method}
-\alias{mask_matrix,ANY-method}
+\alias{mask_matrix,ANY,ANY-method}
 \alias{expm1_slow,ANY-method}
 \alias{log,BPCellsMatrix-method}
 \alias{Math,BPCellsArray-method}
@@ -78,7 +78,7 @@
 
 \S4method{convert_mode}{ANY}(object, mode)
 
-\S4method{mask_matrix}{ANY}(object, mask, invert = FALSE)
+\S4method{mask_matrix}{ANY,ANY}(object, mask, invert = FALSE)
 
 \S4method{expm1_slow}{ANY}(x)
 

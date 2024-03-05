@@ -2,12 +2,15 @@
 % Please edit documentation in R/Method-Mask.R
 \name{mask_matrix}
 \alias{mask_matrix}
-\alias{mask_matrix,BPCellsMatrix-method}
+\alias{mask_matrix,BPCellsMatrix,BPCellsMatrix-method}
+\alias{mask_matrix,BPCellsMatrix,ANY-method}
 \title{Mask matrix entries to zero}
 \usage{
 mask_matrix(object, mask, ...)
 
-\S4method{mask_matrix}{BPCellsMatrix}(object, mask, invert = FALSE)
+\S4method{mask_matrix}{BPCellsMatrix,BPCellsMatrix}(object, mask, invert = FALSE)
+
+\S4method{mask_matrix}{BPCellsMatrix,ANY}(object, mask, invert = FALSE)
 }
 \arguments{
 \item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
