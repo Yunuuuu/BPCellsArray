@@ -2,8 +2,7 @@ Package: BPCellsArray
 Title: Using BPCells as a DelayedArray Backend
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Yun", "Peng", , "yunyunp96@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-2801-3332"))
 Description: Implements a DelayedArray backend for reading and
     writing arrays in the BPCells storage layout. The resulting 
     BPCells*Arrays are compatible with all Bioconductor
