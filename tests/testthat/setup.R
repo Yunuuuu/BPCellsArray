@@ -232,6 +232,27 @@ methods_test <- function(
         }
     )
 
+    cli::cli_inform("{.field mask_matrix} for seed {name} works as expected")
+    testthat::test_that(
+        sprintf("`mask_matrix()` for seed %s works as expected", name),
+        {
+            obj <- BPCellsMatrix(obj)
+            mask <- matrix(
+                sample(c(0, 1),
+                    size = nrow(obj) * ncol(obj), replace = TRUE,
+                    prob = c(0.7, 0.3)
+                ),
+                nrow = nrow(obj)
+            )
+            mat[mask > 0L] <- 0L
+            # for dense matrix mask
+            testthat::expect_identical(as.matrix(mask_matrix(obj, mask)), mat)
+            # for `BPCellsMatrix` mask
+            mask <- BPCellsMatrix(mask)
+            testthat::expect_identical(as.matrix(mask_matrix(obj, mask)), mat)
+        }
+    )
+
     cli::cli_inform("{.field rank_transform} for seed {name} works as expected")
     testthat::test_that(
         sprintf("`rank_transform` for seed %s works as expected", name),
