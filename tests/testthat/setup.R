@@ -43,6 +43,42 @@ methods_test <- function(
     )
 
     ########################################################
+    cli::cli_inform("{.field t} for seed {name} works as expected")
+    testthat::test_that(
+        sprintf("`t()` for seed %s works as expected", name),
+        {
+            obj1 <- BPCellsMatrix(obj)
+            testthat::expect_identical(storage_axis(obj1), "col")
+            obj2 <- t(obj1)
+            testthat::expect_s4_class(obj2, "BPCellsMatrix")
+            testthat::expect_identical(storage_axis(obj2), "row")
+            testthat::expect_equal(as.matrix(obj2), t(mat))
+        }
+    )
+
+    cli::cli_inform("{.field transpose_axis} for seed {name} works as expected")
+    testthat::test_that(
+        sprintf("`transpose_axis()` for seed %s works as expected", name),
+        {
+            obj <- BPCellsMatrix(obj)
+            testthat::expect_identical(storage_axis(obj), "col")
+
+            # for untransposed matrix
+            obj1 <- transpose_axis(obj)
+            testthat::expect_s4_class(obj1, "BPCellsMatrix")
+            testthat::expect_identical(storage_axis(obj1), "row")
+            testthat::expect_identical(as.matrix(obj1), as.matrix(obj))
+            testthat::expect_equal(as.matrix(obj1), mat)
+            # for transposed matrix
+            obj <- t(obj)
+            obj2 <- transpose_axis(obj)
+            testthat::expect_s4_class(obj2, "BPCellsMatrix")
+            testthat::expect_identical(storage_axis(obj2), "col")
+            testthat::expect_identical(as.matrix(obj2), as.matrix(obj))
+            testthat::expect_equal(as.matrix(obj2), t(mat))
+        }
+    )
+    ########################################################
     cli::cli_inform("{.field subset} seed {name} works as expected")
     testthat::test_that(
         sprintf("`[` of `i, missing` for %s works as expected", name),
@@ -139,16 +175,6 @@ methods_test <- function(
             }
         )
     }
-
-    cli::cli_inform("{.field t} for seed {name} works as expected")
-    testthat::test_that(
-        sprintf("`t()` for seed %s works as expected", name),
-        {
-            obj <- BPCellsMatrix(obj)
-            testthat::expect_s4_class(t(obj), "BPCellsMatrix")
-            testthat::expect_equal(as.matrix(t(obj)), t(mat))
-        }
-    )
 
     cli::cli_inform("{.field dimnames<-} for seed {name} works as expected")
     testthat::test_that(
