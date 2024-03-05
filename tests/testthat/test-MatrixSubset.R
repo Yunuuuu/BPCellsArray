@@ -4,8 +4,4 @@ obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 obj <- obj[1:100L, 1:20]
 mat <- mat[1:100L, 1:20]
 
-test_BPCellsArray(
-    obj, path,
-    mat = mat,
-    name = "Subset"
-)
+test_methods(obj, mat = mat, name = "MatrixSubset")

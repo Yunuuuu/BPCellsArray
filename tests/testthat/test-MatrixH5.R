@@ -5,12 +5,6 @@ obj <- BPCells::write_matrix_hdf5(
     path = path, group = "BPCells"
 )
 
-test_BPCellsArray(
-    obj, path,
-    mat = mat,
-    name = "HDF5"
-)
-
 testthat::test_that("`writeBPCellsHDF5Matrix()` works as expected", {
     testthat::expect_no_error(
         obj <- writeBPCellsHDF5Matrix(mat,
@@ -21,3 +15,5 @@ testthat::test_that("`writeBPCellsHDF5Matrix()` works as expected", {
     testthat::expect_identical(path(obj), path)
     testthat::expect_s4_class(obj, "BPCellsMatrix")
 })
+
+test_methods(obj, mat = mat, name = "MatrixH5")

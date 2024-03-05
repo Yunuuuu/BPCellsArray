@@ -6,8 +6,4 @@ mat1 <- BPCells::write_matrix_dir(mat = as(mat1, "dgCMatrix"), dir = path[1L])
 mat2 <- BPCells::write_matrix_dir(mat = as(mat2, "dgCMatrix"), dir = path[2L])
 obj <- rbind(mat1, mat2)
 
-test_BPCellsArray(
-    obj, path,
-    mat = mat,
-    name = "RowBindMatrix"
-)
+test_methods(obj, mat = mat, name = "RowBindMatrices")

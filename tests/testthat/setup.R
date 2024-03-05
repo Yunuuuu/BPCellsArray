@@ -3,97 +3,17 @@ tmpdir <- testthat::test_path("_TEMP")
 if (!dir.exists(tmpdir)) dir.create(tmpdir)
 tmpdir <- normalizePath(tmpdir, mustWork = TRUE)
 
-test_BPCellsArray <- function(obj, actual_path, ...) {
-    with_seedform(
-        "BPCells",
-        common_test(obj = obj, actual_path = actual_path, ...)
-    )
-    with_seedform(
-        "DelayedArray",
-        common_test(obj = obj, actual_path = actual_path, ...)
-    )
+test_methods <- function(obj, ...) {
+    with_seedform("BPCells", methods_test(obj = obj, ...))
+    with_seedform("DelayedArray", methods_test(obj = obj, ...))
 }
 
-common_test <- function(
-    obj, actual_path, ...,
-    mode = NULL, mat = NULL, name, skip_multiplication = FALSE) {
+methods_test <- function(
+    obj, ..., mode = NULL, mat = NULL,
+    name, skip_multiplication = FALSE) {
     mode <- mode %||% storage_mode(obj)
-    mat <- convert_mode(mat %||% as.matrix(obj), mode)
-
-    ########################################################
-    cli::cli_inform("{.field seedform} works as expected for {name}")
-    testthat::test_that(
-        sprintf("`seedform()` works as expected for %s", name),
-        {
-            seedform("BPCells")
-            testthat::expect_identical(get_seedform(), "BPCells")
-            seedform("DelayedArray")
-            testthat::expect_identical(get_seedform(), "DelayedArray")
-
-            testthat::expect_identical(
-                with_seedform("BPCells", get_seedform()), "BPCells"
-            )
-            testthat::expect_identical(
-                with_seedform("DelayedArray", get_seedform()), "DelayedArray"
-            )
-        }
-    )
-
-    ########################################################
-    cli::cli_inform("{.field BPCellsSeed} works as expected for {name}")
-    testthat::test_that(
-        sprintf("`BPCellsSeed()` works as expected for %s", name),
-        {
-            seed <- BPCellsSeed(obj)
-            testthat::expect_s4_class(seed, "IterableMatrix")
-            testthat::expect_identical(storage_mode(seed), mode)
-            if (length(actual_path) == 1L) {
-                testthat::expect_identical(path(seed), actual_path)
-            }
-            testthat::expect_equal(as.matrix(seed), mat)
-        }
-    )
-
-    ########################################################
-    cli::cli_inform("{.field BPCellsMatrix} works as expected for {name}")
-    testthat::test_that(
-        sprintf(
-            "`BPCellsMatrix()` for `BPCells` works as expected for %s", name
-        ),
-        {
-            obj <- BPCellsMatrix(obj, "BPCells")
-            testthat::expect_s4_class(obj, "BPCellsMatrix")
-            testthat::expect_identical(seedform(obj), "BPCells")
-            testthat::expect_s4_class(
-                convert_mode(obj, "float")@seed,
-                "IterableMatrix"
-            )
-            testthat::expect_identical(storage_mode(obj), mode)
-            if (length(actual_path) == 1L) {
-                testthat::expect_identical(path(obj), actual_path)
-            }
-            testthat::expect_equal(as.matrix(obj), mat)
-        }
-    )
-    testthat::test_that(
-        sprintf(
-            "`BPCellsMatrix()` for `DelayedArray` works as expected for %s", name
-        ),
-        {
-            obj <- BPCellsMatrix(obj, "DelayedArray")
-            testthat::expect_s4_class(obj, "BPCellsMatrix")
-            testthat::expect_identical(seedform(obj), "DelayedArray")
-            testthat::expect_s4_class(
-                convert_mode(obj, "float")@seed,
-                "BPCellsDelayedOp"
-            )
-            testthat::expect_identical(storage_mode(obj), mode)
-            if (length(actual_path) == 1L) {
-                testthat::expect_identical(path(obj), actual_path)
-            }
-            testthat::expect_equal(as.matrix(obj), mat)
-        }
-    )
+    mat <- mat %||% as.matrix(obj)
+    mat <- convert_mode(mat, mode)
 
     ########################################################
     cli::cli_inform("{.field convert_mode} for seed {name} works as expected")
@@ -101,17 +21,19 @@ common_test <- function(
         sprintf("`convert_mode()` for seed %s works as expected", name),
         {
             obj <- BPCellsMatrix(obj)
+            # float mode
             float_obj <- convert_mode(obj, "float")
             testthat::expect_s4_class(float_obj, "BPCellsMatrix")
             testthat::expect_identical(storage_mode(float_obj), "float")
             float_mat <- convert_mode(mat, "float")
             testthat::expect_equal(as.matrix(float_obj), float_mat)
+            # double mode
             double_obj <- convert_mode(obj, "double")
             testthat::expect_s4_class(double_obj, "BPCellsMatrix")
             testthat::expect_identical(storage_mode(double_obj), "double")
             double_mat <- convert_mode(mat, "double")
             testthat::expect_equal(as.matrix(double_obj), double_mat)
-            testthat::skip_if(any(as.matrix(obj) > .Machine$integer.max))
+            # integer mode
             integer_obj <- convert_mode(obj, "uint32_t")
             testthat::expect_s4_class(integer_obj, "BPCellsMatrix")
             testthat::expect_identical(storage_mode(integer_obj), "uint32_t")

@@ -4,19 +4,11 @@ path <- character()
 
 # Packed Memory object
 obj <- BPCells::write_matrix_memory(mat = sparse_mat)
-test_BPCellsArray(
-    obj, path,
-    mat = mat,
-    name = "Mem"
-)
+test_methods(obj, mat = mat, name = "PackedMatrixMemBase")
 
 # Unpacked Memory object
 obj <- BPCells::write_matrix_memory(mat = sparse_mat, FALSE)
-test_BPCellsArray(
-    obj, path,
-    mat = mat,
-    name = "Mem"
-)
+test_methods(obj, mat = mat, name = "UnpackedMatrixMemBase")
 
 testthat::test_that("`writeBPCellsMemMatrix()` works as expected", {
     testthat::expect_no_error(

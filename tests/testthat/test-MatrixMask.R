@@ -11,4 +11,5 @@ mask <- matrix(
 mat[mask > 0L] <- 0L
 mask <- methods::as(mask, "dgCMatrix")
 obj <- BPCells:::mask_matrix(obj, mask)
-test_BPCellsArray(obj, path, mat = mat, name = "Mask")
+
+test_methods(obj, mat = mat, name = "MatrixMask")

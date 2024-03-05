@@ -10,8 +10,4 @@ dimnames(mat) <- list(
     paste0("C", seq_len(ncol(obj)))
 )
 
-test_BPCellsArray(
-    obj, path,
-    mat = mat,
-    name = "RenameDims"
-)
+test_methods(obj, mat = mat, name = "RenameDims")
