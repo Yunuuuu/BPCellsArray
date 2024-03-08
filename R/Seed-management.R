@@ -54,11 +54,11 @@ methods::setMethod("seedform", "character", function(x) {
     invisible(old)
 })
 
-with_seedform <- function(seedform, code, envir = parent.frame()) {
+with_seedform <- function(seedform, code) {
     old <- get_seedform()
     set_seedform(seedform)
     on.exit(set_seedform(old))
-    eval(substitute(code), envir = envir)
+    force(code)
 }
 
 get_seedform <- function() GlobalOptions$SeedForm
