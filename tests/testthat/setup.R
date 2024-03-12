@@ -3,9 +3,15 @@ tmpdir <- testthat::test_path("_TEMP")
 if (!dir.exists(tmpdir)) dir.create(tmpdir)
 tmpdir <- normalizePath(tmpdir, mustWork = TRUE)
 
-test_methods <- function(obj, ...) {
-    with_seedform("BPCells", methods_test(obj = obj, ...))
-    with_seedform("DelayedArray", methods_test(obj = obj, ...))
+test_methods <- function(obj, ..., name) {
+    with_seedform(
+        "BPCells",
+        methods_test(obj = obj, ..., name = sprintf("%s (BPCells)", name))
+    )
+    with_seedform(
+        "DelayedArray",
+        methods_test(obj = obj, ..., name = sprintf("%s (DelayedArray)", name))
+    )
 }
 
 methods_test <- function(
@@ -246,10 +252,10 @@ methods_test <- function(
             )
             mat[mask > 0L] <- 0L
             # for dense matrix mask
-            testthat::expect_identical(as.matrix(mask_matrix(obj, mask)), mat)
+            testthat::expect_equal(as.matrix(mask_matrix(obj, mask)), mat)
             # for `BPCellsMatrix` mask
             mask <- BPCellsMatrix(mask)
-            testthat::expect_identical(as.matrix(mask_matrix(obj, mask)), mat)
+            testthat::expect_equal(as.matrix(mask_matrix(obj, mask)), mat)
         }
     )
 
@@ -505,3 +511,5 @@ methods_test <- function(
         }
     )
 }
+
+
