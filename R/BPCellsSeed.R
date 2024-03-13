@@ -80,7 +80,10 @@ coerce_into_dgCMatrix <- function(x) {
         methods::as(x, "dgCMatrix"),
         error = function(cnd) {
             cli::cli_abort(
-                "{.arg {arg}} must be a matrix-like object which can be coerced into {.cls dgCMatrix}",
+                c_msg(
+                    "{.arg {arg}} must be a matrix-like object",
+                    "which can be coerced into {.cls dgCMatrix}"
+                ),
                 call = call
             )
         }

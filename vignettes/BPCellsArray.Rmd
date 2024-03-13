@@ -1,6 +1,10 @@
 ---
 title: "BPCells backend for DelayedArray objects"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+  github_document: 
+    toc: true
 vignette: >
   %\VignetteIndexEntry{BPCellsArray}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,6 +17,32 @@ knitr::opts_chunk$set(
     comment = "#>"
 )
 ```
+
+## Installation
+To install from Bioconductor, use the following code:
+
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+BiocManager::install("BPCellsArray")
+```
+
+You can install the development version of `BPCellsArray` from [GitHub](https://github.com/Yunuuuu/BPCellsArray) with:
+
+```{r, eval=FALSE}
+if (!requireNamespace("pak")) {
+    install.packages("pak",
+        repos = sprintf(
+            "https://r-lib.github.io/p/pak/devel/%s/%s/%s",
+            .Platform$pkgType, R.Version()$os, R.Version()$arch
+        )
+    )
+}
+pak::pkg_install("Yunuuuu/BPCellsArray@main")
+```
+
+## Introduction
 
 BPCells is a package for high performance single cell analysis on RNA-seq and
 ATAC-seq datasets. This package just bring BPCells into Bioconductor single-cell
@@ -87,7 +117,7 @@ unimportant.
 
 Details see: <https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html>
 
-
+## Single cell analysis
 ```{r setup}
 library(BPCellsArray)
 library(SingleCellExperiment)
@@ -201,3 +231,7 @@ scater::plotReducedDim(
 )
 ```
 
+## sessionInfo
+```{r}
+sessionInfo()
+```

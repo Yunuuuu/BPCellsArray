@@ -7,8 +7,8 @@ Description: Implements a DelayedArray backend for reading and
     writing arrays in the BPCells storage layout. The resulting 
     BPCells*Arrays are compatible with all Bioconductor
     pipelines that can accept DelayedArray instances.
+BugReports: https://github.com/Yunuuuu/BPCellsArray
 License: MIT + file LICENSE
-Encoding: UTF-8
 Imports: 
     methods,
     BPCells (>= 0.1.0),
@@ -36,6 +36,8 @@ Suggests:
     scran,
     scuttle,
     testthat (>= 3.0.0)
+Encoding: UTF-8
+biocViews: Software, DataImport, DataRepresentation, Infrastructure
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.0
 Collate: 

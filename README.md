@@ -8,6 +8,34 @@
 [![R-CMD-check](https://github.com/Yunuuuu/BPCellsArray/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Yunuuuu/BPCellsArray/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
+## Installation
+
+To install from Bioconductor, use the following code:
+
+``` r
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+BiocManager::install("BPCellsArray")
+```
+
+You can install the development version of `BPCellsArray` from
+[GitHub](https://github.com/Yunuuuu/BPCellsArray) with:
+
+``` r
+if (!requireNamespace("pak")) {
+    install.packages("pak",
+        repos = sprintf(
+            "https://r-lib.github.io/p/pak/devel/%s/%s/%s",
+            .Platform$pkgType, R.Version()$os, R.Version()$arch
+        )
+    )
+}
+pak::pkg_install("Yunuuuu/BPCellsArray@main")
+```
+
+## Introduction
+
 BPCells is a package for high performance single cell analysis on
 RNA-seq and ATAC-seq datasets. This package just bring BPCells into
 Bioconductor single-cell workflow.
@@ -81,6 +109,8 @@ in the event memory usage is unimportant.
 
 Details see:
 <https://bnprks.github.io/BPCells/articles/web-only/bitpacking-format.html>
+
+## Single cell analysis
 
 ``` r
 library(BPCellsArray)
@@ -391,4 +421,80 @@ scater::plotReducedDim(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+
+## sessionInfo
+
+``` r
+sessionInfo()
+#> R version 4.3.1 (2023-06-16)
+#> Platform: x86_64-pc-linux-gnu (64-bit)
+#> Running under: Ubuntu 22.04.3 LTS
+#> 
+#> Matrix products: default
+#> BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/libmkl_rt.so;  LAPACK version 3.8.0
+#> 
+#> locale:
+#>  [1] LC_CTYPE=C.UTF-8       LC_NUMERIC=C           LC_TIME=C.UTF-8       
+#>  [4] LC_COLLATE=C.UTF-8     LC_MONETARY=C.UTF-8    LC_MESSAGES=C.UTF-8   
+#>  [7] LC_PAPER=C.UTF-8       LC_NAME=C              LC_ADDRESS=C          
+#> [10] LC_TELEPHONE=C         LC_MEASUREMENT=C.UTF-8 LC_IDENTIFICATION=C   
+#> 
+#> time zone: Asia/Shanghai
+#> tzcode source: system (glibc)
+#> 
+#> attached base packages:
+#> [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+#> [8] base     
+#> 
+#> other attached packages:
+#>  [1] SingleCellExperiment_1.22.0 SummarizedExperiment_1.30.2
+#>  [3] Biobase_2.60.0              GenomicRanges_1.52.0       
+#>  [5] GenomeInfoDb_1.36.1         IRanges_2.34.1             
+#>  [7] S4Vectors_0.38.1            BiocGenerics_0.46.0        
+#>  [9] MatrixGenerics_1.12.3       matrixStats_1.2.0          
+#> [11] BPCellsArray_0.0.0.9000    
+#> 
+#> loaded via a namespace (and not attached):
+#>  [1] tidyselect_1.2.0          viridisLite_0.4.2        
+#>  [3] farver_2.1.1              dplyr_1.1.4              
+#>  [5] vipor_0.4.5               viridis_0.6.4            
+#>  [7] bitops_1.0-7              fastmap_1.1.1            
+#>  [9] RCurl_1.98-1.12           bluster_1.11.4           
+#> [11] digest_0.6.33             rsvd_1.0.5               
+#> [13] lifecycle_1.0.4           cluster_2.1.4            
+#> [15] statmod_1.5.0             magrittr_2.0.3           
+#> [17] compiler_4.3.1            rlang_1.1.2              
+#> [19] tools_4.3.1               igraph_1.5.0.1           
+#> [21] utf8_1.2.4                yaml_2.3.8               
+#> [23] knitr_1.45                labeling_0.4.3           
+#> [25] S4Arrays_1.3.2            dqrng_0.3.0              
+#> [27] DelayedArray_0.29.0       abind_1.4-5              
+#> [29] BiocParallel_1.34.2       withr_2.5.2              
+#> [31] grid_4.3.1                fansi_1.0.6              
+#> [33] beachmat_2.16.0           colorspace_2.1-0         
+#> [35] edgeR_3.42.4              ggplot2_3.4.4            
+#> [37] scales_1.3.0              cli_3.6.2                
+#> [39] rmarkdown_2.25            crayon_1.5.2             
+#> [41] generics_0.1.3            metapod_1.8.0            
+#> [43] RSpectra_0.16-1           DelayedMatrixStats_1.22.1
+#> [45] scuttle_1.10.1            ggbeeswarm_0.7.2         
+#> [47] zlibbioc_1.46.0           parallel_4.3.1           
+#> [49] XVector_0.40.0            BPCells_0.1.0            
+#> [51] vctrs_0.6.5               Matrix_1.6-4             
+#> [53] BiocSingular_1.16.0       BiocNeighbors_1.18.0     
+#> [55] ggrepel_0.9.3             irlba_2.3.5.1            
+#> [57] beeswarm_0.4.0            scater_1.31.1            
+#> [59] locfit_1.5-9.8            limma_3.56.2             
+#> [61] glue_1.6.2                codetools_0.2-19         
+#> [63] cowplot_1.1.1             uwot_0.1.16              
+#> [65] gtable_0.3.4              ScaledMatrix_1.8.1       
+#> [67] munsell_0.5.0             tibble_3.2.1             
+#> [69] pillar_1.9.0              htmltools_0.5.7          
+#> [71] GenomeInfoDbData_1.2.10   R6_2.5.1                 
+#> [73] sparseMatrixStats_1.12.2  evaluate_0.23            
+#> [75] lattice_0.22-5            highr_0.10               
+#> [77] scran_1.28.2              Rcpp_1.0.11              
+#> [79] gridExtra_2.3             SparseArray_1.3.3        
+#> [81] xfun_0.41                 pkgconfig_2.0.3
+```
