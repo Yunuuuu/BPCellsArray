@@ -7,12 +7,13 @@ obj <- BPCells::write_matrix_hdf5(
 
 testthat::test_that("`writeBPCellsHDF5Matrix()` works as expected", {
     testthat::expect_error(
-        writeBPCellsHDF5Matrix(mat, "BPCellsArray", path = path)
+        writeBPCellsHDF5Matrix(mat, "BPCells", path = path)
     )
     testthat::expect_no_error(
         obj <- writeBPCellsHDF5Matrix(mat,
+            "BPCells",
             path = path,
-            "BPCellsArray", overwrite = TRUE
+            overwrite = TRUE
         )
     )
     testthat::expect_identical(path(obj), path)
