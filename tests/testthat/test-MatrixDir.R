@@ -3,6 +3,7 @@ path <- normalizePath(tempfile(tmpdir = tmpdir), mustWork = FALSE)
 obj <- BPCells::write_matrix_dir(mat = as(mat, "dgCMatrix"), dir = path)
 
 testthat::test_that("`writeBPCellsDirMatrix()` works as expected", {
+    testthat::expect_error(writeBPCellsDirMatrix(mat, path = path))
     testthat::expect_no_error(
         obj <- writeBPCellsDirMatrix(mat, path = path, overwrite = TRUE)
     )
