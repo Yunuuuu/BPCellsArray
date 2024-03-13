@@ -41,32 +41,17 @@ methods::setGeneric(
     buffer_size = 16384L,
     chunk_size = 1024L,
     gzip = 0L,
-    overwrite = FALSE,
     seedform = NULL) {
     assert_string(path, empty_ok = FALSE)
-    assert_bool(overwrite)
-    if (file.exists(path)) {
-        if (overwrite) {
-            if (!file.remove(path)) {
-                cli::cli_abort("Cannot remove file ({.arg path}): {path}")
-            }
-        } else {
-            cli::cli_abort(c(
-                "{.arg path} requested is exist",
-                i = "Try to set {.code overwrite = TRUE}"
-            ))
-        }
-    }
+    if (file.exists(path)) cli::cli_abort("{.arg path} requested is exist")
     lst <- extract_IterableMatrix_and_seedform(x, seedform)
     seed <- lst$seed
-    if (storage_mode(seed) != "uint32_t") {
-        cli::cli_warn(c(
-            "Incompatible storage mode with 10x HDF5 file",
-            i = "Converting {.arg x} into {.field uint32_t} mode"
+    mode <- storage_mode(seed)
+    if (mode != "uint32_t") {
+        cli::cli_warn(c_msg(
+            "10x HDF5 file should be a {.field uint32_t} matrix,",
+            "but you provided a {.field {mode}}"
         ))
-        seed <- BPCells::convert_matrix_type(
-            matrix = seed, type = "uint32_t"
-        )
     }
     obj <- BPCells::write_matrix_10x_hdf5(
         mat = seed,
@@ -78,7 +63,8 @@ methods::setGeneric(
         feature_metadata = feature_metadata,
         buffer_size = as.integer(buffer_size),
         chunk_size = as.integer(chunk_size),
-        gzip_level = as.integer(gzip)
+        gzip_level = as.integer(gzip),
+        type = mode
     )
     with_seedform(lst$seedform, DelayedArray(obj))
 }
@@ -87,7 +73,6 @@ methods::setGeneric(
 #' @inherit BPCellsDir-IO return
 #' @inheritParams BPCellsDir-IO
 #' @param gzip `r rd_gzip()`.
-#' @param overwrite A bool, If `TRUE`, will overwrite existing data in `path`.
 #' @inherit BPCellsSeed seealso
 #' @export
 #' @rdname BPCells10xHDF5-IO

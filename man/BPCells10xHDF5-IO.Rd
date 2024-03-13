@@ -27,7 +27,6 @@ writeBPCells10xHDF5Matrix(x, ...)
   buffer_size = 16384L,
   chunk_size = 1024L,
   gzip = 0L,
-  overwrite = FALSE,
   seedform = NULL
 )
 }
@@ -62,8 +61,6 @@ to store for each feature}
 \item{chunk_size}{For performance tuning only. The chunk size used for the HDF5 array storage.}
 
 \item{gzip}{Gzip compression level. Default is 0 (no gzip compression).}
-
-\item{overwrite}{A bool, If \code{TRUE}, will overwrite existing data in \code{path}.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.
