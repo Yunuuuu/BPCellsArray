@@ -48,9 +48,9 @@ Bitpacking Compression.}
 existing data.}
 
 \item{gzip}{Gzip compression level. Default is 0 (no gzip compression). This is recommended when both compression and
-compatibility with outside programs is required. Using \code{compress=TRUE} is
+compatibility with outside programs is required. Using \code{bitpacking=TRUE} is
 recommended as it is >10x faster with often similar compression levels. So
-\code{gzip} will always be zero when \code{compress} is \code{TRUE}.}
+\code{gzip} will always be zero when \code{bitpacking} is \code{TRUE}.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

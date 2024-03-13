@@ -57,9 +57,9 @@ methods::setGeneric(
 #' @inheritParams BPCellsDir-IO
 #' @inheritParams BPCells::open_matrix_hdf5
 #' @param gzip `r rd_gzip()`. This is recommended when both compression and
-#' compatibility with outside programs is required. Using `compress=TRUE` is
+#' compatibility with outside programs is required. Using `bitpacking=TRUE` is
 #' recommended as it is >10x faster with often similar compression levels. So
-#' `gzip` will always be zero when `compress` is `TRUE`.
+#' `gzip` will always be zero when `bitpacking` is `TRUE`.
 #' @inherit BPCells::write_matrix_hdf5 details
 #' @inherit BPCellsDir-IO return
 #' @inherit BPCellsSeed seealso
