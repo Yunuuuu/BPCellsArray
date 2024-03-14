@@ -5,6 +5,7 @@ mould_BPCells("BPCellsDelayedAbind", "ColBindMatrices",
     contains = c("BPCellsDelayedOp", "DelayedAbind")
 )
 
+# methods::showMethods("is_noop", where = asNamespace("DelayedArray"))
 #' @importFrom DelayedArray is_noop
 #' @export
 #' @rdname BPCellsDelayedOp-class

@@ -95,6 +95,22 @@ delayedop_call_BPCells_method <- function(..., before = NULL, after = NULL, Arra
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# https://developer.r-project.org/howMethodsWork.pdf
+# The current implementation (as of version 2.4.0 of R) works as follows. The
+# individual distances, as explained in section 3, are the number of steps in
+# the path of superclasses between the target and the defined class, with the
+# distance to "ANY" larger than any other distance. If several arguments are
+# involved, the distances for each argument are added and the total distance is
+# used to compare candidate methods. In the case of ties, the first of the
+# candidates is chosen. Because the candidate signatures are effectively an
+# outer product of the individual superclass lists, and because of the way those
+# lists are created, the effect is to select the first possible method in an
+# ordering by the order of superclasses in the "contains" slot of the class
+# definition, ordering first according to the first argument in the signature,
+# then the second, etc
+# So we should always put BPCellsDelayedOp Class in the first super-class of
+# other extended DelayedOp object.
+
 #' BPCellsDelayedOp objects
 #'
 #' Provide a parallel [DelayedOp][DelayedArray::DelayedOp] object
