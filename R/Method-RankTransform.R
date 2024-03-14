@@ -1,8 +1,8 @@
 mould_BPCells("BPCellsDelayedRankTransform",
     "MatrixRankTransform",
     remove = "matrix",
-    # BPCellsDelayedUnaryIsoOp: `seed` slot
-    contains = "BPCellsDelayedUnaryIsoOp"
+    # DelayedUnaryIsoOp: `seed` slot
+    contains = c("BPCellsDelayedOp", "DelayedUnaryIsoOp")
 )
 
 

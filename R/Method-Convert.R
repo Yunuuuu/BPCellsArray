@@ -1,7 +1,9 @@
 ###########################################################
+#' @importClassesFrom DelayedArray DelayedUnaryOp
 mould_BPCells("BPCellsDelayedConvert", "ConvertMatrixType",
-    # BPCellsDelayedUnaryOp: `seed` slot
-    remove = "matrix", contains = "BPCellsDelayedUnaryOp"
+    # DelayedUnaryOp: `seed` slot
+    remove = "matrix",
+    contains = c("BPCellsDelayedOp", "DelayedUnaryOp")
 )
 
 #################################################################

@@ -3,56 +3,13 @@
 #' @importClassesFrom DelayedArray DelayedSubset
 mould_BPCells("BPCellsDelayedSubset", "MatrixSubset",
     remove = c("matrix", "row_selection", "col_selection"),
-    # BPCellsDelayedUnaryOp: `seed` slot
-    # DelayedSubset: `index` slot
-    contains = c("DelayedSubset", "BPCellsDelayedUnaryOp")
+    # DelayedSubset: `seed` and `index` slot
+    contains = c("BPCellsDelayedOp", "DelayedSubset")
 )
-
-### list_methods("DelayedSubset")
-### Seed contract
-### here: we override the `DelayedSubset` methods
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "dim", "BPCellsDelayedSubset",
-    delayedop_call_BPCells_method(x = )
-)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "dimnames", "BPCellsDelayedSubset",
-    delayedop_call_BPCells_method(x = )
-)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod("is_sparse", "BPCellsDelayedSubset", function(x) TRUE)
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "extract_array", "BPCellsDelayedSubset",
-    delayedop_call_BPCells_method(x = , index = )
-)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "OLD_extract_sparse_array", "BPCellsDelayedSubset",
-    delayedop_call_BPCells_method(x = , index = )
-)
-
 #' @importFrom DelayedArray is_noop
 #' @export
 #' @rdname BPCellsDelayedOp-class
 methods::setMethod("is_noop", "BPCellsDelayedSubset", function(x) FALSE)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "chunkdim", "BPCellsDelayedSubset",
-    delayedop_call_BPCells_method(x = )
-)
 
 #############################################################
 methods::setMethod("to_DelayedArray", "MatrixSubset", function(object) {

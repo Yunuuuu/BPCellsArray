@@ -3,25 +3,14 @@
 #' @importClassesFrom DelayedArray DelayedSetDimnames
 mould_BPCells("BPCellsDelayedRenameDims", "RenameDims",
     remove = "matrix",
-    # BPCellsDelayedUnaryIsoOp: `seed` slot
-    # both class provide `dimnames` slot
-    contains = c("DelayedSetDimnames", "BPCellsDelayedUnaryIsoOp")
+    # DelayedSetDimnames: `seed` and `dimnames` slot
+    contains = c("BPCellsDelayedOp", "DelayedSetDimnames")
 )
 
-### list_methods("DelayedSetDimnames")
-### Seed contract
-### here: we override the `DelayedSetDimnames` methods
 #' @importFrom DelayedArray is_noop
 #' @export
 #' @rdname BPCellsDelayedOp-class
 methods::setMethod("is_noop", "BPCellsDelayedRenameDims", function(x) FALSE)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "dimnames", "BPCellsDelayedRenameDims",
-    delayedop_call_BPCells_method(x = )
-)
 
 ############################################################
 methods::setMethod("to_DelayedArray", "RenameDims", function(object) {

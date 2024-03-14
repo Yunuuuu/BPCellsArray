@@ -1,7 +1,8 @@
+#' @importClassesFrom DelayedArray DelayedUnaryIsoOp
 mould_BPCells("BPCellsDelayedTransformed", "TransformedMatrix",
     remove = "matrix",
-    # BPCellsDelayedUnaryIsoOp: `seed` slot
-    contains = "BPCellsDelayedUnaryIsoOp"
+    # DelayedUnaryIsoOp: `seed` slot
+    contains = c("BPCellsDelayedOp", "DelayedUnaryIsoOp")
 )
 
 methods::setMethod("to_DelayedArray", "TransformedMatrix", function(object) {

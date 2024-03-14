@@ -1,9 +1,10 @@
 ############################################################
 # MatrixMultiply
+#' @importClassesFrom DelayedArray DelayedNaryOp
 mould_BPCells("BPCellsDelayedMultiply", "MatrixMultiply",
     remove = c("left", "right"),
     # BPCellsDelayedNaryOp: `seeds` slot
-    contains = "BPCellsDelayedNaryOp"
+    contains = c("BPCellsDelayedOp", "DelayedNaryOp")
 )
 
 #####################################################

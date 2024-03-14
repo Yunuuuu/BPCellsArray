@@ -1,45 +1,14 @@
 # No need to mould `RowBindMatrices` Class
 mould_BPCells("BPCellsDelayedAbind", "ColBindMatrices",
     remove = "matrix_list",
-    # DelayedAbind: `along` slot
-    # BPCellsDelayedNaryOp: `seeds` slot
-    contains = c("DelayedAbind", "BPCellsDelayedNaryOp")
+    # DelayedAbind: `along` and `seeds` slot
+    contains = c("BPCellsDelayedOp", "DelayedAbind")
 )
 
-### list_methods("DelayedAbind")
-### Seed contract
-### here: we override the `DelayedAbind` methods
+#' @importFrom DelayedArray is_noop
 #' @export
 #' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "dim", "BPCellsDelayedAbind",
-    delayedop_call_BPCells_method(x = )
-)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "dimnames", "BPCellsDelayedAbind",
-    delayedop_call_BPCells_method(x = )
-)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod("is_sparse", "BPCellsDelayedAbind", function(x) TRUE)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "extract_array", "BPCellsDelayedAbind",
-    delayedop_call_BPCells_method(x = , index = )
-)
-
-#' @export
-#' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "OLD_extract_sparse_array", "BPCellsDelayedAbind",
-    delayedop_call_BPCells_method(x = , index = )
-)
+methods::setMethod("is_noop", "BPCellsDelayedAbind", function(x) FALSE)
 
 ############################################################
 to_DelayedAbind <- function(object, along) {

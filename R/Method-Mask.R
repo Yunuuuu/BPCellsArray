@@ -1,15 +1,15 @@
-methods::setClass("BPCellsDelayedMask", contains = "VIRTUAL")
-
+#' @importClassesFrom DelayedArray DelayedNaryIsoOp
 mould_BPCells("BPCellsDelayedMaskNaryIsoOp", "MatrixMask",
     remove = c("matrix", "mask"),
-    # BPCellsDelayedNaryIsoOp: `seeds` slot
-    contains = c("BPCellsDelayedMask", "BPCellsDelayedNaryIsoOp")
+    # DelayedNaryIsoOp: `seeds` slot
+    contains = c("BPCellsDelayedOp", "DelayedNaryIsoOp")
 )
 
+#' @importClassesFrom DelayedArray DelayedUnaryIsoOp
 mould_BPCells("BPCellsDelayedMaskUnaryIsoOp", "MatrixMask",
     remove = "matrix",
-    # BPCellsDelayedUnaryIsoOp: `seed` slot
-    contains = c("BPCellsDelayedMask", "BPCellsDelayedUnaryIsoOp")
+    # DelayedUnaryIsoOp: `seed` slot
+    contains = c("BPCellsDelayedOp", "DelayedUnaryIsoOp")
 )
 
 ###################################################################
@@ -49,15 +49,21 @@ methods::setMethod("to_BPCells", "BPCellsDelayedMaskUnaryIsoOp", function(object
     to_BPCellsUnaryOp(object = object, Class = "MatrixMask")
 })
 
-summary.BPCellsDelayedMask <- function(object) {
+summary.MatrixMask <- function(object) {
     out <- "Mask entries"
     if (object@invert) out <- paste(out, "(inverted)")
     out
 }
-methods::setMethod("summary", "BPCellsDelayedMask", summary.BPCellsDelayedMask)
+methods::setMethod("summary", "MatrixMask", summary.MatrixMask)
 
-summary.MatrixMask <- summary.BPCellsDelayedMask
-methods::setMethod("summary", "MatrixMask", summary.BPCellsDelayedMask)
+summary.BPCellsDelayedMaskNaryIsoOp <- summary.MatrixMask
+methods::setMethod("summary", "BPCellsDelayedMaskNaryIsoOp", summary.MatrixMask)
+
+summary.BPCellsDelayedMaskUnaryIsoOp <- summary.MatrixMask
+methods::setMethod(
+    "summary", "BPCellsDelayedMaskUnaryIsoOp",
+    summary.MatrixMask
+)
 
 ###################################################################
 ###########################  Methods  #############################

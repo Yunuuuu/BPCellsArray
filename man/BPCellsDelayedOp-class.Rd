@@ -17,31 +17,9 @@
 \alias{dimnames,BPCellsDelayedOp-method}
 \alias{t,BPCellsDelayedOp-method}
 \alias{chunkdim,BPCellsDelayedOp-method}
-\alias{chunkdim,BPCellsDelayedUnaryOp-method}
-\alias{dim,BPCellsDelayedUnaryIsoOp-method}
-\alias{dimnames,BPCellsDelayedUnaryIsoOp-method}
-\alias{is_sparse,BPCellsDelayedUnaryIsoOp-method}
-\alias{extract_array,BPCellsDelayedUnaryIsoOp-method}
-\alias{OLD_extract_sparse_array,BPCellsDelayedUnaryIsoOp-method}
-\alias{dim,BPCellsDelayedNaryIsoOp-method}
-\alias{dimnames,BPCellsDelayedNaryIsoOp-method}
-\alias{is_sparse,BPCellsDelayedNaryIsoOp-method}
-\alias{extract_array,BPCellsDelayedNaryIsoOp-method}
-\alias{OLD_extract_sparse_array,BPCellsDelayedNaryIsoOp-method}
-\alias{dim,BPCellsDelayedAbind-method}
-\alias{dimnames,BPCellsDelayedAbind-method}
-\alias{is_sparse,BPCellsDelayedAbind-method}
-\alias{extract_array,BPCellsDelayedAbind-method}
-\alias{OLD_extract_sparse_array,BPCellsDelayedAbind-method}
+\alias{is_noop,BPCellsDelayedAbind-method}
 \alias{is_noop,BPCellsDelayedRenameDims-method}
-\alias{dimnames,BPCellsDelayedRenameDims-method}
-\alias{dim,BPCellsDelayedSubset-method}
-\alias{dimnames,BPCellsDelayedSubset-method}
-\alias{is_sparse,BPCellsDelayedSubset-method}
-\alias{extract_array,BPCellsDelayedSubset-method}
-\alias{OLD_extract_sparse_array,BPCellsDelayedSubset-method}
 \alias{is_noop,BPCellsDelayedSubset-method}
-\alias{chunkdim,BPCellsDelayedSubset-method}
 \title{BPCellsDelayedOp objects}
 \usage{
 \method{as.matrix}{BPCellsDelayedOp}(x)
@@ -70,55 +48,11 @@
 
 \S4method{chunkdim}{BPCellsDelayedOp}(x)
 
-\S4method{chunkdim}{BPCellsDelayedUnaryOp}(x)
-
-\S4method{dim}{BPCellsDelayedUnaryIsoOp}(x)
-
-\S4method{dimnames}{BPCellsDelayedUnaryIsoOp}(x)
-
-\S4method{is_sparse}{BPCellsDelayedUnaryIsoOp}(x)
-
-\S4method{extract_array}{BPCellsDelayedUnaryIsoOp}(x, index)
-
-\S4method{OLD_extract_sparse_array}{BPCellsDelayedUnaryIsoOp}(x, index)
-
-\S4method{dim}{BPCellsDelayedNaryIsoOp}(x)
-
-\S4method{dimnames}{BPCellsDelayedNaryIsoOp}(x)
-
-\S4method{is_sparse}{BPCellsDelayedNaryIsoOp}(x)
-
-\S4method{extract_array}{BPCellsDelayedNaryIsoOp}(x, index)
-
-\S4method{OLD_extract_sparse_array}{BPCellsDelayedNaryIsoOp}(x, index)
-
-\S4method{dim}{BPCellsDelayedAbind}(x)
-
-\S4method{dimnames}{BPCellsDelayedAbind}(x)
-
-\S4method{is_sparse}{BPCellsDelayedAbind}(x)
-
-\S4method{extract_array}{BPCellsDelayedAbind}(x, index)
-
-\S4method{OLD_extract_sparse_array}{BPCellsDelayedAbind}(x, index)
+\S4method{is_noop}{BPCellsDelayedAbind}(x)
 
 \S4method{is_noop}{BPCellsDelayedRenameDims}(x)
 
-\S4method{dimnames}{BPCellsDelayedRenameDims}(x)
-
-\S4method{dim}{BPCellsDelayedSubset}(x)
-
-\S4method{dimnames}{BPCellsDelayedSubset}(x)
-
-\S4method{is_sparse}{BPCellsDelayedSubset}(x)
-
-\S4method{extract_array}{BPCellsDelayedSubset}(x, index)
-
-\S4method{OLD_extract_sparse_array}{BPCellsDelayedSubset}(x, index)
-
 \S4method{is_noop}{BPCellsDelayedSubset}(x)
-
-\S4method{chunkdim}{BPCellsDelayedSubset}(x)
 }
 \arguments{
 \item{x}{A \code{BPCellsDelayedOp} object.}
