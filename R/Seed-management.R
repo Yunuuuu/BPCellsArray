@@ -10,14 +10,13 @@
 #'
 #' Both methods are generally effective for most operations. However, choosing
 #' `seedform=DelayedArray` ensures better compatibility with DelayedArray
-#' package. It should be noted that [showtree][DelayedArray::showtree] and
-#' [seedApply][DelayedArray::seedApply] from DelayedArray do not function well
-#' when `seedform=BPCells`. Nonetheless, BPCellsArray provides its own
-#' [seedApply] and [showtree] functions for both methods. Overall, executing
-#' operations with `seedform=BPCells` is expected to be faster due to the
-#' absence of the need to convert between `IterableMatrix` and
-#' [BPCellsDelayedOp][BPCellsDelayedOp-class] object. `seedform=BPCells` is also
-#' the default method.
+#' package. It should be noted that some methods from DelayedArray do not
+#' function well when `seedform=BPCells`, but executing operations with
+#' `seedform=BPCells` is expected to be a little faster due to the absence of
+#' the need to convert between `IterableMatrix` and
+#' [BPCellsDelayedOp][BPCellsDelayedOp-class] object. For compatible with all
+#' DelayedArray operations, `seedform=DelayedArray` is set as the default
+#' method. 
 #'
 #' @section Default seedform: All function in `BPCellsArray` will use the global
 #' `seedform` value as the default seedform (use `seedform()` to check), except
@@ -74,7 +73,7 @@ match_seedform <- function(seedform, default = get_seedform()) {
 GlobalOptions <- new.env(parent = emptyenv())
 SupportedSeedForm <- c("BPCells", "DelayedArray")
 # set Global default `seedform`
-set_seedform("BPCells")
+set_seedform("DelayedArray")
 
 # helper function used to extract the `IterableMatrix` and seedform from the
 # user input, although user shouldn't provide `BPCellsDelayedOp` directly,

@@ -233,7 +233,7 @@ bitpacking_mat
 #> Gene_2999       217      1774       369   .       173      1415
 #> Gene_3000      3014       215      1219   .       137       300
 #> 
-#> Seed form: BPCells
+#> Seed form: DelayedArray
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
@@ -259,13 +259,13 @@ bitpacking_mat[1:10, 1:10]
 #> Gene_0009      464      494       21   .      135      167
 #> Gene_0010       52      142        1   .      454      157
 #> 
-#> Seed form: BPCells
+#> Seed form: DelayedArray
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
 #> Queued Operations:
 #> 10x10 double, sparse: Subset matrix
-#> └─ 3000x2000 double, sparse: [seed] Load compressed matrix from directory
+#> └─ 3000x2000 double, sparse: [seed] MatrixDir object
 as.matrix(bitpacking_mat[1:10, 1:10])
 #>           Cell_001 Cell_002 Cell_003 Cell_004 Cell_005 Cell_006 Cell_007
 #> Gene_0001        0        0        0        0       51        0       16
@@ -339,7 +339,7 @@ assay(sce, "logcounts")
 #> Gene_2999   7.744385  10.867509   8.500775   .  7.485524 10.469749
 #> Gene_3000  11.534041   7.828500  10.222001   .  7.151042  8.235757
 #> 
-#> Seed form: BPCells
+#> Seed form: DelayedArray
 #> Storage Data type: double
 #> Storage axis: col major
 #> 
@@ -347,7 +347,7 @@ assay(sce, "logcounts")
 #> 3000x2000 double, sparse: Transform by scale and (or) shift
 #> └─ 3000x2000 double, sparse: Transform by `log1p` (double-precision)
 #>    └─ 3000x2000 double, sparse: Transform by scale and (or) shift
-#>       └─ 3000x2000 double, sparse: [seed] Load compressed matrix from directory
+#>       └─ 3000x2000 double, sparse: [seed] MatrixDir object
 ```
 
 Both `count` and `logcounts` share the same disk path.
@@ -359,8 +359,6 @@ identical(path(assay(sce, "counts")), path(assay(sce, "logcounts")))
 
 ``` r
 dec_sce <- scran::modelGeneVar(sce)
-#> Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):
-#> collapsing to unique 'x' values
 set.seed(1L)
 scater::runPCA(sce,
     subset_row = scran::getTopHVGs(dec_sce, n = 2000L),

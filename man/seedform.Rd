@@ -53,14 +53,13 @@ seed:
 
 Both methods are generally effective for most operations. However, choosing
 \code{seedform=DelayedArray} ensures better compatibility with DelayedArray
-package. It should be noted that \link[DelayedArray:showtree]{showtree} and
-\link[DelayedArray:showtree]{seedApply} from DelayedArray do not function well
-when \code{seedform=BPCells}. Nonetheless, BPCellsArray provides its own
-\link{seedApply} and \link{showtree} functions for both methods. Overall, executing
-operations with \code{seedform=BPCells} is expected to be faster due to the
-absence of the need to convert between \code{IterableMatrix} and
-\link[=BPCellsDelayedOp-class]{BPCellsDelayedOp} object. \code{seedform=BPCells} is also
-the default method.
+package. It should be noted that some methods from DelayedArray do not
+function well when \code{seedform=BPCells}, but executing operations with
+\code{seedform=BPCells} is expected to be a little faster due to the absence of
+the need to convert between \code{IterableMatrix} and
+\link[=BPCellsDelayedOp-class]{BPCellsDelayedOp} object. For compatible with all
+DelayedArray operations, \code{seedform=DelayedArray} is set as the default
+method.
 }
 \section{Default seedform}{
  All function in \code{BPCellsArray} will use the global
