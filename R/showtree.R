@@ -227,19 +227,19 @@ methods::setMethod("nseed", "RowBindMatrices", function(x) {
     sum(vapply(x@matrix_list, nseed, integer(1L), USE.NAMES = FALSE))
 })
 
-IS_NOT_SUPOORTED_IF_MULTIPLE_SEEDS <- c_msg(
+IS_NOT_SUPOORTED_IF_MULTIPLE_SEEDS <- paste(
     "is not supported on a DelayedArray object with multiple seeds at the",
     "moment. Note that you can check the number of seeds with nseed()."
 )
 
 abort_nary_seed <- function(call = rlang::caller_env()) {
-    cli::cli_abort(c_msg("{.fn seed}", IS_NOT_SUPOORTED_IF_MULTIPLE_SEEDS),
+    cli::cli_abort(paste("{.fn seed}", IS_NOT_SUPOORTED_IF_MULTIPLE_SEEDS),
         call = call
     )
 }
 
 abort_nary_path <- function(call = rlang::caller_env()) {
-    cli::cli_abort(c_msg("{.fn path}", IS_NOT_SUPOORTED_IF_MULTIPLE_SEEDS),
+    cli::cli_abort(paste("{.fn path}", IS_NOT_SUPOORTED_IF_MULTIPLE_SEEDS),
         call = call
     )
 }

@@ -64,7 +64,7 @@ NULL
     if (x@transpose != y@transpose) {
         if (x@transpose) {
             cli::cli_warn(c(
-                "!" = c_msg(
+                "!" = paste(
                     "{.arg x} is transposed but {.arg y} is not",
                     "transposing the storage axis for {.arg x}",
                     sep = ", "
@@ -74,7 +74,7 @@ NULL
             x <- BPCells::transpose_storage_order(x)
         } else {
             cli::cli_warn(c(
-                "!" = c_msg(
+                "!" = paste(
                     "{.arg y} is transposed but {.arg x} is not",
                     "transposing the storage axis for {.arg y}",
                     sep = ", "

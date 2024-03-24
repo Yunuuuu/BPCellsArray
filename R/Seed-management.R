@@ -95,7 +95,7 @@ extract_IterableMatrix_and_seedform <- function(x, seedform) {
 }
 
 .validate_seedform <- function(seedform, arg = rlang::caller_arg(seedform)) {
-    msg <- c_msg(
+    msg <- paste(
         style_arg(arg), "must be a single string of",
         oxford_comma(style_val(SupportedSeedForm), sep = " ", final = "or")
     )

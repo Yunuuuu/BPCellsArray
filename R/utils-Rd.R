@@ -3,7 +3,7 @@ rd_matrix <- function() {
 }
 
 rd_seed <- function() {
-    c_msg(
+    paste(
         "matrix-like object which can be coerced into",
         "[dgCMatrix][Matrix::dgCMatrix-class] object"
     )

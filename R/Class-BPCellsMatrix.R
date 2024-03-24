@@ -124,7 +124,7 @@ methods::setReplaceMethod("seedform", "BPCellsMatrix", function(x, value) {
     value <- match_seedform(value)
     if (value == x@SeedForm) {
         msg <- "{.arg x@seed} is already in {.pkg {value}} format"
-        cli::cli_inform(c_msg(msg, "nothing to do", sep = ", "))
+        cli::cli_inform(paste(msg, "nothing to do", sep = ", "))
         return(x)
     }
     with_seedform(value, DelayedArray(x@seed))

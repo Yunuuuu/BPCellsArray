@@ -21,10 +21,6 @@ rename <- function(x, replace) {
     x
 }
 
-c_msg <- function(..., sep = " ") {
-    paste(..., sep = sep)
-}
-
 fclass <- function(object) class(object)[1L]
 
 list_methods <- function(class, where = asNamespace("DelayedArray"), ...) {

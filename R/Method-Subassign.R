@@ -33,7 +33,7 @@ methods::setMethod(
             # keep consistent storage axis
             if (x@transpose != value@transpose) {
                 cli::cli_warn(c(
-                    "!" = c_msg(
+                    "!" = paste(
                         "Incompatible storage axis between",
                         "{.arg x} and {.arg value}"
                     ),

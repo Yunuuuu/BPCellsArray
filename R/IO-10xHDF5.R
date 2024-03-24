@@ -48,7 +48,7 @@ methods::setGeneric(
     seed <- lst$seed
     mode <- storage_mode(seed)
     if (mode != "uint32_t") {
-        cli::cli_warn(c_msg(
+        cli::cli_warn(paste(
             "10x HDF5 file should be a {.field uint32_t} matrix,",
             "but you provided a {.field {mode}}"
         ))

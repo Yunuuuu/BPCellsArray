@@ -82,11 +82,11 @@ methods::setMethod(
             axis <- match.arg(axis, c("row", "col"))
             if (axis != main_axis) {
                 cli::cli_warn(c(
-                    "!" = c_msg(
+                    "!" = paste(
                         "{.arg axis} specified is different",
                         "with the storage axis of {.arg object}"
                     ),
-                    i = c_msg(
+                    i = paste(
                         "transposing the storage axis of",
                         "{.arg object} into {axis}"
                     )

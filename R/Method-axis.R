@@ -33,7 +33,7 @@ methods::setMethod("transpose_axis", "ANY", function(object, ...) {
 
 INCOMPATIBLE_STORAGE_AXIS_MSG <- c(
     i = "you can check the storage axis with {.fn storage_axis}",
-    i = c_msg(
+    i = paste(
         "you can transpose the storage axis manually with",
         "{.fn transpose_axis} to specify the new storage path"
     )

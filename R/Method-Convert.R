@@ -132,11 +132,11 @@ methods::setMethod("storage_mode", "matrix", function(object) {
 # Generage warning message for usage of cli::cli_warn
 incompatible_mode_msg <- function(x, y, x_mode) {
     c(
-        "!" = c_msg(
+        "!" = paste(
             "Incompatible storage mode between",
             style_arg(x), "and", style_arg(y)
         ),
-        i = c_msg(
+        i = paste(
             "Convert", style_arg(y), "into",
             style_field(x_mode), "mode"
         )
