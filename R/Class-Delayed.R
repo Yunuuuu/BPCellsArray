@@ -14,9 +14,9 @@
 
 ###################################################################
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# the `@<-` function will check slot class. For `IterableMatrix` object,
-# we `@matrix` must be a `IterableMatrix` object, but for `DelayedOp` object
-# `@seed` is a signature "ANY"
+# the `@<-` function will check slot class. 
+# For `IterableMatrix` object, `@matrix` must be a `IterableMatrix` object, but
+# for `DelayedOp` object `@seed` is a signature "ANY".
 # So when define `to_BPCells`, we must run `to_BPCells` firstly with `@seed`
 # before rename "seed" slot into "matrix" slot, when define `to_DelayedArray`,
 # we must firstly rename "matrix" slot into "seed" slot, then using
