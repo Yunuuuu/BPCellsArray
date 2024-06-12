@@ -3,19 +3,14 @@ BPCells_class <- function(name) {
     BPCells_get(paste0(".__C__", name))
 }
 
-BPCells_get <- local({
-    BPCellsNamespace <- NULL
-    function(nm) {
-        if (is.null(BPCellsNamespace)) {
-            BPCellsNamespace <<- asNamespace("BPCells")
-        }
-        if (exists(nm, envir = BPCellsNamespace, inherits = FALSE)) {
-            get(nm, envir = BPCellsNamespace, inherits = FALSE)
-        } else {
-            cli::cli_abort("Cannot find {.val {nm}} in {.pkg BPCells}")
-        }
+BPCells_get <- function(nm) {
+    BPCellsNamespace <- asNamespace("BPCells")
+    if (exists(nm, envir = BPCellsNamespace, inherits = FALSE)) {
+        get(nm, envir = BPCellsNamespace, inherits = FALSE)
+    } else {
+        cli::cli_abort("Cannot find {.val {nm}} in {.pkg BPCells}")
     }
-})
+}
 
 BPCells_MODE <- c("uint32_t", "float", "double")
 BPCells_Transform_classes <- c(
