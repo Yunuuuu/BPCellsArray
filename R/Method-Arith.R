@@ -41,14 +41,22 @@ NULL
 #' @rdname BPCells-Arithmetic
 methods::setMethod(
     "Arith", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    array_call_BPCells_method(e1 = , e2 = )
+    function(e1, e2) {
+        e1 <- to_BPCells(e1@seed)
+        ans <- methods::callGeneric()
+        DelayedArray(ans)
+    }
 )
 
 #' @export
 #' @rdname BPCells-Arithmetic
 methods::setMethod(
     "Arith", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    array_call_BPCells_method(e1 = , e2 = , Arrays = "e2")
+    function(e1, e2) {
+        e2 <- to_BPCells(e2@seed)
+        ans <- methods::callGeneric()
+        DelayedArray(ans)
+    }
 )
 
 #' @inheritParams BPCells-Arithmetic
@@ -57,7 +65,10 @@ methods::setMethod(
 methods::setMethod(
     "/", c(e1 = "numeric", e2 = "BPCellsMatrix"),
     function(e1, e2) {
-        cli::cli_abort("Cannot dicided by a sparce {.cls BPCellsMatrix}, since too many zeros")
+        cli::cli_abort(paste(
+            "Cannot dicided by a Sparse {.cls BPCellsMatrix},",
+            "since too many zeros"
+        ))
     }
 )
 
@@ -66,48 +77,38 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "%%", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%%", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    array_call_DelayedArray_method(e1 = , e2 = )
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%/%", c(e1 = "numeric", e2 = "BPCellsMatrix"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "%/%", c(e1 = "BPCellsMatrix", e2 = "numeric"),
-    array_call_DelayedArray_method(e1 = , e2 = )
-)
-
-#######################################################################
-# TransformPowSlow
-methods::setClass("BPCellsDelayedTransformPowSlow",
-    contains = "BPCellsDelayedTransformed"
-)
-
-#' @export
-#' @rdname BPCells-Arithmetic
-methods::setGeneric("pow_slow", function(e1, e2) {
-    standardGeneric("pow_slow")
-})
-
-#' @export
-#' @rdname BPCells-Arithmetic
-methods::setMethod(
-    "pow_slow", "BPCellsMatrix",
-    array_call_BPCells_method(
-        e1 = , e2 = ,
-        method = quote(BPCells::pow_slow(x = e1, exponent = e2))
-    )
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )

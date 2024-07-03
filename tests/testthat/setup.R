@@ -3,18 +3,7 @@ tmpdir <- testthat::test_path("_TEMP")
 if (!dir.exists(tmpdir)) dir.create(tmpdir)
 tmpdir <- normalizePath(tmpdir, mustWork = TRUE)
 
-test_methods <- function(obj, ..., name) {
-    with_seedform(
-        "BPCells",
-        methods_test(obj = obj, ..., name = sprintf("%s (BPCells)", name))
-    )
-    with_seedform(
-        "DelayedArray",
-        methods_test(obj = obj, ..., name = sprintf("%s (DelayedArray)", name))
-    )
-}
-
-methods_test <- function(
+test_methods <- function(
     obj, ..., mode = NULL, mat = NULL,
     name, skip_multiplication = FALSE) {
     mode <- mode %||% storage_mode(obj)
@@ -511,5 +500,3 @@ methods_test <- function(
         }
     )
 }
-
-

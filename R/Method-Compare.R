@@ -21,13 +21,11 @@ methods::setGeneric("binarize", function(object, ...) {
 #' @inheritDotParams BPCells::binarize -mat
 #' @export
 #' @rdname BPCells-Compare
-methods::setMethod(
-    "binarize", "BPCellsMatrix",
-    array_call_BPCells_method(
-        object = , ... = ,
-        method = quote(BPCells::binarize(mat = object, ...))
-    )
-)
+methods::setMethod("binarize", "BPCellsMatrix", function(object, ...) {
+    object <- to_BPCells(object@seed)
+    ans <- BPCells::binarize(mat = object, ...)
+    DelayedArray(ans)
+})
 
 #' @export
 #' @rdname internal-methods
@@ -83,12 +81,18 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "Compare", c(e1 = "BPCellsMatrix", e2 = "ANY"),
-    array_call_DelayedArray_method(e1 = , e2 = )
+    function(e1, e2) {
+        object <- methods::callNextMethod()
+        return_BPCellsMatrix(object, .Generic) # nolint
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "Compare", c(e1 = "ANY", e2 = "BPCellsMatrix"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    function(e1, e2) {
+        object <- methods::callNextMethod()
+        return_BPCellsMatrix(object, .Generic) # nolint
+    }
 )

@@ -15,14 +15,13 @@ methods::setMethod("summary", "MatrixH5", summary.MatrixH5)
 #' @param path A string path of the `HDF5` file to read or save data into.
 #' @export
 #' @name BPCellsHDF5-IO
-readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L, seedform = NULL) {
+readBPCellsHDF5Matrix <- function(path, group, buffer_size = 8192L) {
     assert_string(path, empty_ok = FALSE)
-    seedform <- match_seedform(seedform)
-    obj <- BPCells::open_matrix_hdf5(
+    ans <- BPCells::open_matrix_hdf5(
         path = path, group = group,
         buffer_size = as.integer(buffer_size)
     )
-    with_seedform(seedform, DelayedArray(obj))
+    DelayedArray(ans)
 }
 
 #' @export
@@ -33,24 +32,26 @@ methods::setGeneric(
     function(x, ...) standardGeneric("writeBPCellsHDF5Matrix")
 )
 
-.writeBPCellsHDF5Matrix <- function(x, path, group, bitpacking = TRUE, buffer_size = 8192L, chunk_size = 1024L, overwrite = FALSE, gzip = 0L, seedform = NULL) {
+.writeBPCellsHDF5Matrix <- function(x, path, group, bitpacking = TRUE,
+                                    buffer_size = 8192L, chunk_size = 1024L,
+                                    overwrite = FALSE, gzip = 0L) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
-    lst <- extract_IterableMatrix_and_seedform(x, seedform)
+    seed <- extract_IterableMatrix(x)
     if (bitpacking) {
         gzip <- 0L
     } else {
         gzip <- as.integer(gzip)
     }
-    obj <- BPCells::write_matrix_hdf5(
-        mat = lst$seed,
+    ans <- BPCells::write_matrix_hdf5(
+        mat = seed,
         path = path, group = group,
         compress = bitpacking,
         buffer_size = as.integer(buffer_size),
         chunk_size = as.integer(chunk_size),
         overwrite = overwrite, gzip_level = gzip
     )
-    with_seedform(lst$seedform, DelayedArray(obj))
+    DelayedArray(ans)
 }
 
 

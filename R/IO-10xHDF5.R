@@ -13,14 +13,14 @@ methods::setMethod("summary", "10xMatrixH5", summary.10xMatrixH5)
 #' @param path A string path of the `10x HDF5` file to read or save data into.
 #' @export
 #' @name BPCells10xHDF5-IO
-readBPCells10xHDF5Matrix <- function(path, feature_type = NULL, buffer_size = 16384L, seedform = NULL) {
+readBPCells10xHDF5Matrix <- function(path, feature_type = NULL,
+                                     buffer_size = 16384L) {
     assert_string(path, empty_ok = FALSE)
-    seedform <- match_seedform(seedform)
-    obj <- BPCells::open_matrix_10x_hdf5(
+    ans <- BPCells::open_matrix_10x_hdf5(
         path = path, feature_type = feature_type,
         buffer_size = as.integer(buffer_size)
     )
-    with_seedform(seedform, DelayedArray(obj))
+    DelayedArray(ans)
 }
 
 #' @export
@@ -40,12 +40,10 @@ methods::setGeneric(
     feature_metadata = list(),
     buffer_size = 16384L,
     chunk_size = 1024L,
-    gzip = 0L,
-    seedform = NULL) {
+    gzip = 0L) {
     assert_string(path, empty_ok = FALSE)
     if (file.exists(path)) cli::cli_abort("{.arg path} requested is exist")
-    lst <- extract_IterableMatrix_and_seedform(x, seedform)
-    seed <- lst$seed
+    seed <- extract_IterableMatrix(x)
     mode <- storage_mode(seed)
     if (mode != "uint32_t") {
         cli::cli_warn(paste(
@@ -53,7 +51,7 @@ methods::setGeneric(
             "but you provided a {.field {mode}}"
         ))
     }
-    obj <- BPCells::write_matrix_10x_hdf5(
+    ans <- BPCells::write_matrix_10x_hdf5(
         mat = seed,
         path = path,
         barcodes = barcodes,
@@ -66,7 +64,7 @@ methods::setGeneric(
         gzip_level = as.integer(gzip),
         type = mode
     )
-    with_seedform(lst$seedform, DelayedArray(obj))
+    DelayedArray(ans)
 }
 
 #' @inherit BPCells::write_matrix_10x_hdf5 details

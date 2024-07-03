@@ -5,17 +5,11 @@
 \alias{BPCells-Arith}
 \alias{Arith,BPCellsMatrix,numeric-method}
 \alias{Arith,numeric,BPCellsMatrix-method}
-\alias{pow_slow}
-\alias{pow_slow,BPCellsMatrix-method}
 \title{Arithmetic operators for BPCellsMatrix}
 \usage{
 \S4method{Arith}{BPCellsMatrix,numeric}(e1, e2)
 
 \S4method{Arith}{numeric,BPCellsMatrix}(e1, e2)
-
-pow_slow(e1, e2)
-
-\S4method{pow_slow}{BPCellsMatrix}(e1, e2)
 }
 \arguments{
 \item{e1, e2}{One of \code{x} or \code{y} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another can

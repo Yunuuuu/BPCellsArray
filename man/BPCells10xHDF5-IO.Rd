@@ -7,12 +7,7 @@
 \alias{writeBPCells10xHDF5Matrix,ANY-method}
 \title{Read/write sparse matrices from (or into) 10x feature matrix}
 \usage{
-readBPCells10xHDF5Matrix(
-  path,
-  feature_type = NULL,
-  buffer_size = 16384L,
-  seedform = NULL
-)
+readBPCells10xHDF5Matrix(path, feature_type = NULL, buffer_size = 16384L)
 
 writeBPCells10xHDF5Matrix(x, ...)
 
@@ -26,8 +21,7 @@ writeBPCells10xHDF5Matrix(x, ...)
   feature_metadata = list(),
   buffer_size = 16384L,
   chunk_size = 1024L,
-  gzip = 0L,
-  seedform = NULL
+  gzip = 0L
 )
 }
 \arguments{
@@ -39,9 +33,6 @@ only compatible with files from cellranger 3.0 and newer.}
 
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
-
-\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
-use the the default \code{seedform}. Details see \link{seedform}.}
 
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 

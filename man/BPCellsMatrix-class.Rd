@@ -39,9 +39,9 @@
 
 \S4method{show}{BPCellsMatrix}(object)
 
-BPCellsArray(x, seedform = NULL)
+BPCellsArray(x)
 
-BPCellsMatrix(x, seedform = NULL)
+BPCellsMatrix(x)
 
 \S4method{matrixClass}{BPCellsArray}(x)
 
@@ -86,9 +86,6 @@ BPCellsMatrix(x, seedform = NULL)
 
 \item{x}{A \code{BPCellsMatrix} object. For \code{BPCellsArray} and \code{BPCellsMatrix}
 function, a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object would also be okay.}
-
-\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
-use the the default \code{seedform}. Details see \link{seedform}.}
 
 \item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} object.}
 
@@ -164,7 +161,6 @@ The \code{BPCellsMatrix} class just inherits from the
 }
 \seealso{
 \itemize{
-\item \link{seedform}: Manage the seed form.
 \item \link[=BPCells-bind]{bind}: Combine two Objects by Columns or Rows.
 \item \link[=BPCells-Multiplication]{\%*\%}: Matrix Multiplication.
 \item \link[=BPCells-crossprod]{crossprod}: Matrix Crossproduct.

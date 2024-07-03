@@ -29,10 +29,10 @@ methods::setGeneric(
     function(x, ...) standardGeneric("writeBPCellsMemMatrix")
 )
 
-.writeBPCellsMemMatrix <- function(x, compress = TRUE, seedform = NULL) {
-    lst <- extract_IterableMatrix_and_seedform(x, seedform)
-    obj <- BPCells::write_matrix_memory(mat = lst$seed, compress = compress)
-    with_seedform(seedform = lst$seedform, DelayedArray(obj))
+.writeBPCellsMemMatrix <- function(x, compress = TRUE) {
+    seed <- extract_IterableMatrix(x)
+    ans <- BPCells::write_matrix_memory(mat = seed, compress = compress)
+    DelayedArray(ans)
 }
 
 #' @inheritParams BPCellsDir-IO

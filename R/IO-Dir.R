@@ -17,14 +17,13 @@ methods::setMethod("summary", "MatrixDir", summary.MatrixDir)
 #' @inheritParams BPCells::open_matrix_dir
 #' @export
 #' @name BPCellsDir-IO
-readBPCellsDirMatrix <- function(path, buffer_size = 8192L, seedform = NULL) {
+readBPCellsDirMatrix <- function(path, buffer_size = 8192L) {
     assert_string(path, empty_ok = FALSE)
-    seedform <- match_seedform(seedform)
-    obj <- BPCells::open_matrix_dir(
+    ans <- BPCells::open_matrix_dir(
         dir = path,
         buffer_size = as.integer(buffer_size)
     )
-    with_seedform(seedform, DelayedArray(obj))
+    DelayedArray(ans)
 }
 
 #' @inherit BPCells::write_matrix_dir details
@@ -49,19 +48,18 @@ methods::setGeneric(
 .writeBPCellsDirMatrix <- function(
     x, path = NULL, bitpacking = TRUE,
     buffer_size = 8192L,
-    overwrite = FALSE,
-    seedform = NULL) {
+    overwrite = FALSE) {
     assert_bool(bitpacking)
     assert_bool(overwrite)
-    lst <- extract_IterableMatrix_and_seedform(x, seedform)
+    seed <- extract_IterableMatrix(x)
     path <- path %||% tempfile("BPCellsDirMatrix")
-    obj <- BPCells::write_matrix_dir(
-        mat = lst$seed,
+    ans <- BPCells::write_matrix_dir(
+        mat = seed,
         dir = path, compress = bitpacking,
         buffer_size = as.integer(buffer_size),
         overwrite = overwrite
     )
-    with_seedform(lst$seedform, DelayedArray(obj))
+    DelayedArray(ans)
 }
 
 #' @export

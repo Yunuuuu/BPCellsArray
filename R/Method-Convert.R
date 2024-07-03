@@ -70,16 +70,12 @@ methods::setGeneric(
 #' @importFrom DelayedArray DelayedArray
 #' @export
 #' @rdname convert_mode
-methods::setMethod(
-    "convert_mode", "BPCellsMatrix",
-    array_call_BPCells_method(
-        object = , mode = ,
-        method = quote(BPCells::convert_matrix_type(
-            matrix = object, type = mode
-        )),
-        before = expression(mode <- match.arg(mode, BPCells_MODE))
-    )
-)
+methods::setMethod("convert_mode", "BPCellsMatrix", function(object, mode) {
+    mode <- match.arg(mode, BPCells_MODE)
+    object <- to_BPCells(object@seed)
+    ans <- BPCells::convert_matrix_type(matrix = object, type = mode)
+    DelayedArray(ans)
+})
 
 #' @inheritParams convert_mode
 #' @export
@@ -99,17 +95,17 @@ methods::setGeneric(
 
 #' @export
 #' @rdname convert_mode
-methods::setMethod(
-    "storage_mode", "BPCellsMatrix",
-    array_call_BPCells_method(object = , convert = FALSE)
-)
+methods::setMethod("storage_mode", "BPCellsMatrix", function(object) {
+    object <- to_BPCells(object@seed)
+    methods::callGeneric()
+})
 
 #' @export
 #' @rdname convert_mode
-methods::setMethod(
-    "storage_mode", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(object = )
-)
+methods::setMethod("storage_mode", "BPCellsDelayedOp", function(object) {
+    object <- to_BPCells(object)
+    methods::callGeneric()
+})
 
 #' @export
 #' @rdname convert_mode

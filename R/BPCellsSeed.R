@@ -89,3 +89,16 @@ coerce_into_dgCMatrix <- function(x) {
         }
     )
 }
+
+# helper function used to extract the `IterableMatrix` from the user input,
+# although user shouldn't provide `BPCellsDelayedOp` directly, but we also deal
+# with it
+extract_IterableMatrix <- function(x, seedform) {
+    if (is_BPCellsArray(x)) {
+        to_BPCells(x@seed)
+    } else if (methods::is(x, "BPCellsDelayedOp")) {
+        to_BPCells(x)
+    } else {
+        BPCellsSeed(x)
+    }
+}

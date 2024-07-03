@@ -123,9 +123,6 @@ methods::setMethod("seed", "BPCellsMatrix", function(x) seed(x@seed))
 #' @importFrom DelayedArray seed<-
 methods::setReplaceMethod("seed", "BPCellsMatrix", function(x, value) {
     x@seed <- methods::callGeneric(x = x@seed, value = value)
-    # No need to use `DelayedArray`, the `@SeedForm` won't change
-    # and we have ensure the class of `value` is the same with `@seed`
-    # with_seedform(x@SeedForm, DelayedArray(seed))
     x
 })
 
@@ -266,17 +263,6 @@ abort_nary_path <- function(call = rlang::caller_env()) {
     ans
 }
 
-no_DelayedArray <- function(object) {
-    if (is_BPCellsArray(object)) {
-        if (object@SeedForm == "BPCells") {
-            return(TRUE)
-        }
-    } else if (methods::is(object, "IterableMatrix")) {
-        return(TRUE)
-    }
-    return(FALSE)
-}
-
 .rec_showtree <- function(x, indent = "", last.child = NA, prefix = "", show.node.dim = TRUE) {
     if (is.list(x) && !is_array(x)) {
         nchildren <- length(x)
@@ -293,12 +279,6 @@ no_DelayedArray <- function(object) {
                 prefix = nms[[i]]
             )
         }
-    } else if (no_DelayedArray(x)) {
-        .rec_show_BPCells(
-            x = x, indent = indent,
-            last.child = last.child, prefix = prefix,
-            show.node.dim = show.node.dim
-        )
     } else {
         DelayedArray:::.rec_showtree(
             x = x, indent = indent,
@@ -310,8 +290,7 @@ no_DelayedArray <- function(object) {
 
 ### 'last.child' can be NA, TRUE, or FALSE. NA means 'x' is the root of the
 ### tree.
-#' @param x A `IterableMatrix` or `BPCellsMatrix` object with `@@SeedForm` equal
-#' to "BPCells".
+#' @param x A `IterableMatrix` or `BPCellsMatrix` object.
 #' @noRd
 .rec_show_BPCells <- function(x, indent = "", last.child = NA, prefix = "", show.node.dim = TRUE) {
     ## Display summary line.

@@ -65,10 +65,13 @@ methods::setMethod("summary", "MatrixSubset", summary.BPCellsDelayedSubset)
 #' - `[`: A `BPCellsMatrix` object or an atomic vector.
 #' @export
 #' @rdname BPCellsMatrix-class
-methods::setMethod(
-    "[", "BPCellsMatrix",
-    array_call_BPCells_method(
-        x = , i = , j = , drop = TRUE,
-        after2 = expression(if (drop) drop(object) else object)
-    )
-)
+methods::setMethod("[", "BPCellsMatrix", function(x, i, j, drop = TRUE) {
+    x <- to_BPCells(x@seed)
+    ans <- methods::callGeneric()
+    ans <- DelayedArray(ans)
+    if (drop) {
+        drop(ans)
+    } else {
+        ans
+    }
+})

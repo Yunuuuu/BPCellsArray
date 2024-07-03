@@ -20,13 +20,11 @@ methods::setGeneric("pmin_by_col", function(object, values) {
 #' - `pmin_by_col`: Take the minimum with a per-col constant
 #' @export
 #' @rdname pmin2
-methods::setMethod(
-    "pmin_by_col", "BPCellsMatrix",
-    array_call_BPCells_method(
-        object = , values = ,
-        method = quote(BPCells::min_by_col(mat = object, vals = values))
-    )
-)
+methods::setMethod("pmin_by_col", "BPCellsMatrix", function(object, values) {
+    object <- to_BPCells(object@seed)
+    ans <- BPCells::min_by_col(mat = object, vals = values)
+    DelayedArray(ans)
+})
 
 ####################################################################
 # TransformMinByRow
@@ -44,13 +42,11 @@ methods::setGeneric("pmin_by_row", function(object, values) {
 #' - `pmin_by_row`: Take the minimum with a per-row constant
 #' @export
 #' @rdname pmin2
-methods::setMethod(
-    "pmin_by_row", "BPCellsMatrix",
-    array_call_BPCells_method(
-        object = , values = ,
-        method = quote(BPCells::min_by_row(mat = object, vals = values))
-    )
-)
+methods::setMethod("pmin_by_row", "BPCellsMatrix", function(object, values) {
+    object <- to_BPCells(object@seed)
+    ans <- BPCells::min_by_row(mat = object, vals = values)
+    DelayedArray(ans)
+})
 
 ####################################################################
 # TransformMin
@@ -69,13 +65,11 @@ methods::setGeneric("pmin_scalar", function(object, value) {
 #' - `pmin_scalar`: Take minumum with a global constant
 #' @export
 #' @rdname pmin2
-methods::setMethod(
-    "pmin_scalar", "BPCellsMatrix",
-    array_call_BPCells_method(
-        object = , value = ,
-        method = quote(BPCells::min_scalar(mat = object, val = value))
-    )
-)
+methods::setMethod("pmin_scalar", "BPCellsMatrix", function(object, value) {
+    object <- to_BPCells(object@seed)
+    ans <- BPCells::min_scalar(mat = object, val = value)
+    DelayedArray(ans)
+})
 
 .pmin2_internal <- function(
     e1, e2,
@@ -114,30 +108,36 @@ methods::setMethod("pmin2", c("numeric", "BPCellsMatrix"), function(e1, e2) {
 
 #' @export
 #' @rdname internal-methods
-methods::setMethod(
-    "pmin2", c("BPCellsMatrix", "vector"),
-    array_call_DelayedArray_method(e1 = , e2 = )
-)
+methods::setMethod("pmin2", c("BPCellsMatrix", "vector"), function(e1, e2) {
+    ans <- methods::callNextMethod()
+    return_BPCellsMatrix(ans, .Generic) # nolint
+})
 
 #' @export
 #' @rdname internal-methods
-methods::setMethod(
-    "pmin2", c("vector", "BPCellsMatrix"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
-)
+methods::setMethod("pmin2", c("vector", "BPCellsMatrix"), function(e1, e2) {
+    ans <- methods::callNextMethod()
+    return_BPCellsMatrix(ans, .Generic) # nolint
+})
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "pmin2", c("BPCellsMatrix", "DelayedArray"),
-    array_call_DelayedArray_method(e1 = , e2 = )
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "pmin2", c("DelayedArray", "BPCellsMatrix"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )
 
 ######################################################################
@@ -146,26 +146,38 @@ methods::setMethod(
 #' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("BPCellsMatrix", "vector"),
-    array_call_DelayedArray_method(e1 = , e2 = )
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("vector", "BPCellsMatrix"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("BPCellsMatrix", "DelayedArray"),
-    array_call_DelayedArray_method(e1 = , e2 = )
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )
 
 #' @export
 #' @rdname internal-methods
 methods::setMethod(
     "pmax2", c("DelayedArray", "BPCellsMatrix"),
-    array_call_DelayedArray_method(e1 = , e2 = , Array = "e2")
+    function(e1, e2) {
+        ans <- methods::callNextMethod()
+        return_BPCellsMatrix(ans, .Generic) # nolint
+    }
 )

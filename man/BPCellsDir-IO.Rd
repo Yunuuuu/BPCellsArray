@@ -7,7 +7,7 @@
 \alias{writeBPCellsDirMatrix,ANY-method}
 \title{Read/write sparse matrices from (or into) directory on disk}
 \usage{
-readBPCellsDirMatrix(path, buffer_size = 8192L, seedform = NULL)
+readBPCellsDirMatrix(path, buffer_size = 8192L)
 
 writeBPCellsDirMatrix(x, ...)
 
@@ -16,8 +16,7 @@ writeBPCellsDirMatrix(x, ...)
   path = NULL,
   bitpacking = TRUE,
   buffer_size = 8192L,
-  overwrite = FALSE,
-  seedform = NULL
+  overwrite = FALSE
 )
 }
 \arguments{
@@ -27,9 +26,6 @@ directory.}
 
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
-
-\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
-use the the default \code{seedform}. Details see \link{seedform}.}
 
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 

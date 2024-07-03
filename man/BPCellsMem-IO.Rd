@@ -8,7 +8,7 @@
 \usage{
 writeBPCellsMemMatrix(x, ...)
 
-\S4method{writeBPCellsMemMatrix}{ANY}(x, compress = TRUE, seedform = NULL)
+\S4method{writeBPCellsMemMatrix}{ANY}(x, compress = TRUE)
 }
 \arguments{
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
@@ -16,9 +16,6 @@ writeBPCellsMemMatrix(x, ...)
 \item{...}{Additional arguments passed into specific methods.}
 
 \item{compress}{Whether or not to compress the data.}
-
-\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
-use the the default \code{seedform}. Details see \link{seedform}.}
 }
 \value{
 A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.

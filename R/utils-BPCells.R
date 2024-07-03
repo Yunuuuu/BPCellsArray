@@ -20,7 +20,7 @@ BPCells_Transform_classes <- c(
     TransformExpm1Slow = "expm1_slow",
     TransformSquare = NULL,
     TransformPow = "^",
-    TransformPowSlow = "pow_slow",
+    # TransformPowSlow = "pow_slow", # has been removed from BPCells
     TransformMin = "min_scalar",
     TransformMinByRow = "min_by_row",
     TransformMinByCol = "min_by_col",

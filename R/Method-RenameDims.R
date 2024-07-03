@@ -44,7 +44,11 @@ methods::setClassUnion("ListOrNULL", c("list", "NULL"))
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
     "dimnames<-", c(x = "BPCellsMatrix", value = "ListOrNULL"),
-    array_call_BPCells_method(x = , value = )
+    function(x, value) {
+        x <- to_BPCells(x@seed)
+        ans <- methods::callGeneric()
+        DelayedArray(ans)
+    }
 )
 
 #' @return

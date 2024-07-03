@@ -11,7 +11,7 @@ BugReports: https://github.com/Yunuuuu/BPCellsArray
 License: MIT + file LICENSE
 Imports: 
     methods,
-    BPCells (>= 0.1.0),
+    BPCells (>= 0.2.0),
     DelayedArray (>= 0.28.0),
     SparseArray,
     Matrix,
@@ -22,7 +22,7 @@ Imports:
     S4Vectors,
     BiocSingular
 Remotes: 
-    bnprks/BPCells
+    bnprks/BPCells/r
 Suggests: 
     SingleCellExperiment,
     BiocNeighbors,
@@ -39,13 +39,11 @@ Suggests:
 Encoding: UTF-8
 biocViews: Software, DataImport, DataRepresentation, Infrastructure
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.2
 Collate: 
     'BPCellsSeed.R'
-    'utils.R'
-    'utils-BPCells.R'
     'Class-Delayed.R'
-    'Seed-management.R'
+    'utils-BPCells.R'
     'Class-BPCellsMatrix.R'
     'Class-BPCellsSeed.R'
     'Class-Transformed.R'
@@ -77,6 +75,7 @@ Collate:
     'showtree.R'
     'utils-Rd.R'
     'utils-check.R'
+    'utils.R'
     'zzz.R'
 Config/testthat/edition: 3
 VignetteBuilder: knitr

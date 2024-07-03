@@ -22,10 +22,11 @@ methods::setGeneric("expm1_slow", function(x) {
 
 #' @export
 #' @rdname BPCells-Math
-methods::setMethod(
-    "expm1_slow", "BPCellsMatrix",
-    array_call_BPCells_method(x = , method = quote(BPCells::expm1_slow(x)))
-)
+methods::setMethod("expm1_slow", "BPCellsMatrix", function(x) {
+    x <- to_BPCells(x@seed)
+    ans <- BPCells::expm1_slow(x)
+    DelayedArray(ans)
+})
 
 #' @export
 #' @rdname internal-methods
@@ -44,10 +45,11 @@ methods::setClass("BPCellsDelayedTransformExpm1",
 #' @export
 #' @aliases expm1
 #' @rdname BPCells-Math
-methods::setMethod(
-    "expm1", "BPCellsMatrix",
-    array_call_BPCells_method(x = )
-)
+methods::setMethod("expm1", "BPCellsMatrix", function(x) {
+    x <- to_BPCells(x@seed)
+    ans <- methods::callGeneric()
+    DelayedArray(ans)
+})
 
 ####################################################################
 # TransformLog1pSlow
@@ -62,10 +64,11 @@ methods::setClass("BPCellsDelayedTransformLog1pSlow",
 #' @export
 #' @aliases log1p
 #' @rdname BPCells-Math
-methods::setMethod(
-    "log1p", "BPCellsMatrix",
-    array_call_BPCells_method(x = , method = quote(BPCells::log1p_slow(x)))
-)
+methods::setMethod("log1p", "BPCellsMatrix", function(x) {
+    x <- to_BPCells(x@seed)
+    ans <- BPCells::log1p_slow(x)
+    DelayedArray(ans)
+})
 
 ####################################################################
 # TransformLog1p
@@ -82,10 +85,11 @@ methods::setGeneric("log1p_single", function(x) {
 
 #' @export
 #' @rdname BPCells-Math
-methods::setMethod(
-    "log1p_single", "BPCellsMatrix",
-    array_call_BPCells_method(x = , method = quote(log1p(x)))
-)
+methods::setMethod("log1p_single", "BPCellsMatrix", function(x) {
+    x <- to_BPCells(x@seed)
+    ans <- log1p(x)
+    DelayedArray(ans)
+})
 
 ####################################################################
 # TransformRound
@@ -99,28 +103,32 @@ methods::setClass("BPCellsDelayedTransformRound",
 #' @export
 #' @aliases round
 #' @rdname BPCells-Math
-methods::setMethod(
-    "round", "BPCellsMatrix",
-    array_call_BPCells_method(x = , digits = 0)
-)
+methods::setMethod("round", "BPCellsMatrix", function(x, digits = 0) {
+    x <- to_BPCells(x@seed)
+    ans <- methods::callGeneric()
+    DelayedArray(ans)
+})
 
 # override methods of DelayedArray
 #' @export
 #' @rdname internal-methods
-methods::setMethod("log", "BPCellsMatrix", array_call_DelayedArray_method(x = ))
+methods::setMethod("log", "BPCellsMatrix", function(x) {
+    ans <- methods::callNextMethod()
+    return_BPCellsMatrix(ans, .Generic) # nolint
+})
 
 #' @importFrom methods Math
 #' @export
 #' @rdname internal-methods
-methods::setMethod(
-    "Math", "BPCellsArray",
-    array_call_DelayedArray_method(x = )
-)
+methods::setMethod("Math", "BPCellsArray", function(x) {
+    ans <- methods::callNextMethod()
+    return_BPCellsMatrix(ans, .Generic) # nolint
+})
 
 #' @importFrom methods Math2
 #' @export
 #' @rdname internal-methods
-methods::setMethod(
-    "Math2", "BPCellsArray",
-    array_call_DelayedArray_method(x = )
-)
+methods::setMethod("Math2", "BPCellsArray", function(x) {
+    ans <- methods::callNextMethod()
+    return_BPCellsMatrix(ans, .Generic) # nolint
+})

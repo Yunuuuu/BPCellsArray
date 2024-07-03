@@ -14,7 +14,7 @@
 
 ###################################################################
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# the `@<-` function will check slot class. 
+# the `@<-` function will check slot class.
 # For `IterableMatrix` object, `@matrix` must be a `IterableMatrix` object, but
 # for `DelayedOp` object `@seed` is a signature "ANY".
 # So when define `to_BPCells`, we must run `to_BPCells` firstly with `@seed`
@@ -73,25 +73,6 @@ to_DelayedUnaryOp <- function(object, Class) {
     )
     object@seed <- to_DelayedArray(object@seed)
     object
-}
-
-#######################################################################
-# helper function to re-dispath `BPCells` method
-# should used for `BPCellsDelayedOp` object
-# This will not convert the final object into `DelayedArray` object so should be
-# used for function return another class, usually the seed contract methods
-#' @include utils.R utils-BPCells.R
-delayedop_call_BPCells_method <- function(..., before = NULL, after = NULL, Array = NULL) {
-    args <- rlang::pairlist2(...)
-    Array <- rlang::sym(Array %||% names(args)[[1L]])
-    before <- c(before, list(
-        substitute(Array <- to_BPCells(Array), list(Array = Array))
-    ))
-    new_method(args,
-        before = before,
-        method = quote(methods::callGeneric()),
-        after = after
-    )
 }
 
 ### - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -156,10 +137,10 @@ methods::setAs("BPCellsDelayedOp", "dgCMatrix", function(from) {
 
 #' @export
 #' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "type", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = )
-)
+methods::setMethod("type", "BPCellsDelayedOp", function(x) {
+    x <- to_BPCells(x)
+    methods::callGeneric()
+})
 
 #' @export
 #' @rdname BPCellsDelayedOp-class
@@ -167,53 +148,58 @@ methods::setMethod("is_sparse", "BPCellsDelayedOp", function(x) TRUE)
 
 #' @export
 #' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "extract_array", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , index = )
-)
+methods::setMethod("extract_array", "BPCellsDelayedOp", function(x, index) {
+    x <- to_BPCells(x)
+    methods::callGeneric()
+})
 
 #' @export
 #' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "OLD_extract_sparse_array", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , index = )
+    function(x, index) {
+        x <- to_BPCells(x)
+        methods::callGeneric()
+    }
 )
 
 #' @export
 #' @rdname BPCellsDelayedOp-class
 methods::setMethod(
     "extract_sparse_array", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = , index = )
+    function(x, index) {
+        x <- to_BPCells(x)
+        methods::callGeneric()
+    }
 )
 
 #' @export
 #' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "dim", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = )
-)
+methods::setMethod("dim", "BPCellsDelayedOp", function(x) {
+    x <- to_BPCells(x)
+    methods::callGeneric()
+})
 
 #' @export
 #' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "dimnames", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = )
-)
+methods::setMethod("dimnames", "BPCellsDelayedOp", function(x) {
+    x <- to_BPCells(x)
+    methods::callGeneric()
+})
 
 #' @importMethodsFrom BPCells t
 #' @export
 #' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "t", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(
-        x = , after = expression(to_DelayedArray(object))
-    )
-)
+methods::setMethod("t", "BPCellsDelayedOp", function(x) {
+    x <- to_BPCells(x)
+    ans <- methods::callGeneric()
+    to_DelayedArray(ans)
+})
 
 #' @importFrom DelayedArray chunkdim
 #' @export
 #' @rdname BPCellsDelayedOp-class
-methods::setMethod(
-    "chunkdim", "BPCellsDelayedOp",
-    delayedop_call_BPCells_method(x = )
-)
+methods::setMethod("chunkdim", "BPCellsDelayedOp", function(x) {
+    x <- to_BPCells(x)
+    methods::callGeneric()
+})

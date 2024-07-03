@@ -7,7 +7,7 @@
 \alias{writeBPCellsHDF5Matrix,ANY-method}
 \title{Read/write sparse matrices from (or into) HDF5 file}
 \usage{
-readBPCellsHDF5Matrix(path, group, buffer_size = 8192L, seedform = NULL)
+readBPCellsHDF5Matrix(path, group, buffer_size = 8192L)
 
 writeBPCellsHDF5Matrix(x, ...)
 
@@ -19,8 +19,7 @@ writeBPCellsHDF5Matrix(x, ...)
   buffer_size = 8192L,
   chunk_size = 1024L,
   overwrite = FALSE,
-  gzip = 0L,
-  seedform = NULL
+  gzip = 0L
 )
 }
 \arguments{
@@ -31,9 +30,6 @@ to an existing hdf5 file this group must not already be in use}
 
 \item{buffer_size}{For performance tuning only. The number of items to be buffered
 in memory before calling writes to disk.}
-
-\item{seedform}{A string, \code{"BPCells"} or \code{"DelayedArray"}. If \code{NULL}, will
-use the the default \code{seedform}. Details see \link{seedform}.}
 
 \item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 

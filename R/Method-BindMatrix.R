@@ -109,9 +109,9 @@ methods::setGeneric("set_threads", function(object, ...) {
 methods::setMethod(
     "set_threads", "BPCellsMatrix",
     function(object, threads = 0L) {
-        seedform <- object@SeedForm
         object <- object@seed
-        with_seedform(seedform, DelayedArray(methods::callGeneric()))
+        ans <- methods::callGeneric()
+        DelayedArray(ans)
     }
 )
 
@@ -363,7 +363,7 @@ combine_matrices <- function(.fn, mode, matrices, ...) {
         }
     }, mode = mode)
     seed <- Reduce(function(x, y) fn(x = x, y = y, ...), seeds)
-    with_seedform(matrices[[1L]]@SeedForm, DelayedArray(seed))
+    DelayedArray(seed)
 }
 
 pack_BPCellsMatrices <- function(..., call = rlang::caller_env()) {
