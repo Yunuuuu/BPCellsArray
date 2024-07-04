@@ -22,6 +22,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedRenameDims", function(object) {
 })
 
 #############################################################
+#' @exportS3Method base::summary
 summary.BPCellsDelayedRenameDims <- function(object) {
     "Rename dimnames"
 }
@@ -30,6 +31,8 @@ methods::setMethod(
     "summary", "BPCellsDelayedRenameDims",
     summary.BPCellsDelayedRenameDims
 )
+
+#' @exportS3Method base::summary
 summary.RenameDims <- summary.BPCellsDelayedRenameDims
 methods::setMethod("summary", "RenameDims", summary.BPCellsDelayedRenameDims)
 

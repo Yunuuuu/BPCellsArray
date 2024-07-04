@@ -15,6 +15,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedConvert", function(object) {
     to_BPCellsUnaryOp(object = object, Class = "ConvertMatrixType")
 })
 
+#' @exportS3Method base::summary
 summary.BPCellsDelayedConvert <- function(object) {
     sprintf(
         "Convert type from %s to %s",
@@ -28,6 +29,7 @@ methods::setMethod(
     summary.BPCellsDelayedConvert
 )
 
+#' @exportS3Method base::summary
 summary.ConvertMatrixType <- function(object) {
     sprintf(
         "Convert type from %s to %s",

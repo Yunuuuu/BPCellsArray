@@ -31,6 +31,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedMultiply", function(object) {
     )
 })
 
+#' @exportS3Method base::summary
 summary.BPCellsDelayedMultiply <- function(object) {
     "Multiply sparse matrices"
 }
@@ -38,6 +39,8 @@ methods::setMethod(
     "summary", "BPCellsDelayedMultiply",
     summary.BPCellsDelayedMultiply
 )
+
+#' @exportS3Method base::summary
 summary.MatrixMultiply <- summary.BPCellsDelayedMultiply
 methods::setMethod("summary", "MatrixMultiply", summary.BPCellsDelayedMultiply)
 

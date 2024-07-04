@@ -19,6 +19,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedTransformed", function(object) {
 })
 
 #########################################################
+#' @exportS3Method base::summary
 summary.BPCellsDelayedTransformed <- function(object) {
     cls <- sub("^(BPCellsDelayed)?Transform", "", fclass(object))
     sprintf(
@@ -43,7 +44,10 @@ methods::setMethod(
     "summary", "BPCellsDelayedTransformed",
     summary.BPCellsDelayedTransformed
 )
+
+#' @exportS3Method base::summary
 summary.TransformedMatrix <- summary.BPCellsDelayedTransformed
+
 methods::setMethod(
     "summary", "TransformedMatrix",
     summary.BPCellsDelayedTransformed

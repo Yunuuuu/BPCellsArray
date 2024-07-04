@@ -1,3 +1,4 @@
+#' @exportS3Method base::summary `10xMatrixH5`
 summary.10xMatrixH5 <- function(object) {
     "Load matrix from 10x HDF5 file"
 }

@@ -48,6 +48,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedAbind", function(object) {
     )
 })
 
+#' @exportS3Method base::summary
 summary.BPCellsDelayedAbind <- function(object) {
     if (object@along == 1L) {
         along <- if (object@transpose) "cols" else "rows"
@@ -67,6 +68,7 @@ methods::setMethod(
     summary.BPCellsDelayedAbind
 )
 
+#' @exportS3Method base::summary
 summary.RowBindMatrices <- function(object) {
     sprintf(
         "Concatenate %s of %d matrix objects (threads=%d)",
@@ -76,6 +78,9 @@ summary.RowBindMatrices <- function(object) {
     )
 }
 methods::setMethod("summary", "RowBindMatrices", summary.RowBindMatrices)
+
+
+#' @exportS3Method base::summary
 summary.ColBindMatrices <- function(object) {
     sprintf(
         "Concatenate %s of %d matrix objects (threads=%d)",

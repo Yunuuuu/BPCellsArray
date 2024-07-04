@@ -1,3 +1,4 @@
+#' @exportS3Method base::summary
 summary.PackedMatrixMemBase <- function(object) {
     "Load compressed matrix from memory"
 }
@@ -5,6 +6,8 @@ methods::setMethod(
     "summary", "PackedMatrixMemBase",
     summary.PackedMatrixMemBase
 )
+
+#' @exportS3Method base::summary
 summary.UnpackedMatrixMemBase <- function(object) {
     "Load uncompressed matrix from memory"
 }

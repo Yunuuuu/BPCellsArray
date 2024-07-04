@@ -19,6 +19,7 @@ methods::setMethod(
 )
 
 #############################################################
+#' @exportS3Method base::summary
 summary.BPCellsDelayedRankTransform <- function(object) {
     sprintf("Rank transform matrix by %s", storage_axis(object))
 }
@@ -27,6 +28,7 @@ methods::setMethod(
     summary.BPCellsDelayedRankTransform
 )
 
+#' @exportS3Method base::summary
 summary.MatrixRankTransform <- summary.BPCellsDelayedRankTransform
 methods::setMethod(
     "summary", "MatrixRankTransform",

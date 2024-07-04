@@ -1,3 +1,4 @@
+#' @exportS3Method base::summary
 summary.MatrixH5 <- function(object) {
     sprintf(
         "Load %s matrix in HDF5 file (group: %s)",

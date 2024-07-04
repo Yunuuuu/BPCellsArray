@@ -12,6 +12,8 @@
 \alias{BPCellsArray-class}
 \alias{matrixClass,BPCellsArray-method}
 \alias{DelayedArray,IterableMatrix-method}
+\alias{aperm.BPCellsMatrix}
+\alias{aperm,BPCellsMatrix-method}
 \alias{as.matrix.BPCellsMatrix}
 \alias{as.matrix,BPCellsMatrix-method}
 \alias{as.array.BPCellsMatrix}
@@ -46,6 +48,10 @@ BPCellsMatrix(x)
 \S4method{matrixClass}{BPCellsArray}(x)
 
 \S4method{DelayedArray}{IterableMatrix}(seed)
+
+\method{aperm}{BPCellsMatrix}(a, perm, ...)
+
+\S4method{aperm}{BPCellsMatrix}(a, perm, ...)
 
 \method{as.matrix}{BPCellsMatrix}(x)
 
@@ -84,10 +90,26 @@ BPCellsMatrix(x)
 \arguments{
 \item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
-\item{x}{A \code{BPCellsMatrix} object. For \code{BPCellsArray} and \code{BPCellsMatrix}
+\item{x}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object. For \code{BPCellsArray} and \code{BPCellsMatrix}
 function, a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object would also be okay.}
 
 \item{seed}{A \link[=BPCellsSeed-class]{IterableMatrix} object.}
+
+\item{a}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
+
+\item{perm}{the subscript permutation vector, usually a permutation of
+    the integers \code{1:n}, where \code{n} is the number of dimensions
+    of \code{a}.  When \code{a} has named dimnames, it can be a
+    character vector of length \code{n} giving a permutation of those
+    names. The default (used whenever \code{perm} has zero length) is to
+    reverse the order of the dimensions.}
+
+\item{...}{Additional arguments passed to specific methods
+\itemize{
+\item \code{aperm}: not used currently.
+\item \verb{[<-}: arguments passed to
+\link[BPCells:transpose_storage_order]{transpose_storage_order}
+}}
 
 \item{drop}{A bool, if \code{TRUE}, any extents of length one will be removed and
 return an atomic vector.}
@@ -99,15 +121,6 @@ return an atomic vector.}
 }}
 
 \item{i, j}{Row and Column index.}
-
-\item{...}{
-  Arguments passed on to \code{\link[BPCells:transpose_storage_order]{BPCells::transpose_storage_order}}
-  \describe{
-    \item{\code{outdir}}{Directory to store the output}
-    \item{\code{tmpdir}}{Temporary directory to use for intermediate storage}
-    \item{\code{load_bytes}}{The minimum contiguous load size during the merge sort passes}
-    \item{\code{sort_bytes}}{The amount of memory to allocate for re-sorting chunks of entries}
-  }}
 }
 \value{
 \itemize{

@@ -3,6 +3,10 @@
 #' The `BPCellsMatrix` class just inherits from the
 #' [DelayedMatrix][DelayedArray::DelayedMatrix] class.
 #'
+#' @param ... Additional arguments passed to specific methods
+#'  - `aperm`: not used currently.
+#'  - `[<-`: arguments passed to
+#'    [transpose_storage_order][BPCells::transpose_storage_order]
 #' @seealso
 #' - [bind][BPCells-bind]: Combine two Objects by Columns or Rows.
 #' - [%*%][BPCells-Multiplication]: Matrix Multiplication.
@@ -17,7 +21,7 @@
 #' @name BPCellsMatrix-class
 NULL
 
-#' @param x A `BPCellsMatrix` object. For `BPCellsArray` and `BPCellsMatrix`
+#' @param x A `r rd_matrix()`. For `BPCellsArray` and `BPCellsMatrix`
 #'    function, a `r rd_seed()` would also be okay.
 #' @param object A `r rd_matrix()`.
 #' @return
@@ -125,12 +129,18 @@ methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
 # Default drop use `as.array` and `aperm` methods
 ### S3/S4 combo for aperm.BPCellsMatrix
 # list_methods("DelayedAperm")
+#' @param a A `r rd_matrix()`.
+#' @inheritParams base::aperm
+#' @exportS3Method base::aperm
+#' @rdname BPCellsMatrix-class
 aperm.BPCellsMatrix <- function(a, perm, ...) {
     object <- NextMethod()
     return_BPCellsMatrix(object, .Generic) # nolint
 }
 
 #' @importFrom BiocGenerics aperm
+#' @export
+#' @rdname BPCellsMatrix-class
 methods::setMethod("aperm", "BPCellsMatrix", function(a, perm, ...) {
     object <- methods::callNextMethod()
     return_BPCellsMatrix(object, .Generic) # nolint
@@ -253,16 +263,19 @@ methods::setMethod("is.nan", "BPCellsMatrix", function(x) {
 })
 
 #' @importFrom methods Ops
+#' @export
 methods::setMethod("Ops", c("BPCellsArray", "vector"), function(e1, e2) {
     object <- methods::callNextMethod()
     return_BPCellsMatrix(object, .Generic) # nolint
 })
 
+#' @export
 methods::setMethod("Ops", c("vector", "BPCellsArray"), function(e1, e2) {
     object <- methods::callNextMethod()
     return_BPCellsMatrix(object, .Generic) # nolint
 })
 
+#' @export
 methods::setMethod("Ops", c("BPCellsArray", "BPCellsArray"), function(e1, e2) {
     object <- methods::callNextMethod()
     return_BPCellsMatrix(object, .Generic) # nolint

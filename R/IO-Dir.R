@@ -1,3 +1,4 @@
+#' @exportS3Method base::summary
 summary.MatrixDir <- function(object) {
     sprintf(
         "Load %s matrix from directory",

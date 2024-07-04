@@ -49,6 +49,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedMaskUnaryIsoOp", function(object
     to_BPCellsUnaryOp(object = object, Class = "MatrixMask")
 })
 
+#' @exportS3Method base::summary
 summary.MatrixMask <- function(object) {
     out <- "Mask entries"
     if (object@invert) out <- paste(out, "(inverted)")
@@ -56,9 +57,11 @@ summary.MatrixMask <- function(object) {
 }
 methods::setMethod("summary", "MatrixMask", summary.MatrixMask)
 
+#' @exportS3Method base::summary
 summary.BPCellsDelayedMaskNaryIsoOp <- summary.MatrixMask
 methods::setMethod("summary", "BPCellsDelayedMaskNaryIsoOp", summary.MatrixMask)
 
+#' @exportS3Method base::summary
 summary.BPCellsDelayedMaskUnaryIsoOp <- summary.MatrixMask
 methods::setMethod(
     "summary", "BPCellsDelayedMaskUnaryIsoOp",

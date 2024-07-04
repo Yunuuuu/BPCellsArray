@@ -47,6 +47,7 @@ methods::setMethod("to_BPCells", "BPCellsDelayedSubset", function(object) {
     )
 })
 
+#' @exportS3Method base::summary
 summary.BPCellsDelayedSubset <- function(object) {
     "Subset matrix"
 }
@@ -55,6 +56,8 @@ methods::setMethod(
     "summary", "BPCellsDelayedSubset",
     summary.BPCellsDelayedSubset
 )
+
+#' @exportS3Method base::summary
 summary.MatrixSubset <- summary.BPCellsDelayedSubset
 methods::setMethod("summary", "MatrixSubset", summary.BPCellsDelayedSubset)
 

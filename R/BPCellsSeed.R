@@ -35,6 +35,7 @@ methods::setMethod("BPCellsSeed", "matrix", function(x) {
 
 ############################################################
 # Iterable_dgCMatrix_wrapper
+#' @exportS3Method base::summary
 summary.Iterable_dgCMatrix_wrapper <- function(object) {
     "Load dgCMatrix from memory"
 }

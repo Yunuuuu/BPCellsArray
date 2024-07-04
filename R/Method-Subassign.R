@@ -1,7 +1,6 @@
 ################    BPCellsMatrix Methods    ##################
 #' @return
 #' - `[<-`: A `BPCellsMatrix` object.
-#' @inheritDotParams BPCells::transpose_storage_order -matrix
 #' @export
 #' @rdname BPCellsMatrix-class
 methods::setMethod(
