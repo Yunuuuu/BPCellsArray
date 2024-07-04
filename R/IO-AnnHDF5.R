@@ -1,4 +1,4 @@
-#' @exportS3Method base::summary `10xMatrixH5`
+#' @exportS3Method base::summary
 summary.AnnDataMatrixH5 <- function(object) {
     "Load matrix from AnnData HDF5 file"
 }
