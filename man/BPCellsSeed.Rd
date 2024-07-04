@@ -34,5 +34,6 @@ Transform into \code{IterableMatrix}
 \item \link{BPCellsHDF5-IO}
 \item \link{BPCellsMem-IO}
 \item \link{BPCells10xHDF5-IO}
+\item \link{BPCellsAnnHDF5-IO}
 }
 }
