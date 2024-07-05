@@ -42,7 +42,7 @@ INCOMPATIBLE_STORAGE_AXIS_MSG <- c(
 
 ###########################################################
 #' @return
-#'  - `storage_axis`: A string indicates the storage axis, "row" or "col".
+#'  - `storage_axis`: A string indicates the storage axis, `"row"` or `"col"`.
 #' @export
 #' @rdname transpose_axis
 methods::setGeneric("storage_axis", function(object) {

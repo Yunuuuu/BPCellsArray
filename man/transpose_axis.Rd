@@ -41,7 +41,7 @@ Note: \code{identical(as.matrix(transpose_axis(object)), as.matrix(object))} is
 }
 
 \itemize{
-\item \code{storage_axis}: A string indicates the storage axis, "row" or "col".
+\item \code{storage_axis}: A string indicates the storage axis, \code{"row"} or \code{"col"}.
 }
 }
 \description{
