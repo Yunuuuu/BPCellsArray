@@ -25,6 +25,9 @@
 \alias{is.finite,BPCellsMatrix-method}
 \alias{is.infinite,BPCellsMatrix-method}
 \alias{is.nan,BPCellsMatrix-method}
+\alias{Ops,BPCellsArray,vector-method}
+\alias{Ops,vector,BPCellsArray-method}
+\alias{Ops,BPCellsArray,BPCellsArray-method}
 \alias{dimnames<-,BPCellsMatrix,ListOrNULL-method}
 \alias{dimnames<-}
 \alias{rownames<-,BPCellsMatrix-method}
@@ -73,6 +76,12 @@ BPCellsMatrix(x)
 
 \S4method{is.nan}{BPCellsMatrix}(x)
 
+\S4method{Ops}{BPCellsArray,vector}(e1, e2)
+
+\S4method{Ops}{vector,BPCellsArray}(e1, e2)
+
+\S4method{Ops}{BPCellsArray,BPCellsArray}(e1, e2)
+
 \S4method{dimnames}{BPCellsMatrix,ListOrNULL}(x) <- value
 
 \S4method{rownames}{BPCellsMatrix}(x) <- value
@@ -119,6 +128,8 @@ return an atomic vector.}
 \item \verb{dimnames<-}: A list of dimnames or \code{NULL}.
 \item \verb{[<-}: A \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object
 }}
+
+\item{e1, e2}{One of \code{e1} or \code{e2} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
 
 \item{i, j}{Row and Column index.}
 }

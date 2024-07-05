@@ -87,7 +87,7 @@ methods::setMethod("pmin_scalar", "BPCellsMatrix", function(object, value) {
     }
 }
 
-#' @param e1,e2 One of `x` or `y` must be a `r rd_matrix()`, and the another
+#' @param e1,e2 One of `e1` or `e2` must be a `r rd_matrix()`, and the another
 #' must be a scalar or of length `nrow(e1)/nrow(e2)`.
 #' @importFrom DelayedArray pmin2
 #' @note For `pmin2` Methods listed here are supported by `BPCells`, other

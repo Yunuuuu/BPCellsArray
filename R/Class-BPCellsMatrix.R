@@ -262,20 +262,24 @@ methods::setMethod("is.nan", "BPCellsMatrix", function(x) {
     return_BPCellsMatrix(object, .Generic) # nolint
 })
 
+#' @param e1,e2 One of `e1` or `e2` must be a `r rd_matrix()`.
 #' @importFrom methods Ops
 #' @export
+#' @rdname BPCellsMatrix-class
 methods::setMethod("Ops", c("BPCellsArray", "vector"), function(e1, e2) {
     object <- methods::callNextMethod()
     return_BPCellsMatrix(object, .Generic) # nolint
 })
 
 #' @export
+#' @rdname BPCellsMatrix-class
 methods::setMethod("Ops", c("vector", "BPCellsArray"), function(e1, e2) {
     object <- methods::callNextMethod()
     return_BPCellsMatrix(object, .Generic) # nolint
 })
 
 #' @export
+#' @rdname BPCellsMatrix-class
 methods::setMethod("Ops", c("BPCellsArray", "BPCellsArray"), function(e1, e2) {
     object <- methods::callNextMethod()
     return_BPCellsMatrix(object, .Generic) # nolint

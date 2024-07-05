@@ -120,8 +120,8 @@
 
 \item{x, y}{See method signature.}
 
-\item{e1, e2}{One of \code{x} or \code{y} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another can
-be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
+\item{e1, e2}{One of \code{e1} or \code{e2} must be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object, and the another
+can be a \link[=BPCellsMatrix-class]{BPCellsMatrix} object or a matrix-like object which can be coerced into \link[Matrix:dgCMatrix-class]{dgCMatrix} object.}
 
 \item{object}{A \link{BPCellsMatrix} object with a seed slot of
 \link[=BPCellsDelayedOp-class]{BPCellsDelayedAbind} object, usually derived from
