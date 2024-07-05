@@ -29,7 +29,13 @@ NULL
 #'    only support 2-dim array.
 #' @export
 #' @rdname BPCellsMatrix-class
-BPCellsArray <- function(x) DelayedArray(x)
+BPCellsArray <- function(x) {
+    if (!(methods::is(x, "BPCellsDelayedOp") ||
+        methods::is(x, "IterableMatrix"))) {
+        x <- BPCellsSeed(x)
+    }
+    DelayedArray(x)
+}
 
 #' @export
 #' @rdname BPCellsMatrix-class

@@ -63,6 +63,7 @@ Collate:
     'Method-RenameDims.R'
     'Method-Subassign.R'
     'Method-Subset.R'
+    'Method-apply.R'
     'Method-axis.R'
     'Method-crossprod.R'
     'Method-internal.R'

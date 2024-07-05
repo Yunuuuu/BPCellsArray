@@ -499,4 +499,66 @@ test_methods <- function(
             testthat::expect_error(1 / obj)
         }
     )
+
+    cli::cli_inform("{.field apply} for seed {name} works as expected")
+    testthat::test_that(
+        sprintf("`apply` for seed %s works as expected", name),
+        {
+            obj <- BPCellsArray(obj)
+            # row operations --------------------------
+            testthat::expect_equal(apply(obj, 1, sum), apply(mat, 1, sum))
+            testthat::expect_equal(
+                apply(transpose_axis(obj), 1, sum),
+                apply(mat, 1, sum)
+            )
+
+            testthat::expect_equal(apply(obj, 1, mean), apply(mat, 1, mean))
+            testthat::expect_equal(
+                apply(transpose_axis(obj), 1, mean),
+                apply(mat, 1, mean)
+            )
+
+            testthat::expect_equal(
+                apply(obj, 1, stats::quantile),
+                apply(mat, 1, stats::quantile)
+            )
+            testthat::expect_equal(
+                apply(obj, 1, stats::quantile, simplify = FALSE),
+                apply(mat, 1, stats::quantile, simplify = FALSE)
+            )
+            testthat::expect_equal(
+                apply(transpose_axis(obj), 1, stats::quantile),
+                apply(mat, 1, stats::quantile)
+            )
+
+
+            # column operations --------------------------
+            testthat::expect_equal(apply(obj, 2L, sum), apply(mat, 2L, sum))
+            testthat::expect_equal(
+                apply(transpose_axis(obj), 2L, sum),
+                apply(mat, 2L, sum)
+            )
+
+
+            testthat::expect_equal(apply(obj, 2L, mean), apply(mat, 2L, mean))
+            testthat::expect_equal(
+                apply(transpose_axis(obj), 2L, mean),
+                apply(mat, 2L, mean)
+            )
+
+
+            testthat::expect_equal(
+                apply(obj, 2L, stats::quantile),
+                apply(mat, 2L, stats::quantile)
+            )
+            testthat::expect_equal(
+                apply(obj, 2L, stats::quantile, simplify = FALSE),
+                apply(mat, 2L, stats::quantile, simplify = FALSE)
+            )
+            testthat::expect_equal(
+                apply(transpose_axis(obj), 2L, stats::quantile),
+                apply(mat, 2L, stats::quantile)
+            )
+        }
+    )
 }
