@@ -11,6 +11,23 @@ test_methods <- function(
     mat <- convert_mode(mat, mode)
 
     ########################################################
+    cli::cli_inform("{.field as} for seed {name} works as expected")
+    testthat::test_that(
+        sprintf("`as()` for seed %s works as expected", name),
+        {
+            obj <- BPCellsMatrix(obj)
+            testthat::expect_s4_class(
+                methods::as(obj, "IterableMatrix"),
+                "IterableMatrix"
+            )
+            testthat::expect_identical(
+                methods::as(obj, "IterableMatrix"),
+                to_BPCells(obj@seed)
+            )
+        }
+    )
+
+    ########################################################
     cli::cli_inform("{.field convert_mode} for seed {name} works as expected")
     testthat::test_that(
         sprintf("`convert_mode()` for seed %s works as expected", name),
@@ -523,6 +540,10 @@ test_methods <- function(
                 apply(mat, 1, stats::quantile)
             )
             testthat::expect_equal(
+                apply(obj, 1, function(x) x[x > 0L]),
+                apply(mat, 1, function(x) x[x > 0L])
+            )
+            testthat::expect_equal(
                 apply(obj, 1, stats::quantile, simplify = FALSE),
                 apply(mat, 1, stats::quantile, simplify = FALSE)
             )
@@ -539,17 +560,19 @@ test_methods <- function(
                 apply(mat, 2L, sum)
             )
 
-
             testthat::expect_equal(apply(obj, 2L, mean), apply(mat, 2L, mean))
             testthat::expect_equal(
                 apply(transpose_axis(obj), 2L, mean),
                 apply(mat, 2L, mean)
             )
 
-
             testthat::expect_equal(
                 apply(obj, 2L, stats::quantile),
                 apply(mat, 2L, stats::quantile)
+            )
+            testthat::expect_equal(
+                apply(obj, 2L, function(x) x[x > 0L]),
+                apply(mat, 2L, function(x) x[x > 0L])
             )
             testthat::expect_equal(
                 apply(obj, 2L, stats::quantile, simplify = FALSE),

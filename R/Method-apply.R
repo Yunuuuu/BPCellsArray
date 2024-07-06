@@ -37,9 +37,9 @@ methods::setMethod(
         }
         seed <- to_BPCells(X@seed)
         values <- integer(dim(seed)[3L - MARGIN]) # nolint
-        nms <- switch(MARGIN,
-            rownames(seed),
-            colnames(seed)
+        names(values) <- switch(MARGIN,
+            colnames(seed),
+            rownames(seed)
         )
         .fun <- switch(MARGIN,
             function(.value, .row_index, .col_index, ...) {
@@ -67,20 +67,24 @@ methods::setMethod(
                 BPCells::apply_by_col(mat = seed, fun = .fun, ...)
             }
         )
+        ans_nms <- switch(MARGIN,
+            rownames(seed),
+            colnames(seed)
+        )
         if (simplify) {
             lens <- lengths(ans)
             if (all(lens == .subset(lens, 1L))) {
                 if (.subset(lens, 1L) == 1L) {
                     ans <- unlist(ans, recursive = FALSE, use.names = FALSE)
-                    names(ans) <- nms
+                    names(ans) <- ans_nms
                 } else {
                     ans <- do.call(cbind, ans)
-                    colnames(ans) <- nms
+                    colnames(ans) <- ans_nms
                 }
                 return(ans)
             }
         }
-        names(ans) <- nms
+        names(ans) <- ans_nms
         ans
     }
 )
