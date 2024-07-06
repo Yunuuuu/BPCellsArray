@@ -132,6 +132,11 @@ methods::setAs("BPCellsMatrix", "dgCMatrix", function(from) {
     methods::as(to_BPCells(from@seed), "dgCMatrix")
 })
 
+#' @export
+methods::setAs("BPCellsMatrix", "IterableMatrix", function(from) {
+    to_BPCells(from@seed)
+})
+
 # Default drop use `as.array` and `aperm` methods
 ### S3/S4 combo for aperm.BPCellsMatrix
 # list_methods("DelayedAperm")

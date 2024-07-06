@@ -132,6 +132,11 @@ methods::setAs("BPCellsDelayedOp", "dgCMatrix", function(from) {
     methods::as(to_BPCells(from), "dgCMatrix")
 })
 
+#' @export
+methods::setAs("BPCellsDelayedOp", "IterableMatrix", function(from) {
+    to_BPCells(from)
+})
+
 ### list_methods("DelayedOp")
 ### Seed contract Methods
 
