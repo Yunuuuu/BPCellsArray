@@ -28,13 +28,11 @@ methods::setMethod(
         X_dim <- dim(X)
         MARGIN <- as.integer(MARGIN)
         if (MARGIN < 1L || MARGIN > length(X_dim)) {
-            cli::cli_abort(
-                "{.arg MARGIN} must be >= 1 and <= length(dim(X))"
-            )
+            cli::cli_abort("{.arg MARGIN} must be >= 1 and <= length(dim(X))")
         }
         if (X_dim[[MARGIN]] == 0L) {
             ## base::apply seems to be doing something like that!
-            ans <- FUN(X, ...)
+            ans <- FUN(as.matrix(X), ...)
             return(as.vector(ans[0L]))
         }
         seed <- to_BPCells(X@seed)
@@ -79,10 +77,10 @@ methods::setMethod(
                     ans <- do.call(cbind, ans)
                     colnames(ans) <- nms
                 }
+                return(ans)
             }
-        } else {
-            names(ans) <- nms
         }
+        names(ans) <- nms
         ans
     }
 )
