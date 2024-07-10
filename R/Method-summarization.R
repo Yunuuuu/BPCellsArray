@@ -9,8 +9,8 @@ NULL
 #' @aliases matrix_stats
 #' @return
 #' - `matrix_stats`: A list of
-#'    - `row_stats`: matrix of n_stats x n_rows
-#'    - `col_stats`: matrix of n_stats x n_cols
+#'    - `row_stats`: matrix of `n_stats` x `n_rows`
+#'    - `col_stats`: matrix of `n_stats` x `n_cols`
 #' @inheritParams convert_mode
 #' @export
 #' @rdname BPCells-Summarization
@@ -119,4 +119,27 @@ methods::setMethod("rowSds", c(x = "BPCellsMatrix"), function(x) {
 #' @rdname BPCells-Summarization
 methods::setMethod("colSds", c(x = "BPCellsMatrix"), function(x) {
     sqrt(colVars(x))
+})
+
+
+#######################################################################
+# Max value
+#' @importFrom MatrixGenerics rowMaxs
+#' @return
+#' - `rowMaxs()`: vector of row max values
+#' @aliases rowMaxs
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("rowMaxs", c(x = "BPCellsMatrix"), function(x) {
+    BPCells::rowMaxs(to_BPCells(x@seed))
+})
+
+#' @importFrom MatrixGenerics colMaxs
+#' @return
+#' - `colMaxs()`: vector of column max values
+#' @aliases colMaxs
+#' @export
+#' @rdname BPCells-Summarization
+methods::setMethod("colMaxs", c(x = "BPCellsMatrix"), function(x) {
+    BPCells::colMaxs(to_BPCells(x@seed))
 })

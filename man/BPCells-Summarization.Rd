@@ -20,6 +20,10 @@
 \alias{rowSds}
 \alias{colSds,BPCellsMatrix-method}
 \alias{colSds}
+\alias{rowMaxs,BPCellsMatrix-method}
+\alias{rowMaxs}
+\alias{colMaxs,BPCellsMatrix-method}
+\alias{colMaxs}
 \title{BPCellsMatrix row/col summarization}
 \usage{
 matrix_stats(object, ...)
@@ -41,6 +45,10 @@ matrix_stats(object, ...)
 \S4method{rowSds}{BPCellsMatrix}(x)
 
 \S4method{colSds}{BPCellsMatrix}(x)
+
+\S4method{rowMaxs}{BPCellsMatrix}(x)
+
+\S4method{colMaxs}{BPCellsMatrix}(x)
 }
 \arguments{
 \item{object}{A \link[=BPCellsMatrix-class]{BPCellsMatrix} object.}
@@ -59,8 +67,8 @@ matrix_stats(object, ...)
 \itemize{
 \item \code{matrix_stats}: A list of
 \itemize{
-\item \code{row_stats}: matrix of n_stats x n_rows
-\item \code{col_stats}: matrix of n_stats x n_cols
+\item \code{row_stats}: matrix of \code{n_stats} x \code{n_rows}
+\item \code{col_stats}: matrix of \code{n_stats} x \code{n_cols}
 }
 }
 
@@ -94,6 +102,14 @@ matrix_stats(object, ...)
 
 \itemize{
 \item \code{colSds()}: vector of column Standard Deviation
+}
+
+\itemize{
+\item \code{rowMaxs()}: vector of row max values
+}
+
+\itemize{
+\item \code{colMaxs()}: vector of column max values
 }
 }
 \description{

@@ -74,16 +74,16 @@ Here is a summarized delayed operations in `BPCellsArray`:
 
 Other non-lazied operations:
 
-| Operations               | BPCells                        | BPCellsArray                    | Note             |
-|--------------------------|--------------------------------|---------------------------------|------------------|
-| row/col summarize        | matrix_stats                   | matrix_stats                    |                  |
-| row summarize            | rowSums,rowMeans,rowVars       | rowSums,rowMeans,rowVars,rowSds |                  |
-| col summarize            | colSums,colMeans,colVars       | colSums,colMeans,colVars,colSds |                  |
-| Multiplication           | %\*%                           | %\*%                            | For some methods |
-| Crossproduct             |                                | crossprod                       | For some methods |
-| Matrix product transpose |                                | tcrossprod                      | For some methods |
-| svd                      | svds                           | `runSVD`+`SpectraParam`         |                  |
-| apply                    | `apply_by_row`, `apply_by_col` | apply                           |                  |
+| Operations               | BPCells                          | BPCellsArray                            | Note             |
+|--------------------------|----------------------------------|-----------------------------------------|------------------|
+| row/col summarize        | matrix_stats                     | matrix_stats                            |                  |
+| row summarize            | rowSums,rowMeans,rowVars,rowMaxs | rowSums,rowMeans,rowVars,rowSds,rowMaxs |                  |
+| col summarize            | colSums,colMeans,colVars,colMaxs | colSums,colMeans,colVars,colSds,colMaxs |                  |
+| Multiplication           | %\*%                             | %\*%                                    | For some methods |
+| Crossproduct             |                                  | crossprod                               | For some methods |
+| Matrix product transpose |                                  | tcrossprod                              | For some methods |
+| svd                      | svds                             | `runSVD`+`SpectraParam`                 |                  |
+| apply                    | `apply_by_row`, `apply_by_col`   | apply                                   |                  |
 
 ## Matrix Storage Format
 
