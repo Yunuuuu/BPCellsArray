@@ -10,7 +10,7 @@
 
 ## Installation
 
-To install from Bioconductor, use the following code:
+To install from Bioconductor (waiting), use the following code:
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
